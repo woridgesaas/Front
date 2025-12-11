@@ -1,0 +1,28 @@
+image: node:20
+
+stages:
+  - build
+  - test
+
+cache:
+  paths:
+    - node_modules/
+
+before_script:
+  - npm install
+
+build-job:
+  stage: build
+  script:
+    - echo "Running Angular build... in branch $CI_COMMIT_BRANCH"
+    - npm run build 
+  artifacts:
+    paths:
+      - dist/
+    
+
+#test-job:
+#  stage: test
+#  script:
+#    - echo "Running Angular tests... in branch $CI_COMMIT_BRANCH"
+#    - npm run test --watch=false --browsers=ChromeHeadless

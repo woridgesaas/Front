@@ -1,0 +1,83 @@
+<div class="row">
+  <div class="col-xl-3 theiaStickySidebar">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex flex-column list-group settings-list">
+          <a
+            [class.active]="last === 'custom-css'"
+            [routerLink]="routes.customCss"
+            class="d-inline-flex align-items-center rounded active py-2 px-3"
+            ><i
+              *ngIf="last === 'custom-css'"
+              class="ti ti-arrow-badge-right me-2"
+            ></i
+            >Custom CSS</a
+          >
+          <a
+            [class.active]="last === 'custom-js'"
+            [routerLink]="routes.customjs"
+            class="d-inline-flex align-items-center rounded py-2 px-3"
+            ><i
+              *ngIf="last === 'custom-js'"
+              class="ti ti-arrow-badge-right me-2"
+            ></i
+            >Custom JS</a
+          >
+          <a
+            [class.active]="last === 'cronjob'|| last === 'cronjob-schedule'"
+            [routerLink]="routes.cronjob"
+            class="d-inline-flex align-items-center rounded py-2 px-3"
+            ><i
+              *ngIf="last === 'cronjob'|| last === 'cronjob-schedule'"
+              class="ti ti-arrow-badge-right me-2"
+            ></i
+            >Cronjob</a
+          >
+          <a
+            [class.active]="last === 'storage-settings'"
+            [routerLink]="routes.storagesettings"
+            class="d-inline-flex align-items-center rounded py-2 px-3"
+            ><i
+              *ngIf="last === 'storage-settings'"
+              class="ti ti-arrow-badge-right me-2"
+            ></i
+            >Storage</a
+          >
+          <a
+            [class.active]="last === 'ban-ip-address'"
+            [routerLink]="routes.banIpaddress"
+            class="d-inline-flex align-items-center rounded py-2 px-3"
+            ><i
+              *ngIf="last === 'ban-ip-address'"
+              class="ti ti-arrow-badge-right me-2"
+            ></i
+            >Ban IP Address</a
+          >
+          <a
+            [class.active]="last === 'backup'"
+            [routerLink]="routes.backup"
+            class="d-inline-flex align-items-center rounded py-2 px-3"
+            ><i
+              *ngIf="last === 'backup'"
+              class="ti ti-arrow-badge-right me-2"
+            ></i
+            >Backup</a
+          >
+          <a
+            [class.active]="last === 'clear-cache'"
+            [routerLink]="routes.clearcache"
+            class="d-inline-flex align-items-center rounded py-2 px-3"
+            ><i
+              *ngIf="last === 'clear-cache'"
+              class="ti ti-arrow-badge-right me-2"
+            ></i
+            >Clear Cache</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-9">
+    <router-outlet></router-outlet>
+  </div>
+</div>
