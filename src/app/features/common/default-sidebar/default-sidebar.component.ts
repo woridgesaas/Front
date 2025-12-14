@@ -63,8 +63,17 @@ export class DefaultSidebarComponent implements OnDestroy , OnInit{
       this.settings.hoverState.next('out');
     }
   }
-  public expandSubMenus(menu: SideBarMenu): void {
+  //Route personlisée pour changé le layout :)
+  public expandSubMenus(menu: SideBarMenu): void {  
     this.isOpen= false
+    if(menu.action ==='layoutChange'){
+
+      this.settings.changeLayoutMode('3');
+  
+          window.location.reload();
+
+      return ;
+    }
     sessionStorage.setItem('menuValue', menu.menuValue);
     this.side_bar_data.map((mainMenus: SideBar) => {
       mainMenus.menu.map((resMenu: SideBarMenu) => {

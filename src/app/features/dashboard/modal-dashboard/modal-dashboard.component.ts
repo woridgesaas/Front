@@ -115,40 +115,13 @@ export class ModalDashboardComponent  implements OnInit, OnDestroy {
     };
     this.common.base.subscribe((res: string) => {
       this.base = res;
-      if (this.base === 'layout-hovered') {
-        layout.changeLayoutMode('13');
-      } else if (this.base === 'layout-horizontal'){
+     if (this.base === 'layout-horizontal'){
+      
         layout.changeLayoutMode('14');
-      }else if (this.base === 'layout-detached'){
-        layout.changeLayoutMode('5');
-      }else if (this.base === 'layout-modern'){
-        layout.changeLayoutMode('11');
-      }else if (this.base === 'layout-two-column'){
-        sessionStorage.setItem('menuValue2', 'Layouts');
-        layout.changeLayoutMode('6');
-      }else if (this.base === 'layout-horizontal-single'){
-        layout.changeLayoutMode('4');
-      }else if (this.base === 'layout-horizontal-overlay'){
-        layout.changeLayoutMode('8');
-      }else if (this.base === 'layout-horizontal-box'){
-        layout.changeLayoutMode('15');
-      }else if (this.base === 'layout-horizontal-sidemenu'){
-        layout.changeLayoutMode('9');
-      }else if (this.base === 'layout-vertical-transparent'){
-        layout.changeLayoutMode('12');
-      }else if (this.base === 'layout-without-header'){
-        layout.changeLayoutMode('7');
-      }else if (this.base === 'layout-rtl'){
-        layout.changeLayoutMode('16');
-      }else if (this.base === 'layout-boxed'){
-        layout.changeLayoutWidth('2');
       }else if (this.base === 'layout-dark'){
         layout.changeThemeColor('2');
       }else {
 
-        // layout.changeLayoutMode('1');
-        // layout.changeLayoutWidth('1');
-        // layout.changeThemeColor('1');
       }
     });
 
@@ -411,11 +384,9 @@ export class ModalDashboardComponent  implements OnInit, OnDestroy {
   }
   ngOnDestroy(): void {
     this.editor.destroy();
-    this.layout.layoutMode.next('1');
-    this.layout.layoutWidth.next('1');
+    this.layout.layoutMode.next('2');
     this.layout.themeColor.next('1');
-    this.layout.changeLayoutMode('1');
-    this.layout.changeLayoutWidth('1');
+    this.layout.changeLayoutMode('2');
     this.layout.changeThemeColor('1');
     
   }

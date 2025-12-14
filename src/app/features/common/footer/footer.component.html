@@ -1,4 +1,19 @@
-<div class="footer d-sm-flex align-items-center justify-content-between border-top bg-white p-3">
-  <p class="mb-0">2025 - {{currentYear}} &copy; Woridge.</p>
-  <p>...... &amp; ..... <a href="javascript:void(0);" class="text-primary">......</a></p>
-</div>
+<!-- src/app/footer/footer.component.html -->
+
+<footer class="bg-white border-top w-100 py-4">
+  <div class="container">
+    <div class="d-flex flex-column align-items-center">
+      
+      <!-- Logo -->
+      <img src="assets/favicon_io/big-logo-nobg.png" 
+           class="img-fluid mb-3 footer-logo" 
+           alt="Logo de Woridge">
+
+      <!-- Copyright -->
+      <p class="mb-0 text-muted small">
+        © {{ currentYear }} Woridge. Tous droits réservés.
+      </p>
+
+    </div>
+  </div>
+</footer>

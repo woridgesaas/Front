@@ -284,18 +284,6 @@ export class DataService {
 
 
 
-
-
-
-  /**public getblogTags(): Observable<apiResultFormat> {
-    return this.http.get<apiResultFormat>('assets/json/blog-tags.json').pipe(
-      map((res: apiResultFormat) => {
-        return res;
-      })
-    )
-  }*/
-
-
   public getcallHistory(): Observable<apiResultFormat> {
     return this.http.get<apiResultFormat>('assets/json/call-history.json').pipe(
       map((res: apiResultFormat) => {
@@ -1263,23 +1251,13 @@ export class DataService {
       menu: [
         {
           menuValue: 'Horizontal',
-          route: routes.Horizontal,
+          route: null,
+          action: 'layoutChange',
           hasSubRoute: false,
           showSubRoute: false,
           base: 'layout-horizontal',
           icon: 'layout-navbar',
           materialicons: 'confirmation_number',
-          subMenus: [],
-        },
-
-        {
-          menuValue: 'Menu Aside',
-          route: routes.MenuAside,
-          hasSubRoute: false,
-          showSubRoute: false,
-          icon: 'table',
-          base: 'layout-horizontal-sidemenu',
-          materialicons: 'shopping_bag',
           subMenus: [],
         },
       
@@ -1985,15 +1963,9 @@ export class DataService {
           base: 'layout-horizontal',
           subMenus: [
             {
-              menuValue: 'Horizontal',
-              route: routes.Horizontal,
-              hasSubRoute: false,
-              showSubRoute: false,
-              base: 'layout-horizontal',
-            },
-            {
               menuValue: 'Menu Aside',
-              route: routes.MenuAside,
+              route: null,
+              action: 'layoutChange',
               hasSubRoute: false,
               showSubRoute: false,
               base: 'layout-horizontal-sidemenu',

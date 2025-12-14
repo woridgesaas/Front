@@ -5,10 +5,11 @@
       <ul class="nav-menu">
         @for (mainTittle of side_bar_data; track mainTittle) {
         <li class="menu-title">
-          <span>{{ mainTittle.title }}</span>
+          <span>{{ mainTittle.title }} ziko</span>
         </li>
-        @for (menu of mainTittle?.menu; track menu) { @if (menu.hasSubRoute ===
-        true) {
+        @for (menu of mainTittle?.menu; track menu) { 
+          @if (menu.hasSubRoute ===true)
+          {
         <li class="submenu">
           <a
             href="javascript:void(0)"
@@ -29,6 +30,7 @@
             @for (subMenus of menu.subMenus; track subMenus) {
             <li>
               <a
+              (click)="settings.changeLayoutMode('2')"
                 [routerLink]="subMenus.route"
                 [class.active]="
                   page === subMenus.base || base === subMenus.base
@@ -92,25 +94,6 @@
         </li>
         } } }
       </ul>
-      <div class="d-xl-flex align-items-center d-none">
-        <a href="javascript:void(0);" class="me-3 avatar avatar-sm">
-          <img
-            src="assets/img/profiles/avatar-07.jpg"
-            alt="profile"
-            class="rounded-circle"
-          />
-        </a>
-        <a (click)="settings.changeThemeColor('2');toggleThemeIcon()" [ngClass]="{'d-none': !themeIcon}"  (keydown.enter)="settings.changeThemeColor('1')" href="javascript:void(0);"
-          class="btn btn-icon btn-sm rounded-circle mode-toggle"
-        >
-          <i class="ti ti-sun"></i>
-        </a>
-        <a (click)="settings.changeThemeColor('1');toggleThemeIcon();" [ngClass]="{'d-none': themeIcon}"  (keydown.enter)="settings.changeThemeColor('1')" href="javascript:void(0);"
-          class="btn btn-icon btn-sm rounded-circle mode-toggle"
-        >
-          <i class="ti ti-moon"></i>
-        </a>
-      </div>
     </div>
   </div>
 </div>
