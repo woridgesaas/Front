@@ -4,10 +4,10 @@
 
 				<div class="header-left">
 					<a [routerLink]="routes.index" class="logo">
-						<img src="assets/img/logo.svg" alt="Logo">
+						<img src="assets/favicon_io/logo.svg" alt="Logo">
 					</a>
 					<a [routerLink]="routes.index" class="dark-logo">
-						<img src="assets/img/logo-white.svg" alt="Logo">
+						<img src="assets/favicon_io/big-logo-nobg.png" alt="Logo">
 					</a>
 				</div>
 
@@ -31,17 +31,22 @@
 								<span class="input-icon-addon">
 									<i class="ti ti-search"></i>
 								</span>
-								<input type="text" class="form-control" placeholder="Search in HRMS">
+								<input type="text" class="form-control" placeholder="Search">
 								<span class="input-group-text">
 									<kbd>Ctrl + / </kbd>
 								</span>
 							</div>
 							<!-- /Search -->
+							 <!-- Dark mode -->
 							<div class="dropdown crm-dropdown">
-								<a href="javascript:void(0);" class="btn btn-menubar me-1" data-bs-toggle="dropdown">
-									<i class="ti ti-layout-grid"></i>
+								<a (click)="settings.changeThemeColor('2');toggleThemeIcon()" [ngClass]="{'d-none': !themeIcon}"  (keydown.enter)="settings.changeThemeColor('1')" href="javascript:void(0);"class="btn btn-icon btn-sm rounded-circle mode-toggle">
+									<i class="ti ti-sun"></i>
+								</a>
+									<a (click)="settings.changeThemeColor('1');toggleThemeIcon();" [ngClass]="{'d-none': themeIcon}"  (keydown.enter)="settings.changeThemeColor('1')" href="javascript:void(0);"class="btn btn-icon btn-sm rounded-circle mode-toggle">
+									<i class="ti ti-moon"></i>
 								</a>
 							</div>
+							<!-- Dark mode -->
 							<a [routerLink]="routes.profileSettings" class="btn btn-menubar">
 								<i class="ti ti-settings-cog"></i>
 							</a>
@@ -364,7 +369,13 @@
 					<a href="javascript:void(0);" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
 						aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
 					<div class="dropdown-menu dropdown-menu-end">
-						<a class="dropdown-item" [routerLink]="routes.profile">My Profile</a>
+						<a (click)="settings.changeThemeColor('2');toggleThemeIcon()" [ngClass]="{'d-none': !themeIcon}"  (keydown.enter)="settings.changeThemeColor('1')" href="javascript:void(0);"class="btn btn-icon btn-sm rounded-circle mode-toggle">
+          					<i class="ti ti-sun"></i>
+        				</a>
+						<a (click)="settings.changeThemeColor('1');toggleThemeIcon();" [ngClass]="{'d-none': themeIcon}"  (keydown.enter)="settings.changeThemeColor('1')" href="javascript:void(0);"class="btn btn-icon btn-sm rounded-circle mode-toggle">
+							<i class="ti ti-moon"></i>
+						</a>
+						<a class="dropdown-item" [routerLink]="routes.profile">My Profile gg</a>
 						<a class="dropdown-item" [routerLink]="routes.profileSettings">Settings</a>
 						<a class="dropdown-item" [routerLink]="routes.login2">Logout</a>
 					</div>

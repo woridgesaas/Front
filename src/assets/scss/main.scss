@@ -33,7 +33,6 @@
 @use "components/cards";
 @use "components/tooltips";
 @use "components/navs-tabs";
-@use "components/ribbon";
 @use "components/popup";
 @use "components/grid";
 @use "components/timeline";
@@ -57,23 +56,15 @@
 /******* Pages ******/
 @use "pages/email" as email2;
 @use "pages/dashboard";
+
 @use "pages/invoices.scss";
 @use "pages/group-video-call.scss";
 @use "pages/chat.scss";
-@use "pages/company.scss";
-@use "pages/performance";
-@use "pages/pricing";
 @use "pages/leaves";
-@use "pages/projects";
 @use "pages/settings";
 @use "pages/employee-dashboard";
 @use "pages/login";
 @use "pages/salary-settings";
-@use "pages/deals-dashboard";
-@use "pages/super-admin";
-@use "pages/blogs";
-@use "pages/ui-pages";
-
 
 
 

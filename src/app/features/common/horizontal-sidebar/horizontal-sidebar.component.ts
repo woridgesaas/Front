@@ -32,10 +32,11 @@ export class HorizontalSidebarComponent implements OnInit, OnDestroy{
     private data: DataService,
     private sideBar: SideBarService,
     private common: CommonService,
-    public settings: SettingService
+    public settings: SettingService 
   ) {
     this.data.getSideBarData3.subscribe((res: MainMenu[]) => {
       this.side_bar_data = res;
+      
     });
     this.common.base.subscribe((res: string) => {
       this.base = res;
@@ -54,10 +55,6 @@ export class HorizontalSidebarComponent implements OnInit, OnDestroy{
       this.side_bar_data = res;
     });
 
-    // this.sideBar.toggleSideBar.subscribe((res: string) => {
-    //   if (res === 'true' || res === 'true') this.showSubMenusTab = true;
-    //   else this.showSubMenusTab = false;
-    // });
   }
 public menuToggle() {
   this.showSubMenusTab = !this.showSubMenusTab;
@@ -70,10 +67,7 @@ private collapseAllMenus() {
   });
 }
 public expandSubMenus(menu: Menu): void {
-
-  // toggle selected menu
   menu.showSubRoute = !menu.showSubRoute;
-
   // collapse all other menus
   this.side_bar_data.forEach((mainMenus: MainMenu) => {
     mainMenus.menu.forEach((m: Menu) => {
@@ -83,7 +77,6 @@ public expandSubMenus(menu: Menu): void {
     });
   });
 
-  // store selected menu
   sessionStorage.setItem('menuValue', menu.menuValue);
 }
 
@@ -110,6 +103,7 @@ public expandSubMenus(menu: Menu): void {
 
       }
     });
+    
   }
   ngOnDestroy(): void {
     //this.data.resetData2();

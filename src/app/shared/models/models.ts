@@ -67,17 +67,7 @@ export class passwordResponce {
   passwordResponceImage?: string;
   passwordResponceKey?: string;
 }
-export interface reportUser {
-  isSelected?: boolean;
-  id: number;
-  name: string;
-  phoneNumber: string;
-  emailAddress: string;
-  reportDate: string;
-  reportedBy: string;
-  img1: string;
-  img2: string;
-}
+
 
 export interface language {
   isSelected?: boolean;
@@ -170,34 +160,8 @@ export interface chatSidebar {
   route: string;
   class?: string;
 }
-export interface CompanyAccount {
-  sNo?: number;
-  isSelected: boolean;
-  CompanyName: string;
-  Email: string;
-  AccountURL: string;
-  Plan: string;
-  CreatedDate: string; // Alternatively, use Date if you want to store it as a Date object
-  Image: string;
-  Status: string;
-}
-export interface CompanyInfo {
-  sNo?: number;
-  isSelected: boolean;
-  CompanyName: string;
-  BillCycle: string;
-  PaymentMethod: string;
-  Email: string;
-  AccountURL: string;
-  Plan: string;
-  CreatedDate: string;
-  ExpiringDate: string;
-  Image: string;
-  Status: string;
-  Amount: string;
-  DomainStatus: string;
-  InvoiceID: string;
-}
+
+
 export interface PackageList {
   sNo?: number;
   isSelected: boolean;
@@ -226,7 +190,7 @@ export interface Star {
 export interface SideBarMenu {
   showMyTab?: boolean;
   menuValue: string;
-  route?: string;
+  route?: string | null;
   hasSubRoute?: boolean;
   showSubRoute: boolean;
   icon: string;
@@ -246,9 +210,9 @@ export interface SideBarMenu {
   materialicons?: string;
   subMenus: SubMenu[];
   dot?: boolean;
-  changeLogVersion?: boolean;
   hasSubRouteTwo?: boolean;
   page1?: string;
+  action?: string;
 }
 export interface breadCrumbItems {
   label: string;
@@ -319,7 +283,7 @@ export interface SubMenuTwo {
 
 export interface SubMenu2 {
   menuValue: string;
-  route?: string;
+  route?: string | null;
   base?: string;
   base1?: string;
   base2?: string;
@@ -328,6 +292,7 @@ export interface SubMenu2 {
   showSubRoute?: boolean;
   customSubmenuTwo?: boolean;
   subMenusTwo?: SubMenuTwo[];
+  action?: string;
 }
 
 export interface Menu {
@@ -360,32 +325,7 @@ export interface MainMenu {
   menu: Menu[];
 }
 
-export interface Client {
-  sNo?: number;
-  isSelected: boolean;
-  ClientID: string;
-  ClientName: string;
-  Work: string;
-  CompanyName: string;
-  Email: string;
-  Phone: string;
-  Image: string;
-  Status: string;
-}
 
-export interface Project {
-  sNo?: number;
-  isSelected: boolean;
-  ProjectID: string;
-  ProjectName: string;
-  Leader: string;
-  Team: string;
-  UserImg: string;
-  share: string[];
-  Deadline: string;
-  Priority: string;
-  Status: string;
-}
 export interface activities {
   sNo?: number;
   isSelected: boolean;
@@ -395,43 +335,8 @@ export interface activities {
   owner: string;
   createdAt: string;
 }
-export interface contactList {
-  sNo?: number;
-  isSelected?: boolean;
-  Image: string;
-  Name: string;
-  Roll: string;
-  Email: string;
-  Phone: string;
-  Location: string;
-  Rating: string;
-  Owner: string;
-  Status: string;
-}
-export interface Company {
-  sNo?: number;
-  isSelected: boolean;
-  Company_Name: string;
-  Image: string;
-  Image2: string;
-  Email: string;
-  Phone: string;
-  Location: string;
-  Rating: string;
-  Owner: string;
-  Status: string;
-  share: string[];
-}
-export interface Pipeline {
-  sNo?: number;
-  isSelected: boolean;
-  Pipeline_Name: string;
-  Total_Deal_Value: string;
-  No_of_Deals: string;
-  Stages: string;
-  Created_Date: string;
-  Status: string;
-}
+
+
 export interface Activity {
   sNo?: number;
   isSelected: boolean;
@@ -473,14 +378,6 @@ export interface designation {
   Status: string;
 }
 
-export interface policy {
-  sNo?: number;
-  isSelected: boolean;
-  Name: string;
-  Department: string;
-  Description: string;
-  CreatedDate: string;
-}
 export interface holiday {
   sNo?: number;
   isSelected: boolean;
@@ -519,39 +416,8 @@ export interface attendanceemployee {
   ProductionHours: string;
 }
 
-export interface timesheet {
-  sNo?: number;
-  isSelected: boolean;
-  Employee: string;
-  Image: string;
-  Role: string;
-  Date: string;
-  Project: string;
-  AssignedHours: number;
-  WorkedHours: number;
-}
 
-export interface shiftschedule {
-  sNo?: number;
-  isSelected: boolean;
-  Image: string;
-  Name: string;
-  JobTitle: string;
-}
 
-export interface overtime {
-  sNo?: number;
-  isSelected: boolean;
-  EmpImage: string;
-  Employee: string;
-  Role: string;
-  Date: string;
-  OvertimeHours: string;
-  Project: string;
-  Image: string;
-  Name: string;
-  Status: string;
-}
 
 export interface promotion {
   sNo?: number;
@@ -574,52 +440,8 @@ export interface resignation {
   NoticeDate: string;
   ResignationDate: string;
 }
-export interface termination {
-  sNo?: number;
-  isSelected: boolean;
-  Image: string;
-  ResigningEmployee: string;
-  Department: string;
-  TerminationType: string;
-  NoticeDate: string;
-  Reason: string;
-  ResignationDate: string;
-}
 
-export interface DealInfo {
-  sNo?: number;
-  isSelected: boolean;
-  DealName: string;
-  Stage: string;
-  DealValue: string;
-  Tags: string;
-  ExpectedClosedDate: string;
-  Owner: string;
-  Probability: string;
-  Status: string;
-}
-export interface LeadInfo {
-  sNo?: number;
-  isSelected: boolean;
-  LeadName: string;
-  CompanyName: string;
-  Phone: string;
-  Email: string;
-  Tags: string;
-  CreatedDate: string;
-  Image: string;
-  LeadOwner: string;
-}
-export interface PipelineInfo {
-  sNo?: number;
-  isSelected: boolean;
-  Pipeline_Name: string;
-  Total_Deal_Value: string;
-  No_of_Deals: string;
-  Stages: string;
-  Created_Date: string;
-  Status: string;
-}
+
 export interface Activity {
   sNo?: number;
   isSelected: boolean;
@@ -656,102 +478,6 @@ export interface CandidateInfo {
   Status: string;
 }
 
-export interface ReferralInfo {
-  sNo?: number;
-  isSelected: boolean;
-  Refferals_Image: string;
-  Refferals_ID: string;
-  Referrer_Name: string;
-  Roll: string;
-  Job_Image: string;
-  Job_Reffered: string;
-  Refferee_Image: string;
-  Referee_Name: string;
-  Email: string;
-  Refferals_Bonus: string;
-}
-
-export interface trainingList {
-  sNo?: number;
-  isSelected: boolean;
-  Image: string;
-  TrainingType: string;
-  Trainer: string;
-  Employee: string;
-  Img1?: string;
-  Img2?: string;
-  Img3?: string;
-  Img4?: string;
-  Img5?: string;
-  TimeDuration: string;
-  Description: string;
-  Cost: string;
-  Status: string;
-}
-
-export interface trainers {
-  sNo?: number;
-  isSelected: boolean;
-  Image: string;
-  Name: string;
-  Phone: string;
-  Email: string;
-  Description: string;
-  Status: string;
-}
-
-export interface trainingType {
-  sNo?: number;
-  isSelected: boolean;
-  Type: string;
-  Description: string;
-  Status: string;
-}
-
-export interface performanceIndicator {
-  sNo?: number;
-  isSelected: boolean;
-  Designation: string;
-  Department: string;
-  Image: string;
-  ApprovedBy: string;
-  Role: string;
-  CreatedDate: string;
-  Status: string;
-}
-
-export interface performanceAppraisal {
-  sNo?: number;
-  isSelected: boolean;
-  Image: string;
-  Name: string;
-  Designation: string;
-  Department: string;
-  AppraisalDate: string;
-  Status: string;
-}
-
-export interface goalType {
-  sNo?: number;
-  isSelected: boolean;
-  Type: string;
-  Description: string;
-  Status: string;
-}
-
-export interface goalTrack {
-  sNo?: number;
-  isSelected: boolean;
-  GoalType: string;
-  Subject: string;
-  TargetAchievement: string;
-  StartDate: string;
-  EndDate: string;
-  Description: string;
-  Status: string;
-  Progress: string;
-}
-
 export interface leaveAdmin {
   sNo?: number;
   isSelected: boolean;
@@ -777,18 +503,6 @@ export interface leaveEmployee {
   Status: string;
 }
 
-export interface Estimate {
-  sNo?: number;
-  isSelected: boolean;
-  Client_Name: string;
-  Image: string;
-  Roll: string;
-  Company_Name: string;
-  Estimate_Date: string;
-  Expiry_Date: string;
-  Amount: string;
-  Status: string;
-}
 
 export interface InvoiceList {
   sNo?: number;
@@ -816,51 +530,9 @@ export interface InvoicePaymentDetails {
   Paid_Date: string;
   Paid_Amount: string;
 }
-export interface ExpenseDetails {
-  sNo?: number;
-  isSelected: boolean;
-  Expense_Name: string;
-  Date: string;
-  Payment_Method: string;
-  Amount: string;
-}
-
-export interface ProvidentFundDetails {
-  sNo?: number;
-  isSelected: boolean;
-  Employee_Name: string;
-  Image: string;
-  Roll: string;
-  Provident_Fund_Type: string;
-  Employee_Share: string;
-  Organization_Share: string;
-  Status: string;
-}
-export interface TaxDetails {
-  sNo?: number;
-  isSelected: boolean;
-  Tax_Name: string;
-  Tax_Percentage: string;
-  Status: string;
-}
-export interface UserMangementUser {
-  sNo?: number;
-  isSelected: boolean;
-  Name: string;
-  Email: string;
-  CreatedDate: string;
-  Role: string;
-  Status: string;
-  Image: string;
-}
 
 
-export interface categories {
-  sNo?: number
-  isSelected: boolean
-  CategoryName: string
-  SubCategoryName: string
-}
+
 
 
 
@@ -879,62 +551,9 @@ export interface employeeSalary {
   PaySlip: string;
 };
 
-export interface assetList {
-  sNo?: number;
-  isSelected: boolean;
-  Image:string;
-  AssetName: string;
-  AssetUser: string;
-  PurchaseDate: string;
-  Warranty: string;
-  WarrantyEndDate: string;
-  Status: string;
-}
 
-export interface assetCategories{
-  sNo?: number;
-  isSelected: boolean;
-  CategoryName: string;
-  Status: string;
-}
 
-export interface userReport {
-  sNo?: number;
-  isSelected: boolean;
-  Image: string;
-  Name: string;
-  Email: string;
-  CreatedDate: string;
-  Role: string;
-  Status: string;
-}
 
-export interface taskReport {
-  sNo?: number;
-  isSelected: boolean;
-  TaskName: string;
-  ProjectName: string;
-  CreatedDate: string;
-  DueDate: string;
-  Priority: string;
-  Status: string;
-}
-
-export interface projectReport {
-  sNo?: number;
-  isSelected: boolean;
-  Image: string;
-  ProjectID: string;
-  ProjectName: string;
-  Leader: string;
-  Img: string;
-  Img1: string;
-  Img2: string;
-  Team: number;
-  Deadline: string;
-  Priority: string;
-  Status: string;
-}
 
 export interface payslipReport {
   sNo?: number;
@@ -947,18 +566,6 @@ export interface payslipReport {
   PaidYear: string;
 }
 
-export interface paymentReport {
-  sNo?: number;
-  isSelected: boolean;
-  Image: string;
-  InvoiceID: string;
-  ClientName: string;
-  Role: string;
-  CompanyName: string;
-  PaymentType: string;
-  PaidDate: string;
-  PaidAmount: string;
-}
 
 export interface leaveReport {
   sNo?: number;
@@ -975,30 +582,6 @@ export interface leaveReport {
 }
 
 
-export interface invoiceReport {
-  sNo?: number;
-  isSelected: boolean;
-  Image: string;
-  InvoiceID: string;
-  ClientName: string;
-  Role: string;
-  CompanyName: string;
-  CreatedDate: string;
-  DueDate: string;
-  Amount: string;
-  Status: string;
-}
-
-
-
-export interface expenseReport {
-  sNo?: number;
-  isSelected: boolean;
-  ExpenseName: string;
-  Date: string;
-  PaymentMethod: string;
-  Amount: string;
-}
 
 export interface employeeReport {
   sNo?: number;
@@ -1053,83 +636,6 @@ export interface ApiData {
   createdDate: string;
 }
 
-
-export interface page {
-  sNo?: number;
-  isSelected: boolean;
-  Page: string;
-  PageSlug: string;
-  Status: string;
-}
-
-export interface blogCategories {
-  sNo?: number;
-  isSelected: boolean;
-  Category: string;
-  CreatedDate: string;
-  Status: string;
-}
-
-export interface blogComments {
-  sNo?: number;
-  isSelected: boolean;
-  Comment: string;
-  CreatedDate: string;
-  Blog: string;
-  By: string;
-}
-
-export interface blogTags {
-  sNo?: number;
-  isSelected: boolean;
-  Tag: string;
-  CreatedDate: string;
-  Status: string;
-}
-
-export interface cities {
-  sNo?: number;
-  isSelected: boolean;
-  CityName: string;
-  StateName: string;
-  CountryName: string;
-  Status: string;
-}
-
-export interface countries {
-  sNo?: number;
-  isSelected: boolean;
-  CountryName: string;
-  CountryCode: string;
-  Status: string;
-}
-
-export interface faq {
-  sNo?: number;
-  isSelected: boolean;
-  Questions: string;
-  Answers: string;
-  Categories: string;
-}
-
-
-export interface states {
-  sNo?: number;
-  isSelected: boolean;
-  StateName: string;
-  CountryName: string;
-  Status: string;
-}
-
-export interface testimonial {
-  sNo?: number;
-  isSelected: boolean;
-  Image: string;
-  Author: string;
-  Role: string;
-  Content: string;
-  CreatedDate: string;
-}
 
 export interface callHistory {
   sNo?: number;

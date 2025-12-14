@@ -152,15 +152,9 @@ profile: '/profile',
 
 
   ticketDetails: '/tickets/ticket-details',
-  companySubscriptions: '/subscriptions/company',
-  emailview: '/application/mailview',
-  color: '/base-ui/ui-colors',
 
   horizontalTimeline:  '/horizontal-timeline',
   changePassword: '/change-password',
-  layoutDefault: '/layout-default',
-  layoutRtl: '/layout-rtl',
-  layoutBox: '/layout-box',
   layoutDark: '/layout-dark',
 
   

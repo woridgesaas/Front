@@ -80,13 +80,14 @@
     }
     .header-left {
         float: left;
-        height: 50px;
+        height: 60px;
         position: relative;
         text-align: center;
         z-index: 1;
         display: none;
         .logo {
             display: inline-block;
+            width: 45px;
             line-height: 50px;
         }
         .dark-logo {

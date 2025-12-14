@@ -125,10 +125,6 @@ export const routes: Routes = [
           ]
         },
         
-       
-           //Layout//
-           { path: 'layout-horizontal', loadComponent: () => import('./features/dashboard/modal-dashboard/modal-dashboard.component').then(m => m.ModalDashboardComponent) },
-           { path: 'layout-horizontal-sidemenu', loadComponent: () => import('./features/dashboard/modal-dashboard/modal-dashboard.component').then(m => m.ModalDashboardComponent) },
 
       {
         path: 'employees' , loadComponent: () => import('./features/hrm/employees/employees.component').then(m => m.EmployeesComponent),

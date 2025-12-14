@@ -1,19 +1,18 @@
-<div [ngClass]="{'mini-sidebar': layoutMode === '2' || sidebarSize==='2'|| layoutMode==='13'|| miniSidebar === true || layoutWidth !== '1',
-  'menu-horizontal': layoutMode === '3' || layoutMode === '4' || layoutMode === '8'|| layoutMode === '14'|| layoutMode === '15',
-  'layout-box-mode':layoutWidth === '2','expand-menu':sidebarSize==='3' || expandMenu === true && miniSidebar === true,
+<div [ngClass]="{'mini-sidebar': layoutMode === '2' || miniSidebar === true ,
+  'menu-horizontal': layoutMode === '3' ,
+  'layout-box-mode':layoutMode === '2' || expandMenu === true && miniSidebar === true,
   'slide-nav': mobileSidebar === true
  }" style="--primary-rgb-picr : {{dthemeColor}}; --sidebar--rgb-picr : {{selectedColor}}; --topbar--rgb-picr : {{selectedColor1}};  --topbarcolor--rgb-picr : {{horizontalColor}};" [class.header-collapse]="isCollapsed">
+<!-- Le loader li kyban f lwl-->
 @if (showPreloader && !withoutWrapperPages) {
   <div id="global-loader">
-    <span class="page-loader"></span>
+    <span class="page-loader">zzz</span>
   </div>
 }
   <div class="main-wrapper ">
     @if(!withoutWrapperPages) {
       <app-default-header></app-default-header>
       <app-default-sidebar></app-default-sidebar>
-      <app-stacked-sidebar></app-stacked-sidebar>
-      <!-- <app-two-col-sidebar></app-two-col-sidebar> -->
       <app-horizontal-sidebar></app-horizontal-sidebar>
       }
   <router-outlet></router-outlet> <!-- les composans enfant ghdi ytrandraw ici -->
