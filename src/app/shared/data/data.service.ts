@@ -1428,8 +1428,8 @@ export class DataService {
           subMenus: [],
         },
         {
-          menuValue: 'Candidates',
-          route: routes.candidatesGrid,
+          menuValue: 'Candidats',
+          route: routes.candidateslist,
           hasSubRoute: false,
           showSubRoute: false,
           icon: 'user-shield',
@@ -2140,8 +2140,8 @@ export class DataService {
                   base: 'jobs-grid',
                 },
                 {
-                  menuValue: 'Candidates',
-                  route: routes.candidatesGrid,
+                  menuValue: 'Candidats',
+                  route: routes.candidateslist,
                   base: 'candidates-grid',
                 },
              
