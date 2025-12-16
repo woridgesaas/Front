@@ -183,6 +183,12 @@ export const routes: Routes = [
         children: []
       },
 
+      // test entretient
+
+      { path: 'entretient' , loadComponent: () => import('./features/recruitment/interviews-planning/interviews-planning.component').then(m => m.InterviewsPlanningComponent),
+        children: []
+      },
+
       { path: 'payroll' , loadComponent: () => import('./features/finance/payroll/payroll.component').then(m => m.PayrollComponent),
         children: [
           {path: 'employee-salary', loadComponent: () => import('./features/finance/payroll/employee-salary/employee-salary.component').then(m => m.EmployeeSalaryComponent),},

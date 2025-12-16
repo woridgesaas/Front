@@ -105,6 +105,8 @@ profile: '/profile',
 
   //filtrage IA recrutement
   FiltrageList: '/filtrage',
+//gestion entretiens 
+  Entretient: '/entretient',
 
   login2: '/login-2',
 
