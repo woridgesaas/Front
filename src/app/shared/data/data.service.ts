@@ -1418,7 +1418,7 @@ export class DataService {
       separateRoute: false,
       menu: [
         {
-          menuValue: 'Jobs',
+          menuValue: 'Offres',
           route: routes.jobsGrid,
           hasSubRoute: false,
           showSubRoute: false,
