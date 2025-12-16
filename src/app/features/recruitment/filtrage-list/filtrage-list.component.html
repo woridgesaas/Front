@@ -1,0 +1,413 @@
+<!-- filtrage-list.component.html -->
+<div class="content container pt-5">
+
+    <!-- Breadcrumb -->
+    <div class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
+      <div class="my-auto mb-2">
+        <h2 class="mb-1">Filtrage IA des Candidats</h2>
+        <nav>
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+              <a href="javascript:void(0);"><i class="ti ti-home-2 text-primary"></i></a>
+            </li>
+            <li class="breadcrumb-item">Recrutement</li>
+            <li class="breadcrumb-item active" aria-current="page">Filtrage IA</li>
+          </ol>
+        </nav>
+      </div>
+  
+    </div>
+  
+    <!-- Formulaire de Filtrage -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0"><i class="ti ti-brain me-2"></i>Critères de Filtrage par IA</h5>
+        <p class="text-muted small mb-0">Remplissez les critères souhaités pour filtrer les candidatures</p>
+      </div>
+      <div class="card-body">
+        <form>
+          <div class="row g-3">
+  
+            <!-- Compétences - Tag Input avec Autocomplete -->
+            <div class="col-md-12">
+              <label class="form-label"><i class="ti ti-code me-1"></i>Compétences</label>
+              <div class="tags-input-wrapper">
+                <div class="tags-container mb-2">
+                  @for (comp of filtrageForm.competences; track comp) {
+                    <span class="badge bg-primary me-1 mb-1">
+                      {{ comp }}
+                      <i class="ti ti-x ms-1" (click)="supprimerCompetence(comp)" style="cursor: pointer;"></i>
+                    </span>
+                  }
+                </div>
+                <div class="position-relative">
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    [(ngModel)]="competenceInput"
+                    name="competenceInput"
+                    (input)="filterCompetences()"
+                    (keyup.enter)="ajouterCompetence()"
+                    placeholder="Tapez ou recherchez une compétence">
+                  @if(filteredCompetences.length > 0) {
+                    <ul class="autocomplete-list list-group position-absolute w-100" style="z-index: 1000; max-height: 200px; overflow-y: auto;">
+                      @for (comp of filteredCompetences; track comp) {
+                        <li class="list-group-item list-group-item-action" (click)="selectCompetence(comp)" style="cursor: pointer;">
+                          {{ comp }}
+                        </li>
+                      }
+                    </ul>
+                  }
+                </div>
+              </div>
+            </div>
+  
+            <!-- Outils Techniques - Tag Input avec Autocomplete -->
+            <div class="col-md-12">
+              <label class="form-label"><i class="ti ti-tools me-1"></i>Outils Techniques</label>
+              <div class="tags-input-wrapper">
+                <div class="tags-container mb-2">
+                  @for (outil of filtrageForm.outils; track outil) {
+                    <span class="badge bg-info me-1 mb-1">
+                      {{ outil }}
+                      <i class="ti ti-x ms-1" (click)="supprimerOutil(outil)" style="cursor: pointer;"></i>
+                    </span>
+                  }
+                </div>
+                <div class="position-relative">
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    [(ngModel)]="outilInput"
+                    name="outilInput"
+                    (input)="filterOutils()"
+                    (keyup.enter)="ajouterOutil()"
+                    placeholder="Tapez ou recherchez un outil (Git, Docker, Jira...)">
+                  @if(filteredOutils.length > 0) {
+                    <ul class="autocomplete-list list-group position-absolute w-100" style="z-index: 1000; max-height: 200px; overflow-y: auto;">
+                      @for (outil of filteredOutils; track outil) {
+                        <li class="list-group-item list-group-item-action" (click)="selectOutil(outil)" style="cursor: pointer;">
+                          {{ outil }}
+                        </li>
+                      }
+                    </ul>
+                  }
+                </div>
+              </div>
+            </div>
+  
+            <!-- Expérience - Select Simple -->
+            <div class="col-md-6">
+              <label class="form-label"><i class="ti ti-clock me-1"></i>Années d'expérience</label>
+              <select class="form-select" [(ngModel)]="filtrageForm.experience" name="experience">
+                <option value="">Toute expérience</option>
+                @for (exp of experiencesDisponibles; track exp) {
+                  <option [value]="exp">{{ exp }}</option>
+                }
+              </select>
+            </div>
+  
+            <!-- Diplôme - Select -->
+            <div class="col-md-6">
+              <label class="form-label"><i class="ti ti-certificate me-1"></i>Diplôme</label>
+              <select class="form-select" [(ngModel)]="filtrageForm.diplome" name="diplome">
+                <option value="">Tous les diplômes</option>
+                @for (diplome of diplomesDisponibles; track diplome) {
+                  <option [value]="diplome">{{ diplome }}</option>
+                }
+              </select>
+            </div>
+  
+            <!-- Langues - Multi-select + Niveau -->
+            <div class="col-md-12">
+              <label class="form-label"><i class="ti ti-language me-1"></i>Langues</label>
+              
+              <!-- Langues ajoutées -->
+              <div class="mb-2">
+                @for (langue of filtrageForm.langues; track langue) {
+                  <span class="badge bg-success me-2 mb-1">
+                    {{ langue.langue }} - {{ langue.niveau }}
+                    <i class="ti ti-x ms-1" (click)="supprimerLangue(langue)" style="cursor: pointer;"></i>
+                  </span>
+                }
+              </div>
+  
+              <!-- Ajout langue -->
+              <div class="row g-2">
+                <div class="col-md-5">
+                  <select class="form-select form-select-sm" [(ngModel)]="langueInput" name="langueInput">
+                    <option value="">Choisir langue</option>
+                    @for (langue of languesDisponibles; track langue) {
+                      <option [value]="langue">{{ langue }}</option>
+                    }
+                  </select>
+                </div>
+                <div class="col-md-5">
+                  <select class="form-select form-select-sm" [(ngModel)]="niveauInput" name="niveauInput">
+                    <option value="">Niveau</option>
+                    @for (niveau of niveauxLangue; track niveau) {
+                      <option [value]="niveau">{{ niveau }}</option>
+                    }
+                  </select>
+                </div>
+                <div class="col-md-2">
+                  <button type="button" class="btn btn-sm btn-outline-primary w-100" (click)="ajouterLangue()">
+                    <i class="ti ti-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+  
+            <!-- Localisation - Autocomplete -->
+            <div class="col-md-6">
+              <label class="form-label"><i class="ti ti-map-pin me-1"></i>Localisation</label>
+              <div class="position-relative">
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  [(ngModel)]="filtrageForm.localisation"
+                  name="localisation"
+                  (input)="filterLocalisations()"
+                  placeholder="Rechercher une ville">
+                @if(filteredLocalisations.length > 0 && filtrageForm.localisation) {
+                  <ul class="autocomplete-list list-group position-absolute w-100" style="z-index: 1000;">
+                    @for (loc of filteredLocalisations; track loc) {
+                      <li class="list-group-item list-group-item-action" (click)="selectLocalisation(loc)" style="cursor: pointer;">
+                        {{ loc }}
+                      </li>
+                    }
+                  </ul>
+                }
+              </div>
+            </div>
+  
+            <!-- Certifications - Input simple -->
+            <div class="col-md-6">
+              <label class="form-label"><i class="ti ti-award me-1"></i>Certifications</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                [(ngModel)]="filtrageForm.certifications"
+                name="certifications"
+                placeholder="Ex: AWS, PMP, Scrum Master">
+            </div>
+  
+            <!-- Soft Skills - Checkbox -->
+            <div class="col-md-12">
+              <label class="form-label"><i class="ti ti-bulb me-1"></i>Soft Skills</label>
+              <div class="row">
+                @for (skill of softSkillsDisponibles; track skill) {
+                  <div class="col-md-4 col-sm-6">
+                    <div class="form-check">
+                      <input 
+                        class="form-check-input" 
+                        type="checkbox" 
+                        [id]="'skill-' + skill"
+                        [checked]="isSoftSkillSelected(skill)"
+                        (change)="toggleSoftSkill(skill)">
+                      <label class="form-check-label" [for]="'skill-' + skill">
+                        {{ skill }}
+                      </label>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+  
+          </div>
+  
+          <!-- Boutons d'action -->
+          <div class="row mt-4">
+            <div class="col-12">
+              <button type="button" class="btn btn-primary me-2" (click)="filtrageParIA()" [disabled]="isLoading">
+                <i class="ti ti-sparkles me-2"></i>
+                {{ isLoading ? 'Filtrage en cours...' : 'Filtrer par IA' }}
+              </button>
+              <button type="button" class="btn btn-outline-secondary" (click)="resetForm()">
+                <i class="ti ti-refresh me-2"></i>Réinitialiser
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  
+    <!-- Loader -->
+    @if(isLoading) {
+      <div class="card">
+        <div class="card-body text-center py-5">
+          <div class="spinner-border text-primary mb-3" role="status">
+            <span class="visually-hidden">Chargement...</span>
+          </div>
+          <h5>Intelligence Artificielle en cours de traitement...</h5>
+          <p class="text-muted">Analyse des candidatures selon vos critères</p>
+        </div>
+      </div>
+    }
+  
+    <!-- Résultats -->
+    @if(showResults && !isLoading) {
+      <div class="card">
+        <div class="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3">
+          <h5 class="mb-0">
+            <i class="ti ti-users me-2"></i>Résultats du Filtrage IA
+            <span class="badge bg-primary ms-2">{{ tableData.length }} candidat(s)</span>
+          </h5>
+          <div class="d-flex align-items-center">
+            <label class="me-2 mb-0">Rows Per Page:</label>
+            @if(tableData.length > 0) {
+              <select [(ngModel)]="pageSize" (ngModelChange)="changePageSize(pageSize)" class="form-select form-select-sm" style="width: auto;">
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+              </select>
+            }
+          </div>
+        </div>
+  
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table matSort (matSortChange)="sortData($event)" class="mat-sort table datanew table-center datatable dataTable mb-0">
+              <thead class="thead-light">
+                <tr>
+                  <th class="no-sort">
+                    <div class="form-check form-check-md" (click)="selectAll(initChecked)" tabindex="0">
+                      <input class="form-check-input" type="checkbox" id="select-all" [(ngModel)]="initChecked">
+                    </div>
+                  </th>
+                  <th mat-sort-header="Name">Nom + Photo</th>
+                  <th mat-sort-header="Score_IA">Score IA</th>
+                  <th mat-sort-header="Experience_Years">Expérience</th>
+                  <th mat-sort-header="Skills">Compétences</th>
+                  <th mat-sort-header="Location">Localisation</th>
+                  <th mat-sort-header="Status">État</th>
+                  <th class="text-center">CV</th>
+                  <th class="text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (data of tableData; track data.id) {
+                  <tr>
+                    <td>
+                      <div class="form-check form-check-md">
+                        <input class="form-check-input" type="checkbox" [(ngModel)]="data.isSelected">
+                      </div>
+                    </td>
+                    <td>
+                      <div class="d-flex align-items-center file-name-icon">
+                        <a href="javascript:void(0);" class="avatar avatar-md bg-light rounded">
+                          <span class="avatar-title rounded-circle bg-gradient">{{ data.Name.charAt(0) }}</span>
+                        </a>
+                        <div class="ms-2">
+                          <h6 class="fw-medium mb-0"><a href="javascript:void(0);">{{ data.Name }}</a></h6>
+                          <span class="d-block text-muted small">{{ data.Candidate_ID }}</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="progress-circle me-2">
+                          <svg width="40" height="40">
+                            <circle cx="20" cy="20" r="18" fill="none" stroke="#e9ecef" stroke-width="4"></circle>
+                            <circle 
+                              cx="20" cy="20" r="18" fill="none" 
+                              [attr.stroke]="data.Score_IA >= 90 ? '#28a745' : data.Score_IA >= 75 ? '#0d6efd' : data.Score_IA >= 60 ? '#ffc107' : '#dc3545'" 
+                              stroke-width="4"
+                              [attr.stroke-dasharray]="113"
+                              [attr.stroke-dashoffset]="113 - (113 * data.Score_IA / 100)"
+                              transform="rotate(-90 20 20)"></circle>
+                          </svg>
+                        </div>
+                        <span class="fw-bold {{ getScoreColor(data.Score_IA) }}">{{ data.Score_IA }}%</span>
+                      </div>
+                    </td>
+                    <td><span class="badge bg-soft-info text-info">{{ data.Experience_Years }} ans</span></td>
+                    <td>
+                      @for (skill of data.Skills.slice(0, 2); track skill) {
+                        <span class="badge bg-soft-primary text-primary me-1 mb-1">{{ skill }}</span>
+                      }
+                      @if(data.Skills.length > 2) {
+                        <span 
+                          class="badge bg-soft-secondary text-secondary" 
+                          style="cursor: pointer;"
+                          (click)="voirToutesCompetences(data.Skills)">
+                          +{{ data.Skills.length - 2 }}
+                        </span>
+                      }
+                    </td>
+                    <td><i class="ti ti-map-pin text-muted me-1"></i>{{ data.Location }}</td>
+                    <td>
+                      <span class="badge {{ getStatusClass(data.Status) }}">
+                        {{ data.Status }}
+                      </span>
+                    </td>
+                    <td class="text-center">
+                      <button type="button" class="btn btn-sm btn-outline-primary" (click)="downloadCV(data)" title="Télécharger CV">
+                        <i class="ti ti-download"></i>
+                      </button>
+                    </td>
+                    <td>
+                      <div class="action-icon d-inline-flex justify-content-center align-items-center">
+                        <a href="javascript:void(0);" class="me-2" (click)="viewCandidate(data)" title="Voir détails">
+                          <i class="ti ti-eye"></i>
+                        </a>
+                        <button type="button" class="btn btn-sm btn-success me-2" [disabled]="data.Status === 'Accepté'" (click)="acceptCandidate(data)" title="Accepter">
+                          <i class="ti ti-check"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-danger" [disabled]="data.Status === 'Refusé'" (click)="refuseCandidate(data)" title="Refuser">
+                          <i class="ti ti-x"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                }
+                @if (tableData.length === 0) {
+                  <tr>
+                    <td colspan="9">
+                      <div class="text-center py-5">
+                        <i class="ti ti-search-off fs-1 text-muted d-block mb-3"></i>
+                        <h5 class="no-record">Aucun candidat ne correspond aux critères</h5>
+                        <p class="text-muted">Essayez de modifier vos critères de filtrage</p>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          <div class="row mt-3 px-3 pb-3">
+            <div class="col-sm-12">
+              <div class="dataTables_info">
+                Affichage de {{ tableData.length > 0 ? 1 : 0 }} à {{ tableData.length }} sur {{ totalData }} entrées
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  
+  </div>
+  
+  <!-- Modal Voir toutes les compétences -->
+  @if(showAllSkillsModal) {
+    <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title"><i class="ti ti-code me-2"></i>Toutes les compétences</h5>
+            <button type="button" class="btn-close" (click)="fermerModalCompetences()"></button>
+          </div>
+          <div class="modal-body">
+            <div class="d-flex flex-wrap gap-2">
+              @for (skill of selectedCandidateSkills; track skill) {
+                <span class="badge bg-primary">{{ skill }}</span>
+              }
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="fermerModalCompetences()">Fermer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  }

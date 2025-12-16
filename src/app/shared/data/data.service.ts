@@ -1437,6 +1437,16 @@ export class DataService {
           materialicons: 'shopping_bag',
           subMenus: [],
         },
+        {
+          menuValue: 'filtrage',
+          route: routes.FiltrageList,
+          hasSubRoute: false,
+          showSubRoute: false,
+          icon: 'user-shield',
+          base: 'filtrage-list',
+          materialicons: 'shopping_bag',
+          subMenus: [],
+        },
 
 
       ],
