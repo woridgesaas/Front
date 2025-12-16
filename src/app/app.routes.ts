@@ -164,11 +164,12 @@ export const routes: Routes = [
      
       { path: 'promotion' , loadComponent: () => import('./features/hrm/promotion/promotion.component').then(m => m.PromotionComponent),},
       { path: 'resignation' , loadComponent: () => import('./features/hrm/resignation/resignation.component').then(m => m.ResignationComponent),},
+      // candidat
       { path: 'candidates' , loadComponent: () => import('./features/recruitment/candidates/candidates.component').then(m => m.CandidatesComponent),
         children: [
           {path: 'candidates-list', loadComponent: () => import('./features/recruitment/candidates/candidates-list/candidates-list.component').then(m => m.CandidatesListComponent),},
-          {path: 'candidates-grid', loadComponent: () => import('./features/recruitment/candidates/candidates-grid/candidates-grid.component').then(m => m.CandidatesGridComponent),},
-          {path: 'candidates-kanban', loadComponent: () => import('./features/recruitment/candidates/candidates-kanban/candidates-kanban.component').then(m => m.CandidatesKanbanComponent),},
+          // {path: 'candidates-grid', loadComponent: () => import('./features/recruitment/candidates/candidates-grid/candidates-grid.component').then(m => m.CandidatesGridComponent),},
+          // {path: 'candidates-kanban', loadComponent: () => import('./features/recruitment/candidates/candidates-kanban/candidates-kanban.component').then(m => m.CandidatesKanbanComponent),},
         ]
       },
       { path: 'jobs' , loadComponent: () => import('./features/recruitment/jobs/jobs.component').then(m => m.JobsComponent),
