@@ -7,23 +7,17 @@ export const routes: Routes = [
     redirectTo: 'dashboard/index',
     pathMatch: 'full'
   },
-  //Auth Routes//
+
+  //* Auth routes
  {
   path: '', loadComponent: () => import('./auth/auth.component').then(m => m.AuthComponent),
   children: [
-    { path: 'signin', loadComponent: () => import('./auth/signin/signin.component').then(m => m.SigninComponent) },
 
-    { path: 'login-2', loadComponent: () => import('./auth/login-2/login-2.component').then(m => m.Login2Component) },
-
-    { path: 'signup', loadComponent: () => import('./auth/signup/signup.component').then(m => m.SignupComponent) },
-    { path: 'otp', loadComponent: () => import('./auth/otp/otp.component').then(m => m.OtpComponent) },
-    { path: 'forgot-password-2', loadComponent: () => import('./auth/forgot-password-2/forgot-password-2.component').then(m => m.ForgotPassword2Component) },
-    { path: 'password-strength', loadComponent: () => import('./auth/password-strength/password-strength.component').then(m => m.PasswordStrengthComponent) },
-    { path: 'reset-password-2', loadComponent: () => import('./auth/reset-password-2/reset-password-2.component').then(m => m.ResetPassword2Component) },
-    { path: 'register-2', loadComponent: () => import('./auth/register-2/register-2.component').then(m => m.Register2Component) },
-    { path: 'email-verification-2', loadComponent: () => import('./auth/email-verification-2/email-verification-2.component').then(m => m.EmailVerification2Component) },
-    { path: 'two-step-verification-2', loadComponent: () => import('./auth/two-step-verification-2/two-step-verification-2.component').then(m => m.TwoStepVerification2Component) },
-    { path: 'success-2', loadComponent: () => import('./auth/success-2/success-2.component').then(m => m.Success2Component) },
+    { path: 'login', loadComponent: () => import('./auth/login/login.component').then(m => m.LoginComponent) },
+    { path: 'forgot-password', loadComponent: () => import('./auth/forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent) },
+    { path: 'email-verification', loadComponent: () => import('./auth/email-verification/email-verification.component').then(m => m.EmailVerificationComponent) },
+    { path: 'reset-password', loadComponent: () => import('./auth/reset-password/reset-password.component').then(m => m.ResetPasswordComponent) },
+    { path: 'success', loadComponent: () => import('./auth/success/success.component').then(m => m.SuccessComponent) },
     { path: 'lock-screen', loadComponent: () => import('./auth/lock-screen/lock-screen.component').then(m => m.LockScreenComponent) },
     { path: 'error-404', loadComponent: () => import('./auth/error-404/error-404.component').then(m => m.Error404Component) },
     { path: 'error-500', loadComponent: () => import('./auth/error-500/error-500.component').then(m => m.Error500Component) }
@@ -208,10 +202,4 @@ export const routes: Routes = [
     pathMatch:'full'
   }
   
-
-
-
-
- 
-
 ]as const;
