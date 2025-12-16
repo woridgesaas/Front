@@ -178,6 +178,11 @@ export const routes: Routes = [
         ]
       },
 
+      //filtrage test
+      { path: 'filtrage' , loadComponent: () => import('./features/recruitment/filtrage-list/filtrage-list.component').then(m => m.FiltrageListComponent),
+        children: []
+      },
+
       { path: 'payroll' , loadComponent: () => import('./features/finance/payroll/payroll.component').then(m => m.PayrollComponent),
         children: [
           {path: 'employee-salary', loadComponent: () => import('./features/finance/payroll/employee-salary/employee-salary.component').then(m => m.EmployeeSalaryComponent),},

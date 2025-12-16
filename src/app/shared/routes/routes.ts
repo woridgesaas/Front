@@ -103,6 +103,9 @@ profile: '/profile',
   employeeProfile: '/employees/employee-profile',
   clientProfile: '/clients/client-profile',
 
+  //filtrage IA recrutement
+  FiltrageList: '/filtrage',
+
   login2: '/login-2',
 
   registers2: '/register-2',
