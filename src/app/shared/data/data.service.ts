@@ -2,7 +2,12 @@ import { Injectable } from '@angular/core';
 import { routes } from '../routes/routes';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { apiResultFormat, MainMenu, SideBar, SideBarMenu } from '../models/models';
+import {
+  apiResultFormat,
+  MainMenu,
+  SideBar,
+  SideBarMenu,
+} from '../models/models';
 
 @Injectable({
   providedIn: 'root',
@@ -45,7 +50,6 @@ export class DataService {
     );
   }
 
-
   public getContactlist(): Observable<apiResultFormat> {
     return this.http.get<apiResultFormat>('assets/json/contact-list.json').pipe(
       map((res: apiResultFormat) => {
@@ -53,7 +57,6 @@ export class DataService {
       })
     );
   }
-
 
   public getChat(): Observable<apiResultFormat> {
     return this.http.get<apiResultFormat>('assets/json/chat.json').pipe(
@@ -69,9 +72,6 @@ export class DataService {
       })
     );
   }
-
-
-
 
   public getLanguageTranslate(): Observable<apiResultFormat> {
     return this.http
@@ -142,11 +142,13 @@ export class DataService {
   }
 
   public getEmployeeList(): Observable<apiResultFormat> {
-    return this.http.get<apiResultFormat>('assets/json/employee-list.json').pipe(
-      map((res: apiResultFormat) => {
-        return res;
-      })
-    );
+    return this.http
+      .get<apiResultFormat>('assets/json/employee-list.json')
+      .pipe(
+        map((res: apiResultFormat) => {
+          return res;
+        })
+      );
   }
   public getdepartments(): Observable<apiResultFormat> {
     return this.http.get<apiResultFormat>('assets/json/department.json').pipe(
@@ -156,39 +158,40 @@ export class DataService {
     );
   }
 
-
   public getholiday(): Observable<apiResultFormat> {
     return this.http.get<apiResultFormat>('assets/json/holidays.json').pipe(
       map((res: apiResultFormat) => {
         return res;
       })
-    )
+    );
   }
 
   public getattendanceadmin(): Observable<apiResultFormat> {
-    return this.http.get<apiResultFormat>('assets/json/attendance-admin.json').pipe(
-      map((res: apiResultFormat) => {
-        return res;
-      })
-    )
+    return this.http
+      .get<apiResultFormat>('assets/json/attendance-admin.json')
+      .pipe(
+        map((res: apiResultFormat) => {
+          return res;
+        })
+      );
   }
 
   public getattendanceemployee(): Observable<apiResultFormat> {
-    return this.http.get<apiResultFormat>('assets/json/attendance-employee.json').pipe(
-      map((res: apiResultFormat) => {
-        return res;
-      })
-    )
+    return this.http
+      .get<apiResultFormat>('assets/json/attendance-employee.json')
+      .pipe(
+        map((res: apiResultFormat) => {
+          return res;
+        })
+      );
   }
-
-
 
   public getpromotion(): Observable<apiResultFormat> {
     return this.http.get<apiResultFormat>('assets/json/promotion.json').pipe(
       map((res: apiResultFormat) => {
         return res;
       })
-    )
+    );
   }
 
   public getresignation(): Observable<apiResultFormat> {
@@ -196,45 +199,44 @@ export class DataService {
       map((res: apiResultFormat) => {
         return res;
       })
-    )
+    );
   }
-
 
   public getleaveAdmin(): Observable<apiResultFormat> {
     return this.http.get<apiResultFormat>('assets/json/leave-admin.json').pipe(
       map((res: apiResultFormat) => {
         return res;
       })
-    )
+    );
   }
   public getleaveEmployee(): Observable<apiResultFormat> {
-    return this.http.get<apiResultFormat>('assets/json/leave-employee.json').pipe(
-      map((res: apiResultFormat) => {
-        return res;
-      })
-    )
+    return this.http
+      .get<apiResultFormat>('assets/json/leave-employee.json')
+      .pipe(
+        map((res: apiResultFormat) => {
+          return res;
+        })
+      );
   }
-
 
   public getemployeeSalary(): Observable<apiResultFormat> {
-    return this.http.get<apiResultFormat>('assets/json/employee-salary.json').pipe(
-      map((res: apiResultFormat) => {
-        return res;
-      })
-    )
+    return this.http
+      .get<apiResultFormat>('assets/json/employee-salary.json')
+      .pipe(
+        map((res: apiResultFormat) => {
+          return res;
+        })
+      );
   }
 
-
-
-
-
-
   public getattendanceReport(): Observable<apiResultFormat> {
-    return this.http.get<apiResultFormat>('assets/json/attendance-report.json').pipe(
-      map((res: apiResultFormat) => {
-        return res;
-      })
-    )
+    return this.http
+      .get<apiResultFormat>('assets/json/attendance-report.json')
+      .pipe(
+        map((res: apiResultFormat) => {
+          return res;
+        })
+      );
   }
 
   public getdailyReport(): Observable<apiResultFormat> {
@@ -242,54 +244,51 @@ export class DataService {
       map((res: apiResultFormat) => {
         return res;
       })
-    )
+    );
   }
 
   public getemployeeReport(): Observable<apiResultFormat> {
-    return this.http.get<apiResultFormat>('assets/json/employee-report.json').pipe(
-      map((res: apiResultFormat) => {
-        return res;
-      })
-    )
+    return this.http
+      .get<apiResultFormat>('assets/json/employee-report.json')
+      .pipe(
+        map((res: apiResultFormat) => {
+          return res;
+        })
+      );
   }
-
-
 
   public getleaveReport(): Observable<apiResultFormat> {
     return this.http.get<apiResultFormat>('assets/json/leave-report.json').pipe(
       map((res: apiResultFormat) => {
         return res;
       })
-    )
+    );
   }
-
-
 
   public getpayslipReport(): Observable<apiResultFormat> {
-    return this.http.get<apiResultFormat>('assets/json/payslip-report.json').pipe(
-      map((res: apiResultFormat) => {
-        return res;
-      })
-    )
+    return this.http
+      .get<apiResultFormat>('assets/json/payslip-report.json')
+      .pipe(
+        map((res: apiResultFormat) => {
+          return res;
+        })
+      );
   }
-
 
   public getpage(): Observable<apiResultFormat> {
     return this.http.get<apiResultFormat>('assets/json/page.json').pipe(
       map((res: apiResultFormat) => {
         return res;
       })
-    )
+    );
   }
-
-
 
   public getcallHistory(): Observable<apiResultFormat> {
     return this.http.get<apiResultFormat>('assets/json/call-history.json').pipe(
       map((res: apiResultFormat) => {
         return res;
       })
-    )
+    );
   }
 
   /**public sideBar2: SideBar[] = [
@@ -1128,7 +1127,7 @@ export class DataService {
     });
   }*/
   /** -------------------------------- ce la c'est aside menu links ------------------------------------------ */
-  public sideBar: SideBar[] =[
+  public sideBar: SideBar[] = [
     {
       tittle: 'Main',
       icon: 'airplay',
@@ -1142,7 +1141,7 @@ export class DataService {
           icon: 'smart-home',
           base: 'dashboard',
           materialicons: 'start',
-          dot:true,
+          dot: true,
           subMenus: [
             {
               menuValue: 'Dashboard',
@@ -1154,7 +1153,6 @@ export class DataService {
               route: routes.employee,
               base: 'employee',
             },
-          
           ],
         },
         {
@@ -1180,7 +1178,7 @@ export class DataService {
               route: routes.calendar,
               page1: 'voice-call',
               page2: 'videocall',
-              base:'calls',
+              base: 'calls',
               subMenusTwo: [
                 {
                   menuValue: 'Voice Call',
@@ -1228,8 +1226,6 @@ export class DataService {
               base: 'calendar',
             },
 
-           
-        
             {
               menuValue: 'Social Feed',
               hasSubRoute: true,
@@ -1238,7 +1234,6 @@ export class DataService {
               customSubmenuTwo: false,
               base: 'social-feed',
             },
-    
           ],
         },
       ],
@@ -1260,12 +1255,11 @@ export class DataService {
           materialicons: 'confirmation_number',
           subMenus: [],
         },
-      
       ],
     },
     {
-      tittle: 'RH Intern',
-      icon: 'file',
+      tittle: 'Employee',
+      icon: 'users',
       showAsTab: false,
       separateRoute: false,
       menu: [
@@ -1279,30 +1273,34 @@ export class DataService {
           materialicons: 'people',
           subMenus: [
             {
-              menuValue: 'Employees List',
+              menuValue: 'liste des employés',
               route: routes.employeeList,
               base: 'employees',
               base2: 'employee-list',
             },
             {
-              menuValue: 'Employees Grid',
-              route: routes.employeeGrid,
-              base: 'employees',
-              base2: 'employee-grid',
+              menuValue: 'Congés',
+              route: routes.leaveemployee,
+              base: 'leave-employee',
+              hasSubRoute: false,
+              showSubRoute: false,
             },
             {
-              menuValue: 'Employees Details',
-              route: routes.employeeDetails,
-              base: 'employees',
-              base2: 'employee-details',
-            },
-            {
-              menuValue: 'Departments',
-              route: routes.departments,
-              base: 'departments',
+              menuValue: 'Absence/Présence',
+              route: routes.attendanceemployee,
+              base: 'attendance-employee',
+              customSubmenuTwo: false,
             },
           ],
         },
+      ],
+    },
+    {
+      tittle: 'RH Intern',
+      icon: 'file',
+      showAsTab: false,
+      separateRoute: false,
+      menu: [
         {
           menuValue: 'Tickets',
           route: routes.ticketList,
@@ -1335,6 +1333,16 @@ export class DataService {
           subMenus: [],
         },
         {
+          menuValue: 'Departments',
+          route: routes.departments,
+          base: 'departments',
+          hasSubRoute: false,
+          showSubRoute: false,
+          icon: 'users-group',
+          materialicons: 'confirmation_number',
+          subMenus: [],
+        },
+        {
           menuValue: 'Attendance',
           route: routes.sales,
           hasSubRouteTwo: true,
@@ -1349,26 +1357,26 @@ export class DataService {
               hasSubRoute: true,
               showSubRoute: false,
               route: routes.leaveadmin,
-              base:'leaves',
+              base: 'leaves',
               subMenusTwo: [
                 {
                   menuValue: 'Leaves (Admin)',
                   route: routes.leaveadmin,
-                  base:'leave-admin',
+                  base: 'leave-admin',
                   hasSubRoute: false,
                   showSubRoute: false,
                 },
                 {
                   menuValue: 'Leaves (Employee)',
                   route: routes.leaveemployee,
-                  base:'leave-employee',
+                  base: 'leave-employee',
                   hasSubRoute: false,
                   showSubRoute: false,
                 },
                 {
                   menuValue: 'Leave Settings',
                   route: routes.leavesettings,
-                  base:'leave-settings',
+                  base: 'leave-settings',
                   hasSubRoute: false,
                   showSubRoute: false,
                 },
@@ -1447,8 +1455,6 @@ export class DataService {
           materialicons: 'shopping_bag',
           subMenus: [],
         },
-
-
       ],
     },
     {
@@ -1522,7 +1528,7 @@ export class DataService {
           hasSubRouteTwo: true,
           showSubRoute: false,
           icon: 'settings',
-          base:'settings',
+          base: 'settings',
           subMenus: [
             {
               menuValue: 'General Settings',
@@ -1766,7 +1772,6 @@ export class DataService {
           icon: 'login',
           base: 'login',
           subMenus: [
-          
             {
               menuValue: 'Illustration',
               route: routes.login2,
@@ -1780,12 +1785,10 @@ export class DataService {
           icon: 'forms',
           base: 'register',
           subMenus: [
- 
             {
               menuValue: 'Illustration',
               route: routes.registers2,
             },
-       
           ],
         },
         {
@@ -1799,7 +1802,6 @@ export class DataService {
               menuValue: 'Illustration',
               route: routes.forgotpassword2,
             },
-         
           ],
         },
         {
@@ -1809,7 +1811,6 @@ export class DataService {
           icon: 'restore',
           base: 'reset-password',
           subMenus: [
-
             {
               menuValue: 'Illustration',
               route: routes.resetpassword2,
@@ -1823,11 +1824,10 @@ export class DataService {
           icon: 'mail-exclamation',
           base: 'email-verification',
           subMenus: [
-                    {
+            {
               menuValue: 'Illustration',
               route: routes.emailverification2,
             },
-        
           ],
         },
         {
@@ -1843,10 +1843,8 @@ export class DataService {
             },
           ],
         },
-
       ],
     },
-  
   ];
   // ----------------------- finito sidebar --------------------------------------------------------------------------------------------
   public getSideBarData: BehaviorSubject<SideBar[]> = new BehaviorSubject<
@@ -1861,7 +1859,7 @@ export class DataService {
     });
   }
   /** -------------------- menu horizentale ----------------------------------- */
-  public horizontalSidebar:MainMenu[] = [
+  public horizontalSidebar: MainMenu[] = [
     {
       title: 'Main',
       showAsTab: false,
@@ -1905,7 +1903,7 @@ export class DataService {
               hasSubRoute: true,
               showSubRoute: false,
               route: routes.calendar,
-              base:'calls',
+              base: 'calls',
               subMenusTwo: [
                 {
                   menuValue: 'Voice Call',
@@ -1961,8 +1959,6 @@ export class DataService {
               customSubmenuTwo: false,
               base: 'social-feed',
             },
-           
-      
           ],
         },
         {
@@ -1980,9 +1976,40 @@ export class DataService {
               showSubRoute: false,
               base: 'layout-horizontal-sidemenu',
             },
-        
           ],
         },
+        {
+          menuValue: 'Employé',
+          hasSubRouteTwo: true,
+          showSubRoute: false,
+          icon: 'users',
+          base: 'employee',
+          subMenus: [
+            {
+              menuValue: 'Gestion Employé',
+              base: 'employee',
+              customSubmenuTwo: true,
+              subMenusTwo: [
+                {
+                  menuValue: 'Liste des Employés',
+                  route: routes.employeeList,
+                  base: 'employee-list',
+                },
+                {
+                  menuValue: 'Présence',
+                  route: routes.attendanceemployee,
+                  base: 'attendance-employee',
+                },
+                {
+                  menuValue: 'Congés',
+                  route: routes.leaveemployee,
+                  base: 'leave-employee',
+                },
+              ],
+            },
+          ],
+        },
+
         {
           menuValue: 'RH Inetrn',
           hasSubRouteTwo: true,
@@ -1991,40 +2018,8 @@ export class DataService {
           base: 'client',
           base2: 'project',
           base3: 'crm',
-          base4: 'employee',
           base5: 'ticket',
           subMenus: [
-            {
-              menuValue: 'Employee',
-              base: 'employee',
-              customSubmenuTwo: true,
-              subMenusTwo: [
-                {
-                  menuValue: 'Employees List',
-                  route: routes.employeeList,
-                  base: 'employees',
-                  base2: 'employee-list',
-                },
-                {
-                  menuValue: 'Employees Grid',
-                  route: routes.employeeGrid,
-                  base: 'employees',
-                  base2: 'employee-grid',
-                },
-                {
-                  menuValue: 'Employees Details',
-                  route: routes.employeeDetails,
-                  base: 'employees',
-                  base2: 'employee-details',
-                },
-                {
-                  menuValue: 'Departments',
-                  route: routes.departments,
-                  base: 'departments',
-                },
-               
-              ],
-            },
             {
               menuValue: 'Tickets',
               base: 'ticket',
@@ -2047,6 +2042,12 @@ export class DataService {
               route: routes.holidays,
               base: 'holidays',
               customSubmenuTwo: false,
+            },
+            {
+                menuValue: 'Departments',
+                route: routes.departments,
+                base: 'departments',
+                customSubmenuTwo: false,
             },
             {
               menuValue: 'Attendance',
@@ -2081,10 +2082,8 @@ export class DataService {
                   route: routes.attendanceemployee,
                   base: 'attendance-employee',
                 },
-
               ],
             },
-
 
             {
               menuValue: 'Promotion',
@@ -2098,7 +2097,6 @@ export class DataService {
               base: 'resignation',
               customSubmenuTwo: false,
             },
-
           ],
         },
         {
@@ -2112,7 +2110,6 @@ export class DataService {
           base4: 'sales',
 
           base6: 'payroll',
-
 
           base10: 'reports',
           subMenus: [
@@ -2133,7 +2130,6 @@ export class DataService {
                   route: routes.candidatesGrid,
                   base: 'candidates-grid',
                 },
-             
               ],
             },
             {
@@ -2151,7 +2147,6 @@ export class DataService {
                   route: '/payroll/payslip',
                   base: 'payslip',
                 },
-              
               ],
             },
 
@@ -2160,7 +2155,6 @@ export class DataService {
               base: 'reports',
               customSubmenuTwo: true,
               subMenusTwo: [
-              
                 {
                   menuValue: 'Employee Report',
                   route: routes.employeereport,
@@ -2423,17 +2417,15 @@ export class DataService {
           icon: 'page-break',
           base: 'blog',
           subMenus: [
-        
             {
               menuValue: 'Login',
               customSubmenuTwo: true,
-              base:'login',
+              base: 'login',
               subMenusTwo: [
-
                 {
                   menuValue: 'Illustration',
                   route: '/login-2',
-                  base:'login-2',
+                  base: 'login-2',
                 },
               ],
             },
@@ -2441,7 +2433,6 @@ export class DataService {
               menuValue: 'Register',
               customSubmenuTwo: true,
               subMenusTwo: [
-
                 {
                   menuValue: 'Illustration',
                   route: '/register-2',
@@ -2456,26 +2447,22 @@ export class DataService {
                   menuValue: 'Illustration',
                   route: '/forgot-password-2',
                 },
-             
               ],
             },
             {
               menuValue: 'Reset Password',
               customSubmenuTwo: true,
               subMenusTwo: [
-               
                 {
                   menuValue: 'Illustration',
                   route: '/reset-password-2',
                 },
-
               ],
             },
             {
               menuValue: 'Email Verification',
               customSubmenuTwo: true,
               subMenusTwo: [
-                
                 {
                   menuValue: 'Illustration',
                   route: '/email-verification-2',
@@ -2486,15 +2473,12 @@ export class DataService {
               menuValue: '2 Step Verification',
               customSubmenuTwo: true,
               subMenusTwo: [
-
                 {
                   menuValue: 'Illustration',
                   route: '/two-step-verification-2',
                 },
-
               ],
             },
-
           ],
         },
       ],
@@ -2502,14 +2486,14 @@ export class DataService {
   ];
   /** --------------------------------- finitooo menu horizentale ---------------------------------------------------------*/
   public getSideBarData3: BehaviorSubject<MainMenu[]> = new BehaviorSubject<
-  MainMenu[]
->(this.horizontalSidebar);
-public resetData3(): void {
-  this.sideBar.map((res: SideBar) => {
-    res.showAsTab = false;
-    res.menu.map((menus: SideBarMenu) => {
-      menus.showSubRoute = false;
+    MainMenu[]
+  >(this.horizontalSidebar);
+  public resetData3(): void {
+    this.sideBar.map((res: SideBar) => {
+      res.showAsTab = false;
+      res.menu.map((menus: SideBarMenu) => {
+        menus.showSubRoute = false;
+      });
     });
-  });
-}
+  }
 }
