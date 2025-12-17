@@ -2049,6 +2049,38 @@ export class DataService {
           ],
         },
         {
+          menuValue: 'RH Externe',
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'users',
+          base: 'rh-externe',
+          subMenus: [
+            {
+              menuValue: 'Offres',
+              route: routes.jobsGrid,
+              base: 'jobs-grid',
+            },
+            {
+              menuValue: 'Candidats',
+              route: routes.candidateslist,
+              base: 'candidates-grid',
+            },
+            {
+              menuValue: 'Filtrage',
+              route: routes.FiltrageList,
+              base: 'filtrage',
+            },
+            {
+              menuValue: 'Entretiens',
+              route: routes.Entretient,
+              base: 'entretiens',
+            },
+          ],
+        },
+        
+        
+        
+        {
           menuValue: 'Administration',
           hasSubRouteTwo: true,
           showSubRoute: false,
@@ -2062,25 +2094,7 @@ export class DataService {
 
           base10: 'reports',
           subMenus: [
-            {
-              menuValue: 'RH Extern',
-              base: 'jobs',
-              base2: 'candidates',
-              base3: 'refferals',
-              customSubmenuTwo: true,
-              subMenusTwo: [
-                {
-                  menuValue: 'Jobs',
-                  route: routes.jobsGrid,
-                  base: 'jobs-grid',
-                },
-                {
-                  menuValue: 'Candidats',
-                  route: routes.candidateslist,
-                  base: 'candidates-grid',
-                },
-              ],
-            },
+            
             {
               menuValue: 'Payroll',
               base: 'payroll',
