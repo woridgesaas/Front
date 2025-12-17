@@ -144,9 +144,23 @@ export const routes: Routes = [
           {path: 'ticket-details', loadComponent: () => import('./features/hrm/tickets/ticket-details/ticket-details.component').then(m => m.TicketDetailsComponent),},
         ]
       },
-      {
-        path: 'holidays' , loadComponent: () => import('./features/hrm/holidays/holidays.component').then(m => m.HolidaysComponent),
-      },
+     {
+  
+  path: 'holidays',
+  loadComponent: () =>
+    import('./features/hrm/holidays/holidays.component')
+      .then(m => m.HolidaysComponent),
+  children: [
+    {
+      path: 'religious-holidays',
+      loadComponent: () =>
+        import('./features/hrm/holidays/religious-holidays/religious-holidays.component')
+          .then(m => m.ReligiousHolidaysComponent),
+    },
+  
+  ]
+},
+
       {
         path: 'attendance' , loadComponent: () => import('./features/hrm/attendance/attendance.component').then(m => m.AttendanceComponent),
         children: [

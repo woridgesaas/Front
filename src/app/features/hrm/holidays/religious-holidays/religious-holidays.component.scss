@@ -1,0 +1,62 @@
+/* Largeur globale du tableau */
+.holidays-table {
+  table-layout: fixed; /* ✅ CLÉ DU FIX */
+}
+
+/* Colonne FR */
+.col-fr {
+  width: 28%;
+  text-align: center;
+}
+
+/* Colonne AR */
+.col-ar {
+  width: 28%;
+  text-align: center;
+  direction: rtl;
+  font-weight: 600;
+}
+
+/* Date */
+.col-date {
+  width: 22%;
+  text-align: center;
+}
+
+/* Nombre de jours */
+.col-days {
+  width: 22%;
+  text-align: center;
+}
+
+/* Header layout (titre à gauche, date à droite) */
+.holidays-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Date filter container */
+.date-filter {
+  display: flex;
+  align-items: center;
+}
+
+/* Input style (comme screenshot) */
+.date-range-input {
+  width: 230px;
+  height: 38px;
+  padding-left: 36px;
+}
+
+/* Calendar icon inside input */
+.calendar-icon {
+  position: absolute;
+  left: 12px;
+  font-size: 16px;
+  color: #6c757d;
+}
+.col-actions {
+  width: 10%;
+}
+
