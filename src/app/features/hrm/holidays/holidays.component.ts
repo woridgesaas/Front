@@ -5,7 +5,6 @@ import { RouterLink, RouterOutlet } from '@angular/router';
   selector: 'app-holidays',
   standalone: true,
   imports: [
-    RouterLink,
     RouterOutlet   
   ],
   templateUrl: './holidays.component.html',
