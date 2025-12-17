@@ -1,13 +1,13 @@
 import { Component, Renderer2 } from '@angular/core';
 import { routes } from '../../shared/routes/routes';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-lock-screen',
     templateUrl: './lock-screen.component.html',
     styleUrl: './lock-screen.component.scss',
-    imports: [CommonModule,RouterLink]
+    imports: [CommonModule]
 })
 export class LockScreenComponent {
 public routes=routes;

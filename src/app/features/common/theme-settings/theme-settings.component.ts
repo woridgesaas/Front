@@ -3,12 +3,11 @@ import { SettingService } from '../../../shared/settings/settings.service';
 import { routes } from '../../../shared/routes/routes';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 @Component({
     selector: 'app-theme-settings',
     templateUrl: './theme-settings.component.html',
     styleUrl: './theme-settings.component.scss',
-    imports: [CommonModule,FormsModule,RouterLink]
+    imports: [CommonModule,FormsModule]
 })
 export class ThemeSettingsComponent implements OnInit {
   public routes=routes;

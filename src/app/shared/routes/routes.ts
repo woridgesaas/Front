@@ -1,4 +1,3 @@
-
 export const routes = {
   Url: '',
 
@@ -6,14 +5,15 @@ export const routes = {
     return this.Url;
   },
 
-  // auth routes
-  signin: '/signin',
-  signup: '/signup',
+  //* Auth routes
+  login: '/login',
+  forgotPassword: '/forgot-password',
+  emailVerification: '/email-verification',
   resetPassword: '/reset-password',
   success: '/success',
-  success2: '/success-2',
-  success3: '/success-3',
-
+  error: '/error-404',
+  errors: '/error-500',
+  
   // page routes
   index: '/dashboard/index',
   baseUi: '/dashboard/base-ui',
@@ -35,12 +35,12 @@ export const routes = {
 
   socialFeed: '/application/social-feed',
 
-   employeeList: '/employees/employee-list',
+  employeeList: '/employees/employee-list',
   employeeGrid: '/employees/employee-grid',
   employeeDetails: '/employees/employee-details',
   employeePage: '/employees/employee-page',
   departments: '/employees/departments',
-profile: '/profile',
+  profile: '/profile',
 
   // Holidays
   holidays: '/holidays',
@@ -61,16 +61,14 @@ profile: '/profile',
   ticketList: '/tickets/ticket-list',
   ticketGrid: '/tickets/ticket-grid',
 
-  payments:  '/sales/payments',
-  expenses:  '/sales/expenses',
-  providentfund:  '/sales/provident-fund',
-  taxes:  '/sales/taxes',
-
+  payments: '/sales/payments',
+  expenses: '/sales/expenses',
+  providentfund: '/sales/provident-fund',
+  taxes: '/sales/taxes',
 
   employeesalary: '/payroll/employee-salary',
   payslip: '/payroll/payslip',
   policies: '/policies/main',
-
 
   employeereport: '/reports/employee-report',
   payslipreport: '/reports/payslip-report',
@@ -80,7 +78,6 @@ profile: '/profile',
 
   promotion: '/promotion',
   resignation: '/resignation',
-
 
   jobsList: '/jobs/jobs-list',
   jobsGrid: '/jobs/jobs-grid',
@@ -103,6 +100,7 @@ profile: '/profile',
   employeeProfile: '/employees/employee-profile',
   clientProfile: '/clients/client-profile',
 
+<<<<<<< HEAD
   //filtrage IA recrutement
   FiltrageList: '/filtrage',
 //gestion entretiens 
@@ -124,10 +122,12 @@ profile: '/profile',
 
   error: '/error-404',
   errors: '/error-500',
+=======
+ 
+>>>>>>> features/restructure_authentication_section
   subscriptions: '/subscriptions',
   subadmin: '/subscriptions/admins',
   subscribedcompanies: '/subscriptions/subscribed-companies',
-
 
   search: '/pages/search',
   blankpage: '/pages/blank-page',
@@ -153,23 +153,16 @@ profile: '/profile',
   jobList: '/jobs/jobs-list',
   jobGrid: '/jobs/jobs-grid',
 
-
-
-
   ticketDetails: '/tickets/ticket-details',
 
-  horizontalTimeline:  '/horizontal-timeline',
+  horizontalTimeline: '/horizontal-timeline',
   changePassword: '/change-password',
   layoutDark: '/layout-dark',
 
-  
-  
- 
-
-  profileSettings:  '/settings/general-settings/profile-settings',
-  securitySettings:  '/settings/general-settings/security-settings',
-  notificationSettings:  '/settings/general-settings/notification-settings',
-  connectedApps:  '/settings/general-settings/connected-apps',
+  profileSettings: '/settings/general-settings/profile-settings',
+  securitySettings: '/settings/general-settings/security-settings',
+  notificationSettings: '/settings/general-settings/notification-settings',
+  connectedApps: '/settings/general-settings/connected-apps',
   bussinessSettings: '/settings/website-settings/bussiness-settings',
   seoSettings: '/settings/website-settings/seo-settings',
   localizationSettings: '/settings/website-settings/localization-settings',
@@ -186,13 +179,13 @@ profile: '/profile',
   invoiceSettings: '/settings/app-settings/invoice-settings',
   leaveType: '/settings/app-settings/leave-type',
   customFields: '/settings/app-settings/custom-fields',
-  emailSettings:  '/settings/system-settings/email-settings',
-  emailTemplate:  '/settings/system-settings/email-template',
-  smsSettings:  '/settings/system-settings/sms-settings',
-  smsTemplate:  '/settings/system-settings/sms-template',
-  otpSettings:  '/settings/system-settings/otp-settings',
-  gdpr:  '/settings/system-settings/gdpr',
-  maintenanceMode:  '/settings/system-settings/maintenance-mode',
+  emailSettings: '/settings/system-settings/email-settings',
+  emailTemplate: '/settings/system-settings/email-template',
+  smsSettings: '/settings/system-settings/sms-settings',
+  smsTemplate: '/settings/system-settings/sms-template',
+  otpSettings: '/settings/system-settings/otp-settings',
+  gdpr: '/settings/system-settings/gdpr',
+  maintenanceMode: '/settings/system-settings/maintenance-mode',
   paymentGateways: '/settings/financial-settings/payment-gateways',
   taxRates: '/settings/financial-settings/tax-rates',
   currencies: '/settings/financial-settings/currencies',
@@ -208,6 +201,4 @@ profile: '/profile',
   comingSoon: '/coming-soon',
   underMaintanance: '/under-maintenance',
   underConstruction: '/under-construction',
-
 };
-
