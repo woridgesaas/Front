@@ -100,31 +100,13 @@ export const routes = {
   employeeProfile: '/employees/employee-profile',
   clientProfile: '/clients/client-profile',
 
-<<<<<<< HEAD
+
   //filtrage IA recrutement
   FiltrageList: '/filtrage',
 //gestion entretiens 
   Entretient: '/entretient',
 
-  login2: '/login-2',
 
-  registers2: '/register-2',
-
-  forgotpassword2: '/forgot-password-2',
-
-
-  emailverification2: '/email-verification-2',
-
-  resetpassword2: '/reset-password-2',
-
-  twostepverification2: '/two-step-verification-2',
-  otp: '/otp',
-
-  error: '/error-404',
-  errors: '/error-500',
-=======
- 
->>>>>>> features/restructure_authentication_section
   subscriptions: '/subscriptions',
   subadmin: '/subscriptions/admins',
   subscribedcompanies: '/subscriptions/subscribed-companies',
