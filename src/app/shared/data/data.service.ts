@@ -1544,6 +1544,8 @@ export class DataService {
             },
           ],
         },
+
+        //* Settings 
         {
           menuValue: 'Settings',
           hasSubRouteTwo: true,
@@ -1570,73 +1572,6 @@ export class DataService {
                   hasSubRoute: false,
                   showSubRoute: false,
                 },
-                {
-                  menuValue: 'Notifications',
-                  route: routes.notificationSettings,
-                  base: 'notification-settings',
-                  hasSubRoute: false,
-                  showSubRoute: false,
-                },
-                {
-                  menuValue: 'Connected Apps',
-                  route: routes.connectedApps,
-                  base: 'connected-apps',
-                  hasSubRoute: false,
-                  showSubRoute: false,
-                },
-              ],
-            },
-            {
-              menuValue: 'Website Settings',
-              customSubmenuTwo: true,
-              base: 'website-settings',
-              subMenusTwo: [
-                {
-                  menuValue: 'Business Settings',
-                  route: routes.bussinessSettings,
-                  base: 'bussiness-settings',
-                },
-                {
-                  menuValue: 'SEO Settings',
-                  route: routes.seoSettings,
-                  base: 'seo-settings',
-                },
-                {
-                  menuValue: 'Localization',
-                  route: routes.localizationSettings,
-                  base: 'localization-settings',
-                },
-                {
-                  menuValue: 'Prefixes',
-                  route: routes.prefixes,
-                  base: 'prefixes',
-                },
-                {
-                  menuValue: 'Preferences',
-                  route: routes.preferences,
-                  base: 'preferences',
-                },
-                {
-                  menuValue: 'Appearance',
-                  route: routes.appearance,
-                  base: 'appearance',
-                },
-                {
-                  menuValue: 'Language',
-                  route: routes.language,
-                  base: 'language',
-                  base2: 'add-language',
-                },
-                {
-                  menuValue: 'Authentication',
-                  route: routes.authenticationSettings,
-                  base: 'authentication-settings',
-                },
-                {
-                  menuValue: 'AI Settings',
-                  route: routes.aiSettings,
-                  base: 'ai-settings',
-                },
               ],
             },
             {
@@ -1645,135 +1580,9 @@ export class DataService {
               base: 'app-settings',
               subMenusTwo: [
                 {
-                  menuValue: 'Salary Settings',
-                  route: routes.salarySettings,
-                  base: 'salary-settings',
-                },
-                {
-                  menuValue: 'Approval Settings',
-                  route: routes.approvalSettings,
-                  base: 'approval-settings',
-                },
-                {
-                  menuValue: 'Invoice Settings',
-                  route: routes.invoiceSettings,
-                  base: 'invoice-settings',
-                },
-                {
                   menuValue: 'Leave Type',
                   route: routes.leaveType,
                   base: 'leave-type',
-                },
-                {
-                  menuValue: 'Custom Fields',
-                  route: routes.customFields,
-                  base: 'custom-fields',
-                },
-              ],
-            },
-            {
-              menuValue: 'System Settings',
-              customSubmenuTwo: true,
-              base: 'system-settings',
-              subMenusTwo: [
-                {
-                  menuValue: 'Email Settings',
-                  route: routes.emailSettings,
-                  base: 'email-settings',
-                },
-                {
-                  menuValue: 'Email Templates',
-                  route: routes.emailTemplate,
-                  base: 'email-template',
-                },
-                {
-                  menuValue: 'SMS Settings',
-                  route: routes.smsSettings,
-                  base: 'sms-settings',
-                },
-                {
-                  menuValue: 'SMS Templates',
-                  route: routes.smsTemplate,
-                  base: 'sms-template',
-                },
-                {
-                  menuValue: 'OTP',
-                  route: routes.otpSettings,
-                  base: 'otp-settings',
-                },
-                {
-                  menuValue: 'GDPR Cookies',
-                  route: routes.gdpr,
-                  base: 'gdpr',
-                },
-                {
-                  menuValue: 'Maintenance Mode',
-                  route: routes.maintenanceMode,
-                  base: 'maintenance-mode',
-                },
-              ],
-            },
-            {
-              menuValue: 'Financial Settings',
-              customSubmenuTwo: true,
-              base: 'financial-settings',
-              subMenusTwo: [
-                {
-                  menuValue: 'Payment Gateways',
-                  route: routes.paymentGateways,
-                  base: 'payment-gateways',
-                },
-                {
-                  menuValue: 'Tax Rate',
-                  route: routes.taxRates,
-                  base: 'tax-rates',
-                },
-                {
-                  menuValue: 'Currencies',
-                  route: routes.currencies,
-                  base: 'currencies',
-                },
-              ],
-            },
-            {
-              menuValue: 'Other Settings',
-              customSubmenuTwo: true,
-              base: 'other-settings',
-              subMenusTwo: [
-                {
-                  menuValue: 'Custom CSS',
-                  route: routes.customCss,
-                  base: 'custom-css',
-                },
-                {
-                  menuValue: 'Custom JS',
-                  route: routes.customjs,
-                  base: 'custom-js',
-                },
-                {
-                  menuValue: 'Cronjob',
-                  route: routes.cronjob,
-                  base: 'cronjob',
-                },
-                {
-                  menuValue: 'Storage',
-                  route: routes.storagesettings,
-                  base: 'storage-settings',
-                },
-                {
-                  menuValue: 'Ban IP Address',
-                  route: routes.banIpaddress,
-                  base: 'ban-ip-address',
-                },
-                {
-                  menuValue: 'Backup',
-                  route: routes.backup,
-                  base: 'backup',
-                },
-                {
-                  menuValue: 'Clear Cache',
-                  route: routes.clearcache,
-                  base: 'clear-cache',
                 },
               ],
             },
@@ -2150,73 +1959,6 @@ export class DataService {
                   hasSubRoute: false,
                   showSubRoute: false,
                 },
-                {
-                  menuValue: 'Notifications',
-                  route: routes.notificationSettings,
-                  base: 'notification-settings',
-                  hasSubRoute: false,
-                  showSubRoute: false,
-                },
-                {
-                  menuValue: 'Connected Apps',
-                  route: routes.connectedApps,
-                  base: 'connected-apps',
-                  hasSubRoute: false,
-                  showSubRoute: false,
-                },
-              ],
-            },
-            {
-              menuValue: 'Website Settings',
-              customSubmenuTwo: true,
-              base: 'website-settings',
-              subMenusTwo: [
-                {
-                  menuValue: 'Business Settings',
-                  route: routes.bussinessSettings,
-                  base: 'bussiness-settings',
-                },
-                {
-                  menuValue: 'SEO Settings',
-                  route: routes.seoSettings,
-                  base: 'seo-settings',
-                },
-                {
-                  menuValue: 'Localization',
-                  route: routes.localizationSettings,
-                  base: 'localization-settings',
-                },
-                {
-                  menuValue: 'Prefixes',
-                  route: routes.prefixes,
-                  base: 'prefixes',
-                },
-                {
-                  menuValue: 'Preferences',
-                  route: routes.preferences,
-                  base: 'preferences',
-                },
-                {
-                  menuValue: 'Appearance',
-                  route: routes.appearance,
-                  base: 'appearance',
-                },
-                {
-                  menuValue: 'Language',
-                  route: routes.language,
-                  base: 'language',
-                  base2: 'add-language',
-                },
-                {
-                  menuValue: 'Authentication',
-                  route: routes.authenticationSettings,
-                  base: 'authentication-settings',
-                },
-                {
-                  menuValue: 'AI Settings',
-                  route: routes.aiSettings,
-                  base: 'ai-settings',
-                },
               ],
             },
             {
@@ -2225,135 +1967,9 @@ export class DataService {
               base: 'app-settings',
               subMenusTwo: [
                 {
-                  menuValue: 'Salary Settings',
-                  route: routes.salarySettings,
-                  base: 'salary-settings',
-                },
-                {
-                  menuValue: 'Approval Settings',
-                  route: routes.approvalSettings,
-                  base: 'approval-settings',
-                },
-                {
-                  menuValue: 'Invoice Settings',
-                  route: routes.invoiceSettings,
-                  base: 'invoice-settings',
-                },
-                {
                   menuValue: 'Leave Type',
                   route: routes.leaveType,
                   base: 'leave-type',
-                },
-                {
-                  menuValue: 'Custom Fields',
-                  route: routes.customFields,
-                  base: 'custom-fields',
-                },
-              ],
-            },
-            {
-              menuValue: 'System Settings',
-              customSubmenuTwo: true,
-              base: 'system-settings',
-              subMenusTwo: [
-                {
-                  menuValue: 'Email Settings',
-                  route: routes.emailSettings,
-                  base: 'email-settings',
-                },
-                {
-                  menuValue: 'Email Templates',
-                  route: routes.emailTemplate,
-                  base: 'email-template',
-                },
-                {
-                  menuValue: 'SMS Settings',
-                  route: routes.smsSettings,
-                  base: 'sms-settings',
-                },
-                {
-                  menuValue: 'SMS Templates',
-                  route: routes.smsTemplate,
-                  base: 'sms-template',
-                },
-                {
-                  menuValue: 'OTP',
-                  route: routes.otpSettings,
-                  base: 'otp-settings',
-                },
-                {
-                  menuValue: 'GDPR Cookies',
-                  route: routes.gdpr,
-                  base: 'gdpr',
-                },
-                {
-                  menuValue: 'Maintenance Mode',
-                  route: routes.maintenanceMode,
-                  base: 'maintenance-mode',
-                },
-              ],
-            },
-            {
-              menuValue: 'Financial Settings',
-              customSubmenuTwo: true,
-              base: 'financial-settings',
-              subMenusTwo: [
-                {
-                  menuValue: 'Payment Gateways',
-                  route: routes.paymentGateways,
-                  base: 'payment-gateways',
-                },
-                {
-                  menuValue: 'Tax Rate',
-                  route: routes.taxRates,
-                  base: 'tax-rates',
-                },
-                {
-                  menuValue: 'Currencies',
-                  route: routes.currencies,
-                  base: 'currencies',
-                },
-              ],
-            },
-            {
-              menuValue: 'Other Settings',
-              customSubmenuTwo: true,
-              base: 'other-settings',
-              subMenusTwo: [
-                {
-                  menuValue: 'Custom CSS',
-                  route: routes.customCss,
-                  base: 'custom-css',
-                },
-                {
-                  menuValue: 'Custom JS',
-                  route: routes.customjs,
-                  base: 'custom-js',
-                },
-                {
-                  menuValue: 'Cronjob',
-                  route: routes.cronjob,
-                  base: 'cronjob',
-                },
-                {
-                  menuValue: 'Storage',
-                  route: routes.storagesettings,
-                  base: 'storage-settings',
-                },
-                {
-                  menuValue: 'Ban IP Address',
-                  route: routes.banIpaddress,
-                  base: 'ban-ip-address',
-                },
-                {
-                  menuValue: 'Backup',
-                  route: routes.backup,
-                  base: 'backup',
-                },
-                {
-                  menuValue: 'Clear Cache',
-                  route: routes.clearcache,
-                  base: 'clear-cache',
                 },
               ],
             },
