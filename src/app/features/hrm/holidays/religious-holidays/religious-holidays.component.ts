@@ -19,7 +19,7 @@ import { FooterComponent } from '../../../common/footer/footer.component';
     FooterComponent
   ],
   templateUrl: './religious-holidays.component.html',
-  styleUrls: ['./religious-holidays.component.scss']
+styleUrls: ['../holidays.components.scss']
 })
 export class ReligiousHolidaysComponent {
 

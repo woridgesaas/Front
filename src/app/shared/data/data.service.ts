@@ -158,13 +158,7 @@ export class DataService {
     );
   }
 
-  public getholiday(): Observable<apiResultFormat> {
-    return this.http.get<apiResultFormat>('assets/json/holidays.json').pipe(
-      map((res: apiResultFormat) => {
-        return res;
-      })
-    );
-  }
+ 
 
   public getattendanceadmin(): Observable<apiResultFormat> {
     return this.http
@@ -1332,8 +1326,8 @@ export class DataService {
           subMenus: [
             {
              menuValue: 'Jours fériés nationaux',
-             route: routes.nationalHolidays,   
-             base: 'national-holidays',        
+              route: routes.nationalHolidays,
+  base: 'national-holidays'       
            },
            {
             menuValue: 'Jours fériés religieux',
@@ -1981,8 +1975,8 @@ export class DataService {
               subMenusTwo: [
               {
                   menuValue: 'Jours fériés nationaux',
-                  route: routes.nationalHolidays,   
-                  base: 'national-holidays',        
+                  route: routes.nationalHolidays,
+                  base: 'national-holidays'       
             },
              {
                  menuValue: 'Jours fériés religieux',
