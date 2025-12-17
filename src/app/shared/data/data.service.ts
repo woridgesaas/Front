@@ -1322,16 +1322,27 @@ export class DataService {
             },
           ],
         },
-        {
-          menuValue: 'Holidays',
-          route: routes.holidays,
+      {
+          menuValue: 'Jours fériés',
           base: 'holidays',
-          hasSubRoute: false,
+          hasSubRoute: true,
           showSubRoute: false,
           icon: 'calendar-event',
           materialicons: 'confirmation_number',
-          subMenus: [],
-        },
+          subMenus: [
+            {
+             menuValue: 'Jours fériés nationaux',
+             route: routes.nationalHolidays,   
+             base: 'national-holidays',        
+           },
+           {
+            menuValue: 'Jours fériés religieux',
+            route: routes.religiousHolidays,  
+            base: 'religious-holidays',
+    },
+  ],
+},
+
         {
           menuValue: 'Departments',
           route: routes.departments,
@@ -1962,12 +1973,25 @@ export class DataService {
                 },
               ],
             },
-            {
-              menuValue: 'Holidays',
-              route: routes.holidays,
+           {
+              menuValue: 'Jours fériés',
               base: 'holidays',
-              customSubmenuTwo: false,
+              customSubmenuTwo: true,
+
+              subMenusTwo: [
+              {
+                  menuValue: 'Jours fériés nationaux',
+                  route: routes.nationalHolidays,   
+                  base: 'national-holidays',        
             },
+             {
+                 menuValue: 'Jours fériés religieux',
+                route: routes.religiousHolidays,  
+                 base: 'religious-holidays',
+            },
+          ],
+          },
+
             {
                 menuValue: 'Departments',
                 route: routes.departments,

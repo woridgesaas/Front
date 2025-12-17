@@ -42,8 +42,12 @@ export const routes = {
   departments: '/employees/departments',
   profile: '/profile',
 
-  // Holidays
-  holidays: '/holidays',
+// Holidays
+holidays: '/holidays',
+nationalHolidays: '/holidays/national-holidays',
+religiousHolidays: '/holidays/religious-holidays',
+
+   
 
   // Leaves
   sales: '/sales',
