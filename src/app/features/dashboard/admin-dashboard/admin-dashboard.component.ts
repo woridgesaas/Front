@@ -64,7 +64,7 @@ Chart.register(...registerables);
       BreadcrumbsComponent,
       TagInputModule,
       DatePickerModule,
-      TimepickerModule
+      TimepickerModule,
     ]
 })
 export class AdminDashboardComponent implements OnInit, OnDestroy {

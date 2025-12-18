@@ -5,12 +5,12 @@ import { RouterLink, RouterModule } from '@angular/router';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { MatSelectModule } from '@angular/material/select';
 import { CollapseHeaderComponent } from '../../../common/collapse-header/collapse-header.component';
-
+import { TechnicienDropwonComponent } from '../components/technicien-dropwon/technicien-dropwon.component';
 @Component({
     selector: 'app-ticket-details',
     templateUrl: './ticket-details.component.html',
     styleUrl: './ticket-details.component.scss',
-    imports: [CommonModule,RouterModule,RouterLink,BsDatepickerModule,MatSelectModule,CollapseHeaderComponent]
+    imports: [CommonModule,RouterModule,RouterLink,BsDatepickerModule,MatSelectModule,CollapseHeaderComponent , TechnicienDropwonComponent]
 })
 export class TicketDetailsComponent {
  public routes=routes;

@@ -77,7 +77,6 @@ profile: '/profile',
   attendancereport: '/reports/attendance-report',
   leavereport: '/reports/leave-report',
   dailyreport: '/reports/daily-report',
-
   promotion: '/promotion',
   resignation: '/resignation',
 

@@ -2176,11 +2176,6 @@ export class DataService {
                   route: routes.dailyreport,
                   base: 'daily-report',
                 },
-                {
-                  menuValue: 'Rapport des tickets',
-                  route: routes.ticketReport,
-                  base: 'daily-report',
-                },
               ],
             },
             {
