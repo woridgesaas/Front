@@ -1943,7 +1943,7 @@ export class DataService {
                 },
                 {
                   menuValue: 'Daily Report',
-                  route: '/reports/daily-report',
+                  route: routes.dailyreport,
                   base: 'daily-report',
                 },
               ],

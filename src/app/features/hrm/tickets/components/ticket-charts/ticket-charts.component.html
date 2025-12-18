@@ -1,0 +1,157 @@
+<div class="row no-tooltip">
+    <!-- New Tickets Card -->
+    <div class="col-xl-3 col-md-6 d-flex">
+        <div class="card flex-fill">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6 d-flex">
+                        <div class="flex-fill">
+                            <div class="border border-dashed border-primary rounded-circle d-inline-flex align-items-center justify-content-center p-1 mb-3">
+                                <span class="avatar avatar-lg avatar-rounded bg-primary-transparent">
+                                    <i class="ti ti-ticket fs-20"></i>
+                                </span>
+                            </div>
+                            <p class="fw-medium fs-12 mb-1">New Tickets</p>
+                            <h4>{{ stats.newTickets.count }}</h4>
+                        </div>
+                    </div>
+                    <div class="col-6 text-end d-flex">
+                        <div class="d-flex flex-column justify-content-between align-items-end">
+                            <span class="badge bg-transparent-purple d-inline-flex align-items-center mb-3">
+                                <i class="ti ti-arrow-wave-right-down me-1"></i>
+                                {{ stats.newTickets.percentage }}
+                            </span>
+                            <apx-chart
+                                [series]="areaChart1.series"
+                                [chart]="areaChart1.chart"
+                                [colors]="areaChart1.colors"
+                                [fill]="areaChart1.fill"
+                                [xaxis]="{}"
+                                [stroke]="{}"
+                                [tooltip]="areaChart1.tooltip"
+                                [dataLabels]="areaChart1.dataLabels">
+                            </apx-chart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Open Tickets Card -->
+    <div class="col-xl-3 col-md-6 d-flex">
+        <div class="card flex-fill">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6 d-flex">
+                        <div class="flex-fill">
+                            <div class="border border-dashed border-purple rounded-circle d-inline-flex align-items-center justify-content-center p-1 mb-3">
+                                <span class="avatar avatar-lg avatar-rounded bg-transparent-purple">
+                                    <i class="ti ti-folder-open fs-20"></i>
+                                </span>
+                            </div>
+                            <p class="fw-medium fs-12 mb-1">{{stats.openTickets.label}}</p>
+                            <h4>{{ stats.openTickets.count }}</h4>
+                        </div>
+                    </div>
+                    <div class="col-6 text-end d-flex">
+                        <div class="d-flex flex-column justify-content-between align-items-end">
+                            <span class="badge bg-transparent-dark text-dark d-inline-flex align-items-center mb-3">
+                                <i class="ti ti-arrow-wave-right-down me-1"></i>
+                                {{ stats.openTickets.percentage }}
+                            </span>
+                            <apx-chart
+                                [series]="areaChart2.series"
+                                [chart]="areaChart2.chart"
+                                [colors]="areaChart2.colors"
+                                [fill]="areaChart2.fill"
+                                [xaxis]="{}"
+                                [stroke]="{}"
+                                [tooltip]="areaChart2.tooltip"
+                                [dataLabels]="areaChart2.dataLabels">
+                            </apx-chart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Solved Tickets Card -->
+    <div class="col-xl-3 col-md-6 d-flex">
+        <div class="card flex-fill">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6 d-flex">
+                        <div class="flex-fill">
+                            <div class="border border-dashed border-success rounded-circle d-inline-flex align-items-center justify-content-center p-1 mb-3">
+                                <span class="avatar avatar-lg avatar-rounded bg-success-transparent">
+                                    <i class="ti ti-checks fs-20"></i>
+                                </span>
+                            </div>
+                            <p class="fw-medium fs-12 mb-1">{{stats.solvedTickets.label}} </p>
+                            <h4>{{ stats.solvedTickets.count }}</h4>
+                        </div>
+                    </div>
+                    <div class="col-6 text-end d-flex">
+                        <div class="d-flex flex-column justify-content-between align-items-end">
+                            <span class="badge bg-info-transparent d-inline-flex align-items-center mb-3">
+                                <i class="ti ti-arrow-wave-right-down me-1"></i>
+                                {{ stats.solvedTickets.percentage }}
+                            </span>
+                            <apx-chart
+                                [series]="areaChart3.series"
+                                [chart]="areaChart3.chart"
+                                [colors]="areaChart3.colors"
+                                [fill]="areaChart3.fill"
+                                [xaxis]="{}"
+                                [stroke]="{}"
+                                [tooltip]="areaChart3.tooltip"
+                                [dataLabels]="areaChart3.dataLabels">
+                            </apx-chart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pending Tickets Card -->
+    <div class="col-xl-3 col-md-6 d-flex">
+        <div class="card flex-fill">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6 d-flex">
+                        <div class="flex-fill">
+                            <div class="border border-dashed border-info rounded-circle d-inline-flex align-items-center justify-content-center p-1 mb-3">
+                                <span class="avatar avatar-lg avatar-rounded bg-info-transparent">
+                                    <i class="ti ti-progress-alert fs-20"></i>
+                                </span>
+                            </div>
+                            <p class="fw-medium fs-12 mb-1">{{stats.pendingTickets.label}} </p>
+                            <h4>{{ stats.pendingTickets.count }}</h4>
+                        </div>
+                    </div>
+                    <div class="col-6 text-end d-flex">
+                        <div class="d-flex flex-column justify-content-between align-items-end">
+                            <span class="badge bg-secondary-transparent d-inline-flex align-items-center mb-3">
+                                <i class="ti ti-arrow-wave-right-down me-1"></i>
+                                {{ stats.pendingTickets.percentage }}
+                            </span>
+                            <apx-chart
+                                [series]="areaChart4.series"
+                                [chart]="areaChart4.chart"
+                                [colors]="areaChart4.colors"
+                                [fill]="areaChart4.fill"
+                                [xaxis]="{}"
+                                [stroke]="{}"
+                                [tooltip]="areaChart4.tooltip"
+                                [dataLabels]="areaChart4.dataLabels">
+                            </apx-chart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

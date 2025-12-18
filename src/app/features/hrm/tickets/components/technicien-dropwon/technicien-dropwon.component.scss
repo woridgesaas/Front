@@ -1,0 +1,17 @@
+.mat-mdc-option {
+  background-color: #f8f9fa !important;
+    
+}
+::ng-deep .mat-mdc-option .mdc-list-item__primary-text {
+  color: #212121 ;
+}
+/* Option sélectionnée */
+.mat-mdc-option.mat-mdc-option-active,
+.mat-mdc-option.mat-selected {
+  background-color: #e3f2fd !important; /* Bleu clair */
+}
+
+
+.mat-mdc-option:hover:not(.mat-option-disabled) {
+  background-color: #f0f0f0 !important;
+}

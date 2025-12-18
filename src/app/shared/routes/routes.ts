@@ -79,7 +79,6 @@ religiousHolidays: '/holidays/religious-holidays',
   attendancereport: '/reports/attendance-report',
   leavereport: '/reports/leave-report',
   dailyreport: '/reports/daily-report',
-
   promotion: '/promotion',
   resignation: '/resignation',
 

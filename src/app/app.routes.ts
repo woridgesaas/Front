@@ -80,7 +80,6 @@ export const routes: Routes = [
       {
         path: 'tickets' , loadComponent: () => import('./features/hrm/tickets/tickets.component').then(m => m.TicketsComponent),
         children: [
-          {path: 'ticket-grid', loadComponent: () => import('./features/hrm/tickets/ticket-grid/ticket-grid.component').then(m => m.TicketGridComponent),},
           {path: 'ticket-list', loadComponent: () => import('./features/hrm/tickets/ticket/ticket.component').then(m => m.TicketComponent),},
           {path: 'ticket-details', loadComponent: () => import('./features/hrm/tickets/ticket-details/ticket-details.component').then(m => m.TicketDetailsComponent),},
         ]
