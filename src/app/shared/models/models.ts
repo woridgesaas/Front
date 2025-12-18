@@ -418,17 +418,22 @@ export interface attendanceemployee {
 
 
 
-
 export interface promotion {
   sNo?: number;
-  isSelected: boolean;
-  Image: string;
-  PromotedEmployee: string;
-  Department: string;
-  DesignationFrom: string;
-  DesignationTo: string;
-  PromotionDate: string;
+  Image?: string;
+  PromotedEmployee?: string;
+  Department?: string;
+  DesignationFrom?: string;
+  DesignationTo?: string;
+
+  OldSalary?: number;   
+  Bonus?: number;       
+  NewSalary?: number;   
+
+  PromotionDate?: string;
+  isSelected?: boolean;
 }
+
 
 export interface resignation {
   sNo?: number;
