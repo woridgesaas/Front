@@ -4,140 +4,140 @@
     <div class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
       <app-breadcrumbs title="Planification des Entretiens" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
     
-      
+      <div class="d-flex align-items-center gap-2">
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#create_interview_modal" (click)="ouvrirModalCreer()">
+          <i class="ti ti-calendar-plus me-2"></i>Planifier un Entretien
+        </button>
         <app-collapse-header></app-collapse-header>
-      
+      </div>
     </div>
   
-    <!-- Card Formulaire  Ajout Entretien -->
-    <div class="card mb-3" id="formulaire-entretien">
-      <div class="card-header bg-primary text-white">
-        <h6 class="mb-0"><i class="ti ti-calendar-plus me-2"></i>Planifier un Nouvel Entretien</h6>
-      </div>
-      <div class="card-body">
-        <form class="row g-3">
-          <!-- Section 1: Candidat -->
-          <div class="col-12">
-            <div class="row g-3 p-3 bg-light rounded">
-              <div class="col-12 mb-2">
-                <strong><i class="ti ti-user me-1"></i>Informations du Candidat</strong>
-              </div>
-              <div class="col-md-3">
-                <label class="form-label small">Nom Complet <span class="text-danger">*</span></label>
-                <input type="text" class="form-control" placeholder="Jean Dupont" required>
-              </div>
-              <div class="col-md-3">
-                <label class="form-label small">Email <span class="text-danger">*</span></label>
-                <input type="email" class="form-control" placeholder="jean@email.com" required>
-              </div>
-              <div class="col-md-3">
-                <label class="form-label small">Poste Visé</label>
-                <input type="text" class="form-control" placeholder="Développeur Full Stack">
-              </div>
-              <div class="col-md-3">
-                <label class="form-label small">Téléphone</label>
-                <input type="tel" class="form-control" placeholder="+33 6 12 34 56 78">
-              </div>
-            </div>
+    <!-- Modal Créer un Entretien -->
+    <div class="modal fade" id="create_interview_modal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header border-bottom bg-primary text-white">
+            <h4 class="modal-title text-white"><i class="ti ti-calendar-plus me-2"></i>Planifier un Nouvel Entretien</h4>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
           </div>
-  
-          <!-- Section 2: Interviewer -->
-          <div class="col-12">
-            <div class="row g-3 p-3 bg-light rounded">
-              <div class="col-12 mb-2">
-                <strong><i class="ti ti-user-check me-1"></i>Assigner un Interviewer</strong>
-              </div>
-              <div class="col-md-6">
-                <label class="form-label small">Sélectionner l'Interviewer <span class="text-danger">*</span></label>
-                <select class="form-select" required>
-                  <option value="">-- Choisir un interviewer --</option>
-                  <option *ngFor="let int of interviewers" [value]="int.id">
-                    {{ int.nom }} - {{ int.specialite }}
-                  </option>
-                </select>
-              </div>
-              <div class="col-md-6">
-                <label class="form-label small">Email Interviewer</label>
-                <input type="email" class="form-control" placeholder="interviewer@entreprise.fr" required>
-              </div>
-            </div>
-          </div>
-  
-          <!-- Section 3: Date, Heure, Durée -->
-          <div class="col-12">
-            <div class="row g-3 p-3 bg-light rounded">
-              <div class="col-12 mb-2">
-                <strong><i class="ti ti-clock me-1"></i>Date et Horaire</strong>
-              </div>
-              <div class="col-md-3">
-                <label class="form-label small">Date <span class="text-danger">*</span></label>
-                <input type="date" class="form-control" [(ngModel)]="nouvelEntretien.date" name="date" required>
-              </div>
-              <div class="col-md-3">
-                <label class="form-label small">Heure de Début <span class="text-danger">*</span></label>
-                <input type="time" class="form-control" [(ngModel)]="nouvelEntretien.heure" name="heure" required>
-              </div>
-              <div class="col-md-3">
-                <label class="form-label small">Durée</label>
-                <select class="form-select" [(ngModel)]="nouvelEntretien.duree" name="duree">
-                  <option [value]="30">30 min</option>
-                  <option [value]="45">45 min</option>
-                  <option [value]="60" selected>1 heure</option>
-                  <option [value]="90">1h 30</option>
-                  <option [value]="120">2 heures</option>
-                </select>
-              </div>
-              <div class="col-md-3">
-                <label class="form-label small">Type d'Entretien <span class="text-danger">*</span></label>
-                <select class="form-select" [(ngModel)]="nouvelEntretien.type" name="type" required>
-                  <option value="Téléphonique">📞 Téléphonique</option>
-                  <option value="Visioconférence" selected>💻 Visioconférence</option>
-                  <option value="Présentiel">🏢 Présentiel</option>
-                  <option value="Technique">🔧 Technique</option>
-                </select>
-              </div>
-            </div>
-          </div>
-  
-          <!-- Section 4: Détails selon le type -->
-          <div class="col-12">
-            <div class="row g-3 p-3 bg-light rounded">
-              <div class="col-12 mb-2">
-                <strong><i class="ti ti-info-circle me-1"></i>Détails de l'Entretien</strong>
-              </div>
-              <div class="col-md-6" *ngIf="nouvelEntretien.type === 'Visioconférence'">
-                <label class="form-label small">Lien Visioconférence</label>
-                <input type="url" class="form-control" [(ngModel)]="nouvelEntretien.lienVisio" name="lien" placeholder="https://meet.google.com/...">
-              </div>
-              <div class="col-md-6" *ngIf="nouvelEntretien.type === 'Présentiel'">
-                <label class="form-label small">Salle / Lieu</label>
-                <input type="text" class="form-control" [(ngModel)]="nouvelEntretien.salle" name="salle" placeholder="Salle A - 2ème étage">
-              </div>
+          <div class="modal-body">
+            <form class="row g-3">
+              <!-- Section 1: Candidat -->
               <div class="col-12">
-                <label class="form-label small">Notes / Instructions</label>
-                <textarea class="form-control" rows="2" [(ngModel)]="nouvelEntretien.notes" name="notes" placeholder="Préparer questions techniques, apporter CV..."></textarea>
+                <div class="row g-3 p-3 bg-light rounded">
+                  <div class="col-12 mb-2">
+                    <strong><i class="ti ti-user me-1"></i>Informations du Candidat</strong>
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label small">Nom Complet <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" placeholder="Jean Dupont" required>
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label small">Email <span class="text-danger">*</span></label>
+                    <input type="email" class="form-control" placeholder="jean@email.com" required>
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label small">Poste Visé</label>
+                    <input type="text" class="form-control" placeholder="Développeur Full Stack">
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label small">Téléphone</label>
+                    <input type="tel" class="form-control" placeholder="+33 6 12 34 56 78">
+                  </div>
+                </div>
               </div>
-            </div>
+      
+              <!-- Section 2: Interviewer -->
+              <div class="col-12">
+                <div class="row g-3 p-3 bg-light rounded">
+                  <div class="col-12 mb-2">
+                    <strong><i class="ti ti-user-check me-1"></i>Assigner un Interviewer</strong>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label small">Sélectionner l'Interviewer <span class="text-danger">*</span></label>
+                    <select class="form-select" required>
+                      <option value="">-- Choisir un interviewer --</option>
+                      <option *ngFor="let int of interviewers" [value]="int.id">
+                        {{ int.nom }} - {{ int.specialite }}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label small">Email Interviewer</label>
+                    <input type="email" class="form-control" placeholder="interviewer@entreprise.fr" required>
+                  </div>
+                </div>
+              </div>
+      
+              <!-- Section 3: Date, Heure, Durée -->
+              <div class="col-12">
+                <div class="row g-3 p-3 bg-light rounded">
+                  <div class="col-12 mb-2">
+                    <strong><i class="ti ti-clock me-1"></i>Date et Horaire</strong>
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label small">Date <span class="text-danger">*</span></label>
+                    <input type="date" class="form-control" [(ngModel)]="nouvelEntretien.date" name="date" required>
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label small">Heure de Début <span class="text-danger">*</span></label>
+                    <input type="time" class="form-control" [(ngModel)]="nouvelEntretien.heure" name="heure" required>
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label small">Durée</label>
+                    <select class="form-select" [(ngModel)]="nouvelEntretien.duree" name="duree">
+                      <option [value]="30">30 min</option>
+                      <option [value]="45">45 min</option>
+                      <option [value]="60" selected>1 heure</option>
+                      <option [value]="90">1h 30</option>
+                      <option [value]="120">2 heures</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label small">Type d'Entretien <span class="text-danger">*</span></label>
+                    <select class="form-select" [(ngModel)]="nouvelEntretien.type" name="type" required>
+                      <option value="Téléphonique">📞 Téléphonique</option>
+                      <option value="Visioconférence" selected>💻 Visioconférence</option>
+                      <option value="Présentiel">🏢 Présentiel</option>
+                      <option value="Technique">🔧 Technique</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+      
+              <!-- Section 4: Détails selon le type -->
+              <div class="col-12">
+                <div class="row g-3 p-3 bg-light rounded">
+                  <div class="col-12 mb-2">
+                    <strong><i class="ti ti-info-circle me-1"></i>Détails de l'Entretien</strong>
+                  </div>
+                  <div class="col-md-6" *ngIf="nouvelEntretien.type === 'Visioconférence'">
+                    <label class="form-label small">Lien Visioconférence</label>
+                    <input type="url" class="form-control" [(ngModel)]="nouvelEntretien.lienVisio" name="lien" placeholder="https://meet.google.com/...">
+                  </div>
+                  <div class="col-md-6" *ngIf="nouvelEntretien.type === 'Présentiel'">
+                    <label class="form-label small">Salle / Lieu</label>
+                    <input type="text" class="form-control" [(ngModel)]="nouvelEntretien.salle" name="salle" placeholder="Salle A - 2ème étage">
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label small">Notes / Instructions</label>
+                    <textarea class="form-control" rows="2" [(ngModel)]="nouvelEntretien.notes" name="notes" placeholder="Préparer questions techniques, apporter CV..."></textarea>
+                  </div>
+                </div>
+              </div>
+            </form>
           </div>
-  
-          <!-- Bouton Submit -->
-          <div class="col-12">
-            <div class="d-flex justify-content-end gap-2">
-              <button type="reset" class="btn btn-light">
-                <i class="ti ti-x me-1"></i>Réinitialiser
-              </button>
-              <button type="button" class="btn btn-primary" (click)="creerEntretien()">
-                <i class="ti ti-calendar-check me-1"></i>Planifier et Envoyer les Invitations
-              </button>
-            </div>
+          <div class="modal-footer border-top">
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="annulerModalCreer()">
+              <i class="ti ti-x me-1"></i>Annuler
+            </button>
+            <button type="button" class="btn btn-primary" (click)="creerEntretien()" data-bs-dismiss="modal">
+              <i class="ti ti-calendar-check me-1"></i>Planifier et Envoyer les Invitations
+            </button>
           </div>
-        </form>
+        </div>
       </div>
     </div>
-  
-    <!-- Modal Créer un Entretien  -->
-
-    
   
     <!-- Modal Modifier un Entretien -->
     <div class="modal fade" id="edit_interview_modal" tabindex="-1">
@@ -429,8 +429,7 @@
     <!-- Affichage Tableau -->
     <div class="card" *ngIf="modeAffichage === 'tableau'">
       <div class="card-body p-0">
-        <div class="table-responsive">
-          <table class="table table-hover datatable mb-0">
+        <table class="table table-hover datatable mb-0">
             <thead class="thead-light">
               <tr>
                 <th>Candidat</th>
@@ -565,11 +564,7 @@
               </tr>
             </tbody>
           </table>
-        </div>
       </div>
     </div>
-  
-    <!-- Affichage Calendrier mn b3d-->
-    
-  
+  <!-- affichage calendrier mn b3d -->
   </div>
