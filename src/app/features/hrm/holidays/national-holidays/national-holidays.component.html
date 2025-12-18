@@ -19,15 +19,16 @@
   <div class="d-flex gap-2 align-items-center">
 
     <!-- Dropdown mois -->
-    <select
-      class="form-select month-filter"
-      [(ngModel)]="selectedMonth"
-    >
-      <option value="">Tous les mois</option>
-      <option *ngFor="let month of months" [value]="month.value">
-        {{ month.label }}
-      </option>
-    </select>
+<select
+  class="form-select month-filter"
+  [(ngModel)]="selectedMonth"
+>
+  <option value="">Tous les mois</option>
+  <option *ngFor="let month of months" [value]="month.value">
+    {{ month.label }}
+  </option>
+</select>
+
 
     <!-- Date range -->
     <div class="date-filter position-relative">
