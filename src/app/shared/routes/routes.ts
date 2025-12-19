@@ -50,6 +50,7 @@ religiousHolidays: '/holidays/religious-holidays',
 //validation
 validateLeave: '/validation/validate-leave',
 justifyValidation: '/validation/justify-validation',
+validatePersonalInfo:'/validation/validate-personal-info',
    
 
   // Leaves

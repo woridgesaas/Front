@@ -1398,31 +1398,37 @@ export class DataService {
           materialicons: 'group_add',
           subMenus: [],
         },
-      {
-  menuValue: 'Validation',
-  base: 'validation',
-  icon: 'file-time',
-  materialicons: 'fact_check',
-  hasSubRoute: true,
-  showSubRoute: false,
-  subMenus: [
-    {
-      menuValue: 'Valider justification',
-      route: routes.justifyValidation,
-      hasSubRoute: false,
-      showSubRoute: false,
-      base: 'justify-validation',
-    },
-    {
-      menuValue: 'Valider congé',
-      route: routes.validateLeave,
-      hasSubRoute: false,
-      showSubRoute: false,
-      base: 'validate-leave',
-    },
-  ],
-},
-
+        {
+          menuValue: 'Validation',
+          base: 'validation',
+          icon: 'file-time',
+          materialicons: 'fact_check',
+          hasSubRoute: true,
+          showSubRoute: false,
+          subMenus: [
+            {
+              menuValue: 'Valider justification',
+              route: routes.justifyValidation,
+              hasSubRoute: false,
+              showSubRoute: false,
+              base: 'justify-validation',
+            },
+            {
+              menuValue: 'Valider congé',
+              route: routes.validateLeave,
+              hasSubRoute: false,
+              showSubRoute: false,
+              base: 'validate-leave',
+            },
+            {
+              menuValue: 'Valider Info Personnel',
+              route: routes.validatePersonalInfo,
+              hasSubRoute: false,
+              showSubRoute: false,
+              base: 'validate-personal-info',
+            },
+          ],
+        },
 
         {
           menuValue: 'Démission',
@@ -1845,28 +1851,34 @@ export class DataService {
               base: 'promotion',
               customSubmenuTwo: false,
             },
-           {
-  menuValue: 'Validation',
-  base: 'validation',
-  customSubmenuTwo: true,
-  subMenusTwo: [
-    {
-      menuValue: 'Valider justification',
-      route: routes.justifyValidation,
-      base: 'justify-validation',
-      hasSubRoute: false,
-      showSubRoute: false,
-    },
-    {
-      menuValue: 'Valider congé',
-      route: routes.validateLeave,
-      base: 'validate-leave',
-      hasSubRoute: false,
-      showSubRoute: false,
-    },
-  ],
-},
-
+            {
+              menuValue: 'Validation',
+              base: 'validation',
+              customSubmenuTwo: true,
+              subMenusTwo: [
+                {
+                  menuValue: 'Valider justification',
+                  route: routes.justifyValidation,
+                  base: 'justify-validation',
+                  hasSubRoute: false,
+                  showSubRoute: false,
+                },
+                {
+                  menuValue: 'Valider congé',
+                  route: routes.validateLeave,
+                  base: 'validate-leave',
+                  hasSubRoute: false,
+                  showSubRoute: false,
+                },
+                {
+                  menuValue: 'Valider Info personnel',
+                  route: routes.validatePersonalInfo,
+                  base: 'validate-personal-info',
+                  hasSubRoute: false,
+                  showSubRoute: false,
+                },
+              ],
+            },
 
             {
               menuValue: 'Resignation',

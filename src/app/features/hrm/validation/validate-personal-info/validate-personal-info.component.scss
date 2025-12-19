@@ -1,0 +1,155 @@
+/* ====== Cards ====== */
+.stat-card {
+  border-radius: 14px;
+  color: #fff;
+  overflow: hidden;
+
+  .badge {
+    background: rgba(255,255,255,.2);
+    font-weight: 500;
+  }
+}
+
+.bg-blue {
+  background: linear-gradient(135deg, #fff, #3976e6);
+}
+.bg-warning {
+  background: linear-gradient(135deg, #fff, #efd937);
+}
+.bg-success {
+  background: linear-gradient(135deg, #fff, #16a34a);
+}
+.bg-danger {
+ background: linear-gradient(135deg, #fff, #dc2626);
+}
+
+/* ====== Avatars ====== */
+.employee-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #e9ecef;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+.view-link {
+  position: relative;
+  color: #8c8f92;
+  z-index: 3;
+  cursor: pointer;
+  text-decoration: underline;
+  pointer-events: auto !important;
+}
+.bs-datepicker,
+.bs-datepicker-container {
+  z-index: 1055 !important;
+}
+
+.bs-datepicker-container {
+  pointer-events: auto !important;
+}
+
+/* ✅ Très important : empêcher un overlay fantôme de bloquer */
+.modal-backdrop,
+.bs-datepicker-backdrop {
+  pointer-events: none !important;
+}
+
+.avatar-placeholder {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #A631D8;
+  color: #fff;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ====== Status ====== */
+.status-badge {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* 🟡 En attente */
+.status-warning {
+  background: rgba(255, 193, 7, 0.18);
+  color: #ffc107;
+}
+
+/* 🟢 Acceptée */
+.status-success {
+  background: rgba(40, 167, 69, 0.18);
+  color: #28a745;
+}
+
+/* 🔴 Refusée */
+.status-danger {
+  background: rgba(220, 53, 69, 0.18);
+  color: #dc3545;
+}
+
+
+/* ================= FILTER BAR ================= */
+.filters-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.filters-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: nowrap;
+
+  .form-control,
+  .btn {
+    height: 36px;
+    white-space: nowrap;
+  }
+
+  .input-icon {
+    min-width: 220px;
+  }
+}
+
+.filters-right {
+  flex-shrink: 0;
+
+  .form-control {
+    width: 220px;
+    height: 36px;
+  }
+}
+
+/* Input avec icône */
+.input-icon {
+  position: relative;
+
+  i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #adb5bd;
+    font-size: 14px;
+  }
+
+  input {
+    padding-left: 32px;
+  }
+}

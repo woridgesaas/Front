@@ -1,0 +1,196 @@
+<div class="page-wrapper">
+  <div class="content">
+    <!-- ================= HEADER ================= -->
+    <div
+      class="d-md-flex d-block align-items-center justify-content-between mb-3"
+    >
+      <app-breadcrumbs
+        title="Validation des informations personnelles"
+        [breadcrumbItems]="breadCrumbItems"
+      >
+      </app-breadcrumbs>
+    </div>
+
+    <!-- ================= STATS CARDS ================= -->
+    <div class="row mb-4">
+      <div class="col-lg-3 col-md-6">
+        <div class="card stat-card bg-blue">
+          <div class="card-body">
+            <span class="badge bg-info">Total des demandes</span>
+            <h4>{{ total }}</h4>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6">
+        <div class="card stat-card bg-warning">
+          <div class="card-body">
+            <span class="badge bg-warning">En attente</span>
+            <h4>{{ pending }}</h4>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6">
+        <div class="card stat-card bg-success">
+          <div class="card-body">
+            <span class="badge bg-success">Acceptées</span>
+            <h4>{{ accepted }}</h4>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6">
+        <div class="card stat-card bg-danger">
+          <div class="card-body">
+            <span class="badge bg-danger">Refusées</span>
+            <h4>{{ refused }}</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= TABLE ================= -->
+    <div class="card">
+      <div class="card-body">
+        <h5 class="mb-3">Liste des demandes</h5>
+
+        <!-- FILTERS BAR -->
+        <div class="filters-bar">
+          <!-- LEFT FILTERS -->
+          <div class="filters-left">
+            <!-- Date -->
+            <div class="input-icon">
+              <i class="ti ti-calendar"></i>
+              <input
+                type="text"
+                class="form-control form-control-sm"
+                placeholder="dd/mm/yyyy - dd/mm/yyyy"
+                bsDaterangepicker
+                [(ngModel)]="selectedDateRange"
+                [bsConfig]="bsConfig"
+                (ngModelChange)="applyFilters()"
+              />
+            </div>
+
+            <!-- Trier -->
+            <div class="dropdown">
+              <button
+                class="btn btn-sm btn-white dropdown-toggle"
+                data-bs-toggle="dropdown"
+              >
+                Trier par : Derniers 7 jours
+              </button>
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" (click)="sortBy('recent')"
+                    >Derniers</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" (click)="sortBy('asc')">A → Z</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" (click)="sortBy('desc')">Z → A</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- SEARCH RIGHT -->
+          <div class="filters-right">
+            <input
+              type="search"
+              class="form-control form-control-sm"
+              placeholder="Search..."
+              [(ngModel)]="searchTerm"
+              (ngModelChange)="applyFilters()"
+            />
+          </div>
+        </div>
+
+        <!-- ===== TABLE ===== -->
+        <div class="table-responsive">
+          <table class="table table-hover align-middle">
+            <thead>
+              <tr>
+                <th>Employé</th>
+                <th>Date de modification</th>
+                <th>Informations modifiées</th>
+                <th>Statut</th>
+                <th class="text-end">Actions</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let req of filteredRequests">
+                <td>
+                  <div class="d-flex align-items-center gap-3">
+                    <div class="employee-avatar">
+                      <img
+                        *ngIf="req.employeeImage; else placeholder"
+                        [src]="req.employeeImage"
+                      />
+                      <ng-template #placeholder>
+                        <div class="avatar-placeholder">
+                          {{ req.employeeName.charAt(0) }}
+                        </div>
+                      </ng-template>
+                    </div>
+                    <div>
+                      <div class="fw-medium">{{ req.employeeName }}</div>
+                      <small class="text-muted">{{ req.employeeRole }}</small>
+                    </div>
+                  </div>
+                </td>
+
+                <td>{{ req.modifiedDate | date : "dd/MM/yyyy" }}</td>
+
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-link p-0 view-link"
+                    (click)="viewChanges(req)"
+                  >
+                    Voir les modifications
+                  </button>
+                </td>
+
+                <td>
+                  <span
+                    class="status-badge"
+                    [ngClass]="statusClass(req.status)"
+                  >
+                    {{ req.status }}
+                  </span>
+                </td>
+
+                <td class="text-end">
+                  <ng-container *ngIf="req.status === 'En attente'; else done">
+                    <button
+                      class="btn btn-success btn-sm me-2"
+                      (click)="accept(req)"
+                    >
+                      Accepter
+                    </button>
+                    <button class="btn btn-danger btn-sm" (click)="refuse(req)">
+                      Refuser
+                    </button>
+                  </ng-container>
+                  <ng-template #done>—</ng-template>
+                </td>
+              </tr>
+
+              <tr *ngIf="filteredRequests.length === 0">
+                <td colspan="5" class="text-center py-4 text-muted">
+                  Aucun résultat n’existe
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div>
