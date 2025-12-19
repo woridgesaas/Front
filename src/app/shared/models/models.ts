@@ -1,3 +1,13 @@
+  export interface sondage{
+     id: number;
+    titre: string;
+    creeIlYa: string;
+    expireDans: number;
+    options: string[];
+    selectedOption?: number;
+    voted: boolean;
+    totalVotes: number;
+  }
   export interface pageSelection {
   skip: number;
   limit: number;

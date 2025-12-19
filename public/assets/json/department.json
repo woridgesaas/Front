@@ -1,56 +1,55 @@
 {
-    "data":[
-        {
-          "Department": "Finance",
-          "NoOfEmployees": "20",
-          "Status": "Active"
-        },
-        {
-          "Department": "Application Development",
-          "NoOfEmployees": "30",
-          "Status": "Active"
-        },
-        {
-          "Department": "IT Management",
-          "NoOfEmployees": "15",
-          "Status": "Active"
-        },
-        {
-          "Department": "Web Development",
-          "NoOfEmployees": "20",
-          "Status": "Active"
-        },
-        {
-          "Department": "Sales",
-          "NoOfEmployees": "20",
-          "Status": "Active"
-        },
-        {
-          "Department": "UI / UX",
-          "NoOfEmployees": "30",
-          "Status": "Active"
-        },
-        {
-          "Department": "Account Management",
-          "NoOfEmployees": "15",
-          "Status": "Active"
-        },
-        {
-          "Department": "Marketing",
-          "NoOfEmployees": "10",
-          "Status": "Inactive"
-        },
-        {
-          "Department": "Administration",
-          "NoOfEmployees": "05",
-          "Status": "Active"
-        },
-        {
-          "Department": "Business Development",
-          "NoOfEmployees": "07",
-          "Status": "Active"
-        }
-      ],
-      "totalData":10
-      
+  "data": [
+    {
+      "Department": "Finance",
+      "NoOfEmployees": "20",
+      "Status": "Actif"
+    },
+    {
+      "Department": "Développement d’applications",
+      "NoOfEmployees": "30",
+      "Status": "Actif"
+    },
+    {
+      "Department": "Gestion informatique",
+      "NoOfEmployees": "15",
+      "Status": "Actif"
+    },
+    {
+      "Department": "Développement Web",
+      "NoOfEmployees": "20",
+      "Status": "Actif"
+    },
+    {
+      "Department": "Ventes",
+      "NoOfEmployees": "20",
+      "Status": "Actif"
+    },
+    {
+      "Department": "UI / UX",
+      "NoOfEmployees": "30",
+      "Status": "Actif"
+    },
+    {
+      "Department": "Gestion des comptes",
+      "NoOfEmployees": "15",
+      "Status": "Actif"
+    },
+    {
+      "Department": "Marketing",
+      "NoOfEmployees": "10",
+      "Status": "Inactif"
+    },
+    {
+      "Department": "Administration",
+      "NoOfEmployees": "05",
+      "Status": "Actif"
+    },
+    {
+      "Department": "Développement commercial",
+      "NoOfEmployees": "07",
+      "Status": "Actif"
+    }
+  ],
+  "totalData": 10
 }

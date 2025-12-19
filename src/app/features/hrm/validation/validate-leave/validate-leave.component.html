@@ -1,0 +1,220 @@
+<div class="page-wrapper">
+  <div class="content">
+
+    <!-- Header -->
+    <div class="d-md-flex d-block align-items-center justify-content-between mb-3">
+      <app-breadcrumbs
+        title="Validation des demandes de congé"
+        [breadcrumbItems]="breadCrumbItems">
+      </app-breadcrumbs>
+      
+    </div>
+
+    <!-- Cards statistiques -->
+<div class="row mb-4">
+
+  <div class="col-lg-3 col-md-6">
+    <div class="card stat-card bg-blue-img">
+      <div class="card-body">
+        <p class="badge bg-info">Total des demandes</p>
+        <h4>{{ total }}</h4>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-3 col-md-6">
+    <div class="card stat-card bg-warning-img">
+      <div class="card-body">
+        <p class="badge bg-warning">En attente</p>
+        <h4>{{ pending }}</h4>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-3 col-md-6">
+    <div class="card stat-card bg-success-img">
+      <div class="card-body">
+        <p class="badge bg-success">Acceptées</p>
+        <h4>{{ accepted }}</h4>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-3 col-md-6">
+    <div class="card stat-card bg-danger-img">
+      <div class="card-body">
+        <p class="badge bg-danger">Refusées</p>
+        <h4>{{ refused }}</h4>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+    <!-- Tableau -->
+    <div class="card">
+      <div class="card-body">
+        <h5 class="mb-3">Liste des demandes</h5>
+        <div class="filters-bar d-flex align-items-center justify-content-between flex-wrap mb-3">
+
+  <div class="d-flex align-items-center gap-3">
+    <!-- Date -->
+    <div class="input-icon">
+      <i class="ti ti-calendar"></i>
+     <input
+  type="text"
+  class="form-control form-control-sm"
+  placeholder="dd/mm/yyyy - dd/mm/yyyy"
+  bsDaterangepicker
+  [(ngModel)]="selectedDateRange"
+  [bsConfig]="bsConfig"
+  (ngModelChange)="applyFilters()"
+/>
+
+    </div>
+
+    <!-- Type -->
+    <div class="dropdown">
+      <button class="btn btn-sm btn-white dropdown-toggle" data-bs-toggle="dropdown">
+        Type de congé
+      </button>
+      <ul class="dropdown-menu">
+  <li>
+    <a class="dropdown-item" (click)="selectLeaveType('')">Tous</a>
+  </li>
+  <li>
+    <a class="dropdown-item" (click)="selectLeaveType('Congé annuel')">
+      Congé annuel
+    </a>
+  </li>
+  <li>
+    <a class="dropdown-item" (click)="selectLeaveType('Congé maladie')">
+      Congé maladie
+    </a>
+  </li>
+  <li>
+    <a class="dropdown-item" (click)="selectLeaveType('Congé exceptionnel')">
+      Congé exceptionnel
+    </a>
+  </li>
+</ul>
+
+    </div>
+
+    <!-- Trier -->
+    <div class="dropdown">
+      <button class="btn btn-sm btn-white dropdown-toggle" data-bs-toggle="dropdown">
+        Trier par : Derniers 7 jours
+      </button>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item">Récemment ajouté</a></li>
+        <li><a class="dropdown-item">Croissant</a></li>
+        <li><a class="dropdown-item">Décroissant</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Search -->
+ <input
+  type="search"
+  class="form-control form-control-sm search-input"
+  placeholder="Search..."
+  [(ngModel)]="searchTerm"
+  (ngModelChange)="applyFilters()"
+/>
+
+</div>
+
+
+        <div class="table-responsive">
+          <table class="table table-hover align-middle">
+            <thead>
+              <tr>
+                <th>Employé</th>
+                <th>Date de demande</th>
+                <th>Type de congé</th> 
+                <th>Statut</th>
+                <th class="text-end">Actions</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let req of filteredRequests">
+
+                <td>
+  <div class="d-flex align-items-center gap-3">
+    <!-- Avatar -->
+    <div class="employee-avatar">
+      <img
+        *ngIf="req.employeeImage; else defaultAvatar"
+        [src]="req.employeeImage"
+        alt="avatar"
+      />
+      <ng-template #defaultAvatar>
+        <div class="avatar-placeholder">
+          {{ req.employeeName.charAt(0) }}
+        </div>
+      </ng-template>
+    </div>
+
+    <!-- Infos -->
+    <div class="employee-info">
+      <div class="employee-name">{{ req.employeeName }}</div>
+      <div class="employee-role">{{ req.employeeRole }}</div>
+    </div>
+  </div>
+</td>
+
+                <td>{{ req.requestDate | date:'dd/MM/yyyy' }}</td>
+                 <td>
+      <span class="fw-medium">{{ req.leaveType }}</span>
+    </td>
+
+                <td>
+                  <span
+                    class="status-badge"
+                    [ngClass]="{
+                      'pending': req.status === 'En attente',
+                      'accepted': req.status === 'Acceptée',
+                      'refused': req.status === 'Refusée'
+                    }">
+                    {{ req.status }}
+                  </span>
+                </td>
+
+                <td class="text-end">
+                  <ng-container *ngIf="req.status === 'En attente'; else noAction">
+                    <button
+                      class="btn btn-success btn-sm me-2"
+                      (click)="accept(req)">
+                      Accepter
+                    </button>
+
+                    <button
+                      class="btn btn-danger btn-sm"
+                      (click)="refuse(req)">
+                      Refuser
+                    </button>
+                  </ng-container>
+
+                  <ng-template #noAction>
+                    <span class="text-muted">—</span>
+                  </ng-template>
+                </td>
+              </tr>
+              <tr *ngIf="filteredRequests.length === 0">
+    <td colspan="5" class="text-center py-4">
+      <span class="text-muted fw-medium">Aucun résultat n’existe</span>
+    </td>
+  </tr>
+            </tbody>
+
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <app-footer></app-footer>
+</div>

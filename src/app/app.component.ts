@@ -21,7 +21,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public base = '';
   public page = '';
   private inactivityTimer?: Subscription;
-  private readonly INACTIVITY_TIME = 60 * 1000; // 1 minute
+  private readonly INACTIVITY_TIME = 24 * 60 * 60 * 1000; // 1 day
   
   constructor(private router: Router) {
     this.router.events.subscribe((event: RouterEvent) => {

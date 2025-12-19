@@ -18,8 +18,8 @@ export class EmployeeGridComponent {
   breadCrumbItems: breadCrumbItems[] =[];
   constructor() {
     this.breadCrumbItems = [
-      { label: 'Employee' },
-      { label: 'Employee Grid', active: true }
+      { label: 'Employés' },
+      { label: 'Grille des employés', active: true }
   ];
 }
 

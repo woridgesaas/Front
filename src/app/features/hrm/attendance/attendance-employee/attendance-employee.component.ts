@@ -52,8 +52,8 @@ export class AttendanceEmployeeComponent {
     private pagination: PaginationService
   ) {
     this.breadCrumbItems = [
-      { label: 'Employee' },
-      { label: 'Attendance Employee', active: true }
+      { label: 'Employés' },
+      { label: 'Présence', active: true }
   ];
   this.data.getattendanceemployee().subscribe((apiRes: apiResultFormat) => {
     this.actualData = apiRes.data;

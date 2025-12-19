@@ -61,8 +61,8 @@ export class DepartmentsComponent implements OnDestroy {
   ) 
   {
     this.breadCrumbItems = [
-      { label: 'Employee' },
-      { label: 'Departments', active: true }
+      { label: 'Employés' },
+      { label: 'Départements', active: true }
   ];
     this.data.getdepartments().subscribe((apiRes: apiResultFormat) => {
       this.actualData = apiRes.data;

@@ -158,8 +158,6 @@ export class DataService {
     );
   }
 
- 
-
   public getattendanceadmin(): Observable<apiResultFormat> {
     return this.http
       .get<apiResultFormat>('assets/json/attendance-admin.json')
@@ -1252,13 +1250,13 @@ export class DataService {
       ],
     },
     {
-      tittle: 'Employee',
+      tittle: 'Employés',
       icon: 'users',
       showAsTab: false,
       separateRoute: false,
       menu: [
         {
-          menuValue: 'Employees',
+          menuValue: 'Employé',
           route: routes.employeeList,
           hasSubRoute: true,
           showSubRoute: false,
@@ -1316,7 +1314,7 @@ export class DataService {
             },
           ],
         },
-      {
+        {
           menuValue: 'Jours fériés',
           base: 'holidays',
           hasSubRoute: true,
@@ -1325,20 +1323,20 @@ export class DataService {
           materialicons: 'confirmation_number',
           subMenus: [
             {
-             menuValue: 'Jours fériés nationaux',
+              menuValue: 'Jours fériés nationaux',
               route: routes.nationalHolidays,
-  base: 'national-holidays'       
-           },
-           {
-            menuValue: 'Jours fériés religieux',
-            route: routes.religiousHolidays,  
-            base: 'religious-holidays',
-    },
-  ],
-},
+              base: 'national-holidays',
+            },
+            {
+              menuValue: 'Jours fériés religieux',
+              route: routes.religiousHolidays,
+              base: 'religious-holidays',
+            },
+          ],
+        },
 
         {
-          menuValue: 'Departments',
+          menuValue: 'Départements',
           route: routes.departments,
           base: 'departments',
           hasSubRoute: false,
@@ -1348,7 +1346,7 @@ export class DataService {
           subMenus: [],
         },
         {
-          menuValue: 'Attendance',
+          menuValue: 'Présence',
           route: routes.sales,
           hasSubRouteTwo: true,
           showSubRoute: false,
@@ -1357,7 +1355,7 @@ export class DataService {
           materialicons: 'track_changes',
           subMenus: [
             {
-              menuValue: 'Leaves',
+              menuValue: 'Congés',
               customSubmenuTwo: true,
               hasSubRoute: true,
               showSubRoute: false,
@@ -1365,19 +1363,13 @@ export class DataService {
               base: 'leaves',
               subMenusTwo: [
                 {
-                  menuValue: 'Leaves (Admin)',
+                  menuValue: 'Congé',
                   route: routes.leaveadmin,
                   base: 'leave-admin',
                   hasSubRoute: false,
                   showSubRoute: false,
                 },
-                {
-                  menuValue: 'Leaves (Employee)',
-                  route: routes.leaveemployee,
-                  base: 'leave-employee',
-                  hasSubRoute: false,
-                  showSubRoute: false,
-                },
+
                 {
                   menuValue: 'Leave Settings',
                   route: routes.leavesettings,
@@ -1389,15 +1381,9 @@ export class DataService {
             },
 
             {
-              menuValue: 'Attendance (Admin)',
+              menuValue: 'Présence/Absence',
               route: routes.attendanceadmin,
               base: 'attendance-admin',
-              customSubmenuTwo: false,
-            },
-            {
-              menuValue: 'Attendance (Employee)',
-              route: routes.attendanceemployee,
-              base: 'attendance-employee',
               customSubmenuTwo: false,
             },
           ],
@@ -1412,8 +1398,34 @@ export class DataService {
           materialicons: 'group_add',
           subMenus: [],
         },
+      {
+  menuValue: 'Validation',
+  base: 'validation',
+  icon: 'file-time',
+  materialicons: 'fact_check',
+  hasSubRoute: true,
+  showSubRoute: false,
+  subMenus: [
+    {
+      menuValue: 'Valider justification',
+      route: routes.justifyValidation,
+      hasSubRoute: false,
+      showSubRoute: false,
+      base: 'justify-validation',
+    },
+    {
+      menuValue: 'Valider congé',
+      route: routes.validateLeave,
+      hasSubRoute: false,
+      showSubRoute: false,
+      base: 'validate-leave',
+    },
+  ],
+},
+
+
         {
-          menuValue: 'Resignation',
+          menuValue: 'Démission',
           route: routes.resignation,
           hasSubRoute: false,
           showSubRoute: false,
@@ -1538,6 +1550,8 @@ export class DataService {
             },
           ],
         },
+
+        //* Settings
         {
           menuValue: 'Settings',
           hasSubRouteTwo: true,
@@ -1564,73 +1578,6 @@ export class DataService {
                   hasSubRoute: false,
                   showSubRoute: false,
                 },
-                {
-                  menuValue: 'Notifications',
-                  route: routes.notificationSettings,
-                  base: 'notification-settings',
-                  hasSubRoute: false,
-                  showSubRoute: false,
-                },
-                {
-                  menuValue: 'Connected Apps',
-                  route: routes.connectedApps,
-                  base: 'connected-apps',
-                  hasSubRoute: false,
-                  showSubRoute: false,
-                },
-              ],
-            },
-            {
-              menuValue: 'Website Settings',
-              customSubmenuTwo: true,
-              base: 'website-settings',
-              subMenusTwo: [
-                {
-                  menuValue: 'Business Settings',
-                  route: routes.bussinessSettings,
-                  base: 'bussiness-settings',
-                },
-                {
-                  menuValue: 'SEO Settings',
-                  route: routes.seoSettings,
-                  base: 'seo-settings',
-                },
-                {
-                  menuValue: 'Localization',
-                  route: routes.localizationSettings,
-                  base: 'localization-settings',
-                },
-                {
-                  menuValue: 'Prefixes',
-                  route: routes.prefixes,
-                  base: 'prefixes',
-                },
-                {
-                  menuValue: 'Preferences',
-                  route: routes.preferences,
-                  base: 'preferences',
-                },
-                {
-                  menuValue: 'Appearance',
-                  route: routes.appearance,
-                  base: 'appearance',
-                },
-                {
-                  menuValue: 'Language',
-                  route: routes.language,
-                  base: 'language',
-                  base2: 'add-language',
-                },
-                {
-                  menuValue: 'Authentication',
-                  route: routes.authenticationSettings,
-                  base: 'authentication-settings',
-                },
-                {
-                  menuValue: 'AI Settings',
-                  route: routes.aiSettings,
-                  base: 'ai-settings',
-                },
               ],
             },
             {
@@ -1639,135 +1586,9 @@ export class DataService {
               base: 'app-settings',
               subMenusTwo: [
                 {
-                  menuValue: 'Salary Settings',
-                  route: routes.salarySettings,
-                  base: 'salary-settings',
-                },
-                {
-                  menuValue: 'Approval Settings',
-                  route: routes.approvalSettings,
-                  base: 'approval-settings',
-                },
-                {
-                  menuValue: 'Invoice Settings',
-                  route: routes.invoiceSettings,
-                  base: 'invoice-settings',
-                },
-                {
                   menuValue: 'Leave Type',
                   route: routes.leaveType,
                   base: 'leave-type',
-                },
-                {
-                  menuValue: 'Custom Fields',
-                  route: routes.customFields,
-                  base: 'custom-fields',
-                },
-              ],
-            },
-            {
-              menuValue: 'System Settings',
-              customSubmenuTwo: true,
-              base: 'system-settings',
-              subMenusTwo: [
-                {
-                  menuValue: 'Email Settings',
-                  route: routes.emailSettings,
-                  base: 'email-settings',
-                },
-                {
-                  menuValue: 'Email Templates',
-                  route: routes.emailTemplate,
-                  base: 'email-template',
-                },
-                {
-                  menuValue: 'SMS Settings',
-                  route: routes.smsSettings,
-                  base: 'sms-settings',
-                },
-                {
-                  menuValue: 'SMS Templates',
-                  route: routes.smsTemplate,
-                  base: 'sms-template',
-                },
-                {
-                  menuValue: 'OTP',
-                  route: routes.otpSettings,
-                  base: 'otp-settings',
-                },
-                {
-                  menuValue: 'GDPR Cookies',
-                  route: routes.gdpr,
-                  base: 'gdpr',
-                },
-                {
-                  menuValue: 'Maintenance Mode',
-                  route: routes.maintenanceMode,
-                  base: 'maintenance-mode',
-                },
-              ],
-            },
-            {
-              menuValue: 'Financial Settings',
-              customSubmenuTwo: true,
-              base: 'financial-settings',
-              subMenusTwo: [
-                {
-                  menuValue: 'Payment Gateways',
-                  route: routes.paymentGateways,
-                  base: 'payment-gateways',
-                },
-                {
-                  menuValue: 'Tax Rate',
-                  route: routes.taxRates,
-                  base: 'tax-rates',
-                },
-                {
-                  menuValue: 'Currencies',
-                  route: routes.currencies,
-                  base: 'currencies',
-                },
-              ],
-            },
-            {
-              menuValue: 'Other Settings',
-              customSubmenuTwo: true,
-              base: 'other-settings',
-              subMenusTwo: [
-                {
-                  menuValue: 'Custom CSS',
-                  route: routes.customCss,
-                  base: 'custom-css',
-                },
-                {
-                  menuValue: 'Custom JS',
-                  route: routes.customjs,
-                  base: 'custom-js',
-                },
-                {
-                  menuValue: 'Cronjob',
-                  route: routes.cronjob,
-                  base: 'cronjob',
-                },
-                {
-                  menuValue: 'Storage',
-                  route: routes.storagesettings,
-                  base: 'storage-settings',
-                },
-                {
-                  menuValue: 'Ban IP Address',
-                  route: routes.banIpaddress,
-                  base: 'ban-ip-address',
-                },
-                {
-                  menuValue: 'Backup',
-                  route: routes.backup,
-                  base: 'backup',
-                },
-                {
-                  menuValue: 'Clear Cache',
-                  route: routes.clearcache,
-                  base: 'clear-cache',
                 },
               ],
             },
@@ -1967,48 +1788,43 @@ export class DataService {
                 },
               ],
             },
-           {
+            {
               menuValue: 'Jours fériés',
               base: 'holidays',
               customSubmenuTwo: true,
 
               subMenusTwo: [
-              {
+                {
                   menuValue: 'Jours fériés nationaux',
                   route: routes.nationalHolidays,
-                  base: 'national-holidays'       
+                  base: 'national-holidays',
+                },
+                {
+                  menuValue: 'Jours fériés religieux',
+                  route: routes.religiousHolidays,
+                  base: 'religious-holidays',
+                },
+              ],
             },
-             {
-                 menuValue: 'Jours fériés religieux',
-                route: routes.religiousHolidays,  
-                 base: 'religious-holidays',
-            },
-          ],
-          },
 
             {
-                menuValue: 'Departments',
-                route: routes.departments,
-                base: 'departments',
-                customSubmenuTwo: false,
+              menuValue: 'Départements',
+              route: routes.departments,
+              base: 'departments',
+              customSubmenuTwo: false,
             },
             {
-              menuValue: 'Attendance',
+              menuValue: 'Présence',
               base: 'attendance',
               customSubmenuTwo: true,
               subMenusTwo: [
                 {
-                  menuValue: 'Leaves (Admin)',
+                  menuValue: 'Congé',
                   route: routes.leaveadmin,
                   hasSubRoute: false,
                   showSubRoute: false,
                 },
-                {
-                  menuValue: 'Leaves (Employee)',
-                  route: routes.leaveemployee,
-                  hasSubRoute: false,
-                  showSubRoute: false,
-                },
+
                 {
                   menuValue: 'Leave Settings',
                   route: routes.leavesettings,
@@ -2016,14 +1832,9 @@ export class DataService {
                   showSubRoute: false,
                 },
                 {
-                  menuValue: 'Attendance (Admin)',
+                  menuValue: 'Présence/Absence',
                   route: routes.attendanceadmin,
                   base: 'attendance-admin',
-                },
-                {
-                  menuValue: 'Attendance (Employee)',
-                  route: routes.attendanceemployee,
-                  base: 'attendance-employee',
                 },
               ],
             },
@@ -2034,6 +1845,29 @@ export class DataService {
               base: 'promotion',
               customSubmenuTwo: false,
             },
+           {
+  menuValue: 'Validation',
+  base: 'validation',
+  customSubmenuTwo: true,
+  subMenusTwo: [
+    {
+      menuValue: 'Valider justification',
+      route: routes.justifyValidation,
+      base: 'justify-validation',
+      hasSubRoute: false,
+      showSubRoute: false,
+    },
+    {
+      menuValue: 'Valider congé',
+      route: routes.validateLeave,
+      base: 'validate-leave',
+      hasSubRoute: false,
+      showSubRoute: false,
+    },
+  ],
+},
+
+
             {
               menuValue: 'Resignation',
               route: routes.resignation,
@@ -2042,6 +1876,36 @@ export class DataService {
             },
           ],
         },
+        {
+          menuValue: 'RH Externe',
+          hasSubRoute: true,
+          showSubRoute: false,
+          icon: 'users',
+          base: 'rh-externe',
+          subMenus: [
+            {
+              menuValue: 'Offres',
+              route: routes.jobsGrid,
+              base: 'jobs-grid',
+            },
+            {
+              menuValue: 'Candidats',
+              route: routes.candidateslist,
+              base: 'candidates-grid',
+            },
+            {
+              menuValue: 'Filtrage',
+              route: routes.FiltrageList,
+              base: 'filtrage',
+            },
+            {
+              menuValue: 'Entretiens',
+              route: routes.Entretient,
+              base: 'entretiens',
+            },
+          ],
+        },
+
         {
           menuValue: 'Administration',
           hasSubRouteTwo: true,
@@ -2056,25 +1920,6 @@ export class DataService {
 
           base10: 'reports',
           subMenus: [
-            {
-              menuValue: 'RH Extern',
-              base: 'jobs',
-              base2: 'candidates',
-              base3: 'refferals',
-              customSubmenuTwo: true,
-              subMenusTwo: [
-                {
-                  menuValue: 'Jobs',
-                  route: routes.jobsGrid,
-                  base: 'jobs-grid',
-                },
-                {
-                  menuValue: 'Candidats',
-                  route: routes.candidateslist,
-                  base: 'candidates-grid',
-                },
-              ],
-            },
             {
               menuValue: 'Payroll',
               base: 'payroll',
@@ -2144,73 +1989,6 @@ export class DataService {
                   hasSubRoute: false,
                   showSubRoute: false,
                 },
-                {
-                  menuValue: 'Notifications',
-                  route: routes.notificationSettings,
-                  base: 'notification-settings',
-                  hasSubRoute: false,
-                  showSubRoute: false,
-                },
-                {
-                  menuValue: 'Connected Apps',
-                  route: routes.connectedApps,
-                  base: 'connected-apps',
-                  hasSubRoute: false,
-                  showSubRoute: false,
-                },
-              ],
-            },
-            {
-              menuValue: 'Website Settings',
-              customSubmenuTwo: true,
-              base: 'website-settings',
-              subMenusTwo: [
-                {
-                  menuValue: 'Business Settings',
-                  route: routes.bussinessSettings,
-                  base: 'bussiness-settings',
-                },
-                {
-                  menuValue: 'SEO Settings',
-                  route: routes.seoSettings,
-                  base: 'seo-settings',
-                },
-                {
-                  menuValue: 'Localization',
-                  route: routes.localizationSettings,
-                  base: 'localization-settings',
-                },
-                {
-                  menuValue: 'Prefixes',
-                  route: routes.prefixes,
-                  base: 'prefixes',
-                },
-                {
-                  menuValue: 'Preferences',
-                  route: routes.preferences,
-                  base: 'preferences',
-                },
-                {
-                  menuValue: 'Appearance',
-                  route: routes.appearance,
-                  base: 'appearance',
-                },
-                {
-                  menuValue: 'Language',
-                  route: routes.language,
-                  base: 'language',
-                  base2: 'add-language',
-                },
-                {
-                  menuValue: 'Authentication',
-                  route: routes.authenticationSettings,
-                  base: 'authentication-settings',
-                },
-                {
-                  menuValue: 'AI Settings',
-                  route: routes.aiSettings,
-                  base: 'ai-settings',
-                },
               ],
             },
             {
@@ -2219,135 +1997,9 @@ export class DataService {
               base: 'app-settings',
               subMenusTwo: [
                 {
-                  menuValue: 'Salary Settings',
-                  route: routes.salarySettings,
-                  base: 'salary-settings',
-                },
-                {
-                  menuValue: 'Approval Settings',
-                  route: routes.approvalSettings,
-                  base: 'approval-settings',
-                },
-                {
-                  menuValue: 'Invoice Settings',
-                  route: routes.invoiceSettings,
-                  base: 'invoice-settings',
-                },
-                {
                   menuValue: 'Leave Type',
                   route: routes.leaveType,
                   base: 'leave-type',
-                },
-                {
-                  menuValue: 'Custom Fields',
-                  route: routes.customFields,
-                  base: 'custom-fields',
-                },
-              ],
-            },
-            {
-              menuValue: 'System Settings',
-              customSubmenuTwo: true,
-              base: 'system-settings',
-              subMenusTwo: [
-                {
-                  menuValue: 'Email Settings',
-                  route: routes.emailSettings,
-                  base: 'email-settings',
-                },
-                {
-                  menuValue: 'Email Templates',
-                  route: routes.emailTemplate,
-                  base: 'email-template',
-                },
-                {
-                  menuValue: 'SMS Settings',
-                  route: routes.smsSettings,
-                  base: 'sms-settings',
-                },
-                {
-                  menuValue: 'SMS Templates',
-                  route: routes.smsTemplate,
-                  base: 'sms-template',
-                },
-                {
-                  menuValue: 'OTP',
-                  route: routes.otpSettings,
-                  base: 'otp-settings',
-                },
-                {
-                  menuValue: 'GDPR Cookies',
-                  route: routes.gdpr,
-                  base: 'gdpr',
-                },
-                {
-                  menuValue: 'Maintenance Mode',
-                  route: routes.maintenanceMode,
-                  base: 'maintenance-mode',
-                },
-              ],
-            },
-            {
-              menuValue: 'Financial Settings',
-              customSubmenuTwo: true,
-              base: 'financial-settings',
-              subMenusTwo: [
-                {
-                  menuValue: 'Payment Gateways',
-                  route: routes.paymentGateways,
-                  base: 'payment-gateways',
-                },
-                {
-                  menuValue: 'Tax Rate',
-                  route: routes.taxRates,
-                  base: 'tax-rates',
-                },
-                {
-                  menuValue: 'Currencies',
-                  route: routes.currencies,
-                  base: 'currencies',
-                },
-              ],
-            },
-            {
-              menuValue: 'Other Settings',
-              customSubmenuTwo: true,
-              base: 'other-settings',
-              subMenusTwo: [
-                {
-                  menuValue: 'Custom CSS',
-                  route: routes.customCss,
-                  base: 'custom-css',
-                },
-                {
-                  menuValue: 'Custom JS',
-                  route: routes.customjs,
-                  base: 'custom-js',
-                },
-                {
-                  menuValue: 'Cronjob',
-                  route: routes.cronjob,
-                  base: 'cronjob',
-                },
-                {
-                  menuValue: 'Storage',
-                  route: routes.storagesettings,
-                  base: 'storage-settings',
-                },
-                {
-                  menuValue: 'Ban IP Address',
-                  route: routes.banIpaddress,
-                  base: 'ban-ip-address',
-                },
-                {
-                  menuValue: 'Backup',
-                  route: routes.backup,
-                  base: 'backup',
-                },
-                {
-                  menuValue: 'Clear Cache',
-                  route: routes.clearcache,
-                  base: 'clear-cache',
                 },
               ],
             },
