@@ -158,8 +158,6 @@ export class DataService {
     );
   }
 
- 
-
   public getattendanceadmin(): Observable<apiResultFormat> {
     return this.http
       .get<apiResultFormat>('assets/json/attendance-admin.json')
@@ -1316,7 +1314,7 @@ export class DataService {
             },
           ],
         },
-      {
+        {
           menuValue: 'Jours fériés',
           base: 'holidays',
           hasSubRoute: true,
@@ -1325,17 +1323,17 @@ export class DataService {
           materialicons: 'confirmation_number',
           subMenus: [
             {
-             menuValue: 'Jours fériés nationaux',
+              menuValue: 'Jours fériés nationaux',
               route: routes.nationalHolidays,
-  base: 'national-holidays'       
-           },
-           {
-            menuValue: 'Jours fériés religieux',
-            route: routes.religiousHolidays,  
-            base: 'religious-holidays',
-    },
-  ],
-},
+              base: 'national-holidays',
+            },
+            {
+              menuValue: 'Jours fériés religieux',
+              route: routes.religiousHolidays,
+              base: 'religious-holidays',
+            },
+          ],
+        },
 
         {
           menuValue: 'Départements',
@@ -1371,7 +1369,7 @@ export class DataService {
                   hasSubRoute: false,
                   showSubRoute: false,
                 },
-               
+              
                 {
                   menuValue: 'Leave Settings',
                   route: routes.leavesettings,
@@ -1383,12 +1381,12 @@ export class DataService {
             },
 
             {
-              menuValue: 'Présence',
+              menuValue: 'Présence/Absence',
               route: routes.attendanceadmin,
               base: 'attendance-admin',
               customSubmenuTwo: false,
             },
-           
+          
           ],
         },
         {
@@ -1401,6 +1399,17 @@ export class DataService {
           materialicons: 'group_add',
           subMenus: [],
         },
+        {
+          menuValue: 'Valider justification',
+          route: routes.justifyValidation,
+          hasSubRoute: false,
+          showSubRoute: false,
+          icon: 'external-link',
+          base: 'justify-validation',
+          materialicons: 'fact_check',
+          subMenus: [],
+        },
+
         {
           menuValue: 'Démission',
           route: routes.resignation,
@@ -1528,7 +1537,7 @@ export class DataService {
           ],
         },
 
-        //* Settings 
+        //* Settings
         {
           menuValue: 'Settings',
           hasSubRouteTwo: true,
@@ -1765,30 +1774,30 @@ export class DataService {
                 },
               ],
             },
-           {
+            {
               menuValue: 'Jours fériés',
               base: 'holidays',
               customSubmenuTwo: true,
 
               subMenusTwo: [
-              {
+                {
                   menuValue: 'Jours fériés nationaux',
                   route: routes.nationalHolidays,
-                  base: 'national-holidays'       
+                  base: 'national-holidays',
+                },
+                {
+                  menuValue: 'Jours fériés religieux',
+                  route: routes.religiousHolidays,
+                  base: 'religious-holidays',
+                },
+              ],
             },
-             {
-                 menuValue: 'Jours fériés religieux',
-                route: routes.religiousHolidays,  
-                 base: 'religious-holidays',
-            },
-          ],
-          },
 
             {
-                menuValue: 'Départements',
-                route: routes.departments,
-                base: 'departments',
-                customSubmenuTwo: false,
+              menuValue: 'Départements',
+              route: routes.departments,
+              base: 'departments',
+              customSubmenuTwo: false,
             },
             {
               menuValue: 'Présence',
@@ -1796,11 +1805,12 @@ export class DataService {
               customSubmenuTwo: true,
               subMenusTwo: [
                 {
-                  menuValue: 'Congés',
+                  menuValue: 'Congé',
                   route: routes.leaveadmin,
                   hasSubRoute: false,
                   showSubRoute: false,
                 },
+                
                 {
                   menuValue: 'Leave Settings',
                   route: routes.leavesettings,
@@ -1808,7 +1818,7 @@ export class DataService {
                   showSubRoute: false,
                 },
                 {
-                  menuValue: 'Présence/absence',
+                  menuValue: 'Présence/Absence',
                   route: routes.attendanceadmin,
                   base: 'attendance-admin',
                 },
@@ -1823,7 +1833,14 @@ export class DataService {
               customSubmenuTwo: false,
             },
             {
-              menuValue: 'Démission',
+              menuValue: 'Valider justification',
+              route: routes.justifyValidation,
+              base: 'justify-validation',
+              customSubmenuTwo: false,
+            },
+
+            {
+              menuValue: 'Resignation',
               route: routes.resignation,
               base: 'resignation',
               customSubmenuTwo: false,
@@ -1859,7 +1876,7 @@ export class DataService {
             },
           ],
         },
-        
+
         {
           menuValue: 'Administration',
           hasSubRouteTwo: true,
@@ -1874,7 +1891,6 @@ export class DataService {
 
           base10: 'reports',
           subMenus: [
-            
             {
               menuValue: 'Payroll',
               base: 'payroll',
