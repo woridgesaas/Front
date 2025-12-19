@@ -1,4 +1,45 @@
-  export interface sondage{
+export interface Sondage {
+  id: number;
+  titre: string;
+  description?: string;
+  auteur: string;
+  departement: string;
+  dateCreation: string;       
+  dateExpiration: string;    
+  statut: 'Actif' | 'Expiré' ;
+  
+  // Options du sondage
+  options: SondageOption[];
+  
+  // donnes de participation
+  totalVotes: number;
+  tauxParticipation?: number; 
+  
+  // Pour l'afficher (fil d'actualité)  (votant)
+  selectedOption?: number;   
+  voted?: boolean;          
+  
+  // Pour l'affichage admin
+  participants?: number;     
+  participationRate?: number;
+  expiration?: number;
+  nbrOptions?: number;  
+  isSelected?: boolean;     
+}
+
+export interface SondageOption {
+  id: number;
+  texte: string;
+  votes: number;
+  pourcentage?: number;      
+  couleur?: string;          // Pour les charts
+}
+export interface SondageForm{
+    titre: string;
+    description?: string;
+    options: string[];
+}
+  export interface sondageEmployes{
      id: number;
     titre: string;
     creeIlYa: string;
@@ -12,6 +53,7 @@
   skip: number;
   limit: number;
 }
+
 export interface apiResultFormat {
   data: [];
   totalData: number;

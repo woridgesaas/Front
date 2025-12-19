@@ -1,0 +1,67 @@
+<div class="modal fade" id="creerSondageModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Créer un sondage</h5>
+      </div>
+      
+      <form #form="ngForm" (ngSubmit)="creerSondage(form)">
+        <div class="modal-body">
+          
+          <!-- Titre avec message d'erreur -->
+          <div class="mb-3">
+            <label>Titre *</label>
+            <input type="text" 
+                   class="form-control" 
+                   name="titre" 
+                   [(ngModel)]="newSondage.titre"
+                   required>
+            
+            @if(form.controls['titre']?.invalid) {
+              <div class="text-danger small">Le titre est obligatoire</div>
+            }
+
+          </div>
+          <!-- Description -->
+              <div class="mb-3">
+                <label>Description</label>
+                <textarea class="form-control" 
+                          name="description"
+                          [(ngModel)]="newSondage.description"
+                          rows="2"></textarea>
+              </div>
+            
+          <!-- Options avec messages d'erreur -->
+          <div class="mb-3">
+            <label>Options * (minimum 2)</label>
+             @for (option of newSondage.options; track $index) {
+                <input type="text"
+                        class="form-control mb-2"
+                        name="option{{ $index + 1 }}"
+                        [(ngModel)]="newSondage.options[$index]"
+                        required>
+                @if (form.controls['option' + ($index + 1)]?.invalid) {
+                    <div class="text-danger small mb-2">
+                    Option {{ $index + 1 }} obligatoire
+                    </div>
+                }
+            }
+              <button style="background-color: #02a8b5;color:whitesmoke" type="button" 
+                    class="btn btn-sm mt-2"
+                    (click)="ajouterOption()">
+                + Ajouter une option
+            </button>
+          </div>
+          
+        </div>
+        
+        <div class="modal-footer">
+          <button  class="btn btn-secondary" (click)="annuler(form)">Annuler</button >
+          <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Créer</button>
+          
+        </div>
+      </form>
+      
+    </div>
+  </div>
+</div>
