@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { CollapseHeaderComponent } from '../../common/collapse-header/collapse-header.component';
 import { DateRangePickerComponent } from '../../common/date-range-picker/date-range-picker.component';
 import { BreadcrumbsComponent } from '../../common/breadcrumbs/breadcrumbs.component';
+import { FooterComponent } from '../../common/footer/footer.component';
 
 
 interface Entretien {
@@ -47,7 +48,7 @@ interface Interviewer {
   styleUrl: './interviews-planning.component.scss',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule, BreadcrumbsComponent, 
-            CollapseHeaderComponent, DateRangePickerComponent]
+            CollapseHeaderComponent, DateRangePickerComponent,FooterComponent]
 })
 export class InterviewsPlanningComponent {
   // Mode d'affichage

@@ -30,7 +30,7 @@
             @for (subMenus of menu.subMenus; track subMenus) {
             <li>
               <a
-              (click)="settings.changeLayoutMode('2')"
+              (click)="settings.changeLayoutMode('3')"
                 [routerLink]="subMenus.route"
                 [class.active]="
                   page === subMenus.base || base === subMenus.base
