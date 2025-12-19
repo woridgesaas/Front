@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient} from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
@@ -13,7 +13,7 @@ import { routes } from '../../../shared/routes/routes';
 @Component({
   standalone: true,
   selector: 'app-validate-justification',
-  templateUrl: './validate-justification.component.html',
+ templateUrl: './validate-justification.component.html',
   styleUrls: ['./validate-justification.component.scss'],
 imports: [
   CommonModule,
