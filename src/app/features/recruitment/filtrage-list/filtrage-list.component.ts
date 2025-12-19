@@ -5,6 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSortModule, Sort } from '@angular/material/sort';
+import { RouterOutlet } from '@angular/router';
+import { FooterComponent } from '../../common/footer/footer.component';
 
 // Interface Candidat
 export interface CandidateInfo {
@@ -49,6 +51,8 @@ interface FiltrageForm {
     FormsModule,
     MatSortModule,
     RouterLink,
+    RouterOutlet,
+    FooterComponent,
   ],
   templateUrl: './filtrage-list.component.html',
   styleUrls: ['./filtrage-list.component.scss']
