@@ -158,8 +158,6 @@ export class DataService {
     );
   }
 
- 
-
   public getattendanceadmin(): Observable<apiResultFormat> {
     return this.http
       .get<apiResultFormat>('assets/json/attendance-admin.json')
@@ -1316,7 +1314,7 @@ export class DataService {
             },
           ],
         },
-      {
+        {
           menuValue: 'Jours fériés',
           base: 'holidays',
           hasSubRoute: true,
@@ -1325,17 +1323,17 @@ export class DataService {
           materialicons: 'confirmation_number',
           subMenus: [
             {
-             menuValue: 'Jours fériés nationaux',
+              menuValue: 'Jours fériés nationaux',
               route: routes.nationalHolidays,
-  base: 'national-holidays'       
-           },
-           {
-            menuValue: 'Jours fériés religieux',
-            route: routes.religiousHolidays,  
-            base: 'religious-holidays',
-    },
-  ],
-},
+              base: 'national-holidays',
+            },
+            {
+              menuValue: 'Jours fériés religieux',
+              route: routes.religiousHolidays,
+              base: 'religious-holidays',
+            },
+          ],
+        },
 
         {
           menuValue: 'Departments',
@@ -1412,6 +1410,17 @@ export class DataService {
           materialicons: 'group_add',
           subMenus: [],
         },
+        {
+          menuValue: 'Valider justification',
+          route: routes.justifyValidation,
+          hasSubRoute: false,
+          showSubRoute: false,
+          icon: 'external-link',
+          base: 'justify-validation',
+          materialicons: 'fact_check',
+          subMenus: [],
+        },
+
         {
           menuValue: 'Resignation',
           route: routes.resignation,
@@ -1539,7 +1548,7 @@ export class DataService {
           ],
         },
 
-        //* Settings 
+        //* Settings
         {
           menuValue: 'Settings',
           hasSubRouteTwo: true,
@@ -1776,30 +1785,30 @@ export class DataService {
                 },
               ],
             },
-           {
+            {
               menuValue: 'Jours fériés',
               base: 'holidays',
               customSubmenuTwo: true,
 
               subMenusTwo: [
-              {
+                {
                   menuValue: 'Jours fériés nationaux',
                   route: routes.nationalHolidays,
-                  base: 'national-holidays'       
+                  base: 'national-holidays',
+                },
+                {
+                  menuValue: 'Jours fériés religieux',
+                  route: routes.religiousHolidays,
+                  base: 'religious-holidays',
+                },
+              ],
             },
-             {
-                 menuValue: 'Jours fériés religieux',
-                route: routes.religiousHolidays,  
-                 base: 'religious-holidays',
-            },
-          ],
-          },
 
             {
-                menuValue: 'Departments',
-                route: routes.departments,
-                base: 'departments',
-                customSubmenuTwo: false,
+              menuValue: 'Departments',
+              route: routes.departments,
+              base: 'departments',
+              customSubmenuTwo: false,
             },
             {
               menuValue: 'Attendance',
@@ -1844,6 +1853,13 @@ export class DataService {
               customSubmenuTwo: false,
             },
             {
+              menuValue: 'Valider justification',
+              route: routes.justifyValidation,
+              base: 'justify-validation',
+              customSubmenuTwo: false,
+            },
+
+            {
               menuValue: 'Resignation',
               route: routes.resignation,
               base: 'resignation',
@@ -1880,9 +1896,7 @@ export class DataService {
             },
           ],
         },
-        
-        
-        
+
         {
           menuValue: 'Administration',
           hasSubRouteTwo: true,
@@ -1897,7 +1911,6 @@ export class DataService {
 
           base10: 'reports',
           subMenus: [
-            
             {
               menuValue: 'Payroll',
               base: 'payroll',

@@ -124,6 +124,13 @@ export const routes: Routes = [
      
       { path: 'promotion' , loadComponent: () => import('./features/hrm/promotion/promotion.component').then(m => m.PromotionComponent),},
       { path: 'resignation' , loadComponent: () => import('./features/hrm/resignation/resignation.component').then(m => m.ResignationComponent),},
+{
+  path: 'justify-validation',
+  loadComponent: () =>
+    import('./features/hrm/validate-justification/validate-justification.component')
+      .then(m => m.ValidateJustificationComponent),
+},
+
       // candidat
       { path: 'candidates' , loadComponent: () => import('./features/recruitment/candidates/candidates.component').then(m => m.CandidatesComponent),
         children: [

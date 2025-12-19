@@ -82,7 +82,7 @@ religiousHolidays: '/holidays/religious-holidays',
 
   promotion: '/promotion',
   resignation: '/resignation',
-
+  justifyValidation: '/justify-validation',
   jobsList: '/jobs/jobs-list',
   jobsGrid: '/jobs/jobs-grid',
   userDashboard: '/jobs/user-dashboard',
