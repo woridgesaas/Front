@@ -1,0 +1,96 @@
+{
+  "data": [
+    {
+      "EmpId": "Emp-001",
+      "Name": "Anthony Lewis",
+      "Image": "user-32.jpg",
+      "Email": "anthony@example.com",
+      "Phone": "(123) 4567 890",
+      "Designation": "Finance",
+      "Status": "En attente"
+    },
+    {
+      "EmpId": "Emp-002",
+      "Name": "Brian Villalobos",
+      "Image": "user-09.jpg",
+      "Email": "brian@example.com",
+      "Phone": "(179) 7382 829",
+      "Designation": "Ventes",
+      "Status": "En attente"
+    },
+    {
+      "EmpId": "Emp-003",
+      "Name": "Harvey Smith",
+      "Image": "user-01.jpg",
+      "Email": "harvey@example.com",
+      "Phone": "(184) 2719 738",
+      "Designation": "Ventes",
+      "Status": "En attente"
+    },
+    {
+      "EmpId": "Emp-004",
+      "Name": "Stephan Peralt",
+      "Image": "user-33.jpg",
+      "Email": "peral@example.com",
+      "Phone": "(193) 7839 748",
+      "Designation": "Marketing",
+      "Status": "En attente"
+    },
+    {
+      "EmpId": "Emp-005",
+      "Name": "Doglas Martini",
+      "Image": "user-34.jpg",
+      "Email": "martniwr@example.com",
+      "Phone": "(183) 9302 890",
+      "Designation": "Développement commercial",
+      "Status": "En attente"
+    },
+    {
+      "EmpId": "Emp-006",
+      "Name": "Linda Ray",
+      "Image": "user-02.jpg",
+      "Email": "ray456@example.com",
+      "Phone": "(120) 3728 039",
+      "Designation": "Finance",
+     
+      "Status": "En attente"
+    },
+    {
+      "EmpId": "Emp-007",
+      "Name": "Elliot Murray",
+      "Image": "user-35.jpg",
+      "Email": "murray@example.com",
+      "Phone": "(102) 8480 832",
+      "Designation": "Ventes",
+      "Status": "En attente"
+    },
+    {
+      "EmpId": "Emp-008",
+      "Name": "Rebecca Smith",
+      "Image": "user-36.jpg",
+      "Email": "smtih@example.com",
+      "Phone": "(162) 8920 713",
+      "Designation": "Développement d’applications",
+      "Status": "En attente"
+    },
+    {
+      "EmpId": "Emp-009",
+      "Name": "Connie Waters",
+      "Image": "user-37.jpg",
+      "Email": "connie@example.com",
+      "Phone": "(189) 0920 723",
+      "Designation": "Administration",
+      "Status": "En attente"
+    },
+    {
+      "EmpId": "Emp-010",
+      "Name": "Lori Broaddus",
+      "Image": "user-38.jpg",
+      "Email": "broaddus@example.com",
+      "Phone": "(168) 8392 823",
+      "Designation": "Finance",
+      "Status": "En attente"
+    }
+  ],
+  "totalData": 10
+}
