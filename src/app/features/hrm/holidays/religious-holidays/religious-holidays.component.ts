@@ -23,11 +23,20 @@ styleUrls: ['../holidays.components.scss']
 })
 export class ReligiousHolidaysComponent {
 
+  today = new Date();
+
+  nextHoliday = {
+    name: 'Aïd Al-Fitr',
+    date: new Date('2025-03-20'),
+    days: 2
+  };
+
   breadCrumbItems = [
     { label: 'Employée', link: '/employee' },
     { label: 'Jours fériés' },
     { label: 'Fêtes religieuses', active: true }
   ];
-  bsRangeValue?: Date[];
 
+  bsRangeValue?: Date[];
 }
+

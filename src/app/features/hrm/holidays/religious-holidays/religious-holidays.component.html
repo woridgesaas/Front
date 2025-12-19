@@ -1,115 +1,191 @@
 <div class="page-wrapper">
   <div class="content">
-    <!-- Breadcrumb -->
-    <div
-      class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3"
-    >
+
+    <div class="page-breadcrumb mb-3">
       <app-breadcrumbs
         title="Fêtes religieuses"
         [breadcrumbItems]="breadCrumbItems"
-      >
-      </app-breadcrumbs>
+      ></app-breadcrumbs>
     </div>
+
+   <div class="row mb-4">
+
+  <!-- Aujourd’hui -->
+  <div class="col-lg-3 col-md-6 d-flex">
+    <div class="card flex-fill">
+      <div class="card-body d-flex align-items-center justify-content-between">
+
+        <div class="d-flex align-items-center overflow-hidden">
+          <span class="avatar avatar-lg bg-primary rounded-circle me-2">
+            <i class="ti ti-calendar"></i>
+          </span>
+          <div class="overflow-hidden">
+            <p class="fs-12 fw-medium mb-1 text-truncate">Aujourd’hui</p>
+            <h4 class="mb-0">19 Dec 2025</h4>
+          </div>
+        </div>
+
+        <div>
+          <span class="badge badge-primary badge-sm fw-normal">
+            <i class="ti ti-arrow-wave-right-up"></i>
+            Aujourd’hui
+          </span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Prochain congé -->
+  <div class="col-lg-3 col-md-6 d-flex">
+    <div class="card flex-fill">
+      <div class="card-body d-flex align-items-center justify-content-between">
+
+        <div class="d-flex align-items-center overflow-hidden">
+          <span class="avatar avatar-lg bg-success rounded-circle me-2">
+            <i class="ti ti-moon"></i>
+          </span>
+          <div class="overflow-hidden">
+            <p class="fs-12 fw-medium mb-1 text-truncate">Prochain congé</p>
+            <h4 class="mb-0">Aïd Al-Fitr</h4>
+          </div>
+        </div>
+
+        <div>
+          <span class="badge badge-success badge-sm fw-normal">
+            <i class="ti ti-calendar"></i>
+            20 Mar
+          </span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
     <!-- /Breadcrumb -->
 
+    <!-- Card -->
     <div class="card">
-      <div class="card-header holidays-header">
+      <!-- Card Header -->
+      <div
+        class="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3"
+      >
         <h5 class="mb-0">Liste des fêtes religieuses</h5>
 
-        <div class="date-filter position-relative">
-          <i class="ti ti-calendar calendar-icon"></i>
-          <input
-            type="text"
-            class="form-control date-range-input"
-            bsDaterangepicker
-            [(ngModel)]="bsRangeValue"
-            [bsConfig]="{ adaptivePosition: true }"
-            placeholder="dd/mm/yyyy - dd/mm/yyyy"
-          />
+        <div
+          class="d-flex my-xl-auto right-content align-items-center flex-wrap"
+        >
+          <div class="me-3">
+            <div class="input-icon position-relative">
+              <span class="input-icon-addon">
+                <i class="ti ti-calendar text-gray-9"></i>
+              </span>
+              <input
+                type="text"
+                class="form-control date-range"
+                bsDaterangepicker
+                [(ngModel)]="bsRangeValue"
+                [bsConfig]="{ adaptivePosition: true }"
+                placeholder="dd/mm/yyyy - dd/mm/yyyy"
+              />
+            </div>
+          </div>
         </div>
       </div>
+      <!-- /Card Header -->
 
-      <!-- Table -->
+      <!-- Card Body -->
       <div class="card-body p-0">
-        <div class="table-responsive d-flex justify-content-center">
-          <table class="table table-center datatable mb-0 holidays-table">
+        <div class="table-responsive">
+          <table
+            matSort
+            class="mat-sort table datanew table-center datatable dataTable mb-0"
+          >
             <thead class="thead-light">
               <tr>
-                <th class="col-fr">fêtes religieuses</th>
-                <th class="col-ar">الأعياد الدينية</th>
-                <th class="col-date text-center">Date</th>
-                <th class="col-days text-center">Nombre de jours</th>
-                <th class="col-actions text-center">Actions</th>
+                <th class="text-center">Fêtes religieuses</th>
+                <th class="text-center">الأعياد الدينية</th>
+                <th class="text-center">Date</th>
+                <th class="text-center">Jours</th>
+                <th class="text-center">Action</th>
               </tr>
             </thead>
 
             <tbody>
               <tr>
-                <td class="col-fr">Aïd Al-Fitr</td>
-                <td class="col-ar" dir="rtl">عيد الفطر</td>
-                <td class="col-date text-center">20 mars 2025</td>
-                <td class="col-days text-center">2</td>
-                <td class="col-actions text-center">
-                  <button
-                    class="btn btn-sm btn-outline-primary"
-                    data-bs-toggle="modal"
-                    data-bs-target="#editHolidayModal"
-                  >
-                    <i class="ti ti-edit"></i>
-                  </button>
+                <td class="text-center">Aïd Al-Fitr</td>
+                <td class="text-center" dir="rtl">عيد الفطر</td>
+                <td class="text-center">20 mars 2025</td>
+                <td class="text-center">2</td>
+                <td class="text-center">
+                  <div class="action-icon d-inline-flex justify-content-center">
+                    <a
+                      href="javascript:void(0);"
+                      data-bs-toggle="modal"
+                      data-bs-target="#editHolidayModal"
+                    >
+                      <i class="ti ti-edit"></i>
+                    </a>
+                  </div>
                 </td>
               </tr>
 
               <tr>
-                <td class="col-fr">Aïd Al-Adha</td>
-                <td class="col-ar" dir="rtl">عيد الأضحى</td>
-                <td class="col-date text-center">27 mai 2025</td>
-                <td class="col-days text-center">2</td>
-                <td class="col-actions text-center">
-                  <button
-                    class="btn btn-sm btn-outline-primary"
-                    data-bs-toggle="modal"
-                    data-bs-target="#editHolidayModal"
-                  >
-                    <i class="ti ti-edit"></i>
-                  </button>
+                <td class="text-center">Aïd Al-Adha</td>
+                <td class="text-center" dir="rtl">عيد الأضحى</td>
+                <td class="text-center">27 mai 2025</td>
+                <td class="text-center">2</td>
+                <td class="text-center">
+                  <div class="action-icon d-inline-flex justify-content-center">
+                    <a
+                      href="javascript:void(0);"
+                      data-bs-toggle="modal"
+                      data-bs-target="#editHolidayModal"
+                    >
+                      <i class="ti ti-edit"></i>
+                    </a>
+                  </div>
                 </td>
               </tr>
 
               <tr>
-                <td class="col-fr">1er Moharram</td>
-                <td class="col-ar" dir="rtl">رأس السنة الهجرية</td>
-                <td class="col-date text-center">17 juin 2025</td>
-                <td class="col-days text-center">2</td>
-                <td class="col-actions text-center">
-                  <button
-                    class="btn btn-sm btn-outline-primary"
-                    data-bs-toggle="modal"
-                    data-bs-target="#editHolidayModal"
-                  >
-                    <i class="ti ti-edit"></i>
-                  </button>
+                <td class="text-center">1er Moharram</td>
+                <td class="text-center" dir="rtl">رأس السنة الهجرية</td>
+                <td class="text-center">17 juin 2025</td>
+                <td class="text-center">2</td>
+                <td class="text-center">
+                  <div class="action-icon d-inline-flex justify-content-center">
+                    <a
+                      href="javascript:void(0);"
+                      data-bs-toggle="modal"
+                      data-bs-target="#editHolidayModal"
+                    >
+                      <i class="ti ti-edit"></i>
+                    </a>
+                  </div>
                 </td>
               </tr>
 
               <tr>
-                <td class="col-fr">Aïd Al-Mawlid</td>
-                <td class="col-ar" dir="rtl">عيد المولد النبوي</td>
-                <td class="col-date text-center">26 août 2025</td>
-                <td class="col-days text-center">2</td>
-                <td class="col-actions text-center">
-                  <button
-                    class="btn btn-sm btn-outline-primary"
-                    data-bs-toggle="modal"
-                    data-bs-target="#editHolidayModal"
-                  >
-                    <i class="ti ti-edit"></i>
-                  </button>
+                <td class="text-center">Aïd Al-Mawlid</td>
+                <td class="text-center" dir="rtl">عيد المولد النبوي</td>
+                <td class="text-center">26 août 2025</td>
+                <td class="text-center">2</td>
+                <td class="text-center">
+                  <div class="action-icon d-inline-flex justify-content-center">
+                    <a
+                      href="javascript:void(0);"
+                      data-bs-toggle="modal"
+                      data-bs-target="#editHolidayModal"
+                    >
+                      <i class="ti ti-edit"></i>
+                    </a>
+                  </div>
                 </td>
               </tr>
             </tbody>
-          
-           
           </table>
           <div class="modal fade" id="editHolidayModal" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -123,7 +199,6 @@
                     data-bs-dismiss="modal"
                   ></button>
                 </div>
-
                 <!-- Body -->
                 <div class="modal-body">
                   <form class="row g-3">
@@ -136,7 +211,6 @@
                         disabled
                       />
                     </div>
-
                     <div class="col-md-6">
                       <label class="form-label text-end d-block"
                         >العيد الديني</label
@@ -149,7 +223,6 @@
                         disabled
                       />
                     </div>
-
                     <div class="col-md-6">
                       <label class="form-label">Date</label>
                       <input
@@ -158,7 +231,6 @@
                         value="2026-03-20"
                       />
                     </div>
-
                     <div class="col-md-6">
                       <label class="form-label">Nombre de jours</label>
                       <input
@@ -170,14 +242,17 @@
                     </div>
                   </form>
                 </div>
-
                 <!-- Footer -->
-                <div class="modal-footer d-flex justify-content-end gap-2">
-                  <button class="btn btn-primary" data-bs-dismiss="modal">
-                    Enregistrer
-                  </button>
-                  <button class="btn btn-secondary" data-bs-dismiss="modal">
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-white border me-2"
+                    data-bs-dismiss="modal"
+                  >
                     Annuler
+                  </button>
+                  <button type="submit" class="btn btn-primary">
+                    Enregistrer
                   </button>
                 </div>
               </div>
@@ -187,6 +262,5 @@
       </div>
     </div>
   </div>
-
   <app-footer></app-footer>
 </div>
