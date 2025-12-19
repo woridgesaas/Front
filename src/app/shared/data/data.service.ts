@@ -1369,7 +1369,7 @@ export class DataService {
                   hasSubRoute: false,
                   showSubRoute: false,
                 },
-              
+
                 {
                   menuValue: 'Leave Settings',
                   route: routes.leavesettings,
@@ -1386,7 +1386,6 @@ export class DataService {
               base: 'attendance-admin',
               customSubmenuTwo: false,
             },
-          
           ],
         },
         {
@@ -1399,16 +1398,31 @@ export class DataService {
           materialicons: 'group_add',
           subMenus: [],
         },
-        {
-          menuValue: 'Valider justification',
-          route: routes.justifyValidation,
-          hasSubRoute: false,
-          showSubRoute: false,
-          icon: 'external-link',
-          base: 'justify-validation',
-          materialicons: 'fact_check',
-          subMenus: [],
-        },
+      {
+  menuValue: 'Validation',
+  base: 'validation',
+  icon: 'file-time',
+  materialicons: 'fact_check',
+  hasSubRoute: true,
+  showSubRoute: false,
+  subMenus: [
+    {
+      menuValue: 'Valider justification',
+      route: routes.justifyValidation,
+      hasSubRoute: false,
+      showSubRoute: false,
+      base: 'justify-validation',
+    },
+    {
+      menuValue: 'Valider congé',
+      route: routes.validateLeave,
+      hasSubRoute: false,
+      showSubRoute: false,
+      base: 'validate-leave',
+    },
+  ],
+},
+
 
         {
           menuValue: 'Démission',
@@ -1810,7 +1824,7 @@ export class DataService {
                   hasSubRoute: false,
                   showSubRoute: false,
                 },
-                
+
                 {
                   menuValue: 'Leave Settings',
                   route: routes.leavesettings,
@@ -1822,7 +1836,6 @@ export class DataService {
                   route: routes.attendanceadmin,
                   base: 'attendance-admin',
                 },
-               
               ],
             },
 
@@ -1832,12 +1845,28 @@ export class DataService {
               base: 'promotion',
               customSubmenuTwo: false,
             },
-            {
-              menuValue: 'Valider justification',
-              route: routes.justifyValidation,
-              base: 'justify-validation',
-              customSubmenuTwo: false,
-            },
+           {
+  menuValue: 'Validation',
+  base: 'validation',
+  customSubmenuTwo: true,
+  subMenusTwo: [
+    {
+      menuValue: 'Valider justification',
+      route: routes.justifyValidation,
+      base: 'justify-validation',
+      hasSubRoute: false,
+      showSubRoute: false,
+    },
+    {
+      menuValue: 'Valider congé',
+      route: routes.validateLeave,
+      base: 'validate-leave',
+      hasSubRoute: false,
+      showSubRoute: false,
+    },
+  ],
+},
+
 
             {
               menuValue: 'Resignation',

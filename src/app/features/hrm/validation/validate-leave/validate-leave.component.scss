@@ -1,0 +1,134 @@
+.stat-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  color: #fff;
+  min-height: 110px;
+
+  h4 {
+    font-weight: 700;
+  }
+
+  .badge {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    right: -40px;
+    top: -30px;
+    width: 180px;
+    height: 180px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+  }
+}
+
+/* Variantes */
+.bg-blue-img {
+  background: linear-gradient(135deg, #fff, #3976e6);
+}
+
+.bg-warning-img {
+  background: linear-gradient(135deg, #fff, #efd937);
+}
+
+.bg-success-img {
+  background: linear-gradient(135deg, #fff, #16a34a);
+}
+
+.bg-danger-img {
+  background: linear-gradient(135deg, #fff, #dc2626);
+}
+.filters-bar {
+  background: #fff;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #eef0f4;
+}
+
+.input-icon {
+  position: relative;
+
+  i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6b7280;
+  }
+
+  input {
+    padding-left: 32px;
+    height: 34px;
+    border-radius: 8px;
+  }
+}
+
+.search-input {
+  max-width: 220px;
+  height: 34px;
+  border-radius: 8px;
+}
+.status-badge {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+
+  &.pending {
+    background: rgba(234, 179, 8, 0.15);
+    color: #eab308;
+  }
+
+  &.accepted {
+    background: rgba(34, 197, 94, 0.15);
+    color: #22c55e;
+  }
+
+  &.refused {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+  }
+}
+.employee-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #cbd5e1;
+  color: #334155;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.employee-name {
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.employee-role {
+  font-size: 12px;
+  color: #6b7280;
+}
+

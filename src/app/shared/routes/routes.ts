@@ -47,6 +47,9 @@ holidays: '/holidays',
 nationalHolidays: '/holidays/national-holidays',
 religiousHolidays: '/holidays/religious-holidays',
 
+//validation
+validateLeave: '/validation/validate-leave',
+justifyValidation: '/validation/justify-validation',
    
 
   // Leaves
@@ -81,7 +84,6 @@ religiousHolidays: '/holidays/religious-holidays',
   dailyreport: '/reports/daily-report',
   promotion: '/promotion',
   resignation: '/resignation',
-  justifyValidation: '/justify-validation',
   jobsList: '/jobs/jobs-list',
   jobsGrid: '/jobs/jobs-grid',
   userDashboard: '/jobs/user-dashboard',
