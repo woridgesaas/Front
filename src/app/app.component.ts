@@ -1,46 +1,127 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { NavigationStart, Router, Event as RouterEvent, RouterOutlet } from '@angular/router';
+import {
+  NavigationStart,
+  Router,
+  Event as RouterEvent,
+  RouterOutlet,
+} from '@angular/router';
+import { HostListener, OnInit, OnDestroy } from '@angular/core';
+import { Subscription, timer } from 'rxjs';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,CommonModule],
+  imports: [RouterOutlet, CommonModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
+
   title = 'Woridge';
   public base = '';
   public page = '';
+  private inactivityTimer?: Subscription;
+  private readonly INACTIVITY_TIME = 24 * 60 * 60 * 1000; // 1 day
+  
   constructor(private router: Router) {
     this.router.events.subscribe((event: RouterEvent) => {
       if (event instanceof NavigationStart) {
         const URL = event.url.split('/');
-        this.base =URL[1] ? URL[1].replaceAll('-',' '): '';
-        this.page = URL[2] ? URL[2].replace('-',' '): '';
+        this.base = URL[1] ? URL[1].replaceAll('-', ' ') : '';
+        this.page = URL[2] ? URL[2].replace('-', ' ') : '';
       }
-      if(this.base === 'index'){
-        this.page = 'Dashboard'
+      if (this.base === 'index') {
+        this.page = 'Dashboard';
       }
-      if(this.base === 'staffs' || this.base === 'locations'
-        ||this.base ==='services' || this.base === 'specializations' ||this.base === 'assets' ||this.base === 'activities'
-        ||this.base ==='messages' || this.base === 'departments' ||this.base === 'designation' ||this.base === 'attendance'
-        ||this.base ==='holidays' || this.base === 'payroll' ||this.base === 'income' ||this.base === 'payments'
-        ||this.base ==='transactions' || this.base === 'announcements' ||this.base === 'newsletters' ||this.base === 'starter'
-        ||this.base ==='contact messages' || this.base === 'tickets' ||this.base === 'testimonials' ||this.base === 'faq'||this.base === 'profile'
-        ||this.base ==='gallery' || this.base === 'timeline' ||this.base === 'pricing' ||this.base === 'privacy policy'||this.base === 'terms and conditions'
-        ||this.base ==='login' || this.base === 'login cover' ||this.base === 'email verification cover' ||this.base === 'two step verification cover'
-        ||this.base ==='login basic' || this.base === 'forgot password basic' ||this.base === 'email verification basic' ||this.base === 'two step verification basic'
-        ||this.base ==='login illustration' || this.base === 'forgot password cover' ||this.base === 'forgot password illustration' || this.base === 'email verification illustration' ||this.base === 'two step verification illustration'
-        ||this.base === 'success basic'||this.base === 'success cover'||this.base === 'success illustration'
-        ||this.base ==='reset password basic' ||this.base ==='reset password cover' ||this.base ==='reset password illustration'|| this.base === 'coming soon' ||this.base === 'under maintenance' 
-        ||this.base ==='layout fullwidth' || this.base === 'layout hoverview' ||this.base === 'layout rtl' 
-        ||this.base ==='layout mini' || this.base === 'layout hidden' ||this.base === 'layout dark' 
-        ||this.base ==='notifications' 
-      ){
-        this.page = this.base
+      if (
+        this.base === 'staffs' ||
+        this.base === 'locations' ||
+        this.base === 'services' ||
+        this.base === 'specializations' ||
+        this.base === 'assets' ||
+        this.base === 'activities' ||
+        this.base === 'messages' ||
+        this.base === 'departments' ||
+        this.base === 'designation' ||
+        this.base === 'attendance' ||
+        this.base === 'holidays' ||
+        this.base === 'payroll' ||
+        this.base === 'income' ||
+        this.base === 'payments' ||
+        this.base === 'transactions' ||
+        this.base === 'announcements' ||
+        this.base === 'newsletters' ||
+        this.base === 'starter' ||
+        this.base === 'contact messages' ||
+        this.base === 'tickets' ||
+        this.base === 'testimonials' ||
+        this.base === 'faq' ||
+        this.base === 'profile' ||
+        this.base === 'gallery' ||
+        this.base === 'timeline' ||
+        this.base === 'pricing' ||
+        this.base === 'privacy policy' ||
+        this.base === 'terms and conditions' ||
+        this.base === 'login' ||
+        this.base === 'login cover' ||
+        this.base === 'email verification cover' ||
+        this.base === 'two step verification cover' ||
+        this.base === 'login basic' ||
+        this.base === 'forgot password basic' ||
+        this.base === 'email verification basic' ||
+        this.base === 'two step verification basic' ||
+        this.base === 'login illustration' ||
+        this.base === 'forgot password cover' ||
+        this.base === 'forgot password illustration' ||
+        this.base === 'email verification illustration' ||
+        this.base === 'two step verification illustration' ||
+        this.base === 'success basic' ||
+        this.base === 'success cover' ||
+        this.base === 'success illustration' ||
+        this.base === 'reset password basic' ||
+        this.base === 'reset password cover' ||
+        this.base === 'reset password illustration' ||
+        this.base === 'coming soon' ||
+        this.base === 'under maintenance' ||
+        this.base === 'layout fullwidth' ||
+        this.base === 'layout hoverview' ||
+        this.base === 'layout rtl' ||
+        this.base === 'layout mini' ||
+        this.base === 'layout hidden' ||
+        this.base === 'layout dark' ||
+        this.base === 'notifications'
+      ) {
+        this.page = this.base;
       }
-      // if (event instanceof NavigationEnd){}
     });
+  }
+
+  ngOnInit(): void {
+    this.resetTimer();
+  }
+
+  ngOnDestroy(): void {
+    this.inactivityTimer?.unsubscribe();
+  }
+
+  //* Track user activity
+  @HostListener('document:mousemove')
+  @HostListener('document:keydown')
+  @HostListener('document:click')
+  @HostListener('document:scroll')
+  activityDetected(): void {
+    this.resetTimer();
+  }
+
+  private resetTimer(): void {
+    this.inactivityTimer?.unsubscribe();
+    this.inactivityTimer = timer(this.INACTIVITY_TIME).subscribe(() => {
+      this.lockScreen();
+    });
+  }
+
+  private lockScreen(): void {
+    this.base = 'lock-screen';
+    this.router.navigate(['/lock-screen']); 
   }
 }

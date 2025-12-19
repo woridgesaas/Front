@@ -1,3 +1,13 @@
+  export interface sondage{
+     id: number;
+    titre: string;
+    creeIlYa: string;
+    expireDans: number;
+    options: string[];
+    selectedOption?: number;
+    voted: boolean;
+    totalVotes: number;
+  }
   export interface pageSelection {
   skip: number;
   limit: number;
@@ -418,17 +428,22 @@ export interface attendanceemployee {
 
 
 
-
 export interface promotion {
   sNo?: number;
-  isSelected: boolean;
-  Image: string;
-  PromotedEmployee: string;
-  Department: string;
-  DesignationFrom: string;
-  DesignationTo: string;
-  PromotionDate: string;
+  Image?: string;
+  PromotedEmployee?: string;
+  Department?: string;
+  DesignationFrom?: string;
+  DesignationTo?: string;
+
+  OldSalary?: number;   
+  Bonus?: number;       
+  NewSalary?: number;   
+
+  PromotionDate?: string;
+  isSelected?: boolean;
 }
+
 
 export interface resignation {
   sNo?: number;

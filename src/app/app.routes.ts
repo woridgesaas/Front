@@ -7,23 +7,17 @@ export const routes: Routes = [
     redirectTo: 'dashboard/index',
     pathMatch: 'full'
   },
-  //Auth Routes//
+
+  //* Auth routes
  {
   path: '', loadComponent: () => import('./auth/auth.component').then(m => m.AuthComponent),
   children: [
-    { path: 'signin', loadComponent: () => import('./auth/signin/signin.component').then(m => m.SigninComponent) },
 
-    { path: 'login-2', loadComponent: () => import('./auth/login-2/login-2.component').then(m => m.Login2Component) },
-
-    { path: 'signup', loadComponent: () => import('./auth/signup/signup.component').then(m => m.SignupComponent) },
-    { path: 'otp', loadComponent: () => import('./auth/otp/otp.component').then(m => m.OtpComponent) },
-    { path: 'forgot-password-2', loadComponent: () => import('./auth/forgot-password-2/forgot-password-2.component').then(m => m.ForgotPassword2Component) },
-    { path: 'password-strength', loadComponent: () => import('./auth/password-strength/password-strength.component').then(m => m.PasswordStrengthComponent) },
-    { path: 'reset-password-2', loadComponent: () => import('./auth/reset-password-2/reset-password-2.component').then(m => m.ResetPassword2Component) },
-    { path: 'register-2', loadComponent: () => import('./auth/register-2/register-2.component').then(m => m.Register2Component) },
-    { path: 'email-verification-2', loadComponent: () => import('./auth/email-verification-2/email-verification-2.component').then(m => m.EmailVerification2Component) },
-    { path: 'two-step-verification-2', loadComponent: () => import('./auth/two-step-verification-2/two-step-verification-2.component').then(m => m.TwoStepVerification2Component) },
-    { path: 'success-2', loadComponent: () => import('./auth/success-2/success-2.component').then(m => m.Success2Component) },
+    { path: 'login', loadComponent: () => import('./auth/login/login.component').then(m => m.LoginComponent) },
+    { path: 'forgot-password', loadComponent: () => import('./auth/forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent) },
+    { path: 'email-verification', loadComponent: () => import('./auth/email-verification/email-verification.component').then(m => m.EmailVerificationComponent) },
+    { path: 'reset-password', loadComponent: () => import('./auth/reset-password/reset-password.component').then(m => m.ResetPasswordComponent) },
+    { path: 'success', loadComponent: () => import('./auth/success/success.component').then(m => m.SuccessComponent) },
     { path: 'lock-screen', loadComponent: () => import('./auth/lock-screen/lock-screen.component').then(m => m.LockScreenComponent) },
     { path: 'error-404', loadComponent: () => import('./auth/error-404/error-404.component').then(m => m.Error404Component) },
     { path: 'error-500', loadComponent: () => import('./auth/error-500/error-500.component').then(m => m.Error500Component) }
@@ -51,77 +45,24 @@ export const routes: Routes = [
             { path: 'calls/outgoing-call', loadComponent: () => import('./features/application/call/outgoing-call/outgoing-call.component').then(m => m.OutgoingCallComponent) },
             { path: 'calls/incoming-call', loadComponent: () => import('./features/application/call/incoming-call/incoming-call.component').then(m => m.IncomingCallComponent) },
            
-            { path: 'social-feed', loadComponent: () => import('./features/application/social-feed/social-feed.component').then(m => m.SocialFeedComponent) },
+            { path: 'annonces', loadComponent: () => import('./features/application/social-feed/social-feed.component').then(m => m.SocialFeedComponent) },
           ]
         },
-       //Settings//
+
+       //* Settings routes 
         { path: 'settings', loadComponent: () => import('./features/settings/settings.component').then(m => m.SettingsComponent),
           children:[
             { path: 'general-settings', loadComponent: () => import('./features/settings/general-settings/general-settings.component').then(m => m.GeneralSettingsComponent),
               children:[
-                { path: 'connected-apps', loadComponent: () => import('./features/settings/general-settings/connected-apps/connected-apps.component').then(m => m.ConnectedAppsComponent) },
-                { path: 'notification-settings', loadComponent: () => import('./features/settings/general-settings/notification-settings/notification-settings.component').then(m => m.NotificationSettingsComponent) },
                 { path: 'security-settings', loadComponent: () => import('./features/settings/general-settings/security-settings/security-settings.component').then(m => m.SecuritySettingsComponent) },
                 { path: 'profile-settings', loadComponent: () => import('./features/settings/general-settings/profile-settings/profile-settings.component').then(m => m.ProfileSettingsComponent) },
               ]
-             },
-            { path: 'website-settings', loadComponent: () => import('./features/settings/website-settings/website-settings.component').then(m => m.WebsiteSettingsComponent),
-              children:[
-                { path: 'ai-settings', loadComponent: () => import('./features/settings/website-settings/ai-settings/ai-settings.component').then(m => m.AiSettingsComponent) },
-                { path: 'authentication-settings', loadComponent: () => import('./features/settings/website-settings/authentication-settings/authentication-settings.component').then(m => m.AuthenticationSettingsComponent) },
-                { path: 'add-language', loadComponent: () => import('./features/settings/website-settings/add-language/add-language.component').then(m => m.AddLanguageComponent) },
-                { path: 'language', loadComponent: () => import('./features/settings/website-settings/language/language.component').then(m => m.LanguageComponent) },
-                { path: 'language-web', loadComponent: () => import('./features/settings/website-settings/language-web/language-web.component').then(m => m.LanguageWebComponent) },
-                { path: 'appearance', loadComponent: () => import('./features/settings/website-settings/appearance/appearance.component').then(m => m.AppearanceComponent) },
-                { path: 'preferences', loadComponent: () => import('./features/settings/website-settings/preferences/preferences.component').then(m => m.PreferencesComponent) },
-                { path: 'prefixes', loadComponent: () => import('./features/settings/website-settings/prefixes/prefixes.component').then(m => m.PrefixesComponent) },
-                { path: 'localization-settings', loadComponent: () => import('./features/settings/website-settings/localization-settings/localization-settings.component').then(m => m.LocalizationSettingsComponent) },
-                { path: 'seo-settings', loadComponent: () => import('./features/settings/website-settings/seo-settings/seo-settings.component').then(m => m.SeoSettingsComponent) },
-                { path: 'bussiness-settings', loadComponent: () => import('./features/settings/website-settings/bussiness-settings/bussiness-settings.component').then(m => m.BussinessSettingsComponent) },
-
-              ]
-             },
+            },
             { path: 'app-settings', loadComponent: () => import('./features/settings/app-settings/app-settings.component').then(m => m.AppSettingsComponent),
               children:[
-                { path: 'custom-fields', loadComponent: () => import('./features/settings/app-settings/custom-fields/custom-fields.component').then(m => m.CustomFieldsComponent) },
                 { path: 'leave-type', loadComponent: () => import('./features/settings/app-settings/leave-type/leave-type.component').then(m => m.LeaveTypeComponent) },
-                { path: 'invoice-settings', loadComponent: () => import('./features/settings/app-settings/invoice-settings/invoice-settings.component').then(m => m.InvoiceSettingsComponent) },
-                { path: 'approval-settings', loadComponent: () => import('./features/settings/app-settings/approval-settings/approval-settings.component').then(m => m.ApprovalSettingsComponent) },
-                { path: 'salary-settings', loadComponent: () => import('./features/settings/app-settings/salary-settings/salary-settings.component').then(m => m.SalarySettingsComponent) },
               ]
-             },
-            { path: 'system-settings', loadComponent: () => import('./features/settings/system-settings/system-settings.component').then(m => m.SystemSettingsComponent),
-              children:[
-                { path: 'maintenance-mode', loadComponent: () => import('./features/settings/system-settings/maintenance-mode/maintenance-mode.component').then(m => m.MaintenanceModeComponent) },
-                { path: 'gdpr', loadComponent: () => import('./features/settings/system-settings/gdpr/gdpr.component').then(m => m.GdprComponent) },
-                { path: 'otp-settings', loadComponent: () => import('./features/settings/system-settings/otp-settings/otp-settings.component').then(m => m.OtpSettingsComponent) },
-                { path: 'sms-template', loadComponent: () => import('./features/settings/system-settings/sms-template/sms-template.component').then(m => m.SmsTemplateComponent) },
-                { path: 'sms-settings', loadComponent: () => import('./features/settings/system-settings/sms-settings/sms-settings.component').then(m => m.SmsSettingsComponent) },
-                { path: 'email-template', loadComponent: () => import('./features/settings/system-settings/email-template/email-template.component').then(m => m.EmailTemplateComponent) },
-                { path: 'email-settings', loadComponent: () => import('./features/settings/system-settings/email-settings/email-settings.component').then(m => m.EmailSettingsComponent) },
-              ]
-             },
-            { path: 'financial-settings', loadComponent: () => import('./features/settings/financial-settings/financial-settings.component').then(m => m.FinancialSettingsComponent),
-              children:[
-                { path: 'currencies', loadComponent: () => import('./features/settings/financial-settings/currencies/currencies.component').then(m => m.CurrenciesComponent) },
-                { path: 'tax-rates', loadComponent: () => import('./features/settings/financial-settings/tax-rates/tax-rates.component').then(m => m.TaxRatesComponent) },
-                { path: 'payment-gateways', loadComponent: () => import('./features/settings/financial-settings/payment-gateways/payment-gateways.component').then(m => m.PaymentGatewaysComponent) },
-
-              ]
-             },
-            { path: 'other-settings', loadComponent: () => import('./features/settings/other-settings/other-settings.component').then(m => m.OtherSettingsComponent),
-              children:[
-                { path: 'clear-cache', loadComponent: () => import('./features/settings/other-settings/clear-cache/clear-cache.component').then(m => m.ClearCacheComponent) },
-                { path: 'backup', loadComponent: () => import('./features/settings/other-settings/backup/backup.component').then(m => m.BackupComponent) },
-                { path: 'ban-ip-address', loadComponent: () => import('./features/settings/other-settings/ban-ip-address/ban-ip-address.component').then(m => m.BanIpAddressComponent) },
-                { path: 'storage-settings', loadComponent: () => import('./features/settings/other-settings/storage-settings/storage-settings.component').then(m => m.StorageSettingsComponent) },
-                { path: 'cronjob', loadComponent: () => import('./features/settings/other-settings/cronjob/cronjob.component').then(m => m.CronjobComponent) },
-                { path: 'cronjob-schedule', loadComponent: () => import('./features/settings/other-settings/cronjob-schedule/cronjob-schedule.component').then(m => m.CronjobScheduleComponent) },
-                { path: 'custom-js', loadComponent: () => import('./features/settings/other-settings/custom-js/custom-js.component').then(m => m.CustomJsComponent) },
-                { path: 'custom-css', loadComponent: () => import('./features/settings/other-settings/custom-css/custom-css.component').then(m => m.CustomCssComponent) },
-
-              ]
-             },
+            },
           ]
         },
         
@@ -139,13 +80,11 @@ export const routes: Routes = [
       {
         path: 'tickets' , loadComponent: () => import('./features/hrm/tickets/tickets.component').then(m => m.TicketsComponent),
         children: [
-          {path: 'ticket-grid', loadComponent: () => import('./features/hrm/tickets/ticket-grid/ticket-grid.component').then(m => m.TicketGridComponent),},
           {path: 'ticket-list', loadComponent: () => import('./features/hrm/tickets/ticket/ticket.component').then(m => m.TicketComponent),},
           {path: 'ticket-details', loadComponent: () => import('./features/hrm/tickets/ticket-details/ticket-details.component').then(m => m.TicketDetailsComponent),},
         ]
       },
-     {
-  
+  {
   path: 'holidays',
   loadComponent: () =>
     import('./features/hrm/holidays/holidays.component')
@@ -157,9 +96,15 @@ export const routes: Routes = [
         import('./features/hrm/holidays/religious-holidays/religious-holidays.component')
           .then(m => m.ReligiousHolidaysComponent),
     },
-  
+    {
+      path: 'national-holidays',  
+      loadComponent: () =>
+        import('./features/hrm/holidays/national-holidays/national-holidays.component')
+          .then(m => m.NationalHolidaysComponent)
+    }
   ]
 },
+
 
       {
         path: 'attendance' , loadComponent: () => import('./features/hrm/attendance/attendance.component').then(m => m.AttendanceComponent),
@@ -178,11 +123,19 @@ export const routes: Routes = [
      
       { path: 'promotion' , loadComponent: () => import('./features/hrm/promotion/promotion.component').then(m => m.PromotionComponent),},
       { path: 'resignation' , loadComponent: () => import('./features/hrm/resignation/resignation.component').then(m => m.ResignationComponent),},
+{
+  path: 'justify-validation',
+  loadComponent: () =>
+    import('./features/hrm/validate-justification/validate-justification.component')
+      .then(m => m.ValidateJustificationComponent),
+},
+
+      // candidat
       { path: 'candidates' , loadComponent: () => import('./features/recruitment/candidates/candidates.component').then(m => m.CandidatesComponent),
         children: [
           {path: 'candidates-list', loadComponent: () => import('./features/recruitment/candidates/candidates-list/candidates-list.component').then(m => m.CandidatesListComponent),},
-          {path: 'candidates-grid', loadComponent: () => import('./features/recruitment/candidates/candidates-grid/candidates-grid.component').then(m => m.CandidatesGridComponent),},
-          {path: 'candidates-kanban', loadComponent: () => import('./features/recruitment/candidates/candidates-kanban/candidates-kanban.component').then(m => m.CandidatesKanbanComponent),},
+          // {path: 'candidates-grid', loadComponent: () => import('./features/recruitment/candidates/candidates-grid/candidates-grid.component').then(m => m.CandidatesGridComponent),},
+          // {path: 'candidates-kanban', loadComponent: () => import('./features/recruitment/candidates/candidates-kanban/candidates-kanban.component').then(m => m.CandidatesKanbanComponent),},
         ]
       },
       { path: 'jobs' , loadComponent: () => import('./features/recruitment/jobs/jobs.component').then(m => m.JobsComponent),
@@ -194,6 +147,12 @@ export const routes: Routes = [
 
       //filtrage test
       { path: 'filtrage' , loadComponent: () => import('./features/recruitment/filtrage-list/filtrage-list.component').then(m => m.FiltrageListComponent),
+        children: []
+      },
+
+      // test entretient
+
+      { path: 'entretient' , loadComponent: () => import('./features/recruitment/interviews-planning/interviews-planning.component').then(m => m.InterviewsPlanningComponent),
         children: []
       },
 
@@ -227,10 +186,4 @@ export const routes: Routes = [
     pathMatch:'full'
   }
   
-
-
-
-
- 
-
 ]as const;

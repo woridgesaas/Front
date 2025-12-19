@@ -1,0 +1,182 @@
+<div class="page-wrapper">
+  <div class="content">
+    <!-- Breadcrumb -->
+    <div
+      class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3"
+    >
+      <app-breadcrumbs
+        title="Fêtes nationales"
+        [breadcrumbItems]="breadCrumbItems"
+      >
+      </app-breadcrumbs>
+    </div>
+    <!-- /Breadcrumb -->
+
+    <div class="card">
+      <!-- Header -->
+      <div
+        class="card-header holidays-header d-flex justify-content-between align-items-center flex-wrap gap-2"
+      >
+        <h5 class="mb-0">Liste des fêtes nationales</h5>
+
+        <div class="d-flex gap-2 align-items-center">
+          <!-- Dropdown mois -->
+          <select class="form-select month-filter" [(ngModel)]="selectedMonth">
+            <option value="">Tous les mois</option>
+            <option *ngFor="let month of months" [value]="month.value">
+              {{ month.label }}
+            </option>
+          </select>
+
+          <!-- Date range -->
+          <div class="date-filter position-relative">
+            <i class="ti ti-calendar calendar-icon"></i>
+            <input
+              type="text"
+              class="form-control date-range-input"
+              bsDaterangepicker
+              [(ngModel)]="bsRangeValue"
+              [bsConfig]="{ adaptivePosition: true }"
+              placeholder="dd/mm/yyyy - dd/mm/yyyy"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- /Header -->
+
+      <!-- Table -->
+      <div class="card-body p-0">
+        <div class="table-responsive d-flex justify-content-center">
+          <table class="table table-center datatable mb-0 holidays-table">
+            <thead class="thead-light">
+              <tr>
+                <th class="col-fr">Fêtes nationales</th>
+                <th class="col-ar">الأعياد الوطنية</th>
+                <th class="col-date text-center">Date</th>
+                <th class="col-days text-center">Nombre de jours</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td class="col-fr">Nouvel An</td>
+                <td class="col-ar" dir="rtl">رأس السنة الميلادية</td>
+                <td class="col-date text-center">1 janvier 2025</td>
+                <td class="col-days text-center">1</td>
+                <td class="col-actions text-center">
+               
+                </td>
+              </tr>
+
+              <tr>
+                <td class="col-fr">Manifeste de l’Indépendance</td>
+                <td class="col-ar" dir="rtl">ذكرى تقديم وثيقة الاستقلال</td>
+                <td class="col-date text-center">11 janvier 2025</td>
+                <td class="col-days text-center">1</td>
+                <td class="col-actions text-center">
+               
+                </td>
+              </tr>
+              <tr>
+                <td class="col-fr">Nouvel An Amazigh</td>
+                <td class="col-ar" dir="rtl">رأس السنة الأمازيغية</td>
+                <td class="col-date text-center">14 janvier 2025</td>
+                <td class="col-days text-center">1</td>
+                <td class="col-actions text-center">
+              
+                </td>
+              </tr>
+
+              <tr>
+                <td class="col-fr">Fête du Travail</td>
+                <td class="col-ar" dir="rtl">عيد الشغل</td>
+                <td class="col-date text-center">1 mai 2025</td>
+                <td class="col-days text-center">1</td>
+                <td class="col-actions text-center">
+               
+                </td>
+              </tr>
+
+              <tr>
+                <td class="col-fr">Fête du Trône</td>
+                <td class="col-ar" dir="rtl">عيد العرش</td>
+                <td class="col-date text-center">30 juillet 2025</td>
+                <td class="col-days text-center">1</td>
+                <td class="col-actions text-center">
+                
+                </td>
+              </tr>
+
+              <tr>
+                <td class="col-fr">la récupération d’Oued Eddahab</td>
+                <td class="col-ar" dir="rtl">ذكرى استرجاع وادي الذهب</td>
+                <td class="col-date text-center">14 août 2025</td>
+                <td class="col-days text-center">1</td>
+                <td class="col-actions text-center">
+                  
+                </td>
+              </tr>
+
+              <tr>
+                <td class="col-fr">Révolution du Roi et du Peuple</td>
+                <td class="col-ar" dir="rtl">ثورة الملك والشعب</td>
+                <td class="col-date text-center">20 août 2025</td>
+                <td class="col-days text-center">1</td>
+                <td class="col-actions text-center">
+               
+                </td>
+              </tr>
+
+              <tr>
+                <td class="col-fr">Fête de la Jeunesse</td>
+                <td class="col-ar" dir="rtl">عيد الشباب</td>
+                <td class="col-date text-center">21 août 2025</td>
+                <td class="col-days text-center">1</td>
+                <td class="col-actions text-center">
+           
+                </td>
+              </tr>
+
+              <tr>
+                <td class="col-fr">Aïd Al Wahda</td>
+                <td class="col-ar" dir="rtl">عيد الوحدة</td>
+                <td class="col-date text-center">31 octobre 2025</td>
+                <td class="col-days text-center">1</td>
+                <td class="col-actions text-center">
+                 
+                </td>
+              </tr>
+
+              <tr>
+                <td class="col-fr">Marche verte</td>
+                <td class="col-ar" dir="rtl"> المسيرة الخضراء</td>
+                <td class="col-date text-center">6 novembre 2025</td>
+                <td class="col-days text-center">1</td>
+                <td class="col-actions text-center">
+                
+                </td>
+              </tr>
+              <tr>
+                <td class="col-fr">Fête de l’Indépendance</td>
+                <td class="col-ar" dir="rtl"> عيد الاستقلال </td>
+                <td class="col-date text-center">18 novembre 2025</td>
+                <td class="col-days text-center">1</td>
+                <td class="col-actions text-center">
+                 
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+         
+
+          <!-- /Modal -->
+        </div>
+      </div>
+      <!-- /Table -->
+    </div>
+  </div>
+
+  <app-footer></app-footer>
+</div>

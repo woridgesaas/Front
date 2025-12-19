@@ -153,4 +153,16 @@ selectAll(initChecked: boolean) {
     });
   }
 }
+cin: string = '';
+employeeName: string = '';
+promotionDate: Date | null = null;
+bonus: number = 0;
+oldSalary: number =0;
+newSalary: number = 0;
+
+calculateNewSalary() {
+  this.newSalary = this.oldSalary + (this.bonus || 0);
+}
+
+
 }

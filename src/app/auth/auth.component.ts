@@ -4,8 +4,6 @@ import { CommonService } from '../shared/common/common.service';
 import { url } from '../shared/models/sidebar.model';
 import { CommonModule } from '@angular/common';
 
-
-
 @Component({
     selector: 'app-auth',
     templateUrl: './auth.component.html',
@@ -13,6 +11,7 @@ import { CommonModule } from '@angular/common';
     imports: [RouterModule,CommonModule]
 })
 export class AuthComponent {
+  
   public themeMode = '';
   base = '';
   page = '';

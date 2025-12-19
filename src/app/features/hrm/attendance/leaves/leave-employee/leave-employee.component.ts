@@ -49,8 +49,8 @@ export class LeaveEmployeeComponent {
     private pagination: PaginationService
   ) {
     this.breadCrumbItems = [
-      { label: 'Employee' },
-      { label: 'Leaves', active: true }
+      { label: 'Employé' },
+      { label: 'Congés', active: true }
   ];
   this.data.getleaveEmployee().subscribe((apiRes: apiResultFormat) => {
     this.actualData = apiRes.data;
