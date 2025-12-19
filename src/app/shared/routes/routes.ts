@@ -13,7 +13,7 @@ export const routes = {
   success: '/success',
   error: '/error-404',
   errors: '/error-500',
-  
+
   // page routes
   index: '/dashboard/index',
   baseUi: '/dashboard/base-ui',
@@ -35,30 +35,27 @@ export const routes = {
   socialFeed: '/intranet/annonces',
   sondageList: '/intranet/sondages',
   sondageDetails: '/intranet/sondage-details/:id',
-/**------- FIN communication routes ------------- */
+  /**------- FIN communication routes ------------- */
   employeeList: '/employees/employee-list',
   employeeGrid: '/employees/employee-grid',
   employeeDetails: '/employees/employee-details',
   employeePage: '/employees/employee-page',
   departments: '/employees/departments',
-  profile: '/profile',
 
-// Holidays
-holidays: '/holidays',
-nationalHolidays: '/holidays/national-holidays',
-religiousHolidays: '/holidays/religious-holidays',
+  //validation
+  validateLeave: '/validation/validate-leave',
+  justifyValidation: '/validation/justify-validation',
+  validatePersonalInfo: '/validation/validate-personal-info',
 
-//validation
-validateLeave: '/validation/validate-leave',
-justifyValidation: '/validation/justify-validation',
-validatePersonalInfo:'/validation/validate-personal-info',
-   
+  // Holidays
+  holidays: '/holidays',
+  nationalHolidays: '/holidays/national-holidays',
+  religiousHolidays: '/holidays/religious-holidays',
 
   // Leaves
   sales: '/sales',
   leaveadmin: '/attendance/leaves/leave-admin',
   leaveemployee: '/attendance/leaves/leave-employee',
-  leavesettings: '/attendance/leaves/leave-settings',
 
   // Attendance
   attendanceadmin: '/attendance/attendance-admin',
@@ -107,12 +104,10 @@ validatePersonalInfo:'/validation/validate-personal-info',
   employeeProfile: '/employees/employee-profile',
   clientProfile: '/clients/client-profile',
 
-
   //filtrage IA recrutement
   FiltrageList: '/filtrage',
-//gestion entretiens 
+  //gestion entretiens
   Entretient: '/entretient',
-
 
   subscriptions: '/subscriptions',
   subadmin: '/subscriptions/admins',
@@ -145,12 +140,10 @@ validatePersonalInfo:'/validation/validate-personal-info',
   ticketDetails: '/tickets/ticket-details',
 
   horizontalTimeline: '/horizontal-timeline',
-  changePassword: '/change-password',
   layoutDark: '/layout-dark',
 
   //* Settings routes
-  profileSettings: '/settings/general-settings/profile-settings',
-  securitySettings: '/settings/general-settings/security-settings',
+  changePassword: '/settings/change-password',
   leaveType: '/settings/app-settings/leave-type',
 
   comingSoon: '/coming-soon',

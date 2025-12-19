@@ -54,12 +54,7 @@ export const routes: Routes = [
        //* Settings routes 
         { path: 'settings', loadComponent: () => import('./features/settings/settings.component').then(m => m.SettingsComponent),
           children:[
-            { path: 'general-settings', loadComponent: () => import('./features/settings/general-settings/general-settings.component').then(m => m.GeneralSettingsComponent),
-              children:[
-                { path: 'security-settings', loadComponent: () => import('./features/settings/general-settings/security-settings/security-settings.component').then(m => m.SecuritySettingsComponent) },
-                { path: 'profile-settings', loadComponent: () => import('./features/settings/general-settings/profile-settings/profile-settings.component').then(m => m.ProfileSettingsComponent) },
-              ]
-            },
+            { path: 'change-password', loadComponent: () => import('./features/settings/change-password/change-password.component').then(m => m.ChangePasswordComponent) },
             { path: 'app-settings', loadComponent: () => import('./features/settings/app-settings/app-settings.component').then(m => m.AppSettingsComponent),
               children:[
                 { path: 'leave-type', loadComponent: () => import('./features/settings/app-settings/leave-type/leave-type.component').then(m => m.LeaveTypeComponent) },
@@ -117,7 +112,6 @@ export const routes: Routes = [
             children: [
               {path: 'leave-admin', loadComponent: () => import('./features/hrm/attendance/leaves/leave-admin/leave-admin.component').then(m => m.LeaveAdminComponent),},
               {path: 'leave-employee', loadComponent: () => import('./features/hrm/attendance/leaves/leave-employee/leave-employee.component').then(m => m.LeaveEmployeeComponent),},
-              {path: 'leave-settings', loadComponent: () => import('./features/hrm/attendance/leaves/leave-settings/leave-settings.component').then(m => m.LeaveSettingsComponent),},
             ]
           },
         ]

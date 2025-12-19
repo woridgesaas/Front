@@ -68,10 +68,7 @@
               <i class="ti ti-moon"></i>
             </a>
           </div>
-          <!-- Dark mode -->
-          <a [routerLink]="routes.profileSettings" class="btn btn-menubar">
-            <i class="ti ti-settings-cog"></i>
-          </a>
+
         </div>
 
         <!-- Horizontal Single -->
@@ -460,25 +457,17 @@
                   </div>
                 </div>
                 <div class="card-body">
-                  <a
-                    class="dropdown-item d-inline-flex align-items-center p-0 py-2"
-                    [routerLink]="routes.profileSettings"
-                  >
-                    <i class="ti ti-circle-arrow-up me-1"></i>My Account
+                  <a class="dropdown-item d-inline-flex align-items-center p-0 py-2" [routerLink]="routes.employeeDetails">
+                    <i class="ti ti-circle-arrow-up me-1"></i> Profil
                   </a>
-                  <a
-                    class="dropdown-item d-inline-flex align-items-center p-0 py-2"
-                    [routerLink]="routes.profileSettings"
-                  >
-                    <i class="ti ti-settings me-1"></i>Settings
+                  <a class="dropdown-item d-inline-flex align-items-center p-0 py-2" [routerLink]="routes.changePassword">
+                    <i class="ti ti-settings me-1"></i> Paramètres
                   </a>
                 </div>
                 <div class="card-footer">
-                  <a
-                    class="dropdown-item d-inline-flex align-items-center p-0 py-2"
-                    [routerLink]="routes.login"
-                    ><i class="ti ti-login me-2"></i>Logout</a
-                  >
+                  <a class="dropdown-item d-inline-flex align-items-center p-0 py-2" [routerLink]="routes.login"> 
+                    <i class="ti ti-login me-2"></i> déconnexion 
+                  </a>
                 </div>
               </div>
             </div>
@@ -515,11 +504,9 @@
         >
           <i class="ti ti-moon"></i>
         </a>
-        <a class="dropdown-item" [routerLink]="routes.profile">My Profile gg</a>
-        <a class="dropdown-item" [routerLink]="routes.profileSettings"
-          >Settings</a
-        >
-        <a class="dropdown-item" [routerLink]="routes.login">Logout</a>
+        <a class="dropdown-item" [routerLink]="routes.employeeDetails"> Profil </a>
+        <a class="dropdown-item" [routerLink]="routes.changePassword"> Paramètres </a>
+        <a class="dropdown-item" [routerLink]="routes.login"> déconnexion </a>
       </div>
     </div>
     <!-- /Mobile Menu -->

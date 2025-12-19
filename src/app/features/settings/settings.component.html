@@ -1,21 +1,27 @@
 <div class="page-wrapper">
+
   <div class="content">
-    <!-- Breadcrumb -->
+
+      <!--* Breadcrumb -->
     <div class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
-      <app-breadcrumbs title="Settings" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
-      <app-collapse-header></app-collapse-header>
+      <app-breadcrumbs title="Changer mot de passe" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
     </div>
-    <!-- /Breadcrumb -->
 
     <ul class="nav nav-tabs nav-tabs-solid bg-transparent border-bottom mb-3">
       <li class="nav-item">
-        <a class="nav-link" [class.active]="page === 'general-settings'" [routerLink]="routes.profileSettings"><i class="ti ti-settings me-2"></i>General Settings</a>
+        <a class="nav-link rounded-4" [class.active]="page === 'change-password'" [routerLink]="routes.changePassword">
+          <i class="fa-solid fa-key me-2"></i> Changer mot de passe 
+        </a>
       </li>
       
       <li class="nav-item">
-        <a class="nav-link" [class.active]="page === 'app-settings'" [routerLink]="routes.leaveType"><i class="ti ti-device-ipad-horizontal-cog me-2"></i>App Settings</a>
+        <a class="nav-link rounded-4" [class.active]="page === 'app-settings'" [routerLink]="routes.leaveType">
+          <i class="ti ti-device-ipad-horizontal-cog me-2"></i> Paramètres d'applications
+        </a>
       </li>
+
     </ul>
+
     <router-outlet></router-outlet>
   </div>
   <app-footer></app-footer>

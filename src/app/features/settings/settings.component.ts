@@ -9,17 +9,23 @@ import { FooterComponent } from '../common/footer/footer.component';
 import { CommonModule } from '@angular/common';
 
 @Component({
-    selector: 'app-settings',
-    templateUrl: './settings.component.html',
-    styleUrl: './settings.component.scss',
-    imports: [RouterModule,CollapseHeaderComponent,BreadcrumbsComponent,FooterComponent,CommonModule]
+  selector: 'app-settings',
+  templateUrl: './settings.component.html',
+  styleUrl: './settings.component.scss',
+  imports: [
+    RouterModule,
+    CollapseHeaderComponent,
+    BreadcrumbsComponent,
+    FooterComponent,
+    CommonModule,
+  ],
 })
 export class SettingsComponent {
   base = '';
   page = '';
   last = '';
-  breadCrumbItems: breadCrumbItems[] =[];
-  routes = routes
+  breadCrumbItems: breadCrumbItems[] = [];
+  routes = routes;
   constructor(private common: CommonService) {
     this.common.base.subscribe((res: string) => {
       this.base = res;
@@ -31,8 +37,7 @@ export class SettingsComponent {
       this.last = res;
     });
     this.breadCrumbItems = [
-      { label: 'Administration' },
-      { label: 'Settings', active: true }
-  ];
-}
+      { label: 'Paramètres' },
+    ];
+  }
 }
