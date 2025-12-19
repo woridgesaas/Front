@@ -3,15 +3,14 @@ import lgZoom from 'lightgallery/plugins/zoom';
 import lgVideo from 'lightgallery/plugins/video';
 import { LightGallery } from 'lightgallery/lightgallery';
 import { BeforeSlideDetail } from 'lightgallery/lg-events';
-
-import { CommonModule } from '@angular/common';
+import { AnoncesChartComponent } from './components/anonces-chart/anonces-chart.component';
 import { FooterComponent } from '../../common/footer/footer.component';
 import { LightgalleryModule } from 'lightgallery/angular';
 @Component({
     selector: 'app-social-feed',
     templateUrl: './social-feed.component.html',
     styleUrl: './social-feed.component.scss',
-    imports:[CommonModule,FooterComponent,LightgalleryModule]
+    imports:[AnoncesChartComponent,FooterComponent,LightgalleryModule]
 })
 export class SocialFeedComponent implements AfterViewInit {
   private lightGallery!: LightGallery;
