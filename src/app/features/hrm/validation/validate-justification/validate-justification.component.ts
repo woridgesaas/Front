@@ -4,10 +4,10 @@ import { HttpClient} from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
-import { BreadcrumbsComponent } from '../../common/breadcrumbs/breadcrumbs.component';
-import { CollapseHeaderComponent } from '../../common/collapse-header/collapse-header.component';
-import { FooterComponent } from '../../common/footer/footer.component';
-import { routes } from '../../../shared/routes/routes';
+import { BreadcrumbsComponent } from '../../../common/breadcrumbs/breadcrumbs.component';
+import { CollapseHeaderComponent } from '../../../common/collapse-header/collapse-header.component';
+import { FooterComponent } from '../../../common/footer/footer.component';
+import { routes } from '../../../../shared/routes/routes';
 
 
 @Component({
