@@ -6,11 +6,12 @@ import { BeforeSlideDetail } from 'lightgallery/lg-events';
 import { AnoncesChartComponent } from './components/anonces-chart/anonces-chart.component';
 import { FooterComponent } from '../../common/footer/footer.component';
 import { LightgalleryModule } from 'lightgallery/angular';
+import { SondageListComponent } from './components/sondage-list/sondage-list.component';
 @Component({
     selector: 'app-social-feed',
     templateUrl: './social-feed.component.html',
     styleUrl: './social-feed.component.scss',
-    imports:[AnoncesChartComponent,FooterComponent,LightgalleryModule]
+    imports:[SondageListComponent,FooterComponent,LightgalleryModule]
 })
 export class SocialFeedComponent implements AfterViewInit {
   private lightGallery!: LightGallery;

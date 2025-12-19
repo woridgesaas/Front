@@ -1,0 +1,70 @@
+<div class="card mb-3" style="height: 400px; overflow-y: auto;">
+  <div class="card-header d-flex justify-content-between align-items-center sticky-top bg-white">
+    <h5 class="mb-0">
+      <i class="ti ti-chart-pie me-2 text-primary"></i>
+      Sondages disponibles
+    </h5>
+    <span class="badge bg-primary">{{ sondages.length }} actifs</span>
+  </div>
+  
+  <div class="card-body p-0">
+    <!-- Boucle sur les sondages -->
+    @for (sondage of sondages; track sondage.id; let i = $index) {
+      <div class="sondage-item" [class.border-bottom]="!$last">
+        <div class="p-3">
+          <!-- En-tête -->
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <div>
+              <h6 class="fw-medium mb-1">{{ sondage.titre }}</h6>
+              <small class="text-muted">
+               • Créé il y a {{ sondage.creeIlYa }}
+              </small>
+            </div>
+            <span class="badge" [ngClass]="'bg-' + getBadgeColor(sondage.expireDans)">
+              Expire dans {{ sondage.expireDans }}h
+            </span>
+          </div>
+          
+          <!-- Options -->
+          <div class="mb-3">
+            @for (option of sondage.options; track $index) {
+              <div class="form-check mb-2">
+                <input 
+                  class="form-check-input" 
+                  type="radio" 
+                  [name]="'sondage' + sondage.id"
+                   [(ngModel)]="sondage.selectedOption"
+                    [value]="$index" 
+                  [id]="'opt' + sondage.id + '_' + $index"
+                  [disabled]="sondage.voted">
+                <label 
+                  class="form-check-label w-100" 
+                  [for]="'opt' + sondage.id + '_' + $index">
+                  {{ option }}
+                </label>
+              </div>
+            }
+          </div>
+          
+          <!-- Bouton -->
+           <button 
+            class="btn btn-sm btn-primary w-100"
+            (click)="voter(sondage.id)"
+            [disabled]="sondage.selectedOption === undefined || sondage.voted">
+            <i class="ti ti-send me-1"></i>Voter
+        </button>
+        </div>
+      </div>
+    }
+  </div>
+  
+  <!-- Footer -->
+  <div class="card-footer bg-light py-2">
+    <div class="text-center">
+      <small class="text-muted">
+        <i class="ti ti-clock me-1"></i>
+        Les sondages expirent après 24h
+      </small>
+    </div>
+  </div>
+</div>
