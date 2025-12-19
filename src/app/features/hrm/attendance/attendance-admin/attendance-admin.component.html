@@ -2,7 +2,7 @@
 
     <!-- Breadcrumb -->
     <div class="d-md-flex d-block align-items-center justify-content-between mb-3">
-        <app-breadcrumbs title="Attendance Admin" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+        <app-breadcrumbs title="Administration Présence" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
         <div class="d-flex my-xl-auto right-content align-items-center flex-wrap ">
         <div class="me-2 mb-2">
             <div class="d-flex align-items-center border bg-white rounded p-1 me-2 icon-list">
@@ -15,16 +15,16 @@
           <div class="me-2 mb-2">
             <div class="dropdown">
               <a href="javascript:void(0);" class="dropdown-toggle btn btn-white d-inline-flex align-items-center" data-bs-toggle="dropdown">
-                <i class="ti ti-file-export me-1"></i>Export
+                <i class="ti ti-file-export me-1"></i>Exporter
               </a>
               <ul class="dropdown-menu  dropdown-menu-end p-3">
                 <li>
                   <a href="javascript:void(0);" class="dropdown-item rounded-1"><i
-                      class="ti ti-file-type-pdf me-1"></i>Export as PDF</a>
+                      class="ti ti-file-type-pdf me-1"></i>Exporter en PDF</a>
                 </li>
                 <li>
                   <a href="javascript:void(0);" class="dropdown-item rounded-1"><i
-                      class="ti ti-file-type-xls me-1"></i>Export as Excel </a>
+                      class="ti ti-file-type-xls me-1"></i>Exporter en Excel </a>
                 </li>
               </ul>
             </div>
@@ -32,7 +32,7 @@
           <div class="mb-2">
             <a href="javascript:void(0);" class="btn btn-primary d-flex align-items-center"
                 data-bs-target="#admin_report" data-bs-toggle="modal"><i
-                    class="ti ti-file-analytics me-2"></i>Report</a>
+                    class="ti ti-file-analytics me-2"></i>Rapport</a>
         </div>
           <app-collapse-header></app-collapse-header>
         </div>
@@ -44,13 +44,14 @@
             <div class="row align-items-center mb-4">
                 <div class="col-md-5">
                     <div class="mb-3 mb-md-0">
-                        <h4 class="mb-1">Attendance Details Today</h4>
-                        <p>Data from the 800+ total no of employees</p>
+                        <h4 class="mb-1">Détails de Pointage Aujourd'hui</h4>
+                        <p>Données provenant des 800+ employés au total</p>
+
                     </div>
                 </div>
                 <div class="col-md-7">
                     <div class="d-flex align-items-center justify-content-md-end">
-                        <h6>Total Absenties today</h6>
+                        <h6>Total des Absents Aujourd'hui</h6>
                         <div class="avatar-list-stacked avatar-group-sm ms-4">
                             <span class="avatar avatar-rounded">
                                 <img class="border border-white" src="assets/img/profiles/avatar-02.jpg"
@@ -84,7 +85,7 @@
                 <div class="row gx-0">
                     <div class="col-md col-sm-4 border-end">
                         <div class="p-3">
-                            <span class="fw-medium mb-1 d-block">Present</span>
+                            <span class="badge badge-success fw-medium mb-1">Présent</span>
                             <div class="d-flex align-items-center justify-content-between">
                                 <h5>250</h5>
                                 <span class="badge badge-success d-inline-flex align-items-center">
@@ -94,21 +95,10 @@
                             </div>
                         </div>
                     </div>
+                   
                     <div class="col-md col-sm-4 border-end">
                         <div class="p-3">
-                            <span class="fw-medium mb-1 d-block">Late Login</span>
-                            <div class="d-flex align-items-center justify-content-between">
-                                <h5>45</h5>
-                                <span class="badge badge-danger d-inline-flex align-items-center">
-                                    <i class="ti ti-arrow-wave-right-down me-1"></i>
-                                    -1%
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md col-sm-4 border-end">
-                        <div class="p-3">
-                            <span class="fw-medium mb-1 d-block">Uninformed</span>
+                            <span class="fw-medium mb-1 badge badge-danger">Non justifié</span>
                             <div class="d-flex align-items-center justify-content-between">
                                 <h5>15</h5>
                                 <span class="badge badge-danger d-inline-flex align-items-center">
@@ -120,7 +110,7 @@
                     </div>
                     <div class="col-md col-sm-4 border-end">
                         <div class="p-3">
-                            <span class="fw-medium mb-1 d-block">Permisson</span>
+                            <span class="fw-medium mb-1 badge badge-success">justifié</span>
                             <div class="d-flex align-items-center justify-content-between">
                                 <h5>03</h5>
                                 <span class="badge badge-success d-inline-flex align-items-center">
@@ -132,7 +122,7 @@
                     </div>
                     <div class="col-md col-sm-4">
                         <div class="p-3">
-                            <span class="fw-medium mb-1 d-block">Absent</span>
+                            <span class="fw-medium mb-1 badge badge-danger">Absent</span>
                             <div class="d-flex align-items-center justify-content-between">
                                 <h5>12</h5>
                                 <span class="badge badge-danger d-inline-flex align-items-center">
@@ -149,7 +139,7 @@
 
     <div class="card">
         <div class="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3">
-            <h5>Admin Attendance</h5>
+            <h5>Administration Présence</h5>
             <div class="d-flex my-xl-auto right-content align-items-center flex-wrap row-gap-3">
                 <div class="me-3">
                     <div class="input-icon position-relative">
@@ -163,7 +153,7 @@
                     <a href="javascript:void(0);"
                         class="dropdown-toggle btn btn-white d-inline-flex align-items-center"
                         data-bs-toggle="dropdown">
-                        Department
+                        Département
                     </a>
                     <ul class="dropdown-menu  dropdown-menu-end p-3">
                         <li>
@@ -182,41 +172,39 @@
                     <a href="javascript:void(0);"
                         class="dropdown-toggle btn btn-white d-inline-flex align-items-center"
                         data-bs-toggle="dropdown">
-                        Select Status
+                        Sélectionner Statut
                     </a>
                     <ul class="dropdown-menu  dropdown-menu-end p-3">
                         <li>
-                            <a href="javascript:void(0);" class="dropdown-item rounded-1">Present</a>
+                            <a href="javascript:void(0);" class="dropdown-item rounded-1">Présent</a>
                         </li>
                         <li>
                             <a href="javascript:void(0);" class="dropdown-item rounded-1">Absent</a>
                         </li>
                     </ul>
                 </div>
-                <div class="dropdown">
-                    <a href="javascript:void(0);"
-                        class="dropdown-toggle btn btn-white d-inline-flex align-items-center"
-                        data-bs-toggle="dropdown">
-                        Sort By : Last 7 Days
-                    </a>
-                    <ul class="dropdown-menu  dropdown-menu-end p-3">
-                        <li>
-                            <a href="javascript:void(0);" class="dropdown-item rounded-1">Recently Added</a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0);" class="dropdown-item rounded-1">Ascending</a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0);" class="dropdown-item rounded-1">Desending</a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0);" class="dropdown-item rounded-1">Last Month</a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0);" class="dropdown-item rounded-1">Last 7 Days</a>
-                        </li>
-                    </ul>
-                </div>
+               <div class="dropdown">
+          <a href="javascript:void(0);" class="dropdown-toggle btn btn-white d-inline-flex align-items-center" data-bs-toggle="dropdown">
+            Trier par : 7 derniers jours
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end p-3">
+            <li>
+              <a href="javascript:void(0);" class="dropdown-item rounded-1">Récemment ajouté</a>
+            </li>
+            <li>
+              <a href="javascript:void(0);" class="dropdown-item rounded-1">Croissant</a>
+            </li>
+            <li>
+              <a href="javascript:void(0);" class="dropdown-item rounded-1">Décroissant</a>
+            </li>
+            <li>
+              <a href="javascript:void(0);" class="dropdown-item rounded-1">Mois dernier</a>
+            </li>
+            <li>
+              <a href="javascript:void(0);" class="dropdown-item rounded-1">7 derniers jours</a>
+            </li>
+          </ul>
+        </div>
             </div>
         </div>
         <div class="card-body p-0">
@@ -225,7 +213,7 @@
                     <div class="row">
                         <div class="col-sm-12 col-md-6">
                         <div class="dataTables_length">
-                            <label> Row Per Page
+                            <label> Lignes par page
                                 @if(tableData.length > 0) {
                                     <select [(ngModel)]="pageSize" (ngModelChange)="changePageSize(pageSize)" class="form-select form-select-sm">
                                       <option value="10">10</option>
@@ -234,7 +222,7 @@
                                       <option value="100">100</option>
                                     </select>
                                   }
-                            Entries
+                            entrées
                             </label>
                         </div>
                         </div>
@@ -257,13 +245,11 @@
                                             <input class="form-check-input" type="checkbox" id="select-all" [(ngModel)]="initChecked">
                                         </div>
                                     </th>
-                                    <th mat-sort-header="Employee">Employee</th>
-                                    <th mat-sort-header="Status">Status</th>
-                                    <th mat-sort-header="CheckIn">Check In</th>
-                                    <th mat-sort-header="CheckOut">Check Out</th>
-                                    <th mat-sort-header="Break">Break</th>
-                                    <th mat-sort-header="Late">Late</th>
-                                    <th mat-sort-header="ProductionHours">Production Hours</th>
+                                    <th mat-sort-header="Employee">Employé</th>
+                                    <th mat-sort-header="CheckIn">Entrée</th>
+                  <th mat-sort-header="Status">Statut</th>
+                  <th mat-sort-header="CheckOut">Sortie</th>
+                  <th mat-sort-header="ProductionHours">Heures Production</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -293,8 +279,7 @@
                                         </td>
                                         <td>{{data.CheckIn}}</td>
                                         <td>{{data.CheckOut}}</td>
-                                        <td>{{data.Break}}</td>
-                                        <td>{{data.Late}}</td>
+                                     
                                         <td>
                                             @if(data.Production===1){
                                                 <span class="badge badge-success d-inline-flex align-items-center">
@@ -316,18 +301,13 @@
                                             }
 
                                         </td>
-                                        <td>
-                                            <div class="action-icon d-inline-flex">
-                                                <a href="javascript:void(0);" class="me-2" data-bs-toggle="modal" data-bs-target="#edit_attendance"><i class="ti ti-edit"></i></a>
-                                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="ti ti-trash"></i></a>
-                                            </div>
-                                        </td>
+                                       
                                     </tr>
                                     }
                                     @if (tableData.length === 0) {
                                     <tr>
                                     <td colspan="8">
-                                        <h5 class="no-record">No matching records found</h5>
+                                        <h5 class="no-record">Aucun enregistrement correspondant trouvé</h5>
                                     </td>
                                 </tr>
                                 }

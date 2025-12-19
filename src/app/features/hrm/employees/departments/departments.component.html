@@ -1,69 +1,69 @@
 <div class="content">
 
-    <!-- Breadcrumb -->
+    <!-- Fil d'ariane -->
     <div class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
-        <app-breadcrumbs title="Departments" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+        <app-breadcrumbs title="Départements" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
         <div class="d-flex my-xl-auto right-content align-items-center flex-wrap ">
         <div class="me-2 mb-2">
             <div class="dropdown">
             <a href="javascript:void(0);" class="dropdown-toggle btn btn-white d-inline-flex align-items-center" data-bs-toggle="dropdown">
-                <i class="ti ti-file-export me-1"></i>Export
+                <i class="ti ti-file-export me-1"></i>Exporter
             </a>
             <ul class="dropdown-menu  dropdown-menu-end p-3">
                 <li>
-                <a href="javascript:void(0);" class="dropdown-item rounded-1"><i class="ti ti-file-type-pdf me-1"></i>Export as PDF</a>
+                <a href="javascript:void(0);" class="dropdown-item rounded-1"><i class="ti ti-file-type-pdf me-1"></i>Exporter en PDF</a>
                 </li>
                 <li>
-                <a href="javascript:void(0);" class="dropdown-item rounded-1"><i class="ti ti-file-type-xls me-1"></i>Export as Excel </a>
+                <a href="javascript:void(0);" class="dropdown-item rounded-1"><i class="ti ti-file-type-xls me-1"></i>Exporter en Excel </a>
                 </li>
             </ul>
             </div>
         </div>
         <div class="mb-2">
-            <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#add_department" class="btn btn-primary d-flex align-items-center"><i class="ti ti-circle-plus me-2"></i>Add Department</a>
+            <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#add_department" class="btn btn-primary d-flex align-items-center"><i class="ti ti-circle-plus me-2"></i>Ajouter Département</a>
         </div>
         <app-collapse-header></app-collapse-header>
         </div>
     </div>
-    <!-- /Breadcrumb -->
+    <!-- /Fil d'ariane -->
 
-<!-- Performance Indicator list -->
+<!-- Liste des Départements -->
 <div class="card">
     <div class="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3">
-        <h5>Department List</h5>
+        <h5>Liste des Départements</h5>
         <div class="d-flex my-xl-auto right-content align-items-center flex-wrap row-gap-3">
             <div class="dropdown me-3">
                 <a href="javascript:void(0);" class="dropdown-toggle btn btn-white d-inline-flex align-items-center" data-bs-toggle="dropdown">
-                    Status
+                    Statut
                 </a>
                 <ul class="dropdown-menu  dropdown-menu-end p-3">
                     <li>
-                        <a href="javascript:void(0);" class="dropdown-item rounded-1">Active</a>
+                        <a href="javascript:void(0);" class="dropdown-item rounded-1">Actif</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0);" class="dropdown-item rounded-1">Inactive</a>
+                        <a href="javascript:void(0);" class="dropdown-item rounded-1">Inactif</a>
                     </li>
                 </ul>
             </div>
             <div class="dropdown">
                 <a href="javascript:void(0);" class="dropdown-toggle btn btn-white d-inline-flex align-items-center" data-bs-toggle="dropdown">
-                    Sort By : Last 7 Days
+                    Trier par : 7 derniers jours
                 </a>
                 <ul class="dropdown-menu  dropdown-menu-end p-3">
                     <li>
-                        <a href="javascript:void(0);" class="dropdown-item rounded-1">Recently Added</a>
+                        <a href="javascript:void(0);" class="dropdown-item rounded-1">Récemment ajouté</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0);" class="dropdown-item rounded-1">Ascending</a>
+                        <a href="javascript:void(0);" class="dropdown-item rounded-1">Croissant</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0);" class="dropdown-item rounded-1">Desending</a>
+                        <a href="javascript:void(0);" class="dropdown-item rounded-1">Décroissant</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0);" class="dropdown-item rounded-1">Last Month</a>
+                        <a href="javascript:void(0);" class="dropdown-item rounded-1">Mois dernier</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0);" class="dropdown-item rounded-1">Last 7 Days</a>
+                        <a href="javascript:void(0);" class="dropdown-item rounded-1">7 derniers jours</a>
                     </li>
                 </ul>
             </div>
@@ -75,7 +75,7 @@
                 <div class="row">
                     <div class="col-sm-12 col-md-6">
                     <div class="dataTables_length">
-                        <label> Row Per Page
+                        <label> Lignes par page
                             @if(tableData.length > 0) {
                                 <select [(ngModel)]="pageSize" (ngModelChange)="changePageSize(pageSize)" class="form-select form-select-sm">
                                   <option value="10">10</option>
@@ -84,7 +84,7 @@
                                   <option value="100">100</option>
                                 </select>
                               }
-                        Entries
+                        entrées
                         </label>
                     </div>
                     </div>
@@ -93,7 +93,7 @@
                         <label>
                             <input [(ngModel)]="searchDataValue" [ngModelOptions]="{ standalone: true }"
                                 (ngModelChange)="searchData(searchDataValue)" type="search" class="form-control form-control-sm"
-                                placeholder="Search..." />
+                                placeholder="Rechercher..." />
                         </label>
                     </div>
                 </div>
@@ -107,9 +107,9 @@
                                         <input class="form-check-input" type="checkbox" id="select-all" [(ngModel)]="initChecked">
                                     </div>
                                 </th>
-                                <th mat-sort-header="dep">Departments</th>
-                                <th mat-sort-header="Noe">No of Employees</th>
-                                <th  mat-sort-header="Status">Status</th>
+                                <th mat-sort-header="dep">Départements</th>
+                                <th mat-sort-header="Noe">Nombre d'employés</th>
+                                <th  mat-sort-header="Status">Statut</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -139,7 +139,7 @@
                                 @if (tableData.length === 0) {
                                 <tr>
                                 <td colspan="8">
-                                    <h5 class="no-record">No matching records found</h5>
+                                    <h5 class="no-record">Aucun enregistrement trouvé</h5>
                                 </td>
                             </tr>
                             }
@@ -151,6 +151,6 @@
     </div>
     </div>
 </div>
-<!-- /Performance Indicator list -->
+<!-- /Liste des Départements -->
 
 </div>
