@@ -48,22 +48,14 @@
                   />
                 </div>
               </div>
-              <div class="dropdown ms-auto">
-                <button
-                  class="btn btn-sm btn-outline-secondary dropdown-toggle"
-                  type="button"
-                  data-bs-toggle="dropdown"
-                >
+            <div class="dropdown ms-auto">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
                   <i class="ti ti-calendar me-1"></i>7 derniers jours
                 </button>
                 <ul class="dropdown-menu">
                   <li><a class="dropdown-item" href="#">Aujourd'hui</a></li>
-                  <li>
-                    <a class="dropdown-item" href="#">7 derniers jours</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#">30 derniers jours</a>
-                  </li>
+                  <li><a class="dropdown-item" href="#">7 derniers jours</a></li>
+                  <li><a class="dropdown-item" href="#">30 derniers jours</a></li>
                   <li><a class="dropdown-item" href="#">Toutes</a></li>
                 </ul>
               </div>
@@ -117,6 +109,21 @@
                   >
                     <thead class="thead-light">
                       <tr>
+                        <th class="no-sort">
+                          <div
+                            class="form-check form-check-md"
+                            (click)="selectAll(initChecked)"
+                            (keydown.enter)="selectAll(initChecked)"
+                            tabindex="0"
+                          >
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              id="select-all"
+                              [(ngModel)]="initChecked"
+                            />
+                          </div>
+                        </th>
                         <th>Employé promu</th>
                         <th>Département</th>
                         <th>Ancien poste</th>
@@ -130,6 +137,15 @@
                     <tbody>
                       @for (data of tableData; track data) {
                       <tr>
+                        <td>
+                          <div class="form-check form-check-md">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              [(ngModel)]="data.isSelected"
+                            />
+                          </div>
+                        </td>
                         <td>
                           <div class="d-flex align-items-center file-name-icon">
                             <a
@@ -243,16 +259,13 @@
             </div>
 
             <!-- Promotion depuis -->
-            <div class="col-md-12 mb-3">
+           <div class="col-md-12 mb-3">
               <label class="form-label">Promotion depuis</label>
-              <mat-select
-                placeholder="Sélectionner"
-                class="select custom-mat-select"
-              >
-                <mat-option value="jr">Comptable junior</mat-option>
-                <mat-option value="dev">Développeur junior</mat-option>
-                <mat-option value="seo">Analyste SEO junior</mat-option>
-              </mat-select>
+              <input
+                type="text"
+                class="form-control"
+               disabled
+              />
             </div>
 
             <!-- Promotion vers -->
@@ -369,19 +382,13 @@
                 disabled
               />
             </div>
-            <div class="col-md-12">
-              <div class="mb-3">
-                <label class="form-label">Promotion depuis</label>
-                <mat-select
-                  placeholder="Comptable junior"
-                  class="select custom-mat-select"
-                >
-                  <mat-option value="1">Sélectionner</mat-option>
-                  <mat-option value="1">Comptable junior</mat-option>
-                  <mat-option value="1">Développeur junior</mat-option>
-                  <mat-option value="1">Analyste SEO junior</mat-option>
-                </mat-select>
-              </div>
+             <div class="col-md-12 mb-3">
+              <label class="form-label">Promotion depuis</label>
+              <input
+                type="text"
+                class="form-control"
+               disabled
+              />
             </div>
 
             <div class="col-md-12">
