@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { sondage } from '../models/models';
+import { sondageEmployes } from '../models/models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SondageService {
-  getSondagesActifs(): sondage[] {
+  getSondagesActifs(): sondageEmployes[] {
     return [
       {
         id: 1,

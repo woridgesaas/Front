@@ -21,20 +21,21 @@ export const routes = {
   employee: '/dashboard/employee',
   //Layouts
   Horizontal: '/layout-horizontal',
-
   MenuAside: '/layout-horizontal-sidemenu',
-  apps: '/application',
-  chat: '/application/chats',
-  voicecall: '/application/calls/voice-call',
-  videocall: '/application/calls/video-call',
-  outgoingcall: '/application/calls/outgoing-call',
-  incomingcall: '/application/calls/incoming-call',
-  callhistory: '/application/calls/call-history',
-  contacts: '/application/contacts',
-  calendar: '/application/calendar',
-
-  socialFeed: '/application/annonces',
-
+  /**Communication intern routes */
+  apps: '/intranet',
+  chat: '/intranet/chats',
+  voicecall: '/intranet/calls/voice-call',
+  videocall: '/intranet/calls/video-call',
+  outgoingcall: '/intranet/calls/outgoing-call',
+  incomingcall: '/intranet/calls/incoming-call',
+  callhistory: '/intranet/calls/call-history',
+  contacts: '/intranet/contacts',
+  calendar: '/intranet/calendar',
+  socialFeed: '/intranet/annonces',
+  sondageList: '/intranet/sondages',
+  sondageDetails: '/intranet/sondage-details/:id',
+/**------- FIN communication routes ------------- */
   employeeList: '/employees/employee-list',
   employeeGrid: '/employees/employee-grid',
   employeeDetails: '/employees/employee-details',

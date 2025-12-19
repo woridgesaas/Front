@@ -1,0 +1,170 @@
+<div class="card">
+  <div class="card-header">
+    <div class="d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">
+        <i class="ti ti-chart-bar me-2 text-primary"></i>
+        Résultats du sondage
+      </h5>
+      <div class="btn-group" role="group">
+        <button type="button" class="btn btn-sm btn-outline-secondary" 
+                (click)="changerTypeChart('donut')" 
+                [class.active]="chartType === 'donut'">
+          <i class="ti ti-chart-pie"></i>
+        </button>
+        <button type="button" class="btn btn-sm btn-outline-secondary" 
+                (click)="changerTypeChart('bar')" 
+                [class.active]="chartType === 'bar'">
+          <i class="ti ti-chart-bar"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <div class="card-body">
+    <!-- header sondage -->
+    <div class="mb-4">
+      <h3 class="text-dark mb-2">{{ sondage.titre }}</h3>
+      <div class="d-flex flex-wrap gap-3">
+        <span class="badge" [ngClass]="{
+          'bg-success': sondage.statut === 'Actif',
+          'bg-danger': sondage.statut === 'Expiré'
+        }">
+          <i class="ti ti-circle-filled me-1"></i>{{ sondage.statut }}
+        </span>
+      </div>
+      
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <div class="d-flex align-items-center mb-2">
+            <i class="ti ti-calendar text-primary me-2"></i>
+            <div>
+              <small class="text-muted">Créé le</small>
+              <div class="fw-medium">{{ sondage.dateCreation }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Graphique -->
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="card bg-primary-100">
+          <div class="card-body">
+            @if (showChart) {
+              <apx-chart
+                [series]="chartConfig.series"
+                [chart]="chartConfig.chart"
+                [labels]="chartConfig.labels"
+                [colors]="chartConfig.colors"
+                [plotOptions]="chartConfig.plotOptions"
+                [dataLabels]="chartConfig.dataLabels"
+                [xaxis]="chartConfig.xaxis"
+                [yaxis]="chartConfig.yaxis"
+                [legend]="chartConfig.legend">
+              </apx-chart>
+            }
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-4">
+        <!-- Statistiques globales -->
+        <div class="card">
+          <div class="card-body">
+            <h6 class="mb-3">Résultats détaillés</h6>
+            
+            <div class="mb-3">
+              <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted">Total votes</span>
+                <strong class="text-primary">{{ sondage.totalVotes }}</strong>
+              </div>
+              <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted">Taux participation</span>
+                <strong class="text-success">{{ sondage.tauxParticipation }}%</strong>
+              </div>
+            </div>
+            
+            <!-- Liste des options avec pourcentages -->
+            <div class="list-group list-group-flush">
+              @for (option of sondage.options; track option.id) {
+                <div class="list-group-item d-flex justify-content-between align-items-center border-0 py-2">
+                  <div class="d-flex align-items-center">
+                    <span class="badge-dot me-2" [style.background-color]="option.couleur"></span>
+                    <span>{{ option.texte }}</span>
+                  </div>
+                  <div class="text-end">
+                    <div class="fw-medium">{{ option.votes }} votes</div>
+                    <small class="text-muted">{{ option.pourcentage }}%</small>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Tableau  -->
+    <div class="card mt-4">
+      <div class="card-header">
+        <h6 class="mb-0">Détails par option</h6>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead>
+              <tr>
+                <th>Option</th>
+                <th>Nombre de votes</th>
+                <th>Pourcentage</th>
+                <th>Barre de progression</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (option of sondage.options; track option.id) {
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <span class="badge-dot me-2" [style.background-color]="option.couleur"></span>
+                      {{ option.texte }}
+                    </div>
+                  </td>
+                  <td class="fw-medium">{{ option.votes }}</td>
+                  <td>
+                    <span class="badge bg-light text-dark">{{ option.pourcentage }}%</span>
+                  </td>
+                  <td>
+                    <div class="progress" style="height: 8px;">
+                      <div class="progress-bar" 
+                           [style.width]="option.pourcentage + '%'"
+                           [style.background-color]="option.couleur">
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="card-footer">
+    <div class="d-flex justify-content-between align-items-center">
+      <small class="text-muted">
+        <i class="ti ti-info-circle me-1"></i>
+        Données mises à jour en temps réel
+      </small>
+      <div>
+        <button class="btn btn-sm btn-outline-primary me-2">
+          <i class="ti ti-download me-1"></i>Exporter
+        </button>
+        <button class="btn btn-sm btn-primary">
+          <i class="ti ti-printer me-1"></i>Imprimer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,5 +1,5 @@
 import { Component, NgModule, OnInit } from '@angular/core';
-import { sondage } from '../../../../../shared/models/models';
+import { sondageEmployes } from '../../../../../shared/models/models';
 import { SondageService } from '../../../../../shared/data/sondage-service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 
 })
 export class SondageListComponent implements OnInit {
-   sondages: sondage[] = [];
+   sondages: sondageEmployes[] = [];
   constructor(private sondageService: SondageService) {
     
   }
