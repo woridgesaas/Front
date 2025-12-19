@@ -7,7 +7,7 @@ describe('ReligiousHolidaysComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReligiousHolidaysComponent], // ✅ standalone
+      imports: [ReligiousHolidaysComponent], 
     }).compileComponents();
 
     fixture = TestBed.createComponent(ReligiousHolidaysComponent);
