@@ -140,6 +140,13 @@ export const routes: Routes = [
           './features/hrm/validation/validate-leave/validate-leave.component'
         ).then(m => m.ValidateLeaveComponent),
     },
+    {
+      path:'validate-personal-info',
+      loadComponent:() =>
+        import(
+          './features/hrm/validation/validate-personal-info/validate-personal-info.component'
+        ).then(m=>m.ValidateInfoPersonnelComponent),
+    }
   
   ],
 },

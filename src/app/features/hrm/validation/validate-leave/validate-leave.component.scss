@@ -131,4 +131,13 @@
   font-size: 12px;
   color: #6b7280;
 }
+.btn-link {
+  text-decoration: underline;
+  color: #6c757d;
+  font-size: 13px;
+
+  &:hover {
+    color: #495057;
+  }
+}
 
