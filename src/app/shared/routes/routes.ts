@@ -33,7 +33,7 @@ export const routes = {
   contacts: '/application/contacts',
   calendar: '/application/calendar',
 
-  socialFeed: '/application/social-feed',
+  socialFeed: '/application/annonces',
 
    employeeList: '/employees/employee-list',
   employeeGrid: '/employees/employee-grid',

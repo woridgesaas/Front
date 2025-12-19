@@ -36,6 +36,7 @@ import { BreadcrumbsComponent } from '../../common/breadcrumbs/breadcrumbs.compo
 import { TagInputModule } from 'ngx-chips';
 import { DatePickerModule } from 'primeng/datepicker';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
+import { AnoncesChartComponent } from '../../application/social-feed/components/anonces-chart/anonces-chart.component';
 export interface ChartOptions {
   series: ApexAxisChartSeries;
   chart: ApexChart;
@@ -52,6 +53,7 @@ Chart.register(...registerables);
     templateUrl: './admin-dashboard.component.html',
     styleUrl: './admin-dashboard.component.scss',
     imports: [
+      AnoncesChartComponent,
       CommonModule,
       MatSelectModule,
       FormsModule,
