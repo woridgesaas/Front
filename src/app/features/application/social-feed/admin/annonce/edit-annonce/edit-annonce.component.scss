@@ -1,0 +1,33 @@
+.card {
+    border: 1px solid #e9ecef;
+}
+
+.card.border-primary {
+    border-color: #0d6efd !important;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+.avatar img {
+    object-fit: cover;
+}
+
+.badge.bg-info.bg-opacity-10 {
+    background-color: rgba(13, 202, 240, 0.1) !important;
+}
+
+.annonce-preview {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.link-hover:hover {
+    text-decoration: underline;
+    opacity: 0.8;
+}
+
+.form-control-lg {
+    font-size: 1.1rem;
+    padding: 0.75rem 1rem;
+}

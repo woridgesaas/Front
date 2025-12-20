@@ -33,6 +33,7 @@ export const routes = {
   contacts: '/intranet/contacts',
   calendar: '/intranet/calendar',
   socialFeed: '/intranet/annonces',
+  socialFeedEdit:'/intranet/annonces/edit/', //=>angular va injecter le id par le tableau param de [routerLink]
   sondageList: '/intranet/sondages',
   sondageDetails: '/intranet/sondage-details/:id',
 /**------- FIN communication routes ------------- */
