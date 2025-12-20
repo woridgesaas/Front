@@ -313,7 +313,7 @@ export class DataService {
           ],
         },
         {
-          menuValue: 'Application',
+          menuValue: 'Intranet',
           route: routes.apps,
           hasSubRouteTwo: true,
           showSubRoute: false,
@@ -384,7 +384,7 @@ export class DataService {
             },
 
             {
-              menuValue: 'Social Feed',
+              menuValue: 'Fil d\'actualité',
               hasSubRoute: true,
               showSubRoute: false,
               route: routes.socialFeed,
@@ -798,7 +798,7 @@ export class DataService {
           ],
         },
         {
-          menuValue: 'Application',
+          menuValue: 'intranet',
           hasSubRouteTwo: true,
           showSubRoute: false,
           icon: 'layout-grid-add',
@@ -865,7 +865,7 @@ export class DataService {
             },
 
             {
-              menuValue: 'Social Feed',
+              menuValue: 'Fil d\'actualité',
               hasSubRoute: true,
               showSubRoute: false,
               route: routes.socialFeed,

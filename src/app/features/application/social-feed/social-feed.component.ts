@@ -3,19 +3,22 @@ import lgZoom from 'lightgallery/plugins/zoom';
 import lgVideo from 'lightgallery/plugins/video';
 import { LightGallery } from 'lightgallery/lightgallery';
 import { BeforeSlideDetail } from 'lightgallery/lg-events';
-import { AnoncesChartComponent } from './components/anonces-chart/anonces-chart.component';
+import { CreateAnnonceModalComponent } from './admin/annonce/create-annonce-modal/create-annonce-modal.component';
 import { FooterComponent } from '../../common/footer/footer.component';
 import { LightgalleryModule } from 'lightgallery/angular';
 import { SondageListComponent } from './components/sondage-list/sondage-list.component';
+import { routes } from '../../../shared/routes/routes';
+import { RouterModule } from '@angular/router'; 
 @Component({
     selector: 'app-social-feed',
     templateUrl: './social-feed.component.html',
     styleUrl: './social-feed.component.scss',
-    imports:[SondageListComponent,FooterComponent,LightgalleryModule]
+    imports:[RouterModule,SondageListComponent,FooterComponent,LightgalleryModule,CreateAnnonceModalComponent]
 })
 export class SocialFeedComponent implements AfterViewInit {
   private lightGallery!: LightGallery;
   private needRefresh = false;
+  routes = routes;
   settings = {
     counter: false,
     plugins: [lgZoom, lgVideo],

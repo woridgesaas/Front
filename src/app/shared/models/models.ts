@@ -49,6 +49,13 @@ export interface SondageForm{
     voted: boolean;
     totalVotes: number;
   }
+  export interface AnnonceForm{
+    titre: string;
+    contenu: string;
+    visibilite:'public' | 'departement';
+    departementId?: number; //pour visibilite = departement
+    hashtags?: string[];
+  }
   export interface pageSelection {
   skip: number;
   limit: number;

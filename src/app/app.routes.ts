@@ -46,6 +46,7 @@ export const routes: Routes = [
             { path: 'calls/incoming-call', loadComponent: () => import('./features/application/call/incoming-call/incoming-call.component').then(m => m.IncomingCallComponent) },
            
             { path: 'annonces', loadComponent: () => import('./features/application/social-feed/social-feed.component').then(m => m.SocialFeedComponent) },
+            { path: 'annonces/edit/:id' , loadComponent:()=> import( './features/application/social-feed/admin/annonce/edit-annonce/edit-annonce.component' ).then(m=>m.EditAnnonceComponent)},
             { path: 'sondages', loadComponent: () => import('./features/application/social-feed/admin/sondage/sondage.component').then(m => m.SondageComponent) },
             { path: 'sondage-details/:id', loadComponent: () => import('./features/application/social-feed/admin/sondage/sondage-details/sondage-details.component').then(m => m.SondageDetailsComponent)}
           ]

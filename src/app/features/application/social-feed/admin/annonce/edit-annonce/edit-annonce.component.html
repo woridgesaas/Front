@@ -1,0 +1,270 @@
+<div class="page-wrapper">
+<div class="content">
+    <!-- Header -->
+    <div class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
+        <div class="mb-2">
+            <h6 class="fw-medium d-flex align-items-center">
+                <a routerLink="{{routes.socialFeed}}" class="text-dark">
+                    <i class="ti ti-arrow-left me-2"></i>Retour aux annonces
+                </a>
+            </h6>
+        </div>
+        <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
+            <app-collapse-header></app-collapse-header>
+        </div>
+    </div>
+
+    <!-- Titre de la page -->
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <h4 class="card-title mb-1">Modifier l'annonce</h4>
+                    <p class="text-muted mb-0">Annonce ID: {{ annonceId }}</p>
+                </div>
+                <div class="badge bg-light text-dark border">
+                    <i class="ti ti-edit me-1"></i>Mode édition
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Formulaire de modification -->
+    <div class="card">
+        <div class="card-body">
+            <form #modifierForm="ngForm" (ngSubmit)="sauvegarderModifications(modifierForm)">
+                
+                <!-- Titre -->
+                <div class="mb-4">
+                    <label class="form-label fw-medium">Titre de l'annonce *</label>
+                    <input type="text" 
+                           class="form-control form-control-lg" 
+                           name="titre"
+                           [(ngModel)]="annonce.titre"
+                           placeholder="Donnez un titre à votre annonce"
+                           required>
+                    
+                    @if (modifierForm.controls['titre']?.invalid && modifierForm.controls['titre']?.touched) {
+                        <div class="text-danger small mt-1">Le titre est obligatoire</div>
+                    }
+                </div>
+
+                <!-- Contenu -->
+                <div class="mb-4">
+                    <label class="form-label fw-medium">Contenu *</label>
+                    <textarea class="form-control" 
+                              rows="6"
+                              name="contenu"
+                              [(ngModel)]="annonce.contenu"
+                              placeholder="Décrivez votre annonce..."
+                              required></textarea>
+                    
+                    @if (modifierForm.controls['contenu']?.invalid && modifierForm.controls['contenu']?.touched) {
+                        <div class="text-danger small mt-1">Le contenu est obligatoire</div>
+                    }
+                    
+                    <div class="text-end mt-1 text-muted small">
+                        {{ annonce.contenu.length || 0 }} caractères
+                    </div>
+                </div>
+
+                <!-- Visibilité -->
+                <div class="mb-4">
+                    <label class="form-label fw-medium">Visibilité</label>
+                    <div class="row g-3">
+                        <!-- Public -->
+                        <div class="col-md-6">
+                            <div class="card border {{ annonce.visibilite === 'public' ? 'border-primary' : '' }}">
+                                <div class="card-body text-center">
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" 
+                                               type="radio" 
+                                               name="visibilite" 
+                                               id="public"
+                                               value="public"
+                                               [(ngModel)]="annonce.visibilite">
+                                        <label class="form-check-label fw-medium" for="public">
+                                            <i class="ti ti-world fs-5 me-2"></i>Public
+                                        </label>
+                                    </div>
+                                    <p class="text-muted small mb-0">Visible par tout le monde</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Département -->
+                        <div class="col-md-6">
+                            <div class="card border {{ annonce.visibilite === 'departement' ? 'border-primary' : '' }}">
+                                <div class="card-body text-center">
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" 
+                                               type="radio" 
+                                               name="visibilite" 
+                                               id="departement"
+                                               value="departement"
+                                               [(ngModel)]="annonce.visibilite">
+                                        <label class="form-check-label fw-medium" for="departement">
+                                            <i class="ti ti-lock fs-5 me-2"></i>Département
+                                        </label>
+                                    </div>
+                                    <p class="text-muted small mb-0">Visible par votre département</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- montrer les infos ila kan dep selected -->
+                @if (annonce.visibilite === 'departement') {
+                    <div class="mb-4 p-3 bg-light rounded">
+                        <div class="d-flex align-items-center">
+                            <i class="ti ti-building fs-5 text-primary me-2"></i>
+                            <div>
+                                <p class="mb-0 fw-medium">Département : {{ getDepartementNom() }}</p>
+                                <p class="text-muted small mb-0">Cette annonce sera visible seulement par ce département</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <!-- Hashtags -->
+                <div class="mb-4">
+                    <label class="form-label fw-medium">Hashtags</label>
+                    <div class="input-group">
+                        <span class="input-group-text">#</span>
+                        <input type="text" 
+                               class="form-control" 
+                               name="hashtagsTexte"
+                               [(ngModel)]="hashtagsTexte"
+                               placeholder="formation urgent it ...">
+                    </div>
+                    <small class="text-muted">Séparez par espace. Exemple: formation urgent it</small>
+                    
+                    <!-- Affichage des hashtags dans un badge :) -->
+                    @if (hashtagsTexte) {
+                        <div class="mt-2">
+                            <p class="mb-1 small">Prévisualisation :</p>
+                            <div class="d-flex flex-wrap gap-1">
+                                @for (tag of formaterHashtags(); track $index) {
+                                    <span class="badge bg-info bg-opacity-10 text-info border border-info">
+                                        {{ tag }}
+                                    </span>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <!-- affichage justement -->
+                <div class="mb-4">
+                    <label class="form-label fw-medium">Informations sur l'annonce</label>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="p-3 bg-light rounded">
+                                <p class="mb-1 small text-muted">Date de création</p>
+                                <p class="mb-0 fw-medium">
+                                    <i class="ti ti-calendar me-2"></i>
+                                    {{ getDateFormatee() }}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 bg-light rounded">
+                                <p class="mb-1 small text-muted">Auteur</p>
+                                <p class="mb-0 fw-medium">
+                                    <i class="ti ti-user me-2"></i>
+                                    {{ getAuteurNom() }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Boutons d'action -->
+                <div class="d-flex justify-content-between align-items-center border-top pt-4">
+                    <div>
+                        <button type="button" 
+                                class="btn btn-outline-secondary"
+                                routerLink="{{routes.socialFeed}}">
+                            <i class="ti ti-x me-1"></i>Annuler
+                        </button>
+                    </div>
+                    
+                    <div class="d-flex gap-2">
+                        <button type="button" 
+                                class="btn btn-light"
+                                (click)="reinitialiserFormulaire()">
+                            <i class="ti ti-refresh me-1"></i>Réinitialiser
+                        </button>
+                        
+                        <button type="submit" 
+                                class="btn btn-primary"
+                                [disabled]="modifierForm.invalid">
+                                <i class="ti ti-check me-1"></i>
+                                Enregistrer les modifications
+                        </button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- Aperçu en temps réel -->
+    <div class="card mt-4">
+        <div class="card-header">
+            <h5 class="card-title mb-0">
+                <i class="ti ti-eye me-2"></i>Aperçu de l'annonce
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="annonce-preview">
+                <!-- Header de l'annonce -->
+                <div class="d-flex align-items-center mb-3">
+                    <div class="avatar avatar-md avatar-rounded me-3">
+                        <img src="assets/img/users/user-03.jpg" alt="Auteur">
+                    </div>
+                    <div>
+                        <h6 class="mb-0">{{ getAuteurNom() }}</h6>
+                        <p class="text-muted small mb-0">
+                            {{ getDateFormatee() }}
+                            <span class="badge ms-2 {{ annonce.visibilite === 'public' ? 'bg-success' : 'bg-info' }}">
+                                <i class="ti {{ annonce.visibilite === 'public' ? 'ti-world' : 'ti-lock' }} me-1"></i>
+                                {{ annonce.visibilite === 'public' ? 'Public' : 'Département' }}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Contenu de l'annonce -->
+                <div class="mb-3">
+                    <h5 class="text-dark mb-2">{{ annonce.titre || '(Sans titre)' }}</h5>
+                    <p class="text-dark">{{ annonce.contenu || '(Aucun contenu)' }}</p>
+                </div>
+
+                <!-- Hashtags preview -->
+                @if (hashtagsTexte) {
+                    <div class="mb-3">
+                        <div class="d-flex flex-wrap gap-1">
+                            @for (tag of formaterHashtags(); track $index) {
+                                <a href="javascript:void(0);" class="text-info d-inline-flex link-hover">
+                                    {{ tag }}
+                                </a>
+                            }
+                        </div>
+                    </div>
+                }
+
+                <!-- Statut -->
+                <div class="border-top pt-3">
+                    <p class="text-muted small mb-0">
+                        <i class="ti ti-info-circle me-1"></i>
+                        Cette annonce sera mise à jour après enregistrement
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
