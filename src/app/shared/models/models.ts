@@ -60,7 +60,49 @@ export interface SondageForm{
   skip: number;
   limit: number;
 }
+export interface TicketBase {
+  id: number;
+  numeroTicket: string;
+  titre: string;
+  description?: string;
+  categorie: string;
+  priorite: 'Basse' | 'Moyenne' | 'Haute' | 'Urgente' | 'Par default';
+  statut: 'Ouvert' | 'En Cours' | 'Résolu' | 'Fermé';
+  createdAt: string;
+  isSelected?:boolean;
+}
 
+
+export interface TicketAdmin extends TicketBase {
+  assignedTo: {
+    id: number;
+    nom: string;
+    avatar: string;
+  } | null;
+  departement: string;
+  updated: string;
+
+}
+export interface NewTicketForm {
+  titre: string;
+  description: string;
+  categorie: string;
+  priorite: 'Basse' | 'Moyenne' | 'Haute' | 'Urgente' | 'Par default';
+  statut?: 'Ouvert' | 'En Cours' | 'Résolu' | 'Fermé'; 
+  assignedTo?: number; // role = canAssigneTicket just
+  departement?: string; // role = canAssigneTicket just
+}
+export interface TicketDetailData extends TicketBase{
+  // Historique des statuts 
+  historiqueStatuts: Array<{
+    date: string;
+    statut: string;
+    description: string;
+  }>;
+  
+  // Pour les actions
+  noteFermeture?: string;
+}
 export interface apiResultFormat {
   data: [];
   totalData: number;

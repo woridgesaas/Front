@@ -65,9 +65,8 @@ export const routes = {
   clientGrid: '/client/client-grid',
   clientList: '/client/client-list',
 
-  ticketList: '/tickets/ticket-list',
-  ticketGrid: '/tickets/ticket-grid',
-
+ticketList: '/tickets/ticket-list',
+  myTickets: '/tickets/mes-tickets',
   payments: '/sales/payments',
   expenses: '/sales/expenses',
   providentfund: '/sales/provident-fund',

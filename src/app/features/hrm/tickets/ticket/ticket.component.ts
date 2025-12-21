@@ -8,16 +8,16 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { FormsModule } from '@angular/forms';
 import { MatSortModule } from '@angular/material/sort';
 import { BreadcrumbsComponent } from '../../../common/breadcrumbs/breadcrumbs.component';
-import { CollapseHeaderComponent } from '../../../common/collapse-header/collapse-header.component';
 import { TicketCategoriesComponent } from '../components/ticket-categories/ticket-categories.component';
 import { TicketChartsComponent } from '../components/ticket-charts/ticket-charts.component';
 import { TicketListComponent } from '../components/ticket-list/ticket-list.component';
 import { TechnicienService } from '../../../../shared/data/technicien-service';
+import { TicketCreateComponent } from '../components/ticket-create/ticket-create.component';
 @Component({
     selector: 'app-ticket',
     templateUrl: './ticket.component.html',
     styleUrl: './ticket.component.scss',
-    imports: [TicketListComponent,TicketChartsComponent,TicketCategoriesComponent ,CommonModule,RouterModule,MatSelectModule,BsDatepickerModule,FormsModule,MatSortModule,BreadcrumbsComponent,CollapseHeaderComponent]  
+    imports: [TicketListComponent,TicketChartsComponent,TicketCategoriesComponent ,CommonModule,RouterModule,MatSelectModule,BsDatepickerModule,FormsModule,MatSortModule,BreadcrumbsComponent,TicketCreateComponent]  
 })
 export class TicketComponent implements OnInit {
   public routes=routes;
