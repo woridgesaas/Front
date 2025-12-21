@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RemoveConfirmationComponent } from '../remove-confirmation/remove-confirmation.component';
 
 interface Membre {
   id: string;
@@ -22,13 +23,13 @@ interface Utilisateur {
 @Component({
   selector: 'app-details-group-modal',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RemoveConfirmationComponent],
   templateUrl: './details-group-modal.component.html',
 })
 export class DetailsGroupModalComponent {
   @Output() fermer = new EventEmitter<void>();
   @Output() membresAjoutes = new EventEmitter<string[]>();
-
+  
   // Données statiques du groupe
   groupe = {
     id: 'groupe-123',
@@ -73,6 +74,9 @@ export class DetailsGroupModalComponent {
   utilisateursFiltres: Utilisateur[] = [...this.utilisateursDisponibles];
   chargementUI: boolean = false;
 
+  //member à retier pour passer au modal de confirmation
+  removedMember:any=null;
+  showConfirm :boolean = false;
   constructor() {}
 
   // Méthodes UI
@@ -188,5 +192,17 @@ export class DetailsGroupModalComponent {
 
   get nombreMembres(): number {
     return this.membresActuels.length;
+  }
+  openConfirmModal(member: Membre):void{
+      this.removedMember = member;
+      this.showConfirm = true;
+      
+  }
+  removeMembre(response:boolean):void{
+    if(response && this.removedMember !== null){ //so true sent from modal and removedMember not null :)
+      this.membresActuels =this.membresActuels.filter(m =>m.id !== this.removedMember.id);
+    }
+      this.showConfirm = false;
+    this.removedMember = null; 
   }
 }

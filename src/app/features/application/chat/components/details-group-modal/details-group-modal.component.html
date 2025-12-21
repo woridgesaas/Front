@@ -37,37 +37,57 @@
           @if (membresActuels.length > 0) {
             <div class="row g-2">
               @for (membre of membresActuels; track membre.id) {
-                <div class="col-12 col-md-6">
-                  <div class="card border-0 shadow-sm mb-2">
-                    <div class="card-body py-2">
-                      <div class="d-flex align-items-center">
-                        <!-- Infos -->
+                <!-- Alternative avec badge cliquable -->
+              <div class="col-12 col-md-6">
+                <div class="card border-0 shadow-sm mb-2 position-relative">
+                  <div class="card-body py-2">
+                    <div class="d-flex align-items-center">
+                      
+                      <!-- Infos -->
                         <div class="flex-grow-1">
                           <div class="d-flex justify-content-between align-items-start">
                             <div>
                               <h6 class="mb-0">{{ membre.nom }}</h6>
                               <small class="text-muted">{{ membre.poste }}</small>
                             </div>
-                            <span class="badge" [ngClass]="{
-                              'bg-warning': membre.role === 'admin',
-                              'bg-light text-dark': membre.role === 'membre'
-                            }">
-                              {{ formaterRole(membre.role) }}
-                            </span>
+                            <div class="d-flex align-items-center gap-1">
+                              <!-- Badge du rôle -->
+                              <span class="badge" [ngClass]="{
+                                'bg-success': membre.role === 'admin',
+                                'bg-light text-dark': membre.role === 'membre'
+                              }">
+                                {{ formaterRole(membre.role) }}
+                              </span>
+                              
+                              <!-- Badge retirer (cliquable) -->
+                              @if (membre.role !== 'admin') {
+                                <button type="button" 
+                                        class="btn btn-sm bg-danger-subtle rounded-circle position-absolute"
+                                        style="top: -6px; right: -6px; z-index: 10; width: 24px; height: 24px; padding: 0;"
+                                        (click)="openConfirmModal(membre)"
+                                        title="Retirer du groupe">
+                                  <i class="ti ti-x" style="font-size: 12px;"></i>
+                                </button>
+                              }
+                              <!--Appele au modal et passer le nom et le boolean-->
+
                           </div>
-                          <div class="d-flex justify-content-between mt-1">
-                            <small class="text-muted">
-                              <i class="ti ti-building me-1"></i>{{ membre.departement }}
-                            </small>
-                            <small class="text-muted">
-                              {{ membre.email }}
-                            </small>
+                        </div>
+                              <div class="d-flex justify-content-between align-items-center mt-1">
+                                <div>
+                                  <small class="text-muted">
+                                    <i class="ti ti-building me-1"></i>{{ membre.departement }}
+                                  </small>
+                                  <small class="text-muted ms-3">
+                                    <i class="ti ti-mail me-1"></i>{{ membre.email }}
+                                  </small>
+                                </div>
+                              </div>
+                        </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
               }
             </div>
           } @else {
@@ -234,3 +254,8 @@
     </div>
   </div>
 </div>
+<app-remove-confirmation 
+  [show]="showConfirm" 
+  [membreNom]="removedMember?.nom" 
+  (confirme)="removeMembre($event)">
+</app-remove-confirmation>
