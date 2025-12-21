@@ -172,11 +172,10 @@
           <!-- Actions supplémentaires pour groupes (admin) -->
           @if (activeTab === 'groups' && isGroupAdmin()) {
             <div class="group-actions">
-              <button (click)="manageGroupMembers()" title="Gérer les membres">
+              <button data-bs-toggle="modal" 
+                      data-bs-target="#detailsGroupModal" 
+                      title="Gérer les membres">
                 <i class="ti ti-user-plus"></i>
-              </button>
-              <button (click)="openGroupSettings()" title="Paramètres du groupe">
-                <i class="ti ti-settings"></i>
               </button>
             </div>
           }
@@ -298,3 +297,5 @@
 </div>
   </div>
 </div>
+<!--Modal de détaille d'un group :)-->
+<app-details-group-modal></app-details-group-modal>
