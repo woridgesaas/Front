@@ -103,6 +103,30 @@ export interface TicketDetailData extends TicketBase{
   // Pour les actions
   noteFermeture?: string;
 }
+export interface ChatContact {
+  id: number;
+  name: string;
+  avatar: string;
+  role: string;
+  department: string;
+  status: 'online' | 'offline' | 'indisponible' | 'away';
+  lastMessage: string;
+  lastMessageTime: string;
+  unreadCount: number;
+  isPinned: boolean;
+}
+export interface ChatMessage {
+  id: number;
+  senderId: number;
+  receiverId: number;
+  type: 'text' | 'file' | 'image';
+  content: string;
+  fileName?: string;
+  fileSize?: string;
+  time: string;
+  read: boolean;
+  timestamp: Date;
+}
 export interface apiResultFormat {
   data: [];
   totalData: number;
@@ -740,18 +764,4 @@ export interface ApiData {
   apiKey: string;
   status: string;
   createdDate: string;
-}
-
-
-export interface callHistory {
-  sNo?: number;
-  isSelected: boolean;
-  Name: string;
-  Email: string;
-  Phone: string;
-  CallType: string;
-  Class: string;
-  Duration: string;
-  Image: string;
-  DateTime: string;
 }

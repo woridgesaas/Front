@@ -38,13 +38,7 @@ export const routes: Routes = [
       { path: 'intranet', loadComponent: () => import('./features/application/application.component').then(m => m.ApplicationComponent),
           children: [
             { path: 'chats', loadComponent: () => import('./features/application/chat/chat.component').then(m => m.ChatComponent) },
-            { path: 'calendar', loadComponent: () => import('./features/application/calendar/calendar.component').then((m) => m.CalendarComponent),},
-            { path: 'calls/call-history', loadComponent: () => import('./features/application/call/call-history/call-history.component').then(m => m.CallHistoryComponent) },
-            { path: 'calls/voice-call', loadComponent: () => import('./features/application/call/voice-call/voice-call.component').then(m => m.VoiceCallComponent) },
-            { path: 'calls/video-call', loadComponent: () => import('./features/application/call/video-call/video-call.component').then(m => m.VideoCallComponent) },
-            { path: 'calls/outgoing-call', loadComponent: () => import('./features/application/call/outgoing-call/outgoing-call.component').then(m => m.OutgoingCallComponent) },
-            { path: 'calls/incoming-call', loadComponent: () => import('./features/application/call/incoming-call/incoming-call.component').then(m => m.IncomingCallComponent) },
-           
+            { path: 'calendar', loadComponent: () => import('./features/application/calendar/calendar.component').then((m) => m.CalendarComponent),},           
             { path: 'annonces', loadComponent: () => import('./features/application/social-feed/social-feed.component').then(m => m.SocialFeedComponent) },
             { path: 'annonces/edit/:id' , loadComponent:()=> import( './features/application/social-feed/admin/annonce/edit-annonce/edit-annonce.component' ).then(m=>m.EditAnnonceComponent)},
             { path: 'sondages', loadComponent: () => import('./features/application/social-feed/admin/sondage/sondage.component').then(m => m.SondageComponent) },

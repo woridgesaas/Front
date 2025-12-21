@@ -25,11 +25,6 @@ export const routes = {
   /**Communication intern routes */
   apps: '/intranet',
   chat: '/intranet/chats',
-  voicecall: '/intranet/calls/voice-call',
-  videocall: '/intranet/calls/video-call',
-  outgoingcall: '/intranet/calls/outgoing-call',
-  incomingcall: '/intranet/calls/incoming-call',
-  callhistory: '/intranet/calls/call-history',
   contacts: '/intranet/contacts',
   calendar: '/intranet/calendar',
   socialFeed: '/intranet/annonces',
