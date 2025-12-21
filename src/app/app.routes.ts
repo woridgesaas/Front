@@ -349,13 +349,13 @@ export const routes: Routes = [
             (m) => m.PayrollComponent
           ),
         children: [
-          {
-            path: 'employee-salary',
-            loadComponent: () =>
-              import(
-                './features/finance/payroll/employee-salary/employee-salary.component'
-              ).then((m) => m.EmployeeSalaryComponent),
-          },
+          // {
+          //   path: 'employee-salary',
+          //   loadComponent: () =>
+          //     import(
+          //       './features/finance/payroll/employee-salary/employee-salary.component'
+          //     ).then((m) => m.EmployeeSalaryComponent),
+          // },
           {
             path: 'payslip',
             loadComponent: () =>

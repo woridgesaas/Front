@@ -578,25 +578,25 @@ export class DataService {
       ],
     },
     {
-      tittle: 'Finance & Accounts',
+      tittle: 'Fiche de paie',
       icon: 'file',
       showAsTab: false,
       separateRoute: false,
       menu: [
         {
-          menuValue: 'Payroll',
+          menuValue: 'paiement',
           base: 'payroll',
           hasSubRoute: true,
           showSubRoute: false,
           icon: 'cash',
           subMenus: [
+            // {
+            //   menuValue: 'Employee Salary',
+            //   route: '/payroll/employee-salary',
+            //   base: 'employee-salary',
+            // },
             {
-              menuValue: 'Employee Salary',
-              route: '/payroll/employee-salary',
-              base: 'employee-salary',
-            },
-            {
-              menuValue: 'Payslip',
+              menuValue: 'Fiche',
               route: '/payroll/payslip',
               base: 'payslip',
             },
@@ -612,7 +612,7 @@ export class DataService {
       separateRoute: false,
       menu: [
         {
-          menuValue: 'Reports',
+          menuValue: 'Rapports',
           base: 'reports',
           hasSubRoute: true,
           showSubRoute: false,

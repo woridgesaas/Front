@@ -1,11 +1,8 @@
-import { Component, ViewChild,OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { routes } from '../../../../shared/routes/routes';
 import { apiResultFormat, breadCrumbItems, payslipReport } from '../../../../shared/models/models';
-import { pageSelection, PaginationService, tablePageSize } from '../../../../shared/custom-pagination/pagination.service';
-import { MatTableDataSource } from '@angular/material/table';
 import { DataService } from '../../../../shared/data/data.service';
 import { Router } from '@angular/router';
-import { MatSortModule, Sort } from '@angular/material/sort';
 import {
   ApexAxisChartSeries,
   ApexChart,
@@ -14,197 +11,416 @@ import {
   ApexStroke,
   ApexTitleSubtitle,
   ApexXAxis,
+  ApexYAxis,
+  ApexPlotOptions,
+  ApexLegend,
+  ApexTooltip,
+  ApexFill,
   ChartComponent,
+  ApexNonAxisChartSeries,
 } from 'ng-apexcharts';
 import { Chart, registerables } from 'chart.js';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CustomPaginationComponent } from '../../../../shared/custom-pagination/custom-pagination.component';
-import { MatSelectModule } from '@angular/material/select';
 import { CollapseHeaderComponent } from '../../../common/collapse-header/collapse-header.component';
 import { BreadcrumbsComponent } from '../../../common/breadcrumbs/breadcrumbs.component';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 export interface ChartOptions {
-  series: ApexAxisChartSeries;
+  series: ApexAxisChartSeries | ApexNonAxisChartSeries;
   chart: ApexChart;
-  xaxis: ApexXAxis;
-  dataLabels: ApexDataLabels;
-  grid: ApexGrid;
-  stroke: ApexStroke;
-  title: ApexTitleSubtitle;
+  xaxis?: ApexXAxis;
+  yaxis?: ApexYAxis;
+  dataLabels?: ApexDataLabels;
+  grid?: ApexGrid;
+  stroke?: ApexStroke;
+  title?: ApexTitleSubtitle;
+  labels?: string[];
+  colors?: string[];
+  plotOptions?: ApexPlotOptions;
+  legend?: ApexLegend;
+  tooltip?: ApexTooltip;
+  fill?: ApexFill;
 }
+
 Chart.register(...registerables);
 
-
 @Component({
-    selector: 'app-payslip-report',
-    templateUrl: './payslip-report.component.html',
-    styleUrl: './payslip-report.component.scss',
-    imports: [CommonModule,FormsModule,MatSortModule,
-      CollapseHeaderComponent,BreadcrumbsComponent,
-      CustomPaginationComponent,MatSelectModule,NgApexchartsModule,BsDatepickerModule]
+  selector: 'app-payslip-report',
+  templateUrl: './payslip-report.component.html',
+  styleUrl: './payslip-report.component.scss',
+  imports: [
+    CommonModule,
+    FormsModule,
+    CollapseHeaderComponent,
+    BreadcrumbsComponent,
+    NgApexchartsModule,
+    BsDatepickerModule
+  ]
 })
 export class PayslipReportComponent implements OnInit {
   public routes = routes;
-  initChecked = false;
-  // pagination variables
-  public pageSize = 10;
-  public tableData:  payslipReport[] = [];
-  public tableDataCopy:  payslipReport[] = [];
-  public actualData:  payslipReport[] = [];
-  public currentPage = 1;
-  public skip = 0;
-  public limit: number = this.pageSize;
-  public serialNumberArray: number[] = [];
-  public totalData = 0;
-  showFilter = false;
-  public pageSelection: pageSelection[] = [];
-  dataSource!: MatTableDataSource< payslipReport>;
-  public searchDataValue = '';
-  breadCrumbItems: breadCrumbItems[] =[];
+  breadCrumbItems: breadCrumbItems[] = [];
   bsValue = new Date();
   bsRangeValue: Date[];
   maxDate = new Date();
-  public payslip_chart: Partial<ChartOptions> | any;
+
+  // Statistiques globales
+  public statistiques = {
+    masseSalarialeTotale: 850000,
+    deductionsTotales: 175000,
+    netAPayer: 675000,
+    primesTotales: 95000,
+    evolutionMensuelle: 12.5,
+    evolutionDeductions: -3.2,
+    evolutionNet: 8.7,
+    evolutionPrimes: 15.3
+  };
+
+  // Charts
+  public masseSalarialeChart: Partial<ChartOptions> | any;
+  public evolutionMensuelleChart: Partial<ChartOptions> | any;
+  public repartitionDeductionsChart: Partial<ChartOptions> | any;
+  public comparaisonDepartementsChart: Partial<ChartOptions> | any;
+  public repartitionCategoriesChart: Partial<ChartOptions> | any;
+  public tendanceAnnuelleChart: Partial<ChartOptions> | any;
+
   @ViewChild('chart') chart!: ChartComponent;
+
   constructor(
     private data: DataService,
-    private router: Router,
-    private pagination: PaginationService,
+    private router: Router
   ) {
     this.breadCrumbItems = [
-      { label: 'HR' },
-      { label: 'Payslip Report', active: true }
-  ];
-  this.data.getpayslipReport().subscribe((apiRes: apiResultFormat) => {
-    this.actualData = apiRes.data;
-    this.pagination.tablePageSize.subscribe((res: tablePageSize) => {
-      if (this.router.url == this.routes.payslipreport) {
-        this.getTableData({ skip: res.skip, limit: res.limit });
-        this.pageSize = res.pageSize;
-      }
-    });
-    
-  });
-  this.maxDate.setDate(this.maxDate.getDate() + 7);
-  this.bsRangeValue = [this.bsValue, this.maxDate];
-}
-private getTableData(pageOption: pageSelection): void {
-  this.data.getpayslipReport().subscribe((apiRes: apiResultFormat) => {
-    this.tableData = [];
-    this.tableDataCopy = [];
-    this.serialNumberArray = [];
-    this.totalData = apiRes.totalData;
-    apiRes.data.map((res:  payslipReport, index: number) => {
-      const serialNumber = index + 1;
-      if (index >= pageOption.skip && serialNumber <= pageOption.limit) {
-        res.sNo = serialNumber;
-        this.tableData.push(res);
-        this.tableDataCopy.push(res);
-        this.serialNumberArray.push(serialNumber);
-      }
-    });
-    this.dataSource = new MatTableDataSource< payslipReport>(this.actualData);
-    this.pagination.calculatePageSize.next({
-      totalData: this.totalData,
-      pageSize: this.pageSize,
-      tableData: this.tableData,
-      tableDataCopy: this.tableDataCopy,
-      serialNumberArray: this.serialNumberArray,
-    });
-  });
-}
+      { label: 'RH' },
+      { label: 'Rapports de Paie', active: true }
+    ];
 
-public row=true;
-public searchData(value: string): void {
-    this.searchDataValue = value.trim().toLowerCase();
-    this.dataSource.filter = this.searchDataValue;
-    this.tableData = this.dataSource.filteredData;
-    this.row = this.tableData.length > 0;
-  
-    if (this.searchDataValue !== '') {
-      // Handle filtered data
-      this.pagination.calculatePageSize.next({
-        totalData: this.tableData.length,
-        pageSize: this.pageSize,
-        tableData: this.tableData,
-        serialNumberArray: this.tableData.map((_, i) => i + 1), // Generates serials like [1, 2, 3...]
-      });
-    } else {
-      // Handle reset to full data
-      this.pagination.calculatePageSize.next({
-        totalData: this.totalData,
-        pageSize: this.pageSize,
-        tableData: this.tableData,
-        serialNumberArray: this.serialNumberArray,
-      });
-    }
+    this.maxDate.setDate(this.maxDate.getDate() + 7);
+    this.bsRangeValue = [this.bsValue, this.maxDate];
   }
 
-public sortData(sort: Sort) {
-  const data = this.tableData.slice();
-
-  if (!sort.active || sort.direction === '') {
-    this.tableData = data;
-  } else {
-    this.tableData = data.sort((a, b) => {
-      const aValue = (a as never)[sort.active];
-
-      const bValue = (b as never)[sort.active];
-      return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
-    });
+  ngOnInit(): void {
+    this.initializerGraphiques();
   }
-}
-public changePageSize(pageSize: number): void {
-  this.pageSelection = [];
-  this.limit = pageSize;
-  this.skip = 0;
-  this.currentPage = 1;
-  this.pagination.tablePageSize.next({
-    skip: this.skip,
-    limit: this.limit,
-    pageSize: this.pageSize,
-  });
-}
-selectAll(initChecked: boolean) {
-  if (!initChecked) {
-    this.tableData.forEach((f) => {
-      f.isSelected = true;
-    });
-  } else {
-    this.tableData.forEach((f) => {
-      f.isSelected = false;
-    });
-  }
-}
-ngOnInit():void{
-  this.payslip_chart={
-    series: [{
-      data: [22, 20, 30, 45, 55, 45, 20, 70, 25, 30, 10,30]
-    }],
+
+  private initializerGraphiques(): void {
+    // 1. Graphique : Évolution mensuelle de la masse salariale (Ligne)
+    this.masseSalarialeChart = {
+      series: [{
+        name: 'Masse Salariale',
+        data: [650000, 680000, 720000, 750000, 780000, 810000, 850000, 820000, 840000, 870000, 850000, 880000]
+      }, {
+        name: 'Net à Payer',
+        data: [520000, 544000, 576000, 600000, 624000, 648000, 680000, 656000, 672000, 696000, 680000, 704000]
+      }],
       chart: {
-      type: 'line',
-      height: 200,
-    },
-    xaxis: {
-      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct','Nov', 'Dec'],
-      labels: {
+        type: 'area',
+        height: 350,
+        toolbar: {
+          show: true
+        },
+        zoom: {
+          enabled: true
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        curve: 'smooth',
+        width: 3
+      },
+      fill: {
+        type: 'gradient',
+        gradient: {
+          opacityFrom: 0.6,
+          opacityTo: 0.1,
+        }
+      },
+      xaxis: {
+        categories: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'],
+        labels: {
+          style: {
+            fontSize: '12px'
+          }
+        }
+      },
+      yaxis: {
+        labels: {
+          formatter: (value: number) => {
+            return value.toLocaleString('fr-MA') + ' DH';
+          }
+        }
+      },
+      colors: ['#0d6efd', '#198754'],
+      legend: {
+        position: 'top',
+        horizontalAlign: 'left'
+      },
+      tooltip: {
+        y: {
+          formatter: (value: number) => {
+            return value.toLocaleString('fr-MA') + ' MAD';
+          }
+        }
       }
-    },
-    stroke: {
-      curve: 'stepline',
-    },
-    dataLabels: {
-      enabled: false
-    },
-    markers: {
-      hover: {
-        sizeOffset: 4
+    };
+
+    // 2. Graphique : Répartition des déductions (Donut)
+    this.repartitionDeductionsChart = {
+      series: [35, 25, 20, 12, 8],
+      chart: {
+        type: 'donut',
+        height: 380
+      },
+      labels: ['CNSS', 'AMO', 'IR', 'CIMR', 'Autres'],
+      colors: ['#0d6efd', '#6f42c1', '#dc3545', '#fd7e14', '#6c757d'],
+      dataLabels: {
+        enabled: true,
+        formatter: (val: number) => {
+          return val.toFixed(1) + '%';
+        }
+      },
+      legend: {
+        position: 'bottom',
+        fontSize: '14px'
+      },
+      plotOptions: {
+        pie: {
+          donut: {
+            size: '70%',
+            labels: {
+              show: true,
+              total: {
+                show: true,
+                label: 'Total Déductions',
+                fontSize: '16px',
+                fontWeight: 600,
+                formatter: () => {
+                  return '175 000 DH';
+                }
+              }
+            }
+          }
+        }
+      },
+      tooltip: {
+        y: {
+          formatter: (value: number) => {
+            return value.toFixed(1) + '%';
+          }
+        }
       }
-    },
-    colors: ['#FF5733'],
+    };
+
+    // 3. Graphique : Comparaison par département (Barres)
+    this.comparaisonDepartementsChart = {
+      series: [{
+        name: 'Salaire Brut',
+        data: [180000, 220000, 150000, 190000, 210000, 140000]
+      }, {
+        name: 'Net à Payer',
+        data: [144000, 176000, 120000, 152000, 168000, 112000]
+      }],
+      chart: {
+        type: 'bar',
+        height: 350,
+        toolbar: {
+          show: false
+        }
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: '55%',
+          borderRadius: 8,
+        },
+      },
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        show: true,
+        width: 2,
+        colors: ['transparent']
+      },
+      xaxis: {
+        categories: ['IT', 'RH', 'Finance', 'Marketing', 'Ventes', 'Support'],
+      },
+      yaxis: {
+        labels: {
+          formatter: (value: number) => {
+            return (value / 1000).toFixed(0) + 'K DH';
+          }
+        }
+      },
+      fill: {
+        opacity: 1
+      },
+      colors: ['#0d6efd', '#198754'],
+      tooltip: {
+        y: {
+          formatter: (value: number) => {
+            return value.toLocaleString('fr-MA') + ' MAD';
+          }
+        }
+      },
+      legend: {
+        position: 'top',
+        horizontalAlign: 'left'
+      }
+    };
+
+    // 4. Graphique : Répartition par catégorie (Polar Area)
+    this.repartitionCategoriesChart = {
+      series: [45, 30, 15, 10],
+      chart: {
+        type: 'polarArea',
+        height: 380
+      },
+      labels: ['Cadres', 'Agents de Maîtrise', 'Employés', 'Ouvriers'],
+      colors: ['#0d6efd', '#6f42c1', '#20c997', '#ffc107'],
+      stroke: {
+        colors: ['#fff']
+      },
+      fill: {
+        opacity: 0.9
+      },
+      legend: {
+        position: 'bottom',
+        fontSize: '14px'
+      },
+      tooltip: {
+        y: {
+          formatter: (value: number) => {
+            return value + '%';
+          }
+        }
+      }
+    };
+
+    // 5. Graphique : Évolution mensuelle détaillée (Colonnes groupées)
+    this.evolutionMensuelleChart = {
+      series: [{
+        name: 'Salaire de Base',
+        data: [480000, 500000, 520000, 540000, 560000, 580000]
+      }, {
+        name: 'Primes',
+        data: [80000, 85000, 90000, 95000, 100000, 95000]
+      }, {
+        name: 'Indemnités',
+        data: [90000, 95000, 110000, 115000, 120000, 115000]
+      }],
+      chart: {
+        type: 'bar',
+        height: 350,
+        stacked: false,
+        toolbar: {
+          show: false
+        }
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: '60%',
+          borderRadius: 6,
+        },
+      },
+      dataLabels: {
+        enabled: false
+      },
+      xaxis: {
+        categories: ['Juil', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'],
+      },
+      yaxis: {
+        labels: {
+          formatter: (value: number) => {
+            return (value / 1000).toFixed(0) + 'K';
+          }
+        }
+      },
+      colors: ['#0d6efd', '#ffc107', '#20c997'],
+      legend: {
+        position: 'top',
+        horizontalAlign: 'left'
+      },
+      tooltip: {
+        y: {
+          formatter: (value: number) => {
+            return value.toLocaleString('fr-MA') + ' MAD';
+          }
+        }
+      }
+    };
+
+    // 6. Graphique : Tendance annuelle (Line avec marqueurs)
+    this.tendanceAnnuelleChart = {
+      series: [{
+        name: 'Charges Patronales',
+        data: [130000, 136000, 144000, 150000, 156000, 162000, 170000, 164000, 168000, 174000, 170000, 176000]
+      }, {
+        name: 'Charges Salariales',
+        data: [45000, 47000, 50000, 52000, 54000, 56000, 59000, 57000, 58000, 60000, 59000, 61000]
+      }],
+      chart: {
+        type: 'line',
+        height: 350,
+        toolbar: {
+          show: false
+        }
+      },
+      stroke: {
+        curve: 'smooth',
+        width: 3
+      },
+      markers: {
+        size: 5,
+        hover: {
+          size: 7
+        }
+      },
+      xaxis: {
+        categories: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'],
+      },
+      yaxis: {
+        labels: {
+          formatter: (value: number) => {
+            return (value / 1000).toFixed(0) + 'K DH';
+          }
+        }
+      },
+      colors: ['#dc3545', '#fd7e14'],
+      legend: {
+        position: 'top',
+        horizontalAlign: 'left'
+      },
+      tooltip: {
+        y: {
+          formatter: (value: number) => {
+            return value.toLocaleString('fr-MA') + ' MAD';
+          }
+        }
+      }
+    };
   }
-}
+
+  // Méthode pour formater les nombres
+  formaterMontant(montant: number): string {
+    return montant.toLocaleString('fr-MA', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    });
+  }
+
+  // Méthode pour obtenir la classe CSS selon l'évolution
+  obtenirClasseEvolution(valeur: number): string {
+    return valeur >= 0 ? 'text-success' : 'text-danger';
+  }
+
+  // Méthode pour obtenir l'icône selon l'évolution
+  obtenirIconeEvolution(valeur: number): string {
+    return valeur >= 0 ? 'ti-arrow-wave-right-up' : 'ti-arrow-wave-right-down';
+  }
 }
