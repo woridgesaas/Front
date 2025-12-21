@@ -1523,4 +1523,19 @@ tag-input{
     }
   }
 }
+/* Logo */
+.logo {
+  max-width: 300px;
+}
+
+
+/* Mobile */
+@media (max-width: 768px) {
+  .error-img {
+    max-width: 280px;
+  }
+  .logo {
+    max-width: 100px;
+  }
+}
 
