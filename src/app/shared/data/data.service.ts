@@ -89,13 +89,7 @@ export class DataService {
       })
     );
   }
-  public getCall(): Observable<apiResultFormat> {
-    return this.http.get<apiResultFormat>('assets/json/admin-call.json').pipe(
-      map((res: apiResultFormat) => {
-        return res;
-      })
-    );
-  }
+
   public getStories(): Observable<apiResultFormat> {
     return this.http.get<apiResultFormat>('assets/json/stories.json').pipe(
       map((res: apiResultFormat) => {
@@ -275,13 +269,6 @@ export class DataService {
     );
   }
 
-  public getcallHistory(): Observable<apiResultFormat> {
-    return this.http.get<apiResultFormat>('assets/json/call-history.json').pipe(
-      map((res: apiResultFormat) => {
-        return res;
-      })
-    );
-  }
 
   //* Side bar
   public sideBar: SideBar[] = [
@@ -326,53 +313,6 @@ export class DataService {
               route: routes.chat,
               base: 'chats',
               customSubmenuTwo: false,
-            },
-            {
-              menuValue: 'Calls',
-              customSubmenuTwo: true,
-              hasSubRoute: true,
-              showSubRoute: false,
-              route: routes.calendar,
-              page1: 'voice-call',
-              page2: 'videocall',
-              base: 'calls',
-              subMenusTwo: [
-                {
-                  menuValue: 'Voice Call',
-                  route: routes.voicecall,
-                  hasSubRoute: false,
-                  showSubRoute: false,
-                  base: 'voice-call',
-                },
-                {
-                  menuValue: 'Video Call',
-                  route: routes.videocall,
-                  hasSubRoute: false,
-                  showSubRoute: false,
-                  base: 'video-call',
-                },
-                {
-                  menuValue: 'Outgoing Call',
-                  route: routes.outgoingcall,
-                  hasSubRoute: false,
-                  showSubRoute: false,
-                  base: 'outgoing-call',
-                },
-                {
-                  menuValue: 'Incoming Call',
-                  route: routes.incomingcall,
-                  hasSubRoute: false,
-                  showSubRoute: false,
-                  base: 'incoming-call',
-                },
-                {
-                  menuValue: 'Call History',
-                  route: routes.callhistory,
-                  hasSubRoute: false,
-                  showSubRoute: false,
-                  base: 'call-history',
-                },
-              ],
             },
             {
               menuValue: 'Calendar',
@@ -809,51 +749,6 @@ export class DataService {
               route: routes.chat,
               base: 'chats',
               customSubmenuTwo: false,
-            },
-            {
-              menuValue: 'Calls',
-              customSubmenuTwo: true,
-              hasSubRoute: true,
-              showSubRoute: false,
-              route: routes.calendar,
-              base: 'calls',
-              subMenusTwo: [
-                {
-                  menuValue: 'Voice Call',
-                  route: routes.voicecall,
-                  hasSubRoute: false,
-                  showSubRoute: false,
-                  base: 'voice-call',
-                },
-                {
-                  menuValue: 'Video Call',
-                  route: routes.videocall,
-                  hasSubRoute: false,
-                  showSubRoute: false,
-                  base: 'video-call',
-                },
-                {
-                  menuValue: 'Outgoing Call',
-                  route: routes.outgoingcall,
-                  hasSubRoute: false,
-                  showSubRoute: false,
-                  base: 'outgoing-call',
-                },
-                {
-                  menuValue: 'Incoming Call',
-                  route: routes.incomingcall,
-                  hasSubRoute: false,
-                  showSubRoute: false,
-                  base: 'incoming-call',
-                },
-                {
-                  menuValue: 'Call History',
-                  route: routes.callhistory,
-                  hasSubRoute: false,
-                  showSubRoute: false,
-                  base: 'call-history',
-                },
-              ],
             },
             {
               menuValue: 'Calendar',
