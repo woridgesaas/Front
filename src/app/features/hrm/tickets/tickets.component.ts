@@ -4,12 +4,11 @@ import { RouterModule, RouterOutlet } from '@angular/router';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { MatSortModule } from '@angular/material/sort';
 import { FooterComponent } from '../../common/footer/footer.component';
-import { TicketCreateComponent } from './components/ticket-create/ticket-create.component';
 @Component({
     selector: 'app-tickets',
     templateUrl: './tickets.component.html',
     styleUrl: './tickets.component.scss',
-    imports: [CommonModule,RouterModule,TicketCreateComponent,BsDatepickerModule,MatSortModule,FooterComponent,RouterOutlet]
+    imports: [CommonModule,RouterModule,BsDatepickerModule,MatSortModule,FooterComponent,RouterOutlet]
 })
 export class TicketsComponent {
   

@@ -43,8 +43,7 @@ export class TicketsComponent {
   searchDataValue: string = '';
   initChecked: boolean = false;
   @ViewChild(MatSort) sort!: MatSort;
-  constructor(
-    private ticketService: TicketService,
+  constructor(private ticketService: TicketService 
   ) {}
 
   ngOnInit():void{
@@ -52,7 +51,7 @@ export class TicketsComponent {
   }
   loadTickets(): void {
    
-    this.tickets = this.ticketService.getTicketsByEmployeId(1);
+    this.tickets = this.ticketService?.getTicketsByEmployeId(1);
     this.filteredTickets = [...this.tickets];
     this.totalTickets = this.tickets.length;
   }
