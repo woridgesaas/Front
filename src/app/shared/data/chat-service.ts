@@ -6,7 +6,7 @@ import { ChatContact, ChatMessage } from '../models/models';
 })
 export class ChatService {
    private currentUser = {
-    id: 100,
+    id: 1,
     name: 'Vous',
     avatar: 'assets/img/profiles/avatar-14.jpg',
     role: 'Développeur',
@@ -18,7 +18,7 @@ export class ChatService {
     {
       id: 1,
       name: 'Anthony Lewis',
-      avatar: 'assets/img/profiles/avatar-29.jpg',
+      avatar: 'assets/img/profiles/avatar.png',
       role: 'Chef de projet',
       department: 'IT',
       status: 'online',
@@ -30,7 +30,7 @@ export class ChatService {
     {
       id: 2,
       name: 'Elliot Murray',
-      avatar: 'assets/img/profiles/avatar-01.jpg',
+      avatar: 'assets/img/profiles/avatar.png',
       role: 'Designer UI/UX',
       department: 'Design',
       status: 'online',
@@ -42,7 +42,7 @@ export class ChatService {
     {
       id: 3,
       name: 'Harvey Smith',
-      avatar: 'assets/img/profiles/avatar-14.jpg',
+      avatar: 'assets/img/profiles/avatar.png',
       role: 'Développeur',
       department: 'IT',
       status: 'indisponible',
@@ -54,7 +54,7 @@ export class ChatService {
     {
       id: 4,
       name: 'Lisa Martinez',
-      avatar: 'assets/img/profiles/avatar-09.jpg',
+      avatar: 'assets/img/profiles/avatar.png',
       role: 'Responsable RH',
       department: 'Ressources Humaines',
       status: 'away',
@@ -66,7 +66,7 @@ export class ChatService {
     {
       id: 5,
       name: 'Michael Chen',
-      avatar: 'assets/img/profiles/avatar-07.jpg',
+      avatar: 'assets/img/profiles/avatar.png',
       role: 'Analyste',
       department: 'Business',
       status: 'offline',
@@ -78,7 +78,7 @@ export class ChatService {
     {
       id: 6,
       name: 'Sophie Dubois',
-      avatar: 'assets/img/profiles/avatar-05.jpg',
+      avatar: 'assets/img/profiles/avatar.png',
       role: 'Marketing Manager',
       department: 'Marketing',
       status: 'online',
