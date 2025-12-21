@@ -33,7 +33,6 @@ export const routes = {
   sondageDetails: '/intranet/sondage-details/:id',
   /**------- FIN communication routes ------------- */
   employeeList: '/employees/employee-list',
-  employeeGrid: '/employees/employee-grid',
   employeeDetails: '/employees/employee-details',
   employeePage: '/employees/employee-page',
   departments: '/employees/departments',
@@ -50,7 +49,6 @@ export const routes = {
 
   // Leaves
   sales: '/sales',
-  leaveadmin: '/attendance/leaves/leave-admin',
   leaveemployee: '/attendance/leaves/leave-employee',
 
   // Attendance

@@ -1,0 +1,137 @@
+<!-- Edit Employee -->
+<div class="modal fade" id="edit_employee_detail">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Modifier Vos Informations Personnels</h4>
+        <button
+          type="button"
+          class="btn-close custom-btn-close"
+          data-bs-dismiss="modal"
+        >
+          <i class="ti ti-x"></i>
+        </button>
+      </div>
+
+      <form (ngSubmit)="onSubmit()">
+        <div class="modal-body pb-0">
+          <div class="row">
+
+            <!-- Image -->
+            <div class="col-md-12">
+              <div class="d-flex align-items-center bg-light rounded p-3 mb-4">
+                <div
+                  class="avatar avatar-xxl rounded-circle border border-dashed me-3 d-flex align-items-center justify-content-center"
+                >
+                  <i class="ti ti-photo text-gray-2"></i>
+                </div>
+
+                <div>
+                  <h6>Image de Profil</h6>
+                  <p class="fs-12">Image doit être inférieure à 4 MB</p>
+
+                  <div class="d-flex">
+                    <label class="btn btn-sm btn-primary me-2">
+                      Parcourir
+                      <input
+                        type="file"
+                        hidden
+                        (change)="onImageSelected($event)"
+                      />
+                    </label>
+                    <button type="button" class="btn btn-light btn-sm">
+                      Annuler
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Prénom -->
+            <div class="col-md-6">
+              <label class="form-label">Prénom *</label>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="employee.firstName"
+                name="firstName"
+              />
+            </div>
+
+            <!-- Nom -->
+            <div class="col-md-6">
+              <label class="form-label">Nom *</label>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="employee.lastName"
+                name="lastName"
+              />
+            </div>
+
+            <!-- Date fin -->
+            <div class="col-md-6 ngx-date2">
+              <label class="form-label">Date de fin</label>
+              <input
+                type="text"
+                class="form-control"
+                bsDatepicker
+                [(ngModel)]="employee.endDate"
+                name="endDate"
+                placeholder="dd/mm/yyyy"
+              />
+            </div>
+
+            <!-- CIN -->
+            <div class="col-md-6">
+              <label class="form-label">CIN *</label>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="employee.cin"
+                name="cin"
+              />
+            </div>
+
+            <!-- Email -->
+            <div class="col-md-6">
+              <label class="form-label">Email *</label>
+              <input
+                type="email"
+                class="form-control"
+                [(ngModel)]="employee.email"
+                name="email"
+              />
+            </div>
+
+            <!-- Téléphone -->
+            <div class="col-md-6">
+              <label class="form-label">Téléphone *</label>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="employee.phone"
+                name="phone"
+              />
+            </div>
+
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-outline-light"
+            data-bs-dismiss="modal"
+            (click)="onCancel()"
+          >
+            Annuler
+          </button>
+          <button type="submit" class="btn btn-primary">
+            Enregistrer
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

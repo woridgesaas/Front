@@ -5,7 +5,6 @@
       <div class="modal-header">
         <div class="d-flex align-items-center">
           <h4 class="modal-title me-2">Ajouter Nouveau Employé</h4>
-          <span>Employee ID : EMP -0024</span>
         </div>
         <button
           type="button"
@@ -181,7 +180,6 @@
       <div class="modal-header">
         <div class="d-flex align-items-center">
           <h4 class="modal-title me-2">Modifier Employé</h4>
-          <span>ID de l'Employee: EMP -0024</span>
         </div>
         <button
           type="button"
@@ -585,192 +583,6 @@
   </div>
 </div>
 <!-- /Edit Designation -->
-
-<!-- Add Policy -->
-<div class="modal fade" id="add_policy">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Add Policy</h4>
-        <button
-          type="button"
-          class="btn-close custom-btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        >
-          <i class="ti ti-x"></i>
-        </button>
-      </div>
-      <form>
-        <div class="modal-body pb-0">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="mb-3">
-                <label class="form-label">Policy Name</label>
-                <input type="text" class="form-control" />
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="mb-3">
-                <label class="form-label">Appraisal Date</label>
-                <textarea class="form-control"></textarea>
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="mb-3">
-                <label [htmlFor]="" class="form-label">Department</label>
-                <mat-select
-                  placeholder="Select"
-                  class="select custom-mat-select"
-                >
-                  <mat-option value="1">Select</mat-option>
-                  <mat-option value="2">All Department</mat-option>
-                  <mat-option value="3">Finance</mat-option>
-                  <mat-option value="4">Marketing</mat-option>
-                  <mat-option value="0">Development</mat-option>
-                </mat-select>
-              </div>
-            </div>
-
-            <div class="col-md-12">
-              <div class="mb-3">
-                <label class="form-label">Upload Policy</label>
-                <div
-                  class="policy-upload d-flex flex-column align-items-center"
-                >
-                  <div
-                    class="policy-upload-bg mb-2 rounded-circle d-flex align-items-center justify-content-center bg-primary-transparent"
-                  >
-                    <span
-                      ><img
-                        src="assets/img/folder-open.svg"
-                        alt="Img"
-                        class="img-fluid"
-                    /></span>
-                  </div>
-                  <h6 class="fs-12 fw-normal mb-2">Drag and drop your files</h6>
-                  <div class="drag-upload-btn bg-primary mb-0">
-                    <i class="ti ti-upload me-1"></i>Upload
-                    <input
-                      type="file"
-                      class="form-control image-sign"
-                      multiple=""
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-white border me-2"
-            data-bs-dismiss="modal"
-          >
-            Cancel
-          </button>
-          <button type="submit" class="btn btn-primary">Add Policy</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-<!-- /Add Policy -->
-
-<!-- Edit  Policy -->
-<div class="modal fade" id="edit_policy">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Edit Policy</h4>
-        <button
-          type="button"
-          class="btn-close custom-btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        >
-          <i class="ti ti-x"></i>
-        </button>
-      </div>
-      <form>
-        <div class="modal-body pb-0">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="mb-3">
-                <label class="form-label">Policy Name</label>
-                <input type="text" class="form-control" value="Leave Policy" />
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="mb-3">
-                <label class="form-label">Appraisal Date</label>
-                <textarea class="form-control">
-Guidelines regarding employee absences from work</textarea
-                >
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="mb-3">
-                <label [htmlFor]="" class="form-label">Department</label>
-                <mat-select
-                  placeholder="All Department"
-                  class="select custom-mat-select"
-                >
-                  <mat-option value="1">All Department</mat-option>
-                  <mat-option value="2">Finance</mat-option>
-                  <mat-option value="3">Marketing</mat-option>
-                  <mat-option value="4">Development</mat-option>
-                </mat-select>
-              </div>
-            </div>
-
-            <div class="col-md-12">
-              <div class="mb-3">
-                <label class="form-label">Upload Policy</label>
-                <div
-                  class="policy-upload d-flex flex-column align-items-center"
-                >
-                  <div
-                    class="policy-upload-bg mb-2 rounded-circle d-flex align-items-center justify-content-center bg-primary-transparent"
-                  >
-                    <span
-                      ><img
-                        src="assets/img/folder-open.svg"
-                        alt="Img"
-                        class="img-fluid"
-                    /></span>
-                  </div>
-                  <h6 class="fs-12 fw-normal mb-2">Drag and drop your files</h6>
-                  <div class="drag-upload-btn bg-primary mb-0">
-                    <i class="ti ti-upload me-1"></i>Upload
-                    <input
-                      type="file"
-                      class="form-control image-sign"
-                      multiple=""
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-white border me-2"
-            data-bs-dismiss="modal"
-          >
-            Cancel
-          </button>
-          <button type="submit" class="btn btn-primary">Add Policy</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-<!-- /Edit  Policy -->
-
 <!-- Modifier Contact d'Urgence -->
 <div class="modal fade" id="edit_emergency">
   <div class="modal-dialog modal-dialog-centered modal-lg">
