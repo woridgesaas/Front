@@ -5,21 +5,23 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
 import { BreadcrumbsComponent } from '../../common/breadcrumbs/breadcrumbs.component';
 import { ChatService } from '../../../shared/data/chat-service';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from "@angular/router";
+import { routes } from '../../../shared/routes/routes';
+
 @Component({
     selector: 'app-chat',
     templateUrl: './chat.component.html',
     styleUrls: ['./chat.component.scss'],
-    imports:[CommonModule,NgScrollbarModule,
-      BreadcrumbsComponent,
-      FormsModule,
-      
-    ]
+    imports: [CommonModule, NgScrollbarModule,
+    BreadcrumbsComponent,
+    FormsModule, RouterLink]
 })
 export class ChatComponent implements OnInit {
  breadCrumbItems: breadCrumbItems[] =[
    { label: 'Intranet' },
       { label: 'Chat', active: true }
  ];
+ routes= routes;
   // static  data de l'utilisateur courant
   currentUser = {
     id: 0,

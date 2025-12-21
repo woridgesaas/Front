@@ -106,12 +106,12 @@
                 Sélectionnez une conversation ou recherchez un collègue
               </p>
               <div class="flex">
-                <button class="btn btn-primary mt-3" (click)="toggleSidebar()">
+                <button class="btn bg-btn mt-3 me-2 text-white" (click)="toggleSidebar()" >
                   <i class="ti ti-plus me-2"></i>Nouvelle conversation
                 </button>
               <!--Just pour les admins à implementer -->
-                <button class="btn btn-primary mt-3" (click)="toggleSidebar()">
-                  <i class="ti ti-plus me-2"></i>Crée un group
+                <button [routerLink]="[routes.groups]" class="btn bg-btn text-white mt-3 me-3">
+                  <i class="ti ti-plus me-2"></i>Crée un groupe
                 </button>
               </div>
             </div>

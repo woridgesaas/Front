@@ -314,6 +314,12 @@ export class DataService {
               base: 'chats',
               customSubmenuTwo: false,
             },
+              {
+              menuValue: 'Groupes',
+              route: routes.groups,
+              base: 'groupes',
+              customSubmenuTwo: false,
+            },
             {
               menuValue: 'Calendar',
               hasSubRoute: true,
@@ -329,7 +335,7 @@ export class DataService {
               showSubRoute: false,
               route: routes.socialFeed,
               customSubmenuTwo: false,
-              base: 'social-feed',
+              base: 'Fil d\'actualité',
             },
             {
               menuValue: 'Sondages',
@@ -337,7 +343,7 @@ export class DataService {
               showSubRoute: false,
               route: routes.sondageList,
               customSubmenuTwo: false,
-              base: 'social-feed',
+              base: 'sondages',
             },
           ],
         },
@@ -748,6 +754,12 @@ export class DataService {
               menuValue: 'Chat',
               route: routes.chat,
               base: 'chats',
+              customSubmenuTwo: false,
+            },
+               {
+              menuValue: 'Groupes',
+              route: routes.groups,
+              base: 'groupes',
               customSubmenuTwo: false,
             },
             {

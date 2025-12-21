@@ -38,6 +38,7 @@ export const routes: Routes = [
       { path: 'intranet', loadComponent: () => import('./features/application/application.component').then(m => m.ApplicationComponent),
           children: [
             { path: 'chats', loadComponent: () => import('./features/application/chat/chat.component').then(m => m.ChatComponent) },
+            {path: 'groups' , loadComponent: ()=>import ('./features/application/chat/groups/groups/groups.component').then(m=>m.GroupsComponent)},
             { path: 'calendar', loadComponent: () => import('./features/application/calendar/calendar.component').then((m) => m.CalendarComponent),},           
             { path: 'annonces', loadComponent: () => import('./features/application/social-feed/social-feed.component').then(m => m.SocialFeedComponent) },
             { path: 'annonces/edit/:id' , loadComponent:()=> import( './features/application/social-feed/admin/annonce/edit-annonce/edit-annonce.component' ).then(m=>m.EditAnnonceComponent)},
