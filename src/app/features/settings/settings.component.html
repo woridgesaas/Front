@@ -1,29 +1,29 @@
 <div class="page-wrapper">
-
   <div class="content">
-
-      <!--* Breadcrumb -->
+    <!--* Breadcrumb -->
     <div class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
-      <app-breadcrumbs title="Changer mot de passe" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+      <app-breadcrumbs title="" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
     </div>
 
     <ul class="nav nav-tabs nav-tabs-solid bg-transparent border-bottom mb-3">
+
+      <!--* Change password Link -->
       <li class="nav-item">
-        <a class="nav-link rounded-4" [class.active]="page === 'change-password'" [routerLink]="routes.changePassword">
-          <i class="fa-solid fa-key me-2"></i> Changer mot de passe 
-        </a>
-      </li>
-      
-      <li class="nav-item">
-        <a class="nav-link rounded-4" [class.active]="page === 'app-settings'" [routerLink]="routes.leaveType">
-          <i class="ti ti-device-ipad-horizontal-cog me-2"></i> Paramètres d'applications
+        <a class="nav-link rounded-4 d-flex align-items-center" [routerLink]="routes.changePassword" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <i class="fa-solid fa-key me-2"></i> Changer mot de passe
         </a>
       </li>
 
+      <!--* App parameter Link -->
+      <li class="nav-item">
+        <a
+          class="nav-link rounded-4 d-flex align-items-center" [routerLink]="routes.leaveSettings" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <i class="fa-solid fa-screwdriver-wrench me-2"></i> Paramètres d'application
+        </a>
+      </li>
     </ul>
 
     <router-outlet></router-outlet>
   </div>
   <app-footer></app-footer>
 </div>
-        

@@ -671,8 +671,8 @@ export class DataService {
           base: 'app-settings',
           subMenus: [
             {
-              menuValue: 'Paramétrage de congés',
-              route: routes.leaveType,
+              menuValue: 'Paramétrage des congés',
+              route: routes.leaveSettings,
               base: 'leave-type',
             },
           ],
@@ -1024,8 +1024,8 @@ export class DataService {
               base: 'app-settings',
               subMenusTwo: [
                 {
-                  menuValue: 'Paramétrage de congés',
-                  route: routes.leaveType,
+                  menuValue: 'Paramétrage des congés',
+                  route: routes.leaveSettings,
                   base: 'leave-type',
                 },
               ],

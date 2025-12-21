@@ -111,40 +111,18 @@ export const routes: Routes = [
           ]
         },
 
-      //* Settings routes
-      {
-        path: 'settings',
-        loadComponent: () =>
-          import('./features/settings/settings.component').then(
-            (m) => m.SettingsComponent
-          ),
-        children: [
-          {
-            path: 'change-password',
-            loadComponent: () =>
-              import(
-                './features/settings/change-password/change-password.component'
-              ).then((m) => m.ChangePasswordComponent),
-          },
-          {
-            path: 'app-settings',
-            loadComponent: () =>
-              import(
-                './features/settings/app-settings/app-settings.component'
-              ).then((m) => m.AppSettingsComponent),
-            children: [
-              {
-                path: 'leave-type',
-                loadComponent: () =>
-                  import(
-                    './features/settings/app-settings/leave-type/leave-type.component'
-                  ).then((m) => m.LeaveTypeComponent),
-              },
-            ],
-          },
-        ],
-      },
-
+       //* Settings routes 
+        { path: 'settings', loadComponent: () => import('./features/settings/settings.component').then(m => m.SettingsComponent),
+          children:[
+            { path: 'change-password', loadComponent: () => import('./features/settings/change-password/change-password.component').then(m => m.ChangePasswordComponent) },
+            { path: 'app-settings', loadComponent: () => import('./features/settings/app-settings/app-settings.component').then(m => m.AppSettingsComponent),
+              children:[
+                { path: 'leave-settings', loadComponent: () => import('./features/settings/app-settings/leave-settings/leave-settings.component').then(m => m.LeaveSettingsComponent) },
+              ]
+            },
+          ]
+        },
+        
       {
         path: 'employees',
         loadComponent: () =>

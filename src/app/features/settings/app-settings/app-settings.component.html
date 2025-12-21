@@ -2,16 +2,15 @@
   <div class="col-xl-3 theiaStickySidebar">
     <div class="card">
       <div class="card-body">
-
         <div class="d-flex flex-column list-group settings-list">
 
-        <!--* Leave settings -->
-          <a [class.active]="last === 'leave-type'" [routerLink]="routes.leaveType" class="d-inline-flex align-items-center rounded py-2 px-3">
-            <i *ngIf="last === 'leave-type'" class="ti ti-arrow-badge-right me-2"></i> Paramétrage de congés
+          <!--* Leave settings link -->
+          <a class="d-inline-flex align-items-center rounded py-2 px-3" [routerLink]="routes.leaveSettings" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <i class="fa fa-person-walking me-2"></i> Paramétrage des congés
           </a>
 
+          
         </div>
-
       </div>
     </div>
   </div>
