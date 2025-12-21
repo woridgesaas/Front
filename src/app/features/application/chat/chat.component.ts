@@ -7,6 +7,7 @@ import { ChatService } from '../../../shared/data/chat-service';
 import { FormsModule } from '@angular/forms';
 import { RouterLink, RouterModule } from "@angular/router";
 import { routes } from '../../../shared/routes/routes';
+import { DetailsGroupModalComponent } from './components/details-group-modal/details-group-modal.component';
 
 @Component({
     selector: 'app-chat',
@@ -14,7 +15,7 @@ import { routes } from '../../../shared/routes/routes';
     styleUrls: ['./chat.component.scss'],
     imports: [CommonModule, NgScrollbarModule,
     BreadcrumbsComponent,
-    FormsModule, RouterLink]
+    FormsModule, RouterLink , DetailsGroupModalComponent]
 })
 export class ChatComponent implements OnInit {
  breadCrumbItems: breadCrumbItems[] =[
@@ -301,12 +302,6 @@ export class ChatComponent implements OnInit {
     return this.currentUser.id === 1;
   }
 
-  manageGroupMembers(): void {
-    if (this.activeTab === 'groups' && this.selectedItem) {
-      alert('Gérer les membres du groupe:'+ this.selectedItem.name);
-      // Ouvrir modal de gestion
-    }
-  }
 
   openGroupSettings(): void {
     if (this.activeTab === 'groups' && this.selectedItem) {
