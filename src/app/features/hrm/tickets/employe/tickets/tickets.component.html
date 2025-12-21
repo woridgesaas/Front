@@ -193,7 +193,7 @@
                 <!-- Titre -->
                 <td>
                   <h6 class="fw-medium mb-1">
-                    <a [routerLink]="'/mes-tickets/' + ticket.id">{{ ticket.titre }}</a>
+                    <span>{{ ticket.titre }}</span>
                   </h6>
                   @if (ticket.description && ticket.description.length > 50) {
                     <span class="fs-12 text-muted">{{ ticket.description.substring(0, 50) }}...</span>
