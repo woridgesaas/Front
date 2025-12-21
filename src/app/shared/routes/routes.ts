@@ -66,7 +66,7 @@ ticketList: '/tickets/ticket-list',
   providentfund: '/sales/provident-fund',
   taxes: '/sales/taxes',
 
-  employeesalary: '/payroll/employee-salary',
+  // employeesalary: '/payroll/employee-salary',
   payslip: '/payroll/payslip',
   policies: '/policies/main',
 

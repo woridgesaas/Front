@@ -1,11 +1,8 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { routes } from '../../../../shared/routes/routes';
 import { apiResultFormat, breadCrumbItems, employeeReport } from '../../../../shared/models/models';
-import { pageSelection, PaginationService, tablePageSize } from '../../../../shared/custom-pagination/pagination.service';
-import { MatTableDataSource } from '@angular/material/table';
 import { DataService } from '../../../../shared/data/data.service';
 import { Router, RouterLink } from '@angular/router';
-import { MatSortModule, Sort } from '@angular/material/sort';
 import {
   ApexAxisChartSeries,
   ApexChart,
@@ -14,216 +11,313 @@ import {
   ApexStroke,
   ApexTitleSubtitle,
   ApexXAxis,
+  ApexYAxis,
+  ApexPlotOptions,
+  ApexLegend,
+  ApexTooltip,
+  ApexFill,
   ChartComponent,
+  ApexNonAxisChartSeries,
 } from 'ng-apexcharts';
 import { Chart, registerables } from 'chart.js';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CustomPaginationComponent } from '../../../../shared/custom-pagination/custom-pagination.component';
-import { MatSelectModule } from '@angular/material/select';
 import { CollapseHeaderComponent } from '../../../common/collapse-header/collapse-header.component';
 import { BreadcrumbsComponent } from '../../../common/breadcrumbs/breadcrumbs.component';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-export interface ChartOptions  {
-  series: ApexAxisChartSeries;
+
+export interface ChartOptions {
+  series: ApexAxisChartSeries | ApexNonAxisChartSeries;
   chart: ApexChart;
-  xaxis: ApexXAxis;
-  dataLabels: ApexDataLabels;
-  grid: ApexGrid;
-  stroke: ApexStroke;
-  title: ApexTitleSubtitle;
-};
+  xaxis?: ApexXAxis;
+  yaxis?: ApexYAxis;
+  dataLabels?: ApexDataLabels;
+  grid?: ApexGrid;
+  stroke?: ApexStroke;
+  title?: ApexTitleSubtitle;
+  labels?: string[];
+  colors?: string[];
+  plotOptions?: ApexPlotOptions;
+  legend?: ApexLegend;
+  tooltip?: ApexTooltip;
+  fill?: ApexFill;
+}
+
+Chart.register(...registerables);
+
 @Component({
-    selector: 'app-employee-report',
-    templateUrl: './employee-report.component.html',
-    styleUrl: './employee-report.component.scss',
-    imports: [CommonModule,FormsModule,MatSortModule,
-      CollapseHeaderComponent,BreadcrumbsComponent,
-      CustomPaginationComponent,MatSelectModule,NgApexchartsModule,BsDatepickerModule,RouterLink]
+  selector: 'app-employee-report',
+  templateUrl: './employee-report.component.html',
+  styleUrl: './employee-report.component.scss',
+  imports: [
+    CommonModule,
+    FormsModule,
+    CollapseHeaderComponent,
+    BreadcrumbsComponent,
+    NgApexchartsModule,
+    BsDatepickerModule,
+    RouterLink
+  ]
 })
-export class EmployeeReportComponent {
+export class EmployeeReportComponent implements OnInit {
   public routes = routes;
-  initChecked = false;
-  // pagination variables
-  public pageSize = 10;
-  public tableData:  employeeReport[] = [];
-  public tableDataCopy:  employeeReport[] = [];
-  public actualData:  employeeReport[] = [];
-  public currentPage = 1;
-  public skip = 0;
-  public limit: number = this.pageSize;
-  public serialNumberArray: number[] = [];
-  public totalData = 0;
-  showFilter = false;
-  public pageSelection: pageSelection[] = [];
-  dataSource!: MatTableDataSource< employeeReport>;
-  public searchDataValue = '';
-  breadCrumbItems: breadCrumbItems[] =[];
+  breadCrumbItems: breadCrumbItems[] = [];
   bsValue = new Date();
   bsRangeValue: Date[];
   maxDate = new Date();
-  public employee_chart: Partial<ChartOptions> | any;
+
+  // Statistiques globales
+  public statistiques = {
+    totalEmployes: 425,
+    employesActifs: 398,
+    nouveauxEmployes: 28,
+    employesInactifs: 27,
+    evolutionTotal: 8.5,
+    evolutionActifs: 5.2,
+    evolutionNouveaux: 40.0,
+    evolutionInactifs: -12.3,
+    tauxActivite: 93.6,
+    tauxRotation: 6.6
+  };
+
+  // Répartition par département
+  public departements = [
+    { nom: 'IT & Développement', effectif: 95, pourcentage: 22.4, couleur: '#0d6efd' },
+    { nom: 'Ventes & Commercial', effectif: 78, pourcentage: 18.4, couleur: '#198754' },
+    { nom: 'Marketing', effectif: 62, pourcentage: 14.6, couleur: '#ffc107' },
+    { nom: 'Finance', effectif: 55, pourcentage: 12.9, couleur: '#dc3545' },
+    { nom: 'RH', effectif: 45, pourcentage: 10.6, couleur: '#6f42c1' },
+    { nom: 'Support Client', effectif: 52, pourcentage: 12.2, couleur: '#20c997' },
+    { nom: 'Logistique', effectif: 38, pourcentage: 8.9, couleur: '#fd7e14' }
+  ];
+
+  // Charts
+  public evolutionEmployesChart: Partial<ChartOptions> | any;
+  public repartitionDepartementsChart: Partial<ChartOptions> | any;
+
   @ViewChild('chart') chart!: ChartComponent;
+
   constructor(
     private data: DataService,
-    private router: Router,
-    private pagination: PaginationService
+    private router: Router
   ) {
     this.breadCrumbItems = [
-      { label: 'HR' },
-      { label: 'Employee Report', active: true }
-  ];
-  this.data.getemployeeReport().subscribe((apiRes: apiResultFormat) => {
-    this.actualData = apiRes.data;
-    this.pagination.tablePageSize.subscribe((res: tablePageSize) => {
-      if (this.router.url == this.routes.employeereport) {
-        this.getTableData({ skip: res.skip, limit: res.limit });
-        this.pageSize = res.pageSize;
-      }
-    });
-    
-  });
-  this.maxDate.setDate(this.maxDate.getDate() + 7);
-  this.bsRangeValue = [this.bsValue, this.maxDate];
-}
-private getTableData(pageOption: pageSelection): void {
-  this.data.getemployeeReport().subscribe((apiRes: apiResultFormat) => {
-    this.tableData = [];
-    this.tableDataCopy = [];
-    this.serialNumberArray = [];
-    this.totalData = apiRes.totalData;
-    apiRes.data.map((res:  employeeReport, index: number) => {
-      const serialNumber = index + 1;
-      if (index >= pageOption.skip && serialNumber <= pageOption.limit) {
-        res.sNo = serialNumber;
-        this.tableData.push(res);
-        this.tableDataCopy.push(res);
-        this.serialNumberArray.push(serialNumber);
-      }
-    });
-    this.dataSource = new MatTableDataSource< employeeReport>(this.actualData);
-    this.pagination.calculatePageSize.next({
-      totalData: this.totalData,
-      pageSize: this.pageSize,
-      tableData: this.tableData,
-      tableDataCopy: this.tableDataCopy,
-      serialNumberArray: this.serialNumberArray,
-    });
-  });
-}
+      { label: 'RH' },
+      { label: 'Rapports Employés', active: true }
+    ];
 
-public row=true;
-public searchData(value: string): void {
-    this.searchDataValue = value.trim().toLowerCase();
-    this.dataSource.filter = this.searchDataValue;
-    this.tableData = this.dataSource.filteredData;
-    this.row = this.tableData.length > 0;
-  
-    if (this.searchDataValue !== '') {
-      // Handle filtered data
-      this.pagination.calculatePageSize.next({
-        totalData: this.tableData.length,
-        pageSize: this.pageSize,
-        tableData: this.tableData,
-        serialNumberArray: this.tableData.map((_, i) => i + 1), // Generates serials like [1, 2, 3...]
-      });
-    } else {
-      // Handle reset to full data
-      this.pagination.calculatePageSize.next({
-        totalData: this.totalData,
-        pageSize: this.pageSize,
-        tableData: this.tableData,
-        serialNumberArray: this.serialNumberArray,
-      });
-    }
+    this.maxDate.setDate(this.maxDate.getDate() + 7);
+    this.bsRangeValue = [this.bsValue, this.maxDate];
   }
 
-public sortData(sort: Sort) {
-  const data = this.tableData.slice();
-
-  if (!sort.active || sort.direction === '') {
-    this.tableData = data;
-  } else {
-    this.tableData = data.sort((a, b) => {
-      const aValue = (a as never)[sort.active];
-
-      const bValue = (b as never)[sort.active];
-      return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
-    });
+  ngOnInit(): void {
+    this.initializerGraphiques();
   }
-}
-public changePageSize(pageSize: number): void {
-  this.pageSelection = [];
-  this.limit = pageSize;
-  this.skip = 0;
-  this.currentPage = 1;
-  this.pagination.tablePageSize.next({
-    skip: this.skip,
-    limit: this.limit,
-    pageSize: this.pageSize,
-  });
-}
-selectAll(initChecked: boolean) {
-  if (!initChecked) {
-    this.tableData.forEach((f) => {
-      f.isSelected = true;
-    });
-  } else {
-    this.tableData.forEach((f) => {
-      f.isSelected = false;
-    });
-  }
-}
-ngOnInit():void{
-  this.employee_chart={
-    series: [{
-      name: 'Active Employees',
-      data: [50, 55, 57, 56, 61, 58, 63, 60, 66]
-    }, {
-      name: 'Inactive Employees',
-      data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
-    }],
-    chart: {
-      type: 'bar',
-      height: 180
-    },
-    plotOptions: {
-      bar: {
-        horizontal: false,
-        columnWidth: '55%',
-        endingShape: 'rounded'
-      }
-    },
-    colors: ['#03C95A', '#E8E9EA'], // Active Employees - Green, Inactive Employees - Gray
-    dataLabels: {
-      enabled: false, // Disable data labels
-    },
-    stroke: {
-      show: true,
-      width: 2,
-      colors: ['transparent']
-    },
-    xaxis: {
-      categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct']
-    },yaxis: {
-      labels: {
-        offsetX: -15,
-      }
-    },
-    fill: {
-      opacity: 1
-    },
-    legend: {
-      show: false
-    },
-    tooltip: {
-      y: {
-        formatter: function (val : any) {
-          return "$ " + val + " thousands";
+
+  private initializerGraphiques(): void {
+    // 1. Graphique : Évolution des Employés (Barres groupées + Ligne de tendance)
+    this.evolutionEmployesChart = {
+      series: [
+        {
+          name: 'Employés Actifs',
+          type: 'column',
+          data: [342, 358, 365, 375, 382, 388, 390, 394, 398, 395, 392, 398]
+        },
+        {
+          name: 'Nouveaux Recrutements',
+          type: 'column',
+          data: [12, 18, 15, 22, 20, 25, 18, 24, 28, 15, 12, 28]
+        },
+        {
+          name: 'Départs',
+          type: 'column',
+          data: [8, 12, 10, 15, 13, 18, 12, 16, 14, 10, 8, 12]
+        },
+        {
+          name: 'Total Employés',
+          type: 'line',
+          data: [385, 395, 402, 410, 415, 418, 420, 422, 425, 423, 421, 425]
+        }
+      ],
+      chart: {
+        height: 400,
+        type: 'line',
+        stacked: false,
+        toolbar: {
+          show: true
+        }
+      },
+      stroke: {
+        width: [0, 0, 0, 3],
+        curve: 'smooth'
+      },
+      plotOptions: {
+        bar: {
+          columnWidth: '60%',
+          borderRadius: 6
+        }
+      },
+      fill: {
+        opacity: [0.85, 0.85, 0.85, 1],
+        gradient: {
+          inverseColors: false,
+          shade: 'light',
+          type: 'vertical',
+          opacityFrom: 0.85,
+          opacityTo: 0.55,
+          stops: [0, 100, 100, 100]
+        }
+      },
+      labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'],
+      markers: {
+        size: [0, 0, 0, 5],
+        hover: {
+          size: 7
+        }
+      },
+      xaxis: {
+        type: 'category',
+        labels: {
+          style: {
+            fontSize: '12px'
+          }
+        }
+      },
+      yaxis: {
+        title: {
+          text: 'Nombre d\'employés',
+          style: {
+            fontSize: '13px',
+            fontWeight: 500
+          }
+        },
+        min: 0,
+        labels: {
+          formatter: (value: number) => {
+            return Math.round(value).toString();
+          }
+        }
+      },
+      tooltip: {
+        shared: true,
+        intersect: false,
+        y: {
+          formatter: (value: number) => {
+            return Math.round(value) + ' employés';
+          }
+        }
+      },
+      legend: {
+        position: 'top',
+        horizontalAlign: 'left',
+        fontSize: '13px',
+        fontWeight: 500,
+        markers: {
+          width: 12,
+          height: 12,
+          radius: 3
+        }
+      },
+      colors: ['#198754', '#0d6efd', '#dc3545', '#6f42c1']
+    };
+
+    // 2. Graphique : Répartition par Département (Barres horizontales)
+    this.repartitionDepartementsChart = {
+      series: [{
+        name: 'Nombre d\'employés',
+        data: this.departements.map(d => d.effectif)
+      }],
+      chart: {
+        type: 'bar',
+        height: 400,
+        toolbar: {
+          show: false
+        }
+      },
+      plotOptions: {
+        bar: {
+          borderRadius: 8,
+          horizontal: true,
+          distributed: true,
+          barHeight: '70%',
+          dataLabels: {
+            position: 'top'
+          }
+        }
+      },
+      colors: this.departements.map(d => d.couleur),
+      dataLabels: {
+        enabled: true,
+        formatter: (val: number, opts: any) => {
+          const index = opts.dataPointIndex;
+          return `${val} (${this.departements[index].pourcentage}%)`;
+        },
+        offsetX: 40,
+        style: {
+          fontSize: '12px',
+          fontWeight: 600,
+          colors: ['#304758']
+        }
+      },
+      stroke: {
+        show: false
+      },
+      xaxis: {
+        categories: this.departements.map(d => d.nom),
+        labels: {
+          style: {
+            fontSize: '12px'
+          }
+        }
+      },
+      yaxis: {
+        labels: {
+          style: {
+            fontSize: '13px',
+            fontWeight: 500
+          }
+        }
+      },
+      legend: {
+        show: false
+      },
+      tooltip: {
+        y: {
+          formatter: (value: number, opts: any) => {
+            const index = opts.dataPointIndex;
+            return `${value} employés (${this.departements[index].pourcentage}%)`;
+          }
+        }
+      },
+      grid: {
+        borderColor: '#f1f1f1',
+        xaxis: {
+          lines: {
+            show: true
+          }
         }
       }
-    }
+    };
   }
-}
+
+  // Méthode pour formater les nombres
+  formaterNombre(nombre: number): string {
+    return nombre.toLocaleString('fr-MA');
+  }
+
+  // Méthode pour obtenir la classe CSS selon l'évolution
+  obtenirClasseEvolution(valeur: number): string {
+    return valeur >= 0 ? 'text-success' : 'text-danger';
+  }
+
+  // Méthode pour obtenir l'icône selon l'évolution
+  obtenirIconeEvolution(valeur: number): string {
+    return valeur >= 0 ? 'ti-arrow-wave-right-up' : 'ti-arrow-wave-right-down';
+  }
+
+  // Méthode pour calculer le pourcentage
+  calculerPourcentage(valeur: number, total: number): number {
+    return Math.round((valeur / total) * 100 * 10) / 10;
+  }
 }
