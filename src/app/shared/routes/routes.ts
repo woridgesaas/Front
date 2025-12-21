@@ -145,7 +145,7 @@ export const routes = {
 
   //* Settings routes
   changePassword: '/settings/change-password',
-  leaveType: '/settings/app-settings/leave-type',
+  leaveSettings: '/settings/app-settings/leave-settings', 
 
   comingSoon: '/coming-soon',
   underMaintanance: '/under-maintenance',
