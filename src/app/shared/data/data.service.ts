@@ -555,7 +555,7 @@ export class DataService {
       menu: [
         {
           menuValue: 'Offres',
-          route: routes.jobsGrid,
+          route: routes.jobsList,
           hasSubRoute: false,
           showSubRoute: false,
           icon: 'timeline',
@@ -941,13 +941,13 @@ export class DataService {
           subMenus: [
             {
               menuValue: 'Offres',
-              route: routes.jobsGrid,
-              base: 'jobs-grid',
+              route: routes.jobsList,
+              base: 'jobs-list',
             },
             {
               menuValue: 'Candidats',
               route: routes.candidateslist,
-              base: 'candidates-grid',
+              base: 'candidates-list',
             },
             {
               menuValue: 'Filtrage',

@@ -385,12 +385,12 @@ export class InterviewsPlanningComponent {
     const ancienStatut = entretien.statut;
     entretien.statut = nouveauStatut as any;
     
-    console.log(`🔄 Changement de statut de l'entretien ${entretien.id}`);
+    console.log(` Changement de statut de l'entretien ${entretien.id}`);
     console.log(`  De: ${ancienStatut} → Vers: ${nouveauStatut}`);
     
     // Notification aux participants
     if (nouveauStatut === 'Confirmé') {
-      console.log('✅ Notification de confirmation envoyée');
+      console.log(' Notification de confirmation envoyée');
     }
     
     // Appel API pour sauvegarder le changement
@@ -436,7 +436,7 @@ export class InterviewsPlanningComponent {
 
   getStatutBadgeClass(statut: string): string {
     const classes: { [key: string]: string } = {
-      'Planifié': 'bg-primary',
+      'Planifié': 'bg-primary-400',
       'Confirmé': 'bg-success',
       'En cours': 'bg-info',
       'Terminé': 'bg-secondary',

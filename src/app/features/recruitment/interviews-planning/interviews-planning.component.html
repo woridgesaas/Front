@@ -8,7 +8,7 @@
       <app-breadcrumbs title="Planification des Entretiens" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
     
       <div class="d-flex align-items-center gap-2">
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#create_interview_modal" (click)="ouvrirModalCreer()">
+        <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#create_interview_modal" (click)="ouvrirModalCreer()">
           <i class="ti ti-calendar-plus me-2"></i>Planifier un Entretien
         </button>
         <app-collapse-header></app-collapse-header>
@@ -19,8 +19,8 @@
     <div class="modal fade" id="create_interview_modal" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
         <div class="modal-content">
-          <div class="modal-header border-bottom bg-primary text-white">
-            <h4 class="modal-title text-white"><i class="ti ti-calendar-plus me-2"></i>Planifier un Nouvel Entretien</h4>
+          <div class="modal-header border-bottom  bg-white text-white">
+            <h4 class="modal-title text-black"><i class="ti ti-calendar-plus me-2"></i>Planifier un Nouvel Entretien</h4>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
           </div>
           <div class="modal-body">
@@ -99,10 +99,10 @@
                   <div class="col-md-3">
                     <label class="form-label small">Type d'Entretien <span class="text-danger">*</span></label>
                     <select class="form-select" [(ngModel)]="nouvelEntretien.type" name="type" required>
-                      <option value="Téléphonique">📞 Téléphonique</option>
-                      <option value="Visioconférence" selected>💻 Visioconférence</option>
-                      <option value="Présentiel">🏢 Présentiel</option>
-                      <option value="Technique">🔧 Technique</option>
+                      <option value="Téléphonique"> Téléphonique</option>
+                      <option value="Visioconférence" selected> Visioconférence</option>
+                      <option value="Présentiel"> Présentiel</option>
+                      <option value="Technique"> Technique</option>
                     </select>
                   </div>
                 </div>
@@ -134,7 +134,7 @@
             <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="annulerModalCreer()">
               <i class="ti ti-x me-1"></i>Annuler
             </button>
-            <button type="button" class="btn btn-primary" (click)="creerEntretien()" data-bs-dismiss="modal">
+            <button type="button" class="btn btn-outline-primary" (click)="creerEntretien()" data-bs-dismiss="modal">
               <i class="ti ti-calendar-check me-1"></i>Planifier et Envoyer les Invitations
             </button>
           </div>
@@ -207,7 +207,7 @@
           </div>
           <div class="modal-footer border-top">
             <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="annulerModalModifier()">Annuler</button>
-            <button type="button" class="btn btn-primary" (click)="modifierEntretien()" data-bs-dismiss="modal">
+            <button type="button" class="btn btn-outline-primary" (click)="modifierEntretien()" data-bs-dismiss="modal">
               <i class="ti ti-device-floppy me-1"></i>Enregistrer et Notifier
             </button>
           </div>
@@ -404,7 +404,7 @@
             </div>
             <!-- Filtre Candidat -->
             <div class="me-2">
-              <input type="text" class="form-control form-control-sm" [(ngModel)]="filtres.candidat" placeholder="🔍 Rechercher un candidat">
+              <input type="text" class="form-control form-control-sm" [(ngModel)]="filtres.candidat" placeholder=" Rechercher un candidat">
             </div>
             <!-- Filtre Statut -->
             <div class="dropdown me-2">
@@ -520,12 +520,12 @@
                           <i class="ti ti-eye me-2"></i>Voir Détails
                         </a>
                       </li>
-                      <li>
+                      <!-- <li>
                         <a class="dropdown-item" href="javascript:void(0);" 
                            (click)="renvoyerInvitations(entretien)">
                           <i class="ti ti-mail me-2 text-primary"></i>Renvoyer les Invitations
                         </a>
-                      </li>
+                      </li> -->
                       <li><hr class="dropdown-divider"></li>
                       <li>
                         <a class="dropdown-item" href="javascript:void(0);" 

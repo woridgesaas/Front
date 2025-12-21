@@ -144,27 +144,21 @@ export const routes: Routes = [
 },
 
 
-      // candidat
       { path: 'candidates' , loadComponent: () => import('./features/recruitment/candidates/candidates.component').then(m => m.CandidatesComponent),
         children: [
           {path: 'candidates-list', loadComponent: () => import('./features/recruitment/candidates/candidates-list/candidates-list.component').then(m => m.CandidatesListComponent),},
-          // {path: 'candidates-grid', loadComponent: () => import('./features/recruitment/candidates/candidates-grid/candidates-grid.component').then(m => m.CandidatesGridComponent),},
-          // {path: 'candidates-kanban', loadComponent: () => import('./features/recruitment/candidates/candidates-kanban/candidates-kanban.component').then(m => m.CandidatesKanbanComponent),},
         ]
       },
       { path: 'jobs' , loadComponent: () => import('./features/recruitment/jobs/jobs.component').then(m => m.JobsComponent),
         children: [
           {path: 'jobs-list', loadComponent: () => import('./features/recruitment/jobs/jobs-list/jobs-list.component').then(m => m.JobsListComponent),},
-          {path: 'jobs-grid', loadComponent: () => import('./features/recruitment/jobs/jobs-grid/jobs-grid.component').then(m => m.JobsGridComponent),},
         ]
       },
 
-      //filtrage test
       { path: 'filtrage' , loadComponent: () => import('./features/recruitment/filtrage-list/filtrage-list.component').then(m => m.FiltrageListComponent),
         children: []
       },
 
-      // test entretient
 
       { path: 'entretient' , loadComponent: () => import('./features/recruitment/interviews-planning/interviews-planning.component').then(m => m.InterviewsPlanningComponent),
         children: []
