@@ -459,40 +459,16 @@ export class DataService {
           subMenus: [],
         },
         {
-          menuValue: 'Présence',
-          route: routes.sales,
-          hasSubRouteTwo: true,
-          showSubRoute: false,
-          icon: 'file-time',
-          base: 'sales',
-          materialicons: 'track_changes',
-          subMenus: [
-            {
-              menuValue: 'Congés',
-              customSubmenuTwo: true,
-              hasSubRoute: true,
-              showSubRoute: false,
-              route: routes.leaveadmin,
-              base: 'leaves',
-              subMenusTwo: [
-                {
-                  menuValue: 'Congé',
-                  route: routes.leaveadmin,
-                  base: 'leave-admin',
-                  hasSubRoute: false,
-                  showSubRoute: false,
-                },
-              ],
-            },
-
-            {
-              menuValue: 'Présence/Absence',
+          menuValue: 'Présence/Absence',
               route: routes.attendanceadmin,
               base: 'attendance-admin',
-              customSubmenuTwo: false,
-            },
-          ],
+          hasSubRoute: false,
+          showSubRoute: false,
+          icon: 'file-time',
+           materialicons: 'track_changes',
+          subMenus: [],
         },
+    
         {
           menuValue: 'Promotion',
           route: routes.promotion,
@@ -870,23 +846,11 @@ export class DataService {
               base: 'departments',
               customSubmenuTwo: false,
             },
-            {
-              menuValue: 'Présence',
-              base: 'attendance',
-              customSubmenuTwo: true,
-              subMenusTwo: [
-                {
-                  menuValue: 'Congé',
-                  route: routes.leaveadmin,
-                  hasSubRoute: false,
-                  showSubRoute: false,
-                },
-                {
-                  menuValue: 'Présence/Absence',
-                  route: routes.attendanceadmin,
-                  base: 'attendance-admin',
-                },
-              ],
+              {
+              menuValue: 'Présence/Absence',
+              route: routes.attendanceadmin,
+              base: 'attendance-admin',
+              customSubmenuTwo: false,
             },
 
             {
@@ -925,7 +889,7 @@ export class DataService {
             },
 
             {
-              menuValue: 'Resignation',
+              menuValue: 'Démission',
               route: routes.resignation,
               base: 'resignation',
               customSubmenuTwo: false,
