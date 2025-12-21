@@ -23,7 +23,6 @@
             <div class="mb-2">
                 <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#add_ticket" class="btn btn-primary d-flex align-items-center"><i class="ti ti-circle-plus me-2"></i>Ajouter une Ticket</a>
             </div>
-            <app-collapse-header></app-collapse-header>
             </div>
         </div>
         <!-- /Breadcrumb -->
@@ -149,3 +148,5 @@
         </div>
     </div>
 </div>
+<!--Ajout du ticket on pass le role ,pour afficher des section technique -->
+<app-ticket-create [userRole]="'canAssigneticket'"></app-ticket-create>

@@ -1,0 +1,119 @@
+<div class="modal fade" id="ticketDetailModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      
+      <!-- Header -->
+      <div class="modal-header bg-light">
+        <div class="d-flex align-items-center w-100">
+          <div class="avatar avatar-md border avatar-rounded bg-primary me-3">
+            <i class="ti ti-ticket text-white"></i>
+          </div>
+          <div class="flex-grow-1">
+            <h5 class="modal-title mb-1">{{ ticketData.numeroTicket }} - {{ ticketData.titre }}</h5>
+            <div class="d-flex align-items-center gap-2">
+              <span class="badge {{ getStatusClass(ticketData.statut) }}">
+                <i class="ti ti-circle-filled fs-9 me-1"></i>
+                {{ ticketData.statut }}
+              </span>
+              <span class="badge {{ getPriorityClass(ticketData.priorite) }}">
+                {{ ticketData.priorite }}
+              </span>
+              <span class="text-muted small">
+                <i class="ti ti-calendar me-1"></i>
+                Créé le {{ formatDate(ticketData.createdAt) }}
+              </span>
+            </div>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body">
+        
+        <!-- Section Description -->
+        <div class="card mb-4">
+          <div class="card-body">
+            <h6 class="card-title mb-3">
+              <i class="ti ti-file-text me-2"></i>Description du problème
+            </h6>
+            <p class="card-text">{{ ticketData.description }}</p>
+            <div class="mt-3">
+              <span class="badge bg-light text-dark border">
+                <i class="ti ti-category me-1"></i>
+                {{ ticketData.categorie }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section Historique -->
+        <div class="card mb-4">
+          <div class="card-body">
+            <h6 class="card-title mb-3">
+              <i class="ti ti-history me-2"></i>Historique du ticket
+            </h6>
+            
+            <div class="timeline">
+              @for (event of ticketData.historiqueStatuts; track $index) {
+                <div class="timeline-item">
+                  <div class="timeline-marker">
+                    <div class="timeline-dot {{ getStatusClass(event.statut) }}"></div>
+                  </div>
+                  <div class="timeline-content">
+                    <div class="d-flex justify-content-between">
+                      <h6 class="timeline-title mb-1">{{ event.statut }}</h6>
+                      <small class="text-muted">{{ event.date }}</small>
+                    </div>
+                    <p class="timeline-text mb-0">{{ event.description }}</p>
+                  </div>
+                </div>
+              }
+              
+              <!-- État actuel -->
+              <div class="timeline-item current">
+                <div class="timeline-marker">
+                  <div class="timeline-dot {{ getStatusClass(ticketData.statut) }} pulse"></div>
+                </div>
+                <div class="timeline-content">
+                  <h6 class="timeline-title mb-1 text-primary">
+                    <i class="ti ti-circle-check me-1"></i>STATUT ACTUEL
+                  </h6>
+                  <p class="timeline-text mb-0">
+                    Votre ticket est actuellement <strong>{{ ticketData.statut }}</strong>
+                    @if (ticketData.statut === 'Ouvert') {
+                      et attend d'être pris en charge par l'équipe support.
+                    }
+                    @if (ticketData.statut === 'En Cours') {
+                      et est en cours de traitement par l'équipe support.
+                    }
+                    @if (ticketData.statut === 'Résolu') {
+                      - le problème a été résolu.
+                    }
+                    @if (ticketData.statut === 'Fermé') {
+                      - vous avez indiqué que le problème était résolu.
+                    }
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer bg-light">
+        <small class="text-muted me-auto">
+          <i class="ti ti-headset me-1"></i>
+          Équipe support technique
+        </small>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          <i class="ti ti-x me-1"></i>Fermer
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
