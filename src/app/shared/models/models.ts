@@ -127,6 +127,26 @@ export interface ChatMessage {
   read: boolean;
   timestamp: Date;
 }
+export interface ChatItem {
+  id: number;
+  name: string;
+  avatar?: string;
+  type: 'contact' | 'group';
+  lastMessage?: string;
+  unreadCount?: number;
+}
+export interface SelectedItem {
+  id: number;
+  name: string;
+  type: 'contact' | 'group';
+}
+export interface ChatGroupItem extends ChatItem {
+  type: 'group';
+  memberCount: number;
+  description?: string;
+  isAdmin?: boolean;
+  members?: number[];
+}
 export interface ChatGroup {
   id: number;
   name: string;

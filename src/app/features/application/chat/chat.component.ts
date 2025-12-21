@@ -1,11 +1,11 @@
 import {  Component, OnDestroy, OnInit } from '@angular/core';
-import { breadCrumbItems, ChatContact, ChatMessage } from '../../../shared/models/models';
+import { breadCrumbItems, ChatContact, ChatGroupItem, ChatMessage, SelectedItem } from '../../../shared/models/models';
 import { CommonModule } from '@angular/common';
 import { NgScrollbarModule } from 'ngx-scrollbar';
 import { BreadcrumbsComponent } from '../../common/breadcrumbs/breadcrumbs.component';
 import { ChatService } from '../../../shared/data/chat-service';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from "@angular/router";
+import { RouterLink, RouterModule } from "@angular/router";
 import { routes } from '../../../shared/routes/routes';
 
 @Component({
@@ -22,120 +22,160 @@ export class ChatComponent implements OnInit {
       { label: 'Chat', active: true }
  ];
  routes= routes;
-  // static  data de l'utilisateur courant
+  // Utilisateur courant { id: number; name: string; avatar: string } est le type des prop :)
   currentUser = {
     id: 0,
     name: '',
     avatar: ''
   };
   
-  // Liste des contacts
+  // Données
   contacts: ChatContact[] = [];
-  filteredContacts: ChatContact[] = [];
+  groups: ChatGroupItem[] = [];
+  filteredItems: any[] = []; // Contacts OU groupes selon l'onglet
   
-  // Contact sélectionné
-  selectedContact: ChatContact | null = null;
+  // Sélection
+  activeTab: 'contacts' | 'groups' = 'contacts';
+  selectedItem: any = null; // Peut être contact ou groupe
   
-  // Messages de la conversation courante
+  // Messages
   messages: ChatMessage[] = [];
-  
-  // Nouveau message
   newMessage: string = '';
   
-  // Recherche
+  // Filtres
   searchQuery: string = '';
-  
-  // Filtre actif
   activeFilter: 'all' | 'unread' = 'all';
-  
   
   // États
   isSidebarVisible: boolean = true;
   isLoading: boolean = false;
-
+  
   constructor(private chatService: ChatService) {}
 
   ngOnInit(): void {
     this.initChat();
   }
 
-  /**
-   * Initialiser le chat
-   */
   private initChat(): void {
-    // Récupérer l'utilisateur courant
     this.currentUser = this.chatService.getCurrentUser();
-    
-    // Charger les contacts
-    this.loadContacts();
-    
-    // Simuler un message entrant après 5 secondes
-    setTimeout(() => {
-      this.simulateIncomingMessage();
-    }, 5000);
+    this.loadItems();
+    this.simulateIncomingMessage();
   }
 
-  /**
-   * Charger les contacts
-   */
-  private loadContacts(): void {
+  /** === GESTION DES ONGLETS === */
+  switchTab(tab: 'contacts' | 'groups'): void {
+    this.activeTab = tab;
+    this.selectedItem = null;
+    this.searchItems();
+  }
+
+  /** === CHARGEMENT DES DONNES === */
+  private loadItems(): void {
     this.contacts = this.chatService.getContacts();
-    this.filteredContacts = [...this.contacts];
+    
+    this.groups = this.getMockGroups();
+    this.searchItems();
   }
 
-  /**
-   * Sélectionner un contact
-   */
-  selectContact(contact: ChatContact): void {
-    this.selectedContact = contact;
+  /** === RECHERCHE ET FILTRAGE === */
+  searchItems(): void {
+    if (this.activeTab === 'contacts') {
+      this.filteredItems = this.filterContacts();
+    } else {
+      this.filteredItems = this.filterGroups();
+    }
+  }
+
+  private filterContacts(): ChatContact[] {
+    let result = [...this.contacts];
     
-    // Charger les messages
-    this.loadMessages(contact.id);
+    if (this.activeFilter === 'unread') {
+      result = result.filter(c => c.unreadCount > 0);
+    }
     
-    // Marquer comme lu
-    this.chatService.markAsRead(contact.id);
+    // Recherche texte
+    if (this.searchQuery.trim()) {
+      const term = this.searchQuery.toLowerCase().trim();
+      result = result.filter(c =>
+        c.name.toLowerCase().includes(term) ||
+        c.department.toLowerCase().includes(term)
+      );
+    }
     
-    // Mettre à jour le contact dans la liste
-    this.updateContactInList(contact.id);
+    return result;
+  }
+
+  private filterGroups(): ChatGroupItem[] {
+    let result = [...this.groups];
     
-    // Sur mobile, cacher la sidebar
+    // Recherche texte
+    if (this.searchQuery.trim()) {
+      const term = this.searchQuery.toLowerCase().trim();
+      result = result.filter(g =>
+        g.name.toLowerCase().includes(term) ||
+        g.description?.toLowerCase().includes(term)
+      );
+    }
+    
+    return result;
+  }
+
+  
+  selectItem(item: any): void {
+    this.selectedItem = item;
+    if (this.activeTab === 'contacts') {
+      this.loadContactMessages(item.id);
+    } else {
+      this.loadGroupMessages(item.id);
+    }
+    
+    // Marquer comme lu si c'est un contact
+    if (this.activeTab === 'contacts') {
+      this.chatService.markAsRead(item.id);
+    }
+    
+    // Cacher sidebar sur mobile
     if (window.innerWidth < 768) {
       this.isSidebarVisible = false;
     }
   }
 
-  /**
-   * Désélectionner un contact (pour mobile)
-   */
-  deselectContact(): void {
-    this.selectedContact = null;
+  deselectItem(): void {
+    this.selectedItem = null;
     this.messages = [];
     this.isSidebarVisible = true;
   }
 
-  /**
-   * Charger les messages d'un contact
-   */
-  private loadMessages(contactId: number): void {
+  
+  private loadContactMessages(contactId: number): void {
     this.messages = this.chatService.getMessages(contactId);
   }
 
-  /**
-   * Envoyer un message
-   */
-  sendMessage(): void {
-    if (!this.selectedContact || !this.newMessage.trim()) return;
+  private loadGroupMessages(groupId: number): void {
+    // Simulation de messages de groupe
+    this.messages = this.getMockGroupMessages(groupId);
+  }
 
+  
+  sendMessage(): void {
+    if (!this.selectedItem || !this.newMessage.trim()) return;
     
-    this.chatService.sendMessage(this.selectedContact.id, this.newMessage.trim());
+    if (this.activeTab === 'contacts') {
+      // Message 1-to-1
+      this.chatService.sendMessage(this.selectedItem.id, this.newMessage.trim());
+    } else {
+      // Message de groupe (simulation)
+      alert('Message de groupe envoyé:'+ this.newMessage);
+    }
     
-   
-    this.loadMessages(this.selectedContact.id);
-    
+    // Recharger les messages
+    if (this.activeTab === 'contacts') {
+      this.loadContactMessages(this.selectedItem.id);
+    } else {
+      this.loadGroupMessages(this.selectedItem.id);
+    }
     
     this.newMessage = '';
-    
-   
   }
 
   onEnterPress(event: any): void {
@@ -145,135 +185,133 @@ export class ChatComponent implements OnInit {
     }
   }
 
-  /**
-   * Joindre un fichier
-   */
-  attachFile(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      const file = input.files[0];
-      input.value = ''; 
-    }
-  }
-
-
-  /**
-   * Rechercher des contacts
-   */
-  searchContacts(): void {
-    if (!this.searchQuery.trim()) {
-      this.applyFilter(this.activeFilter);
-      return;
-    }
-    
-    this.filteredContacts = this.chatService.searchContacts(this.searchQuery);
-  }
-
-  /**
-   * Appliquer un filtre
-   */
-  applyFilter(filter: 'all' | 'unread'): void {
-    this.activeFilter = filter;
-    
-    switch (filter) {
-      case 'all':
-        this.filteredContacts = [...this.contacts];
-        break;
-      case 'unread':
-        this.filteredContacts = this.chatService.getUnreadContacts();
-        break;
-    }
-    
-    this.searchQuery = '';
-  }
-  /**
-   * Mettre à jour un contact dans la liste
-   */
-  private updateContactInList(contactId: number): void {
-    const updatedContact = this.chatService.getContactById(contactId);
-    if (updatedContact) {
-      const index = this.contacts.findIndex(c => c.id === contactId);
-      if (index !== -1) {
-        this.contacts[index] = updatedContact;
+  /** === SIMULATION GROUPES === */
+  private getMockGroups(): ChatGroupItem[] {
+    return [
+      {
+        id: 100,
+        name: 'IT - Département',
+        avatar: 'assets/img/group/avatar.jpg',
+        type: 'group',
+        memberCount: 15,
+        description: 'Discussions techniques',
+        unreadCount: 3
+      },
+      {
+        id: 101,
+        name: 'Projet Alpha',
+        type: 'group',
+        memberCount: 8,
+        description: 'Suivi du projet',
+        unreadCount: 0
+      },
+      {
+        id: 102,
+        name: 'Annonces Officielles',
+        type: 'group',
+        memberCount: 45,
+        description: 'Toutes les annonces importantes',
+        unreadCount: 1
       }
-    }
+    ];
   }
 
-  /**
-   * Télécharger un fichier
-   */
-  downloadFile(message: ChatMessage): void {
-    if (message.type === 'file' || message.type === 'image') {
-      // Simulation
-      alert(`Téléchargement de "${message.fileName}"`);
-    }
+  private getMockGroupMessages(groupId: number): ChatMessage[] {
+    return [
+      {
+        id: 1,
+        senderId: 101,
+        receiverId: groupId,
+        type: 'text',
+        content: 'Bonjour à tous dans le groupe !',
+        time: '10:30',
+        read: true,
+        timestamp: new Date()
+      },
+      {
+        id: 2,
+        senderId: this.currentUser.id,
+        receiverId: groupId,
+        type: 'text',
+        content: 'Salut tout le monde !',
+        time: '10:35',
+        read: true,
+        timestamp: new Date()
+      }
+    ];
   }
 
-  /**
-   * Obtenir le statut en français
-   */
+  /** === HAllpers === */
   getStatusText(status: string): string {
-    switch (status) {
-      case 'online': return 'En ligne';
-      case 'offline': return 'Hors ligne';
-      case 'busy': return 'Occupé';
-      case 'away': return 'Absent';
-      default: return status;
-    }
+    const statusMap: { [key: string]: string } = {
+      'online': 'En ligne',
+      'offline': 'Hors ligne',
+    };
+    return statusMap[status] || status;
   }
 
-  /**
-   * Simuler un message entrant
-   */
-  private simulateIncomingMessage(): void {
-    
-    const availableContacts = this.contacts.filter(c => 
-      c.id !== this.selectedContact?.id && c.status === 'online'
-    );
-    
-    if (availableContacts.length > 0) {
-      const randomContact = availableContacts[Math.floor(Math.random() * availableContacts.length)];
-      const messages = [
-        'Salut, tu as une minute ?',
-        'La réunion est reportée à demain',
-        'Peux-tu vérifier ce bug ?',
-        'J\'ai envoyé le document demandé',
-        'Disponible pour un appel rapide ?'
-      ];
-      
-      const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-      
-      this.chatService.simulateIncomingMessage(randomContact.id, randomMessage);
-      
-      
-      this.updateContactInList(randomContact.id);
-      this.applyFilter(this.activeFilter);
-      
-      // Notification
-      if (Notification.permission === 'granted' && !document.hasFocus()) {
-        new Notification(`Message de ${randomContact.name}`, {
-          body: randomMessage,
-          icon: randomContact.avatar
-        });
-      }
-    }
+  formatRelativeTime(timeString: string): string {
+    if (timeString === 'À l\'instant') return timeString;
+    return timeString;
   }
 
-  /**
-   * Basculer la visibilité de la sidebar (mobile)
-   */
   toggleSidebar(): void {
     this.isSidebarVisible = !this.isSidebarVisible;
   }
 
-  /**
-   * Formater l'heure relative
-   */
-  formatRelativeTime(timeString: string): string {
-    if (timeString === 'À l\'instant') return timeString;
-    
-    
-    if (timeString.includes(':')) return timeString;
-    return timeString;
+  /** === ACTIONS === */
+  attachFile(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files?.length) {
+      console.log('Fichier joint:', input.files[0].name);
+      input.value = '';
+    }
+  }
+
+  downloadFile(message: ChatMessage): void {
+    if (message.type === 'file' || message.type === 'image') {
+      alert(`Téléchargement de "${message.fileName}"`);
+    }
+  }
+
+  private simulateIncomingMessage(): void {
+    setTimeout(() => {
+      const availableContacts = this.contacts.filter(c => 
+        c.status === 'online' && c.id !== this.selectedItem?.id
+      );
+      
+      if (availableContacts.length > 0) {
+        const randomContact = availableContacts[Math.floor(Math.random() * availableContacts.length)];
+        const messages = ['Salut !', 'Tu as une minute ?', 'La réunion est à 15h'];
+        
+        this.chatService.simulateIncomingMessage(
+          randomContact.id, 
+          messages[Math.floor(Math.random() * messages.length)]
+        );
+        
+        this.searchItems(); // Rafraîchir la liste
+      }
+    }, 5000);
+  }
+
+  /** === ACTIONS GROUPES (admin) === */
+  isGroupAdmin(): boolean {
+      console.log('currentUser.id:', this.currentUser.id, typeof this.currentUser.id);
+    // Simulation
+    return this.currentUser.id === 1;
+  }
+
+  manageGroupMembers(): void {
+    if (this.activeTab === 'groups' && this.selectedItem) {
+      alert('Gérer les membres du groupe:'+ this.selectedItem.name);
+      // Ouvrir modal de gestion
+    }
+  }
+
+  openGroupSettings(): void {
+    if (this.activeTab === 'groups' && this.selectedItem) {
+      alert('Paramètres du groupe:'+ this.selectedItem.name);
+      // Ouvrir modal de paramètres
+    }
   }
 }
