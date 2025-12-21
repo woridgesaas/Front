@@ -34,7 +34,6 @@ export const routes = {
   sondageDetails: '/intranet/sondage-details/:id',
   /**------- FIN communication routes ------------- */
   employeeList: '/employees/employee-list',
-  employeeGrid: '/employees/employee-grid',
   employeeDetails: '/employees/employee-details',
   employeePage: '/employees/employee-page',
   departments: '/employees/departments',
@@ -51,7 +50,6 @@ export const routes = {
 
   // Leaves
   sales: '/sales',
-  leaveadmin: '/attendance/leaves/leave-admin',
   leaveemployee: '/attendance/leaves/leave-employee',
 
   // Attendance
@@ -80,7 +78,6 @@ ticketList: '/tickets/ticket-list',
   promotion: '/promotion',
   resignation: '/resignation',
   jobsList: '/jobs/jobs-list',
-  jobsGrid: '/jobs/jobs-grid',
   userDashboard: '/jobs/user-dashboard',
   jobsdashboard: '/jobs/jobs-dashboard',
   managejobs: '/jobs/manage-jobs',
@@ -91,8 +88,6 @@ ticketList: '/tickets/ticket-list',
   offerapproval: '/jobs/offer-approval',
   experiencelevel: '/jobs/experience-level',
   candidateslist: '/candidates/candidates-list',
-  // candidatesGrid: '/candidates/candidates-grid',
-  // candidatesKanban: '/candidates/candidates-kanban',
   scheduletiming: '/jobs/schedule-timing',
   aptituderesult: '/jobs/aptitude-result',
   appliedcandidates: '/jobs/applied-candidates',

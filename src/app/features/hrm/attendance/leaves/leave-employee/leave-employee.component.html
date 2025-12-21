@@ -45,73 +45,58 @@
   </div>
   <!-- /Breadcrumb -->
 
-<!-- Leaves Info -->
-<div class="row g-3 mb-4">
-
-  <!-- Congés annuels -->
-  <div class="col-xl-3 col-md-6">
-    <div class="card bg-purple-le h-100">
-      <div class="card-body">
-        <div class="d-flex align-items-center justify-content-between">
-          <div>
-            <p class="mb-1">Congés annuels</p>
-            <h4>05</h4>
+  <!-- Leaves Info -->
+  <div class="row g-3 mb-4">
+    <!-- Congés annuels -->
+    <div class="col-xl-3 col-md-6">
+      <div class="card bg-purple-le h-100">
+        <div class="card-body">
+          <div class="d-flex align-items-center justify-content-between">
+            <div>
+              <p class="mb-1">Congés annuels</p>
+              <h4>05</h4>
+            </div>
+            <span class="avatar avatar-md">
+              <i class="ti ti-calendar-event fs-32"></i>
+            </span>
           </div>
-          <span class="avatar avatar-md">
-            <i class="ti ti-calendar-event fs-32"></i>
-          </span>
         </div>
-
-        <span class="badge bg-primary-transparent mt-2">
-          Congés restants : 07
-        </span>
       </div>
     </div>
-  </div>
 
-  <!-- Total des congés -->
-  <div class="col-xl-3 col-md-6">
-    <div class="card bg-black-le h-100">
-      <div class="card-body">
-        <div class="d-flex align-items-center justify-content-between">
-          <div>
-            <p class="mb-1">Total des congés</p>
-            <h4>48</h4>
+    <!-- Total des congés -->
+    <div class="col-xl-3 col-md-6">
+      <div class="card bg-black-le h-100">
+        <div class="card-body">
+          <div class="d-flex align-items-center justify-content-between">
+            <div>
+              <p class="mb-1">Total des congés</p>
+              <h4>24</h4>
+            </div>
+            <span class="avatar avatar-md bg-purple-icon">
+              <i class="ti ti-briefcase fs-32"></i>
+            </span>
           </div>
-          <span class="avatar avatar-md bg-purple-icon">
-            <i class="ti ti-briefcase fs-32"></i>
-          </span>
         </div>
+      </div>
+    </div>
 
-        <span class="badge bg-secondary-transparent mt-2">
-          Tous types confondus
-        </span>
+    <div class="col-xl-3 col-md-6">
+      <div class="card bg-blue-le h-100">
+        <div class="card-body">
+          <div class="d-flex align-items-center justify-content-between">
+            <div>
+              <p class="mb-1">Congés restants</p>
+              <h4>10</h4>
+            </div>
+            <span class="avatar avatar-md bg-purple-icon">
+              <i class="ti ti-hourglass fs-32"></i>
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-
-  <div class="col-xl-3 col-md-6">
-  <div class="card bg-blue-le h-100">
-    <div class="card-body">
-      <div class="d-flex align-items-center justify-content-between">
-        <div>
-          <p class="mb-1">Congés restants</p>
-          <h4>23</h4>
-        </div>
-        <span class="avatar avatar-md bg-purple-icon">
-          <i class="ti ti-hourglass fs-32"></i>
-        </span>
-      </div>
-
-      <span class="badge bg-info-transparent mt-2">
-        Solde disponible
-      </span>
-    </div>
-  </div>
-</div>
-
-
-</div>
 
   <!-- /Leaves Info -->
 
@@ -420,20 +405,43 @@
                   </td>
 
                   <td>
-                    <div class="action-icon d-inline-flex">
-                      <a
-                        href="javascript:void(0);"
-                        class="me-2"
-                        data-bs-toggle="modal"
-                        data-bs-target="#edit_leave"
-                        ><i class="ti ti-edit"></i
-                      ></a>
-                      <a
-                        href="javascript:void(0);"
-                        data-bs-toggle="modal"
-                        data-bs-target="#delete_modal"
-                        ><i class="ti ti-trash"></i
-                      ></a>
+                    <div class="action-icon d-inline-flex align-items-center">
+                      <!-- EDIT : uniquement si status === New -->
+                      <ng-container
+                        *ngIf="canEditLeave(data.Status); else noEdit"
+                      >
+                        <a
+                          href="javascript:void(0);"
+                          class="me-2"
+                          data-bs-toggle="modal"
+                          data-bs-target="#edit_leave"
+                          title="Modifier"
+                        >
+                          <i class="ti ti-edit"></i>
+                        </a>
+                      </ng-container>
+
+                      <ng-template #noEdit>
+                        <span class="text-muted me-2">-</span>
+                      </ng-template>
+
+                      <!-- DELETE : uniquement si status === Declined / Refused -->
+                      <ng-container
+                        *ngIf="canDeleteLeave(data.Status); else noDelete"
+                      >
+                        <a
+                          href="javascript:void(0);"
+                          data-bs-toggle="modal"
+                          data-bs-target="#delete_modal"
+                          title="Supprimer"
+                        >
+                          <i class="ti ti-trash"></i>
+                        </a>
+                      </ng-container>
+
+                      <ng-template #noDelete>
+                        <span class="text-muted">-</span>
+                      </ng-template>
                     </div>
                   </td>
                 </tr>

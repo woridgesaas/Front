@@ -30,9 +30,7 @@
           <div class="text-center px-3 pb-3 border-bottom">
             <div class="mb-3">
               <h5 class="d-flex align-items-center justify-content-center mb-1">
-                Stephan Peralt<i
-                  class="ti ti-discount-check-filled text-success ms-1"
-                ></i>
+                Stephan Peralt
               </h5>
               <span class="badge badge-soft-dark fw-medium me-2">
                 <i class="ti ti-point-filled me-1"></i>Développeur Logiciel
@@ -73,37 +71,25 @@
                 </div>
               </div>
               <div class="row gx-2 mt-3">
-                <div class="col-6">
+                <div class="col-6 m-auto">
                   <div>
                     <a
                       href="javascript:void(0);"
-                      class="btn btn-dark w-100"
+                      class="btn btn-primary w-100"
                       data-bs-toggle="modal"
-                      data-bs-target="#edit_employee"
-                      ><i class="ti ti-edit me-1"></i>Modifier Info</a
+                      data-bs-target="#edit_employee_detail"
+                      ><i class="ti ti-edit me-1 "></i>Modifier Info</a
                     >
                   </div>
                 </div>
-                <div class="col-6">
-                  <div>
-                    <a [routerLink]="routes.chat" class="btn btn-primary w-100"
-                      ><i class="ti ti-message-heart me-1"></i>Message</a
-                    >
-                  </div>
-                </div>
+              
               </div>
             </div>
           </div>
           <div class="p-3 border-bottom">
             <div class="d-flex align-items-center justify-content-between mb-2">
               <h6>Informations de base</h6>
-              <a
-                href="javascript:void(0);"
-                class="btn btn-icon btn-sm"
-                data-bs-toggle="modal"
-                data-bs-target="#edit_employee"
-                ><i class="ti ti-edit"></i
-              ></a>
+              
             </div>
             <div class="d-flex align-items-center justify-content-between mb-2">
               <span class="d-inline-flex align-items-center">
@@ -166,7 +152,7 @@
                   Adrian Peralt
                   <span class="d-inline-flex mx-1"
                     ><i class="ti ti-point-filled text-danger"></i></span
-                  >Père
+                  >Numero1
                 </h6>
               </div>
               <p class="text-dark">+1 127 2685 598</p>
@@ -180,7 +166,7 @@
                   Karen Wills
                   <span class="d-inline-flex mx-1"
                     ><i class="ti ti-point-filled text-danger"></i></span
-                  >Mère
+                  >Numero2
                 </h6>
               </div>
               <p class="text-dark">+1 989 7774 787</p>
@@ -270,79 +256,7 @@
                   </div>
                 </div>
               </div>
-              <div class="accordion-item">
-                <div class="accordion-header" id="headingThree">
-                  <div class="accordion-button">
-                    <div
-                      class="d-flex align-items-center justify-content-between flex-fill"
-                    >
-                      <h5>Informations Familiales</h5>
-                      <div class="d-flex">
-                        <a
-                          href="javascript:void(0);"
-                          class="btn btn-icon btn-sm"
-                          data-bs-toggle="modal"
-                          data-bs-target="#edit_familyinformation"
-                          ><i class="ti ti-edit"></i
-                        ></a>
-                        <a
-                          href="javascript:void(0);"
-                          class="d-flex align-items-center collapsed collapse-arrow"
-                          data-bs-toggle="collapse"
-                          data-bs-target="#primaryBorderThree"
-                          aria-expanded="false"
-                          aria-controls="primaryBorderThree"
-                        >
-                          <i class="ti ti-chevron-down fs-18"></i>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  id="primaryBorderThree"
-                  class="accordion-collapse collapse border-top"
-                  aria-labelledby="headingThree"
-                  data-bs-parent="#accordionExample"
-                >
-                  <div class="accordion-body">
-                    <div class="row">
-                      <div class="col-md-3">
-                        <span class="d-inline-flex align-items-center">
-                          Nom
-                        </span>
-                        <h6 class="d-flex align-items-center fw-medium mt-1">
-                          Hendry Peralt
-                        </h6>
-                      </div>
-                      <div class="col-md-3">
-                        <span class="d-inline-flex align-items-center">
-                          Relation
-                        </span>
-                        <h6 class="d-flex align-items-center fw-medium mt-1">
-                          Frère
-                        </h6>
-                      </div>
-                      <div class="col-md-3">
-                        <span class="d-inline-flex align-items-center">
-                          Date de naissance
-                        </span>
-                        <h6 class="d-flex align-items-center fw-medium mt-1">
-                          25 Mai 2014
-                        </h6>
-                      </div>
-                      <div class="col-md-3">
-                        <span class="d-inline-flex align-items-center">
-                          Téléphone
-                        </span>
-                        <h6 class="d-flex align-items-center fw-medium mt-1">
-                          +1 265 6956 961
-                        </h6>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+             
               <div class="row">
                 <div class="col-md-6">
                   <div class="accordion-item">
@@ -550,3 +464,4 @@
     </div>
   </div>
 </div>
+ <app-employee-detail-modal></app-employee-detail-modal>
