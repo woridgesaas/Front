@@ -99,57 +99,17 @@ export const routes: Routes = [
         ],
       },
       //Application//
-      {
-        path: 'intranet',
-        loadComponent: () =>
-          import('./features/application/application.component').then(
-            (m) => m.ApplicationComponent
-          ),
-        children: [
-          {
-            path: 'chats',
-            loadComponent: () =>
-              import('./features/application/chat/chat.component').then(
-                (m) => m.ChatComponent
-              ),
-          },
-          {
-            path: 'calendar',
-            loadComponent: () =>
-              import('./features/application/calendar/calendar.component').then(
-                (m) => m.CalendarComponent
-              ),
-          },
-          {
-            path: 'annonces',
-            loadComponent: () =>
-              import(
-                './features/application/social-feed/social-feed.component'
-              ).then((m) => m.SocialFeedComponent),
-          },
-          {
-            path: 'annonces/edit/:id',
-            loadComponent: () =>
-              import(
-                './features/application/social-feed/admin/annonce/edit-annonce/edit-annonce.component'
-              ).then((m) => m.EditAnnonceComponent),
-          },
-          {
-            path: 'sondages',
-            loadComponent: () =>
-              import(
-                './features/application/social-feed/admin/sondage/sondage.component'
-              ).then((m) => m.SondageComponent),
-          },
-          {
-            path: 'sondage-details/:id',
-            loadComponent: () =>
-              import(
-                './features/application/social-feed/admin/sondage/sondage-details/sondage-details.component'
-              ).then((m) => m.SondageDetailsComponent),
-          },
-        ],
-      },
+      { path: 'intranet', loadComponent: () => import('./features/application/application.component').then(m => m.ApplicationComponent),
+          children: [
+            { path: 'chats', loadComponent: () => import('./features/application/chat/chat.component').then(m => m.ChatComponent) },
+            {path: 'groups' , loadComponent: ()=>import ('./features/application/chat/groups/groups/groups.component').then(m=>m.GroupsComponent)},
+            { path: 'calendar', loadComponent: () => import('./features/application/calendar/calendar.component').then((m) => m.CalendarComponent),},           
+            { path: 'annonces', loadComponent: () => import('./features/application/social-feed/social-feed.component').then(m => m.SocialFeedComponent) },
+            { path: 'annonces/edit/:id' , loadComponent:()=> import( './features/application/social-feed/admin/annonce/edit-annonce/edit-annonce.component' ).then(m=>m.EditAnnonceComponent)},
+            { path: 'sondages', loadComponent: () => import('./features/application/social-feed/admin/sondage/sondage.component').then(m => m.SondageComponent) },
+            { path: 'sondage-details/:id', loadComponent: () => import('./features/application/social-feed/admin/sondage/sondage-details/sondage-details.component').then(m => m.SondageDetailsComponent)}
+          ]
+        },
 
       //* Settings routes
       {

@@ -1,0 +1,85 @@
+<div class="modal fade" id="createGroupModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Créer un groupe</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      
+      <form #groupForm="ngForm" (ngSubmit)="addGroup(groupForm)">
+        <div class="modal-body">
+          
+          <!-- Nom du groupe -->
+          <div class="mb-3">
+            <label class="form-label">Nom du groupe *</label>
+            <input type="text" 
+                   class="form-control" 
+                   name="name" 
+                   [(ngModel)]="newGroup.name"
+                   placeholder="Ex: IT Department, Projet Alpha..."
+                   required>
+            
+            @if(groupForm.controls['name']?.invalid) {
+              <div class="text-danger small">Le nom du group est obligatoire</div>
+            }
+          </div>
+          
+          <!-- Type de groupe -->
+          <div class="mb-3">
+            <label class="form-label">Type de groupe *</label>
+            <div class="row g-2">
+              @for (type of groupTypes; track type.value) {
+                <div class="col-6">
+                  <div class="card border {{ newGroup.type === type.value ? 'border-primary' : 'border-light' }}">
+                    <div class="card-body text-center p-2">
+                      <div class="form-check">
+                        <input class="form-check-input" 
+                               type="radio" 
+                               name="type" 
+                               [id]="'type-' + type.value"
+                               [value]="type.value"
+                               [(ngModel)]="newGroup.type"
+                               required>
+                        <label class="form-check-label" [for]="'type-' + type.value">
+                          <i class="ti {{ type.icon }} me-1"></i>
+                          {{ type.label }}
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+            
+            @if(groupForm.controls['type']?.invalid) {
+              <div class="text-danger small">Veuillez sélectionner un type</div>
+            }
+          </div>
+          
+          <!-- Informations complémentaires -->
+          <div class="alert alert-info mb-0">
+            <i class="ti ti-info-circle me-2"></i>
+            <strong>Information :</strong> Ce groupe sera <strong>privé</strong>. 
+            Vous pourrez ajouter des membres après sa création.
+          </div>
+          
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" 
+                  class="me-2 btn btn-secondary" 
+                  data-bs-dismiss="modal"
+                  (click)="cancel(groupForm)">
+            Annuler
+          </button>
+          <button type="submit" 
+                  class="btn btn-primary" 
+                  [disabled]="groupForm.invalid">
+            Créer le groupe
+          </button>
+        </div>
+      </form>
+      
+    </div>
+  </div>
+</div>

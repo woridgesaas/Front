@@ -25,6 +25,7 @@ export const routes = {
   /**Communication intern routes */
   apps: '/intranet',
   chat: '/intranet/chats',
+  groups:'/intranet/groups',
   contacts: '/intranet/contacts',
   calendar: '/intranet/calendar',
   socialFeed: '/intranet/annonces',

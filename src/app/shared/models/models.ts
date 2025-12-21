@@ -127,6 +127,23 @@ export interface ChatMessage {
   read: boolean;
   timestamp: Date;
 }
+export interface ChatGroup {
+  id: number;
+  name: string;
+  description: string;
+  createdBy: {
+    id: number;
+    name: string;
+    avatar: string;
+  };
+  createdAt: Date;
+  status: 'actif' | 'fermé';
+  memberCount: number;
+  members: number[];  
+  type: 'department' | 'announcement' | '';
+  lastActivity?: Date;
+  isSelected?:boolean
+}
 export interface apiResultFormat {
   data: [];
   totalData: number;
