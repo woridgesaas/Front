@@ -172,6 +172,7 @@ export const routes: Routes = [
               import(
                 './features/settings/change-password/change-password.component'
               ).then((m) => m.ChangePasswordComponent),
+            data: { breadcrumb: 'Changer mot de passe' },
           },
           {
             path: 'app-settings',
@@ -186,6 +187,7 @@ export const routes: Routes = [
                   import(
                     './features/settings/app-settings/leave-settings/leave-settings.component'
                   ).then((m) => m.LeaveSettingsComponent),
+                  data: { breadcrumb: 'Paramétrage des congés' },
               },
               {
                 path: 'presence-absence-settings',
@@ -193,6 +195,15 @@ export const routes: Routes = [
                   import(
                     './features/settings/app-settings/presence-absence-settings/presence-absence-settings.component'
                   ).then((m) => m.PresenceAbsenceSettingsComponent),
+                  data: { breadcrumb: 'Paramétrage de présence et absence' },
+              },
+              {
+                path: 'documents-template-settings',
+                loadComponent: () =>
+                  import(
+                    './features/settings/app-settings/documents-template-settings/documents-template-settings.component'
+                  ).then((m) => m.DocumentsTemplateSettingsComponent),
+                  data: { breadcrumb: 'Paramètrage des modèles de documents administratifs' },
               },
             ],
           },

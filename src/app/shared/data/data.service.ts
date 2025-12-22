@@ -670,13 +670,18 @@ export class DataService {
           base: 'app-settings',
           subMenus: [
             {
-              menuValue: 'Paramétrage des congés',
+              menuValue: 'Congés',
               route: routes.leaveSettings,
               base: 'leave-settings',
             },
             {
-              menuValue: 'Paramétrage de présence et absence',
+              menuValue: 'Présence et absence',
               route: routes.presenceAbsenceSettings,
+              base: 'presence-absence-settings',
+            },
+            {
+              menuValue: 'Documents administratifs',
+              route: routes.DocumentsTemplateSettings,
               base: 'presence-absence-settings',
             },
           ],
@@ -1028,13 +1033,18 @@ export class DataService {
               base: 'app-settings',
               subMenusTwo: [
                 {
-                  menuValue: 'Paramétrage des congés',
+                  menuValue: 'Congés',
                   route: routes.leaveSettings,
                   base: 'leave-settings',
                 },
                 {
-                  menuValue: 'Paramétrage de présence et absence',
+                  menuValue: 'Présence et absence',
                   route: routes.presenceAbsenceSettings,
+                  base: 'presence-absence-settings',
+                },
+                {
+                  menuValue: 'Documents administratifs',
+                  route: routes.DocumentsTemplateSettings,
                   base: 'presence-absence-settings',
                 },
               ],
