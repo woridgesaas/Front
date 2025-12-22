@@ -6,7 +6,6 @@ export const routes: Routes = [
     redirectTo: 'dashboard/index',
     pathMatch: 'full',
   },
-
   //* Auth routes
   {
     path: '',
@@ -151,6 +150,8 @@ export const routes: Routes = [
                 './features/hrm/employees/departments/departments.component'
               ).then((m) => m.DepartmentsComponent),
           },
+            {path:'geenrate/contract' , loadComponent: ()=>import('./features/hrm/contract/contract.component').then(m=>m.ContractComponent)},
+
         ],
       },
       {
