@@ -1,0 +1,31 @@
+.action-icon {
+  white-space: nowrap;
+}
+
+.action-icon a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.action-icon a:hover {
+  background-color: #f8f9fa;
+}
+
+.action-icon .dropdown-toggle::after {
+  display: none; 
+}
+
+.action-icon .dropdown-menu {
+  min-width: 140px;
+  padding: 0.25rem 0;
+}
+
+.action-icon .dropdown-item {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
