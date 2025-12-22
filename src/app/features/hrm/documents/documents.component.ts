@@ -8,8 +8,8 @@ import { BreadcrumbsComponent } from '../../common/breadcrumbs/breadcrumbs.compo
 import { breadCrumbItems } from '../../../shared/models/models';
 import {  MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
-
+import { DemandeDocumentModalComponent } from './components/demande-document-modal/demande-document-modal.component';
+import { DocumentTemplate } from '../../../shared/models/document-template.model';
 interface DocumentDemande {
   id: string;                     
   documentCode: string;          
@@ -32,7 +32,8 @@ interface DocumentDemande {
     CommonModule,
     MatSelectModule,
     BreadcrumbsComponent,
-    MatSortModule
+    MatSortModule,
+    DemandeDocumentModalComponent
   ],
   templateUrl: './documents.component.html',
   styleUrl: './documents.component.scss',
@@ -68,6 +69,8 @@ export class DocumentsComponent implements OnDestroy {
   
   isOpen = false;
   
+  //Pour envoiyer au modal de creation :
+  documentTemplates : DocumentTemplate[]=[];
   constructor(
     private documentsService: DocumentTemplateService,
   ) {}
@@ -302,5 +305,13 @@ export class DocumentsComponent implements OnDestroy {
     this.skip = (event.page - 1) * this.pageSize;
     this.currentPage = event.page;
     this.getTableData({ skip: this.skip, limit: this.limit });
+  }
+
+  sendDataToModal():void{
+    this.documentTemplates= this.documentsService.getDocumentTemplates();
+  }
+  //Event recus 
+  onDemandeCreated(event:any):void{ //event => l'obje newDemande envoyer par le modal
+    alert("Bien reçu : " + event?.documentCode);
   }
 }
