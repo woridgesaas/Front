@@ -6,14 +6,21 @@
           <!--* Leave settings link -->
           <a class="d-flex align-items-center rounded py-2 px-3" [routerLink]="routes.leaveSettings" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
             <i class="fa fa-person-walking me-2"></i>
-            <span> Paramétrage des congés </span>
+            <span> Congés </span>
           </a>
 
           <!--* Presence and absence settings link -->
           <a class="d-flex align-items-center rounded py-2 px-3" [routerLink]="routes.presenceAbsenceSettings" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
             <i class="fa fa-clock me-2"></i>
-            <span> Paramétrage de présence et absence </span>
+            <span> Présence et absence </span>
           </a>
+
+          <!--* Presence and absence settings link -->
+          <a class="d-flex align-items-center rounded py-2 px-3" [routerLink]="routes.DocumentsTemplateSettings" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <i class="fa-solid fa-file-alt me-2"></i>
+            <span> Documents administratifs </span>
+          </a>
+
           
         </div>
       </div>
