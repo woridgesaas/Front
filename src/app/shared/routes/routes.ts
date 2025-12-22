@@ -25,11 +25,11 @@ export const routes = {
   /**Communication intern routes */
   apps: '/intranet',
   chat: '/intranet/chats',
-  groups:'/intranet/groups',
+  groups: '/intranet/groups',
   contacts: '/intranet/contacts',
   calendar: '/intranet/calendar',
   socialFeed: '/intranet/annonces',
-  socialFeedEdit:'/intranet/annonces/edit/', //=>angular va injecter le id par le tableau param de [routerLink]
+  socialFeedEdit: '/intranet/annonces/edit/', //=>angular va injecter le id par le tableau param de [routerLink]
   sondageList: '/intranet/sondages',
   sondageDetails: '/intranet/sondage-details/:id',
   /**------- FIN communication routes ------------- */
@@ -59,7 +59,7 @@ export const routes = {
   clientGrid: '/client/client-grid',
   clientList: '/client/client-list',
 
-ticketList: '/tickets/ticket-list',
+  ticketList: '/tickets/ticket-list',
   myTickets: '/tickets/mes-tickets',
   payments: '/sales/payments',
   expenses: '/sales/expenses',
@@ -135,7 +135,8 @@ ticketList: '/tickets/ticket-list',
 
   //* Settings routes
   changePassword: '/settings/change-password',
-  leaveSettings: '/settings/app-settings/leave-settings', 
+  leaveSettings: '/settings/app-settings/leave-settings',
+  presenceAbsenceSettings: '/settings/app-settings/presence-absence-settings',
 
   comingSoon: '/coming-soon',
   underMaintanance: '/under-maintenance',
