@@ -998,7 +998,7 @@ export class DataService {
                   base: 'leave-report',
                 },
                 {
-                  menuValue: 'Rapport Journalier',
+                  menuValue: 'Rapport quotidien',
                   route: '/reports/daily-report',
                   base: 'daily-report',
                 },
