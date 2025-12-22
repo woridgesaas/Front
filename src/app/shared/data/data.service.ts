@@ -401,6 +401,14 @@ export class DataService {
               base: 'attendance-employee',
               customSubmenuTwo: false,
             },
+            {
+              menuValue: 'Documents administratif',
+              route: routes.documentsEmployee,
+              customSubmenuTwo: false,
+              hasSubRoute: false,
+              showSubRoute: false,
+              base : 'documents-administratif'
+            }
           ],
         },
       ],
@@ -739,7 +747,7 @@ export class DataService {
           ],
         },
         {
-          menuValue: 'intranet',
+          menuValue: 'Intranet',
           hasSubRouteTwo: true,
           showSubRoute: false,
           icon: 'layout-grid-add',
@@ -820,6 +828,11 @@ export class DataService {
                   route: routes.leaveemployee,
                   base: 'leave-employee',
                 },
+                {
+                  menuValue: 'Documents administratif',
+                  route: routes.documentsEmployee,
+
+                }
               ],
             },
           ],

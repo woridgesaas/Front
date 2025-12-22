@@ -237,8 +237,8 @@ export const routes: Routes = [
                 './features/hrm/employees/departments/departments.component'
               ).then((m) => m.DepartmentsComponent),
           },
-            {path:'geenrate/contract' , loadComponent: ()=>import('./features/hrm/contract/contract.component').then(m=>m.ContractComponent)},
-
+          {path:'geenrate/contract' , loadComponent: ()=>import('./features/hrm/contract/contract.component').then(m=>m.ContractComponent)},
+          {path:'documents',loadComponent:()=>import('./features/hrm/documents/documents.component').then(m=>m.DocumentsComponent)},
         ],
       },
       {
