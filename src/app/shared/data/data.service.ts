@@ -973,32 +973,32 @@ export class DataService {
               ],
             },
             {
-              menuValue: 'Reports',
+              menuValue: 'Rapports',
               base: 'reports',
               customSubmenuTwo: true,
               subMenusTwo: [
                 {
-                  menuValue: 'Employee Report',
+                  menuValue: 'Rapport des Employés',
                   route: routes.employeereport,
                   base: 'employee-report',
                 },
                 {
-                  menuValue: 'Payslip Report',
+                  menuValue: 'Rapport de paiement',
                   route: '/reports/payslip-report',
                   base: 'payslip-report',
                 },
                 {
-                  menuValue: 'Attendance Report',
+                  menuValue: 'Rapport des Présences',
                   route: '/reports/attendance-report',
                   base: 'attendance-report',
                 },
                 {
-                  menuValue: 'Leave Report',
+                  menuValue: 'Rapport des Congés',
                   route: '/reports/leave-report',
                   base: 'leave-report',
                 },
                 {
-                  menuValue: 'Daily Report',
+                  menuValue: 'Rapport Journalier',
                   route: '/reports/daily-report',
                   base: 'daily-report',
                 },
