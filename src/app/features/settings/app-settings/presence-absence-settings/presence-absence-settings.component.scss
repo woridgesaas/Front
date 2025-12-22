@@ -1,0 +1,72 @@
+.settings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    overflow: hidden;
+    transition: background-color 0.2s ease;
+  }
+
+  a span {
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  i {
+    flex-shrink: 0;
+  }
+}
+
+.work-time-toggle {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 1rem;
+}
+
+.work-time-toggle .btn {
+  min-width: 170px;
+  font-weight: 500;
+}
+
+.input-group {
+  flex-wrap: nowrap;
+}
+
+@media (max-width: 576px) {
+  .work-time-toggle {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .work-time-toggle .btn {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .card-body {
+    padding: 16px;
+  }
+
+  h4 {
+    font-size: 1.1rem;
+  }
+
+  .alert {
+    font-size: 14px;
+    padding: 12px;
+  }
+
+  .text-muted.text-center {
+    font-size: 13px;
+  }
+  .text-end {
+    text-align: center !important;
+  }
+}

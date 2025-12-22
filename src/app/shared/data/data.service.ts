@@ -269,7 +269,6 @@ export class DataService {
     );
   }
 
-
   //* Side bar
   public sideBar: SideBar[] = [
     {
@@ -314,7 +313,7 @@ export class DataService {
               base: 'chats',
               customSubmenuTwo: false,
             },
-              {
+            {
               menuValue: 'Groupes',
               route: routes.groups,
               base: 'groupes',
@@ -330,12 +329,12 @@ export class DataService {
             },
 
             {
-              menuValue: 'Fil d\'actualité',
+              menuValue: "Fil d'actualité",
               hasSubRoute: true,
               showSubRoute: false,
               route: routes.socialFeed,
               customSubmenuTwo: false,
-              base: 'Fil d\'actualité',
+              base: "Fil d'actualité",
             },
             {
               menuValue: 'Sondages',
@@ -466,15 +465,15 @@ export class DataService {
         },
         {
           menuValue: 'Présence/Absence',
-              route: routes.attendanceadmin,
-              base: 'attendance-admin',
+          route: routes.attendanceadmin,
+          base: 'attendance-admin',
           hasSubRoute: false,
           showSubRoute: false,
           icon: 'file-time',
-           materialicons: 'track_changes',
+          materialicons: 'track_changes',
           subMenus: [],
         },
-    
+
         {
           menuValue: 'Promotion',
           route: routes.promotion,
@@ -673,7 +672,12 @@ export class DataService {
             {
               menuValue: 'Paramétrage des congés',
               route: routes.leaveSettings,
-              base: 'leave-type',
+              base: 'leave-settings',
+            },
+            {
+              menuValue: 'Paramétrage de présence et absence',
+              route: routes.presenceAbsenceSettings,
+              base: 'presence-absence-settings',
             },
           ],
         },
@@ -732,7 +736,7 @@ export class DataService {
               base: 'chats',
               customSubmenuTwo: false,
             },
-               {
+            {
               menuValue: 'Groupes',
               route: routes.groups,
               base: 'groupes',
@@ -748,7 +752,7 @@ export class DataService {
             },
 
             {
-              menuValue: 'Fil d\'actualité',
+              menuValue: "Fil d'actualité",
               hasSubRoute: true,
               showSubRoute: false,
               route: routes.socialFeed,
@@ -858,7 +862,7 @@ export class DataService {
               base: 'departments',
               customSubmenuTwo: false,
             },
-              {
+            {
               menuValue: 'Présence/Absence',
               route: routes.attendanceadmin,
               base: 'attendance-admin',
@@ -1026,7 +1030,12 @@ export class DataService {
                 {
                   menuValue: 'Paramétrage des congés',
                   route: routes.leaveSettings,
-                  base: 'leave-type',
+                  base: 'leave-settings',
+                },
+                {
+                  menuValue: 'Paramétrage de présence et absence',
+                  route: routes.presenceAbsenceSettings,
+                  base: 'presence-absence-settings',
                 },
               ],
             },

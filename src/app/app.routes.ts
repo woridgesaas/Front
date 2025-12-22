@@ -99,30 +99,106 @@ export const routes: Routes = [
         ],
       },
       //Application//
-      { path: 'intranet', loadComponent: () => import('./features/application/application.component').then(m => m.ApplicationComponent),
-          children: [
-            { path: 'chats', loadComponent: () => import('./features/application/chat/chat.component').then(m => m.ChatComponent) },
-            {path: 'groups' , loadComponent: ()=>import ('./features/application/chat/groups/groups/groups.component').then(m=>m.GroupsComponent)},
-            { path: 'calendar', loadComponent: () => import('./features/application/calendar/calendar.component').then((m) => m.CalendarComponent),},           
-            { path: 'annonces', loadComponent: () => import('./features/application/social-feed/social-feed.component').then(m => m.SocialFeedComponent) },
-            { path: 'annonces/edit/:id' , loadComponent:()=> import( './features/application/social-feed/admin/annonce/edit-annonce/edit-annonce.component' ).then(m=>m.EditAnnonceComponent)},
-            { path: 'sondages', loadComponent: () => import('./features/application/social-feed/admin/sondage/sondage.component').then(m => m.SondageComponent) },
-            { path: 'sondage-details/:id', loadComponent: () => import('./features/application/social-feed/admin/sondage/sondage-details/sondage-details.component').then(m => m.SondageDetailsComponent)}
-          ]
-        },
+      {
+        path: 'intranet',
+        loadComponent: () =>
+          import('./features/application/application.component').then(
+            (m) => m.ApplicationComponent
+          ),
+        children: [
+          {
+            path: 'chats',
+            loadComponent: () =>
+              import('./features/application/chat/chat.component').then(
+                (m) => m.ChatComponent
+              ),
+          },
+          {
+            path: 'groups',
+            loadComponent: () =>
+              import(
+                './features/application/chat/groups/groups/groups.component'
+              ).then((m) => m.GroupsComponent),
+          },
+          {
+            path: 'calendar',
+            loadComponent: () =>
+              import('./features/application/calendar/calendar.component').then(
+                (m) => m.CalendarComponent
+              ),
+          },
+          {
+            path: 'annonces',
+            loadComponent: () =>
+              import(
+                './features/application/social-feed/social-feed.component'
+              ).then((m) => m.SocialFeedComponent),
+          },
+          {
+            path: 'annonces/edit/:id',
+            loadComponent: () =>
+              import(
+                './features/application/social-feed/admin/annonce/edit-annonce/edit-annonce.component'
+              ).then((m) => m.EditAnnonceComponent),
+          },
+          {
+            path: 'sondages',
+            loadComponent: () =>
+              import(
+                './features/application/social-feed/admin/sondage/sondage.component'
+              ).then((m) => m.SondageComponent),
+          },
+          {
+            path: 'sondage-details/:id',
+            loadComponent: () =>
+              import(
+                './features/application/social-feed/admin/sondage/sondage-details/sondage-details.component'
+              ).then((m) => m.SondageDetailsComponent),
+          },
+        ],
+      },
 
-       //* Settings routes 
-        { path: 'settings', loadComponent: () => import('./features/settings/settings.component').then(m => m.SettingsComponent),
-          children:[
-            { path: 'change-password', loadComponent: () => import('./features/settings/change-password/change-password.component').then(m => m.ChangePasswordComponent) },
-            { path: 'app-settings', loadComponent: () => import('./features/settings/app-settings/app-settings.component').then(m => m.AppSettingsComponent),
-              children:[
-                { path: 'leave-settings', loadComponent: () => import('./features/settings/app-settings/leave-settings/leave-settings.component').then(m => m.LeaveSettingsComponent) },
-              ]
-            },
-          ]
-        },
-        
+      //* Settings routes
+      {
+        path: 'settings',
+        loadComponent: () =>
+          import('./features/settings/settings.component').then(
+            (m) => m.SettingsComponent
+          ),
+        children: [
+          {
+            path: 'change-password',
+            loadComponent: () =>
+              import(
+                './features/settings/change-password/change-password.component'
+              ).then((m) => m.ChangePasswordComponent),
+          },
+          {
+            path: 'app-settings',
+            loadComponent: () =>
+              import(
+                './features/settings/app-settings/app-settings.component'
+              ).then((m) => m.AppSettingsComponent),
+            children: [
+              {
+                path: 'leave-settings',
+                loadComponent: () =>
+                  import(
+                    './features/settings/app-settings/leave-settings/leave-settings.component'
+                  ).then((m) => m.LeaveSettingsComponent),
+              },
+              {
+                path: 'presence-absence-settings',
+                loadComponent: () =>
+                  import(
+                    './features/settings/app-settings/presence-absence-settings/presence-absence-settings.component'
+                  ).then((m) => m.PresenceAbsenceSettingsComponent),
+              },
+            ],
+          },
+        ],
+      },
+
       {
         path: 'employees',
         loadComponent: () =>
@@ -288,11 +364,21 @@ export const routes: Routes = [
         ],
       },
 
-
-      { path: 'candidates' , loadComponent: () => import('./features/recruitment/candidates/candidates.component').then(m => m.CandidatesComponent),
+      {
+        path: 'candidates',
+        loadComponent: () =>
+          import('./features/recruitment/candidates/candidates.component').then(
+            (m) => m.CandidatesComponent
+          ),
         children: [
-          {path: 'candidates-list', loadComponent: () => import('./features/recruitment/candidates/candidates-list/candidates-list.component').then(m => m.CandidatesListComponent),},
-        
+          {
+            path: 'candidates-list',
+            loadComponent: () =>
+              import(
+                './features/recruitment/candidates/candidates-list/candidates-list.component'
+              ).then((m) => m.CandidatesListComponent),
+          },
+
           // {path: 'candidates-grid', loadComponent: () => import('./features/recruitment/candidates/candidates-grid/candidates-grid.component').then(m => m.CandidatesGridComponent),},
           // {path: 'candidates-kanban', loadComponent: () => import('./features/recruitment/candidates/candidates-kanban/candidates-kanban.component').then(m => m.CandidatesKanbanComponent),},
         ],
@@ -304,13 +390,24 @@ export const routes: Routes = [
             (m) => m.JobsComponent
           ),
         children: [
-          {path: 'jobs-list', loadComponent: () => import('./features/recruitment/jobs/jobs-list/jobs-list.component').then(m => m.JobsListComponent),},
-        ]
+          {
+            path: 'jobs-list',
+            loadComponent: () =>
+              import(
+                './features/recruitment/jobs/jobs-list/jobs-list.component'
+              ).then((m) => m.JobsListComponent),
+          },
+        ],
       },
 
-      { path: 'filtrage' , loadComponent: () => import('./features/recruitment/filtrage-list/filtrage-list.component').then(m => m.FiltrageListComponent),
-        children: []
-            },
+      {
+        path: 'filtrage',
+        loadComponent: () =>
+          import(
+            './features/recruitment/filtrage-list/filtrage-list.component'
+          ).then((m) => m.FiltrageListComponent),
+        children: [],
+      },
       {
         path: 'entretient',
         loadComponent: () =>
