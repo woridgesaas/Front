@@ -411,6 +411,16 @@ export class DataService {
       showAsTab: false,
       separateRoute: false,
       menu: [
+         {
+          menuValue: 'Contrats',
+          route: routes.contract,
+          base: 'contrats',
+          hasSubRoute: false,
+          showSubRoute: false,
+          icon: 'file',
+          materialicons: 'confirmation_number',
+          subMenus: [],
+        },
         {
           menuValue: 'Tickets',
           route: routes.ticketList,
@@ -825,6 +835,12 @@ export class DataService {
           base3: 'crm',
           base5: 'ticket',
           subMenus: [
+            {
+              menuValue: 'Contrats',
+              route: routes.contract,
+              base: 'contrats',
+              customSubmenuTwo: false,
+            },
             {
               menuValue: 'Tickets',
               base: 'ticket',

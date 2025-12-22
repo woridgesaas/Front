@@ -1,0 +1,95 @@
+.sticky-top {
+  z-index: 1020;
+}
+.btn-group .btn {
+  flex: 1;
+}
+
+.search-results {
+  max-height: 250px;
+  overflow-y: auto;
+  background: white;
+}
+
+.result-item {
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.result-item:hover {
+  background-color: #f8f9fa;
+}
+
+.hover-bg:hover {
+  background-color: #e9ecef;
+}
+
+/* Bénéficiaire sélectionné */
+.selected-beneficiaire {
+  border-left: 3px solid #4361ee;
+}
+
+
+.editor-container {
+  min-height: 600px;
+  display: flex;
+  flex-direction: column;
+}
+
+.ckeditor-wrapper {
+  flex: 1;
+  min-height: 500px;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+}
+
+.editor-placeholder {
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.variables-panel {
+  border-bottom: 1px solid #dee2e6;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+
+@media (max-width: 991.98px) {
+  .sticky-top {
+    position: static;
+  }
+  
+  .editor-container {
+    min-height: 400px;
+  }
+}
+.icon-placeholder {
+  opacity: 0.5;
+}
+
+.requirements {
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.btn.active {
+  background-color: #4361ee;
+  color: white;
+  border-color: #4361ee;
+}
+.bg-lavandar{
+  background-color: #A631D8;
+}
+.text-light{
+  color:#f8f9fa
+}

@@ -37,6 +37,7 @@ export const routes = {
   employeeDetails: '/employees/employee-details',
   employeePage: '/employees/employee-page',
   departments: '/employees/departments',
+  contract : 'employees/geenrate/contract',
 
   //validation
   validateLeave: '/validation/validate-leave',
