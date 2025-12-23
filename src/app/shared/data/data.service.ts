@@ -656,7 +656,7 @@ export class DataService {
               base: 'leave-report',
             },
             {
-              menuValue: 'Daily Report',
+              menuValue: 'Rapport quotidient',
               route: '/reports/daily-report',
               base: 'daily-report',
             },
@@ -984,23 +984,7 @@ export class DataService {
           icon: 'user-star',
           base: 'administration',
           subMenus: [
-            {
-              menuValue: 'Payroll',
-              base: 'payroll',
-              customSubmenuTwo: true,
-              subMenusTwo: [
-                {
-                  menuValue: 'Employee Salary',
-                  route: '/payroll/employee-salary',
-                  base: 'employee-salary',
-                },
-                {
-                  menuValue: 'Payslip',
-                  route: '/payroll/payslip',
-                  base: 'payslip',
-                },
-              ],
-            },
+           
             {
               menuValue: 'Rapports',
               base: 'reports',
