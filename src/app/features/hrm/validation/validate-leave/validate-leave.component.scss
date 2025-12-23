@@ -2,46 +2,82 @@
   position: relative;
   overflow: hidden;
   border-radius: 16px;
-  color: #fff;
-  min-height: 110px;
+  background: #ffffff;
+  border: 1px solid #eef0f4;
+  min-height: 120px;
 
-  h4 {
-    font-weight: 700;
-  }
-
-  .badge {
-    font-size: 12px;
-    padding: 6px 10px;
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    right: -40px;
-    top: -30px;
-    width: 180px;
-    height: 180px;
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 50%;
+  .card-body {
+    padding: 20px;
+    position: relative;
+    z-index: 2;
   }
 }
 
-/* Variantes */
-.bg-blue-img {
-  background: linear-gradient(135deg, #fff, #3976e6);
+.stat-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 6px;
 }
 
-.bg-warning-img {
-  background: linear-gradient(135deg, #fff, #efd937);
+.stat-value {
+  font-size: 26px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
 }
 
-.bg-success-img {
-  background: linear-gradient(135deg, #fff, #16a34a);
+.stat-circle {
+  position: absolute;
+  right: -30px;
+  top: 35%; /* ← monte le cercle */
+  transform: translateY(-50%);
+  width: 90px; /* ← plus petit */
+  height: 90px; /* ← plus petit */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.bg-danger-img {
-  background: linear-gradient(135deg, #fff, #dc2626);
+.stat-circle i {
+  font-size: 22px; /* ↓ un peu plus petit */
+  color: #ffffff;
 }
+
+.stat-blue .stat-circle {
+  background: #a855f7; /* violet */
+}
+
+.stat-warning .stat-circle {
+  background: #1f2937; /* dark */
+}
+
+.stat-success .stat-circle {
+  background: #3b82f6; /* blue */
+}
+
+.stat-danger .stat-circle {
+  background: #ef4444; /* red */
+}
+
+@media (max-width: 768px) {
+  .stat-circle {
+    width: 72px;
+    height: 72px;
+    right: -25px;
+    top: 40%;
+  }
+
+  .stat-circle i {
+    font-size: 18px;
+  }
+
+  .stat-value {
+    font-size: 22px;
+  }
+}
+
 .filters-bar {
   background: #fff;
   padding: 12px;
@@ -140,4 +176,3 @@
     color: #495057;
   }
 }
-
