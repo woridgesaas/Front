@@ -43,14 +43,16 @@ export interface ChartOptions {
       NgxEditorModule,
       BsDatepickerModule,
       FooterComponent,
-      RouterLink,
       NgApexchartsModule,
-      CollapseHeaderComponent,
+      
       BreadcrumbsComponent
     ]
 })
 
 export class EmployeeDashboardComponent implements AfterViewInit ,OnInit{
+     now: Date = new Date();
+  private clockInterval!: any;
+
   breadCrumbItems: breadCrumbItems[] =[];
   public leaves_chart: Partial<ChartOptions> | any;
   public performance_chart2: Partial<ChartOptions> | any;
@@ -78,9 +80,19 @@ export class EmployeeDashboardComponent implements AfterViewInit ,OnInit{
       }
     });
   }
-
+startClock() {
+    this.clockInterval = setInterval(() => {
+      this.now = new Date();
+    }, 1000);
+  }
   ngOnInit(): void {
-    this.today = new Date();
+     this.startClock();
+   this.today = new Date();
+    this.breadCrumbItems = [
+      { label: 'Dashboards' },
+      { label: 'Employee Dashboard', active: true }
+    ];
+
     /**
      *
      * BreadCrumb
@@ -171,6 +183,12 @@ export class EmployeeDashboardComponent implements AfterViewInit ,OnInit{
           horizontalAlign: 'left'
         }
     };
+  }
+  
+  ngOnDestroy(): void {
+    if (this.clockInterval) {
+      clearInterval(this.clockInterval);
+    }
   }
   percentageToDegrees(percentage: number): number {
     return (percentage / 100) * 360;

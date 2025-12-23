@@ -287,12 +287,12 @@ export class DataService {
           dot: true,
           subMenus: [
             {
-              menuValue: 'Dashboard',
+              menuValue: 'Admin Dashboard',
               route: routes.index,
               base: 'index',
             },
             {
-              menuValue: 'Dashboard',
+              menuValue: 'Employee Dashboard ',
               route: routes.employee,
               base: 'employee',
             },
