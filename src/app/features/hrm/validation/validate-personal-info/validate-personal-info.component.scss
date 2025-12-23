@@ -1,26 +1,81 @@
-/* ====== Cards ====== */
 .stat-card {
-  border-radius: 14px;
-  color: #fff;
+  position: relative;
   overflow: hidden;
+  border-radius: 16px;
+  background: #ffffff;
+  border: 1px solid #eef0f4;
+  min-height: 120px;
 
-  .badge {
-    background: rgba(255,255,255,.2);
-    font-weight: 500;
+  .card-body {
+    padding: 20px;
+    position: relative;
+    z-index: 2;
   }
 }
 
-.bg-blue {
-  background: linear-gradient(135deg, #fff, #3976e6);
+.stat-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 6px;
 }
-.bg-warning {
-  background: linear-gradient(135deg, #fff, #efd937);
+
+.stat-value {
+  font-size: 26px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
 }
-.bg-success {
-  background: linear-gradient(135deg, #fff, #16a34a);
+
+.stat-circle {
+  position: absolute;
+  right: -30px;
+  top: 35%;
+  transform: translateY(-50%);
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.bg-danger {
- background: linear-gradient(135deg, #fff, #dc2626);
+
+.stat-circle i {
+  font-size: 22px;
+  color: #ffffff;
+}
+
+.stat-blue .stat-circle {
+  background: #a855f7;
+}
+
+.stat-warning .stat-circle {
+  background: #f59e0b;
+}
+
+.stat-success .stat-circle {
+  background: #22c55e;
+}
+
+.stat-danger .stat-circle {
+  background: #ef4444;
+}
+
+@media (max-width: 768px) {
+  .stat-circle {
+    width: 72px;
+    height: 72px;
+    right: -25px;
+    top: 40%;
+  }
+
+  .stat-circle i {
+    font-size: 18px;
+  }
+
+  .stat-value {
+    font-size: 22px;
+  }
 }
 
 /* ====== Avatars ====== */
@@ -64,7 +119,7 @@
   width: 42px;
   height: 42px;
   border-radius: 50%;
-  background: #A631D8;
+  background: #a631d8;
   color: #fff;
   font-weight: 600;
   display: flex;
@@ -99,7 +154,6 @@
   background: rgba(220, 53, 69, 0.18);
   color: #dc3545;
 }
-
 
 /* ================= FILTER BAR ================= */
 .filters-bar {
