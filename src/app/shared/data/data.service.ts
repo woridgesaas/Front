@@ -699,8 +699,13 @@ export class DataService {
             },
             {
               menuValue: 'Documents administratifs',
-              route: routes.DocumentsTemplateSettings,
-              base: 'presence-absence-settings',
+              route: routes.documentsTemplateSettings,
+              base: 'documents-template-settings',
+            },
+            {
+              menuValue: 'Recrutement',
+              route: routes.recruitmentSettings,
+              base: 'recruitment-settings',
             },
           ],
         },
@@ -1057,8 +1062,13 @@ export class DataService {
                 },
                 {
                   menuValue: 'Documents administratifs',
-                  route: routes.DocumentsTemplateSettings,
-                  base: 'presence-absence-settings',
+                  route: routes.documentsTemplateSettings,
+                  base: 'documents-template-settings',
+                },
+                {
+                  menuValue: 'Recrutement',
+                  route: routes.recruitmentSettings,
+                  base: 'recruitment-settings',
                 },
               ],
             },
