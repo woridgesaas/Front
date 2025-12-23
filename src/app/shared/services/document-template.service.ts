@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  DocumentTemplate,
-} from '../models/document-template.model';
+import { DocumentTemplate } from '../models/document-template.model';
 
 @Injectable({
   providedIn: 'root',
