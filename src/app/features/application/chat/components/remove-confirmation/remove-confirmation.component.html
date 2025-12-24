@@ -1,0 +1,14 @@
+@if (show) {
+  <div class="modal-overlay">
+    <div class="modal-container">
+      <div class="modal-content">
+        <i class="ti ti-alert-circle text-danger" style="font-size: 3rem;"></i>
+        <p>Retirer <strong>{{ membreNom }}</strong> du groupe ?</p>
+        <div class="modal-actions">
+          <button class="btn btn-outline-secondary" (click)="onNoo()">Annuler</button>
+          <button class="btn btn-danger" (click)="onYes()">Retirer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+}

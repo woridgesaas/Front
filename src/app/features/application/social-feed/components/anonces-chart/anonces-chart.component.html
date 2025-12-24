@@ -1,0 +1,21 @@
+<div class="card flex-fill">
+    <div class="card-body">
+      <span class="avatar rounded-circle mb-2" style="background-color: #ADF5FF;">
+       <i class="fa-solid fa-bullhorn text-info"></i>
+      </span>
+
+      <h6 class="fs-13 fw-medium text-default mb-1">Annonces & evenements</h6>
+
+      <h3 class="mb-3">
+        {{ annoncesAujourdhui }}/{{ totalAnnonces }}
+        <span class="fs-12 fw-medium text-success" *ngIf="croissance > 0">
+          <i class="fa-solid fa-caret-up me-1"></i>+{{ croissance }}%
+        </span>
+        <span class="fs-12 fw-medium text-danger" *ngIf="croissance <= 0">
+          <i class="fa-solid fa-caret-down me-1"></i>{{ croissance }}%
+        </span>
+      </h3>
+        <a [routerLink]="routes.socialFeed" class="link-default">Voir les détails</a>
+      
+    </div>
+  </div>

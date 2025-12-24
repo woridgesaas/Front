@@ -1,0 +1,186 @@
+<div class="container py-4 presence-settings">
+  <div class="card shadow-sm border-0 mb-4">
+    <div class="card-body">
+
+      <!--* Header -->
+      <div class="mb-4">
+        <h3 class="fw-bold mb-2"> Paramétrage de présence et absence </h3>
+        <p class="text-muted"> Définir les règles liées au temps de travail, aux absences et aux impacts administratifs. </p>
+      </div>
+
+      <!--* Main form -->
+      <form>
+
+        <!--* Schedules section -->
+        <div class="card shadow-sm border-0 mb-4">
+          <div class="card-body">
+            <h4 class="mb-3">
+              <i class="fa fa-clock me-2"></i> Horaires de travail
+            </h4>
+
+           <div>
+                <!--* Description -->
+                <div class="alert bg-primary-transparent rounded-4 border-0">
+                    <p> 
+                        <strong> Information : </strong> Choisissez la méthode de calcul du temps de travail appliquée aux employés.
+                    </p>
+                </div>
+
+                <!--* Strict or houres button -->
+                <div class="work-time-toggle">
+                    <button type="button" class="btn rounded-4" [class.btn-primary]="workTimeMode === 'STRICT'" [class.btn-outline-primary]="workTimeMode !== 'STRICT'" (click)="workTimeMode = 'STRICT'"> Horaires fixes </button>
+                    <button type="button" class="btn rounded-4" [class.btn-primary]="workTimeMode === 'HOURS'" [class.btn-outline-primary]="workTimeMode !== 'HOURS'" (click)="workTimeMode = 'HOURS'"> Heures à effectuer </button>
+                </div>
+           </div>
+            
+
+            <!--* Strict schedule content -->
+            <div *ngIf="workTimeMode === 'STRICT'" class="row g-3 fade-in">
+              <div class="col-12 col-md-4">
+                <label class="form-label fw-medium">
+                    <i class="fa-solid fa-right-to-bracket me-2"></i> Heure d'entrée 
+                </label>
+                <input type="time" class="form-control rounded-4" [(ngModel)]="startTime" name="startTime"/>
+              </div>
+
+              <div class="col-12 col-md-4">
+                <label class="form-label fw-medium">
+                    <i class="fa-solid fa-right-from-bracket me-2"></i> Heure de sortie 
+                </label>
+                <input type="time" class="form-control rounded-4" [(ngModel)]="endTime" name="endTime"/>
+              </div>
+            </div>
+
+            <!--* Flexible hours content -->
+            <div *ngIf="workTimeMode === 'HOURS'" class="fade-in col-12 col-md-4">
+              <label class="form-label fw-medium">
+                <i class="fa-solid fa-business-time me-2"></i> Heures journalières 
+            </label>
+              <div class="input-group">
+                <input type="number" class="form-control rounded-start-4" [(ngModel)]="dailyHours" name="dailyHours"/>
+                <span class="input-group-text rounded-end-4"> heures </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--* Justification -->
+        <div class="card shadow-sm border-0 mb-4">
+          <div class="card-body">
+            <h4 class="mb-3">
+              <i class="fa fa-file-circle-check me-2"></i> Justification d'absence
+            </h4>
+
+            <!--* Description -->
+            <div class="alert bg-primary-transparent rounded-4 border-0">
+                <p> 
+                    <strong> Information : </strong> Au-delà de ce délai, l'absence sera automatiquement considérée comme non justifiée. 
+                </p>
+            </div>
+
+            <!--* Justification delay input -->
+            <div class="col-12 col-md-4">
+              <label class="form-label fw-medium"> 
+                <i class="fa-solid fa-hourglass-half me-2"></i> Délai autorisé 
+            </label>
+              <div class="input-group">
+                <input type="number" class="form-control rounded-start-4" [(ngModel)]="justificationDelay" name="justificationDelay"/>
+                <span class="input-group-text rounded-end-4">heures</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--* Alertes -->
+        <div class="card shadow-sm border-0 mb-4">
+          <div class="card-body">
+            <h4 class="mb-3">
+                <i class="fa fa-triangle-exclamation me-2"></i> Seuils d'alerte
+            </h4>
+
+            <!--* Description -->
+             <div class="alert bg-primary-transparent rounded-4 border-0">
+                <p> 
+                    <strong> Information : </strong> Définissez les seuils déclenchant des alertes automatiques en cas d'absences prolongées.
+                </p>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-12 col-md-4">
+                    <label class="form-label fw-medium">
+                        <i class="fa-solid fa-bell"></i> Seuil de notification
+                    </label>
+                    <input type="number" class="form-control rounded-4 mb-2" [(ngModel)]="warningThreshold" name="warningThreshold"/>
+                    <p class="text-muted text-center"> Notification automatique du manager et du service RH. </p>
+                </div>
+
+                <div class="col-12 col-md-4">
+                    <label class="form-label fw-medium"> 
+                        <i class="fa-solid fa-user-tie"></i> Seuil d'intervention exécutive
+                    </label>
+                    <input type="number" class="form-control rounded-4 mb-2" [(ngModel)]="criticalThreshold" name="criticalThreshold"/>
+                    <p class="text-muted text-center"> Notification du manager, du service RH et de la direction générale.</p>
+                </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!--* Deduction -->
+        <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <h4 class="mb-3">
+                <i class="fa-solid fa-user-xmark me-2"></i> Déduction d'absence injustifiée
+            </h4>
+
+            <!--* Description -->
+            <div class="alert bg-primary-transparent rounded-4 border-0">
+            <p class="mb-0">
+                <strong> Information : </strong> Définissez le mode et la valeur de déduction appliqués en cas d'absence non justifiée.
+            </p>
+            </div>
+
+            <!--* Percentage or fixed amount button -->
+            <div class="work-time-toggle">
+                <button type="button" class="btn rounded-4" [class.btn-primary]="deductionType === 'PERCENTAGE'" [class.btn-outline-primary]="deductionType !== 'PERCENTAGE'" (click)="deductionType = 'PERCENTAGE'"> Pourcentage </button>
+                <button type="button" class="btn rounded-4" [class.btn-primary]="deductionType === 'AMOUNT'" [class.btn-outline-primary]="deductionType !== 'AMOUNT'" (click)="deductionType = 'AMOUNT'"> Montant fixe </button>
+            </div>
+
+            <!--* Percentage deduction content -->
+            <div *ngIf="deductionType === 'PERCENTAGE'" class="col-12 col-md-4 fade-in">
+            <label class="form-label fw-medium">
+                <i class="fa-solid fa-percent me-2"></i> Taux de déduction 
+            </label>
+            <div class="input-group">
+                <input type="number" class="form-control rounded-start-4" [(ngModel)]="deductionPercentage" name="deductionPercentage" min="0" max="100"/>
+                <span class="input-group-text rounded-end-4"> % </span>
+            </div>
+            <p class="text-muted text-center"> Pourcentage du salaire journalier à déduire. </p>
+            </div>
+
+            <!--* Fixed amount deduction content -->
+            <div *ngIf="deductionType === 'AMOUNT'" class="col-12 col-md-4 fade-in">
+            <label class="form-label fw-medium"> 
+                <i class="fa-solid fa-money-bill-wave me"></i> Montant de déduction 
+            </label>
+            <div class="input-group">
+                <input type="number" class="form-control rounded-start-4" [(ngModel)]="deductionAmount" name="deductionAmount" min="0"/>
+                <span class="input-group-text rounded-end-4"> MAD </span>
+            </div>
+            <p class="text-muted text-center"> Montant fixe déduit par journée d'absence. </p>
+            </div>
+
+        </div>
+        </div>
+
+        <!--* Save button -->
+        <div class="text-end mt-4">
+            <button type="submit" class="btn btn-primary px-4 py-2 rounded-4">
+                <i class="ti ti-device-floppy me-1"></i> Enregistrer les modifications
+            </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

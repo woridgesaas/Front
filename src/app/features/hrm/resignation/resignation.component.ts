@@ -50,7 +50,7 @@ export class ResignationComponent {
   ) {
     this.breadCrumbItems = [
       { label: 'Performance' },
-      { label: 'Resignation', active: true }
+      { label: 'Démission', active: true }
   ];
   this.data.getresignation().subscribe((apiRes: apiResultFormat) => {
     this.actualData = apiRes.data;

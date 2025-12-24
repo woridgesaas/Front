@@ -1,0 +1,125 @@
+<div class="modal fade" id="modalCreerAnnonce" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Créer une nouvelle annonce</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      
+      <form #annonceForm="ngForm" (ngSubmit)="creerAnnonce(annonceForm)">
+        <div class="modal-body">
+          
+          <!-- Titre -->
+          <div class="mb-3">
+            <label class="form-label">Titre *</label>
+            <input type="text" 
+                   class="form-control" 
+                   placeholder="Titre percutant" 
+                   name="titre"
+                   [(ngModel)]="newAnnonce.titre"
+                   required>
+            
+            @if (annonceForm.controls['titre']?.invalid && annonceForm.controls['titre']?.touched) {
+              <div class="text-danger small">Le titre est obligatoire</div>
+            }
+          </div>
+          
+          <!-- Contenu -->
+          <div class="mb-3">
+            <label class="form-label">Contenu *</label>
+            <textarea class="form-control" 
+                      rows="4" 
+                      placeholder="Décrivez votre annonce..."
+                      name="contenu"
+                      [(ngModel)]="newAnnonce.contenu"
+                      required></textarea>
+            
+            @if (annonceForm.controls['contenu']?.invalid && annonceForm.controls['contenu']?.touched) {
+              <div class="text-danger small">Le contenu est obligatoire</div>
+            }
+          </div>
+          
+          <!-- Visibilité SIMPLE : seulement 2 choix -->
+        <div class="mb-3">
+            <label class="form-label">Visibilité *</label>
+  
+            <!-- Public -->
+            <div class="form-check mb-2">
+                <input class="form-check-input" 
+                    type="radio" 
+                    name="visibilite" 
+                    id="public"
+                    value="public"
+                    [(ngModel)]="newAnnonce.visibilite"
+                    (change)="onVisibiliteChange()">
+                <label class="form-check-label" for="public">
+                <i class="ti ti-world me-1"></i> Public (tout le monde)
+                </label>
+            </div>
+  
+                <!-- Département -->
+            <div class="form-check mb-2">
+                <input class="form-check-input" 
+                    type="radio" 
+                    name="visibilite" 
+                    id="departement"
+                    value="departement"
+                    [(ngModel)]="newAnnonce.visibilite"
+                    (change)="onVisibiliteChange()">
+                <label class="form-check-label" for="departement">
+                <i class="ti ti-lock me-1"></i> Sélectionner un département
+                </label>
+            </div>
+
+        <!--par depart-->
+        @if (newAnnonce.visibilite === 'departement') {
+            <div class="mt-2 ms-4">
+            <label class="form-label">Choisir un département *</label>
+            <select class="form-select" 
+                    name="departementId"
+                    [(ngModel)]="newAnnonce.departementId"
+                    required>
+                <option value="" disabled selected> Département</option>
+                @for (dep of departements; track dep.id) {
+                <option [value]="dep.id">{{ dep.nom }}</option>
+                }
+            </select>
+            
+            @if (annonceForm.controls['departementId']?.invalid && annonceForm.controls['departementId']?.touched) {
+                <div class="text-danger small">Veuillez sélectionner un département</div>
+            }
+            </div>
+        }
+    </div>
+          
+          <!-- Hashtags -->
+          <div class="mb-3">
+            <label class="form-label">Hashtags</label>
+            <input type="text" 
+                   class="form-control" 
+                   placeholder="#formation #urgent ..."
+                   name="hashtagsTexte"
+                   [(ngModel)]="hashtagsTexte">
+            <small class="text-muted">Séparez par espace, ex: #formation #IT</small>
+          </div>
+          
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" 
+                  class="btn btn-secondary" 
+                  data-bs-dismiss="modal"
+                  (click)="annuler(annonceForm)">
+            Annuler
+          </button>
+          <button type="submit" 
+                  class="btn btn-primary"
+                  [disabled]="annonceForm.invalid">
+            Publier l'annonce
+          </button>
+        </div>
+      </form>
+      
+    </div>
+  </div>
+</div>

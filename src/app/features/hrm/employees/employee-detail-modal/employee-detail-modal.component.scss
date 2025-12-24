@@ -1,0 +1,40 @@
+.avatar-xxl {
+  width: 96px;
+  height: 96px;
+}
+
+.border-dashed {
+  border-style: dashed;
+}
+/* Espacement global du formulaire */
+.modal-body .row > [class^="col-"] {
+  margin-bottom: 1.25rem; // espace entre champs
+}
+
+/* Espacement plus clair entre sections */
+.modal-body {
+  padding: 2rem 2.25rem;
+}
+
+/* Labels plus respirants */
+.form-label {
+  margin-bottom: 0.4rem;
+  font-weight: 500;
+}
+
+/* Inputs plus lisibles */
+.form-control {
+  padding: 0.65rem 0.75rem;
+}
+
+/* Ligne image (profil) mieux séparée */
+.modal-body .bg-light {
+  margin-bottom: 2rem;
+}
+
+/* Footer bien détaché */
+.modal-footer {
+  padding-top: 1.25rem;
+  border-top: 1px solid #f0f0f0;
+}
+

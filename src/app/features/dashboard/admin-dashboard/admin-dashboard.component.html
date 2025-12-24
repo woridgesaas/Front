@@ -1,64 +1,50 @@
 <div class="page-wrapper">
   <div class="content">
-    <!-- Breadcrumb -->
+    <!-- Breadcrumb + Right content -->
     <div
       class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3"
     >
-      <app-breadcrumbs title="Admin Dashboard" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
-      <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
-        <div class="me-2 mb-2">
-          <div class="dropdown">
-            <a
-              href="javascript:void(0);"
-              class="dropdown-toggle btn btn-white d-inline-flex align-items-center"
-              data-bs-toggle="dropdown"
-            >
-              <i class="ti ti-file-export me-1"></i>Export
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end p-3">
-              <li>
-                <a href="javascript:void(0);" class="dropdown-item rounded-1"
-                  ><i class="ti ti-file-type-pdf me-1"></i>Export as PDF</a
-                >
-              </li>
-              <li>
-                <a href="javascript:void(0);" class="dropdown-item rounded-1"
-                  ><i class="ti ti-file-type-xls me-1"></i>Export as Excel
-                </a>
-              </li>
-            </ul>
+      <app-breadcrumbs
+        title="Admin Dashboard"
+        [breadcrumbItems]="breadCrumbItems"
+      >
+      </app-breadcrumbs>
+
+      <!-- Date / Heure card (agrandie) -->
+      <div class="dashboard-datetime-card">
+        <div class="card">
+          <div
+            class="card-body d-flex align-items-center justify-content-between"
+          >
+            <!-- Left -->
+            <div class="d-flex align-items-center">
+              <span class="avatar avatar-lg bg-primary rounded-circle me-3">
+                <i class="ti ti-calendar"></i>
+              </span>
+
+              <div>
+                <p class="fw-semibold mb-1">
+                  {{ now | date : "EEEE dd MMMM yyyy" }}
+                </p>
+                <span class="text-muted fs-13">
+                  {{ now | date : "HH:mm:ss" }}
+                </span>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="mb-2 ngx-dates">
-          <div class="input-icon w-77 position-relative">
-            <span class="input-icon-addon">
-              <i class="ti ti-calendar text-gray-9"></i>
-            </span>
-            <input
-              type="text"
-              placeholder="Select Year"
-              class="form-control yearpicker"
-              container=".ngx-year"
-              bsDatepicker
-              container=".ngx-dates"
-              [bsConfig]="bsConfig"
-              [(ngModel)]="selectedYear"
-              name="selectedYear"
-              [ngModelOptions]="{ standalone: true }"
-            />
-          </div>
-        </div>
-        <app-collapse-header></app-collapse-header>
       </div>
     </div>
+
     <!-- /Breadcrumb -->
 
     <!-- Welcome Wrap -->
     <div class="card border-0">
       <div
-        class="card-body d-flex align-items-center justify-content-between flex-wrap pb-1"
+        class="card-body d-flex align-items-center justify-content-between flex-wrap gap-3"
       >
-        <div class="d-flex align-items-center mb-3">
+        <!-- Bloc gauche : avatar + texte -->
+        <div class="d-flex align-items-center">
           <span class="avatar avatar-xl flex-shrink-0">
             <img
               src="assets/img/profiles/avatar-31.jpg"
@@ -66,63 +52,114 @@
               alt="img"
             />
           </span>
+
           <div class="ms-3">
             <h3 class="mb-2">
-              Welcome Back, Adrian
-              <a href="javascript:void(0);" class="edit-icon"
-                ><i class="ti ti-edit fs-14"></i
-              ></a>
+              Bienvenue Adrian
+              <a href="javascript:void(0);" class="edit-icon">
+                <i class="ti ti-edit fs-14"></i>
+              </a>
             </h3>
-            <p>
-              You have
+            <p class="mb-0">
+              Vous avez
               <span class="text-primary text-decoration-underline">21</span>
-              Pending Approvals &
-              <span class="text-primary text-decoration-underline">14</span> Leave
-              Requests
+              validations en attente et
+              <span class="text-primary text-decoration-underline">14</span>
+              demandes de congé
             </p>
           </div>
         </div>
-        <div class="d-flex align-items-center flex-wrap mb-1">
-          <a
-            href="javascript:void(0);"
-            class="btn btn-secondary btn-md me-2 mb-2"
+
+        <!-- Bloc droit : boutons -->
+        <div class="d-flex gap-2 flex-wrap">
+          <a [routerLink]="routes.leaveemployee" class="btn btn-primary btn-md">
+            <i class="ti ti-square-rounded-plus me-1"></i>
+            Demande de congé
+          </a>
+
+          <button
+            class="btn btn-outline-primary btn-md"
             data-bs-toggle="modal"
-            data-bs-target="#add_project"
-            ><i class="ti ti-square-rounded-plus me-1"></i>Add quelque chose</a
+            data-bs-target="#adminDocumentModal"
           >
-          <a
-            href="javascript:void(0);"
-            class="btn btn-primary btn-md mb-2"
-            data-bs-toggle="modal"
-            data-bs-target="#add_leaves"
-            ><i class="ti ti-square-rounded-plus me-1"></i>Add quelque ..</a
-          >
+            <i class="ti ti-file-text me-1"></i>
+            Demande document administratif
+          </button>
         </div>
       </div>
     </div>
+
     <!-- /Welcome Wrap -->
 
     <div class="row">
       <!-- Widget Info -->
       <div class="col-xxl-8 d-flex">
         <div class="row flex-fill">
+          <!-- Widget 1: Attendance -->
           <div class="col-md-3 d-flex">
             <div class="card flex-fill">
               <div class="card-body">
                 <span class="avatar rounded-circle bg-primary mb-2">
                   <i class="ti ti-calendar-share fs-16"></i>
                 </span>
-                <h6 class="fs-13 fw-medium text-default mb-1">
-                  Attendance
-                </h6>
+                <h6 class="fs-13 fw-medium text-default mb-1">Présence</h6>
                 <h3 class="mb-3">
                   91/99
-                  <span class="fs-12 fw-medium text-success"
-                    ><i class="fa-solid fa-caret-up me-1"></i>+2.1%</span
-                  >
+                  <span class="fs-12 fw-medium text-success">
+                    <i class="fa-solid fa-caret-up me-1"></i>+2.1%
+                  </span>
                 </h3>
-                <a [routerLink]="routes.attendanceemployee" class="link-default"
-                  >View Details</a
+                <a
+                  [routerLink]="routes.attendanceemployee"
+                  class="link-default"
+                >
+                  Voir les détails
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Widget 2: Job Applicants -->
+          <div class="col-md-3 d-flex">
+            <div class="card flex-fill">
+              <div class="card-body">
+                <span class="avatar rounded-circle bg-success mb-2">
+                  <i class="ti ti-users-group fs-16"></i>
+                </span>
+                <h6 class="fs-13 fw-medium text-default mb-1">
+                  Candidats à l'emploi
+                </h6>
+                <h3 class="mb-3">
+                  98
+                  <span class="fs-12 fw-medium text-success">
+                    <i class="fa-solid fa-caret-up me-1"></i>+2.1%
+                  </span>
+                </h3>
+                <a [routerLink]="routes.jobList" class="link-default"
+                  >Afficher tout</a
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Widget 3: New Hire -->
+          <div class="col-md-3 d-flex">
+            <div class="card flex-fill">
+              <div class="card-body">
+                <span class="avatar rounded-circle bg-dark mb-2">
+                  <i class="ti ti-user-star fs-16"></i>
+                </span>
+                <h6 class="fs-13 fw-medium text-default mb-1">
+                  Nouvelle recrue
+                </h6>
+                <h3 class="mb-3">
+                  45/48
+                  <span class="fs-12 fw-medium text-danger">
+                    <i class="fa-solid fa-caret-down me-1"></i>-11.2%
+                  </span>
+                </h3>
+                <a [routerLink]="routes.candidateslist" class="link-default"
+                  >Afficher tout</a
                 >
               </div>
             </div>
@@ -131,36 +168,29 @@
           <div class="col-md-3 d-flex">
             <div class="card flex-fill">
               <div class="card-body">
-                <span class="avatar rounded-circle bg-success mb-2">
-                  <i class="ti ti-users-group fs-16"></i>
+             <span class="avatar rounded-circle bg-green-custom mb-2">
+                  <i class="ti ti-ticket  fs-16 "></i>
                 </span>
-                <h6 class="fs-13 fw-medium text-default mb-1">Job Applicants</h6>
+
+                <h6 class="fs-13 fw-medium text-default mb-1">
+                  Tickets aujourd'hui
+                </h6>
                 <h3 class="mb-3">
-                  98
-                  <span class="fs-12 fw-medium text-success"
-                    ><i class="fa-solid fa-caret-up me-1"></i>+2.1%</span
-                  >
+                  12
+                  <span class="fs-12 fw-medium text-success">
+                    <i class="fa-solid fa-caret-up me-1"></i>+2.1%
+                  </span>
                 </h3>
-                <a [routerLink]="routes.jobList" class="link-default">View All</a>
+                <a [routerLink]="routes.ticketList" class="link-default">
+                  Voir les détails
+                </a>
               </div>
             </div>
           </div>
+
+          <!-- Widget 5: Annonces Stats -->
           <div class="col-md-3 d-flex">
-            <div class="card flex-fill">
-              <div class="card-body">
-                <span class="avatar rounded-circle bg-dark mb-2">
-                  <i class="ti ti-user-star fs-16"></i>
-                </span>
-                <h6 class="fs-13 fw-medium text-default mb-1">New Hire</h6>
-                <h3 class="mb-3">
-                  45/48
-                  <span class="fs-12 fw-medium text-danger"
-                    ><i class="fa-solid fa-caret-down me-1"></i>-11.2%</span
-                  >
-                </h3>
-                <a [routerLink]="routes.candidateslist" class="link-default">View All</a>
-              </div>
-            </div>
+            <app-anonces-chart></app-anonces-chart>
           </div>
         </div>
       </div>
@@ -172,29 +202,29 @@
           <div
             class="card-header pb-2 d-flex align-items-center justify-content-between flex-wrap"
           >
-            <h5 class="mb-2">Employees By Department</h5>
+            <h5 class="mb-2">Employés par département</h5>
             <div class="dropdown mb-2">
               <a
                 href="javascript:void(0);"
                 class="btn btn-white border btn-sm d-inline-flex align-items-center"
                 data-bs-toggle="dropdown"
               >
-                <i class="ti ti-calendar me-1"></i>This Week
+                <i class="ti ti-calendar me-1"></i>Cette semaine
               </a>
               <ul class="dropdown-menu dropdown-menu-end p-3">
                 <li>
                   <a href="javascript:void(0);" class="dropdown-item rounded-1"
-                    >This Month</a
+                    >Ce mois-ci</a
                   >
                 </li>
                 <li>
                   <a href="javascript:void(0);" class="dropdown-item rounded-1"
-                    >This Week</a
+                    >Cette semaine</a
                   >
                 </li>
                 <li>
                   <a href="javascript:void(0);" class="dropdown-item rounded-1"
-                    >Last Week</a
+                    >La semaine dernière</a
                   >
                 </li>
               </ul>
@@ -215,9 +245,10 @@
               [grid]="EmpDepartment.grid"
             ></apx-chart>
             <p class="fs-13">
-              <i class="ti ti-circle-filled me-2 fs-8 text-primary"></i>No of
-              Employees increased by
-              <span class="text-success fw-bold">+20%</span> from last Week
+              <i class="ti ti-circle-filled me-2 fs-8 text-primary"></i>Le
+              nombre d'employés a augmenté de
+              <span class="text-success fw-bold">+20%</span> de la semaine
+              dernière
             </p>
           </div>
         </div>
@@ -228,162 +259,96 @@
     <div class="row">
       <!-- Total Employee -->
       <div class="col-xxl-4 d-flex">
-        <div class="card flex-fill">
-          <div
-            class="card-header pb-2 d-flex align-items-center justify-content-between flex-wrap"
-          >
-            <h5 class="mb-2">Employee Status</h5>
-            <div class="dropdown mb-2">
-              <a
-                href="javascript:void(0);"
-                class="btn btn-white border btn-sm d-inline-flex align-items-center"
-                data-bs-toggle="dropdown"
-              >
-                <i class="ti ti-calendar me-1"></i>This Week
-              </a>
-              <ul class="dropdown-menu dropdown-menu-end p-3">
-                <li>
-                  <a href="javascript:void(0);" class="dropdown-item rounded-1"
-                    >This Month</a
-                  >
-                </li>
-                <li>
-                  <a href="javascript:void(0);" class="dropdown-item rounded-1"
-                    >This Week</a
-                  >
-                </li>
-                <li>
-                  <a href="javascript:void(0);" class="dropdown-item rounded-1"
-                    >Today</a
-                  >
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="d-flex align-items-center justify-content-between mb-1">
-              <p class="fs-13 mb-3">Total Employee</p>
-              <h3 class="mb-3">154</h3>
-            </div>
-            <div class="progress-stacked emp-stack mb-3">
-              <div
-                class="progress"
-                role="progressbar"
-                aria-label="Segment one"
-                aria-valuenow="15"
-                aria-valuemin="0"
-                aria-valuemax="100"
-                style="width: 40%"
-              >
-                <div class="progress-bar bg-warning"></div>
-              </div>
-              <div
-                class="progress"
-                role="progressbar"
-                aria-label="Segment two"
-                aria-valuenow="30"
-                aria-valuemin="0"
-                aria-valuemax="100"
-                style="width: 20%"
-              >
-                <div class="progress-bar bg-secondary"></div>
-              </div>
-              <div
-                class="progress"
-                role="progressbar"
-                aria-label="Segment three"
-                aria-valuenow="20"
-                aria-valuemin="0"
-                aria-valuemax="100"
-                style="width: 10%"
-              >
-                <div class="progress-bar bg-danger"></div>
-              </div>
-              <div
-                class="progress"
-                role="progressbar"
-                aria-label="Segment four"
-                aria-valuenow="20"
-                aria-valuemin="0"
-                aria-valuemax="100"
-                style="width: 30%"
-              >
-                <div class="progress-bar bg-pink"></div>
-              </div>
-            </div>
-            <div class="border mb-3">
-              <div class="row gx-0">
-                <div class="col-6">
-                  <div class="p-2 flex-fill border-end border-bottom">
-                    <p class="fs-13 mb-2">
-                      <i class="ti ti-square-filled text-primary fs-12 me-2"></i
-                      >Fulltime <span class="text-gray-9">(48%)</span>
-                    </p>
-                    <h2 class="display-1">112</h2>
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="p-2 flex-fill border-bottom text-end">
-                    <p class="fs-13 mb-2">
-                      <i class="ti ti-square-filled me-2 text-secondary fs-12"></i
-                      >Contract <span class="text-gray-9">(20%)</span>
-                    </p>
-                    <h2 class="display-1">112</h2>
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="p-2 flex-fill border-end">
-                    <p class="fs-13 mb-2">
-                      <i class="ti ti-square-filled me-2 text-danger fs-12"></i
-                      >Probation <span class="text-gray-9">(22%)</span>
-                    </p>
-                    <h2 class="display-1">12</h2>
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="p-2 flex-fill text-end">
-                    <p class="fs-13 mb-2">
-                      <i class="ti ti-square-filled text-pink me-2 fs-12"></i>WFH
-                      <span class="text-gray-9">(20%)</span>
-                    </p>
-                    <h2 class="display-1">04</h2>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <h6 class="mb-2">Top Performer</h6>
-            <div
-              class="p-2 d-flex align-items-center justify-content-between border border-primary bg-primary-100 br-5 mb-4"
-            >
-              <div class="d-flex align-items-center overflow-hidden">
-                <span class="me-2">
-                  <i class="ti ti-award-filled text-primary fs-24"></i>
-                </span>
-                <a [routerLink]="routes.employeeDetails" class="avatar avatar-md me-2">
-                  <img
-                    src="assets/img/profiles/avatar-24.jpg"
-                    class="rounded-circle border border-white"
-                    alt="img"
-                  />
-                </a>
-                <div>
-                  <h6 class="text-truncate mb-1 fs-14 fw-medium">
-                    <a [routerLink]="routes.employeeDetails">Daniel Esbella</a>
-                  </h6>
-                  <p class="fs-13">IOS Developer</p>
-                </div>
-              </div>
-              <div class="text-end">
-                <p class="fs-13 mb-1">Performance</p>
-                <h5 class="text-primary">99%</h5>
-              </div>
-            </div>
-            <a [routerLink]="routes.employeeGrid" class="btn btn-light btn-md w-100"
-              >View All Employees</a
-            >
-          </div>
-        </div>
+
+  <div class="card flex-fill">
+    <div
+      class="card-header pb-2 d-flex align-items-center justify-content-between flex-wrap"
+    >
+      <h5 class="mb-2">Employés totaux</h5>
+      <div class="dropdown mb-2">
+        <a
+          href="javascript:void(0);"
+          class="btn btn-white border btn-sm d-inline-flex align-items-center"
+          data-bs-toggle="dropdown"
+        >
+          <i class="ti ti-calendar me-1"></i>cette semaine
+        </a>
       </div>
+    </div>
+
+    <div class="card-body">
+
+      <!-- Total -->
+      <div class="d-flex align-items-center justify-content-between mb-1">
+        <p class="fs-13 mb-3">Nombre total d'employés</p>
+        <h3 class="mb-3">154</h3>
+      </div>
+
+  <div class="progress-stacked emp-stack mb-3">
+
+  <div class="progress" style="width: 73%">
+    <div class="progress-bar bg-fulltime"></div>
+  </div>
+
+  <div class="progress" style="width: 25%">
+    <div class="progress-bar bg-contractor"></div>
+  </div>
+
+  <div class="progress" style="width: 2%">
+    <div class="progress-bar bg-remote"></div>
+  </div>
+
+</div>
+
+      <!-- ===== Stats ===== -->
+ <div class="border mb-3 employee-stats">
+  <div class="row gx-0">
+
+    <!-- À temps plein -->
+    <div class="col-6">
+      <div class="p-3 border-end border-bottom">
+        <span class="stat-badge bg-fulltime">
+          À temps plein (73%)
+        </span>
+        <h2 class="stat-number color-fulltime">112</h2>
+      </div>
+    </div>
+
+    <!-- Contracter -->
+    <div class="col-6 text-end">
+      <div class="p-3 border-bottom">
+        <span class="stat-badge bg-contractor">
+          Contracter (25%)
+        </span>
+        <h2 class="stat-number color-contractor">38</h2>
+      </div>
+    </div>
+
+    <!-- Télétravail -->
+    <div class="col-12">
+      <div class="p-3">
+        <span class="stat-badge bg-remote">
+          Télétravail (2%)
+        </span>
+        <h2 class="stat-number color-remote">04</h2>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+      <a
+        [routerLink]=""
+        class="btn btn-light btn-md w-100"
+      >
+        Afficher tous les employés
+      </a>
+
+    </div>
+  </div>
+</div>
+
       <!-- /Total Employee -->
 
       <!-- Attendance Overview -->
@@ -392,29 +357,29 @@
           <div
             class="card-header pb-2 d-flex align-items-center justify-content-between flex-wrap"
           >
-            <h5 class="mb-2">Attendance Overview</h5>
+            <h5 class="mb-2">Aperçu des présences</h5>
             <div class="dropdown mb-2">
               <a
                 href="javascript:void(0);"
                 class="btn btn-white border btn-sm d-inline-flex align-items-center"
                 data-bs-toggle="dropdown"
               >
-                <i class="ti ti-calendar me-1"></i>Today
+                <i class="ti ti-calendar me-1"></i>Aujourd'hui
               </a>
               <ul class="dropdown-menu dropdown-menu-end p-3">
                 <li>
                   <a href="javascript:void(0);" class="dropdown-item rounded-1"
-                    >This Month</a
+                    >ce mois-ci</a
                   >
                 </li>
                 <li>
                   <a href="javascript:void(0);" class="dropdown-item rounded-1"
-                    >This Week</a
+                    >Cette semaine</a
                   >
                 </li>
                 <li>
                   <a href="javascript:void(0);" class="dropdown-item rounded-1"
-                    >Today</a
+                    >Aujourd'hui</a
                   >
                 </li>
               </ul>
@@ -428,40 +393,37 @@
                 class="h-200"
               ></canvas>
               <div class="position-absolute text-center attendance-canvas">
-                <p class="fs-13 mb-1">Total Attendance</p>
-                <h3>120</h3>
+                <p class="fs-13 mb-1">Participation totale</p>
+                <h1>120</h1>
               </div>
             </div>
-            <h6 class="mb-3">Status</h6>
+            <h6 class="mb-3">Statut</h6>
             <div class="d-flex align-items-center justify-content-between">
-              <p class="f-13 mb-2">
-                <i class="ti ti-circle-filled text-success me-1"></i>Present
-              </p>
-              <p class="f-13 fw-medium text-gray-9 mb-2">59%</p>
-            </div>
-            <div class="d-flex align-items-center justify-content-between">
-              <p class="f-13 mb-2">
-                <i class="ti ti-circle-filled text-secondary me-1"></i>Late
-              </p>
-              <p class="f-13 fw-medium text-gray-9 mb-2">21%</p>
-            </div>
-            <div class="d-flex align-items-center justify-content-between">
-              <p class="f-13 mb-2">
-                <i class="ti ti-circle-filled text-warning me-1"></i>Permission
-              </p>
-              <p class="f-13 fw-medium text-gray-9 mb-2">2%</p>
-            </div>
-            <div class="d-flex align-items-center justify-content-between mb-2">
-              <p class="f-13 mb-2">
-                <i class="ti ti-circle-filled text-danger me-1"></i>Absent
-              </p>
-              <p class="f-13 fw-medium text-gray-9 mb-2">15%</p>
-            </div>
+  <p class="f-13 mb-2">
+    <i class="ti ti-circle-filled status-present me-1"></i>Présente
+  </p>
+  <p class="f-13 fw-medium text-gray-9 mb-2">59%</p>
+</div>
+
+<div class="d-flex align-items-center justify-content-between">
+  <p class="f-13 mb-2">
+    <i class="ti ti-circle-filled status-permission me-1"></i>Autorisation
+  </p>
+  <p class="f-13 fw-medium text-gray-9 mb-2">2%</p>
+</div>
+
+<div class="d-flex align-items-center justify-content-between mb-2">
+  <p class="f-13 mb-2">
+    <i class="ti ti-circle-filled status-absent me-1"></i>Absent(e)
+  </p>
+  <p class="f-13 fw-medium text-gray-9 mb-2">15%</p>
+</div>
+
             <div
               class="bg-light br-5 box-shadow-xs p-2 pb-0 d-flex align-items-center justify-content-between flex-wrap"
             >
               <div class="d-flex align-items-center">
-                <p class="mb-2 me-2">Total Absenties</p>
+                <p class="mb-2 me-2">Absences totales</p>
                 <div class="avatar-list-stacked avatar-group-sm mb-2">
                   <span class="avatar avatar-rounded">
                     <img
@@ -492,9 +454,9 @@
                 </div>
               </div>
               <a
-                [routerLink]="routes.leaveadmin"
+                [routerLink]="routes.validateLeave"
                 class="fs-13 link-primary text-decoration-underline mb-2"
-                >View Details</a
+                >Afficher les détails</a
               >
             </div>
           </div>
@@ -505,65 +467,57 @@
       <!-- Clock-In/Out -->
       <div class="col-xxl-4 col-xl-6 d-flex">
         <div class="card flex-fill">
-          <div
-            class="card-header pb-2 d-flex align-items-center justify-content-between flex-wrap"
-          >
-            <h5 class="mb-2">Clock-In/Out</h5>
-            <div class="d-flex align-items-center">
-              <div class="dropdown mb-2">
-                <a
-                  href="javascript:void(0);"
-                  class="dropdown-toggle btn btn-white btn-sm d-inline-flex align-items-center border-0 fs-13 me-2"
-                  data-bs-toggle="dropdown"
-                >
-                  All Departments
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end p-3">
-                  <li>
-                    <a href="javascript:void(0);" class="dropdown-item rounded-1"
-                      >Finance</a
-                    >
-                  </li>
-                  <li>
-                    <a href="javascript:void(0);" class="dropdown-item rounded-1"
-                      >Development</a
-                    >
-                  </li>
-                  <li>
-                    <a href="javascript:void(0);" class="dropdown-item rounded-1"
-                      >Marketing</a
-                    >
-                  </li>
-                </ul>
-              </div>
-              <div class="dropdown mb-2">
-                <a
-                  href="javascript:void(0);"
-                  class="btn btn-white border btn-sm d-inline-flex align-items-center"
-                  data-bs-toggle="dropdown"
-                >
-                  <i class="ti ti-calendar me-1"></i>Today
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end p-3">
-                  <li>
-                    <a href="javascript:void(0);" class="dropdown-item rounded-1"
-                      >This Month</a
-                    >
-                  </li>
-                  <li>
-                    <a href="javascript:void(0);" class="dropdown-item rounded-1"
-                      >This Week</a
-                    >
-                  </li>
-                  <li>
-                    <a href="javascript:void(0);" class="dropdown-item rounded-1"
-                      >Today</a
-                    >
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
+         <div class="card-header pb-2 d-flex align-items-center justify-content-between">
+
+  <h5 class="mb-0">Pointage à l'arrivée/au départ</h5>
+
+  <div class="d-flex align-items-center gap-2">
+
+    <!-- Dropdown Départements -->
+    <div class="dropdown">
+      <button
+        type="button"
+        class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center border-0 fs-13"
+        data-bs-toggle="dropdown"
+      >
+        <i class="ti ti-building me-1"></i>
+        Départements
+      </button>
+
+      <ul class="dropdown-menu dropdown-menu-end p-2">
+        @for (dept of departments; track dept.Department) {
+          <li>
+            <a
+              href="javascript:void(0);"
+              class="dropdown-item"
+              (click)="selectDepartment(dept.Department)"
+            >
+              {{ dept.Department }}
+            </a>
+          </li>
+        }
+      </ul>
+    </div>
+
+    <!-- Dropdown Date -->
+    <div class="dropdown">
+      <button
+        class="btn btn-sm btn-outline-secondary d-flex align-items-center border-0 fs-13"
+        data-bs-toggle="dropdown"
+      >
+        <i class="ti ti-calendar me-1"></i> Aujourd'hui
+      </button>
+
+      <ul class="dropdown-menu dropdown-menu-end p-3">
+        <li><a class="dropdown-item">Ce mois-ci</a></li>
+        <li><a class="dropdown-item">Cette semaine</a></li>
+        <li><a class="dropdown-item">Aujourd'hui</a></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
           <div class="card-body">
             <div>
               <div
@@ -578,7 +532,9 @@
                     />
                   </a>
                   <div class="ms-2">
-                    <h6 class="fs-14 fw-medium text-truncate">Daniel Esbella</h6>
+                    <h6 class="fs-14 fw-medium text-truncate">
+                      Daniel Esbella
+                    </h6>
                     <p class="fs-13">UI/UX Designer</p>
                   </div>
                 </div>
@@ -605,7 +561,7 @@
                   </a>
                   <div class="ms-2">
                     <h6 class="fs-14 fw-medium">Doglas Martini</h6>
-                    <p class="fs-13">Project Manager</p>
+                    <p class="fs-13">Chef de projet</p>
                   </div>
                 </div>
                 <div class="d-flex align-items-center">
@@ -632,7 +588,7 @@
                       <h6 class="fs-14 fw-medium text-truncate">
                         Brian Villalobos
                       </h6>
-                      <p class="fs-13">PHP Developer</p>
+                      <p class="fs-13">PHP Développeur</p>
                     </div>
                   </div>
                   <div class="d-flex align-items-center">
@@ -651,14 +607,14 @@
                   <div>
                     <p class="mb-1 d-inline-flex align-items-center">
                       <i class="ti ti-circle-filled text-success fs-5 me-1"></i
-                      >Clock in
+                      >Pointer à l'arrivée
                     </p>
                     <h6 class="fs-13 fw-normal mb-2">10:30 AM</h6>
                   </div>
                   <div>
                     <p class="mb-1 d-inline-flex align-items-center">
                       <i class="ti ti-circle-filled text-danger fs-5 me-1"></i
-                      >Clock Out
+                      >Pointage
                     </p>
                     <h6 class="fs-13 fw-normal mb-2">09:45 AM</h6>
                   </div>
@@ -672,41 +628,11 @@
                 </div>
               </div>
             </div>
-            <h6 class="mb-2">Late</h6>
-            <div
-              class="d-flex align-items-center justify-content-between mb-3 p-2 border border-dashed br-5"
-            >
-              <div class="d-flex align-items-center">
-                <span class="avatar flex-shrink-0">
-                  <img
-                    src="assets/img/profiles/avatar-29.jpg"
-                    class="rounded-circle border border-2"
-                    alt="img"
-                  />
-                </span>
-                <div class="ms-2">
-                  <h6 class="fs-14 fw-medium text-truncate">
-                    Anthony Lewis
-                    <span
-                      class="fs-10 fw-medium d-inline-flex align-items-center badge badge-success"
-                      ><i class="ti ti-clock-hour-11 me-1"></i>30 Min</span
-                    >
-                  </h6>
-                  <p class="fs-13">Marketing Head</p>
-                </div>
-              </div>
-              <div class="d-flex align-items-center">
-                <a href="javascript:void(0);" class="link-default me-2"
-                  ><i class="ti ti-clock-share"></i
-                ></a>
-                <span
-                  class="fs-10 fw-medium d-inline-flex align-items-center badge badge-danger"
-                  ><i class="ti ti-circle-filled fs-5 me-1"></i>08:35</span
-                >
-              </div>
-            </div>
-            <a [routerLink]="routes.attendanceemployee" class="btn btn-light btn-md w-100"
-              >View All Attendance</a
+         
+            <a
+              [routerLink]="routes.attendanceemployee"
+              class="btn btn-light btn-md w-100"
+              >Voir toutes les présences</a
             >
           </div>
         </div>
@@ -721,8 +647,10 @@
           <div
             class="card-header pb-2 d-flex align-items-center justify-content-between flex-wrap"
           >
-            <h5 class="mb-2">Jobs Applicants</h5>
-            <a [routerLink]="routes.jobList" class="btn btn-light btn-md mb-2">View All</a>
+            <h5 class="mb-2">Candidats à l'emploi</h5>
+            <a [routerLink]="routes.jobList" class="btn btn-light btn-md mb-2"
+              >Tout afficher</a
+            >
           </div>
           <div class="card-body">
             <ul
@@ -738,7 +666,7 @@
                   href="#openings"
                   aria-selected="true"
                   role="tab"
-                  >Openings</a
+                  >Ouvertures</a
                 >
               </li>
               <li class="nav-item" role="presentation">
@@ -750,7 +678,7 @@
                   aria-selected="false"
                   tabindex="-1"
                   role="tab"
-                  >Applicants</a
+                  >Candidat(e)s</a
                 >
               </li>
             </ul>
@@ -772,9 +700,9 @@
                     </a>
                     <div class="ms-2 overflow-hidden">
                       <p class="text-dark fw-medium text-truncate mb-0">
-                        <a href="javascript:void(0);">Senior IOS Developer</a>
+                        <a href="javascript:void(0);">Développeur iOS Senior</a>
                       </p>
-                      <span class="fs-12">No of Openings : 25 </span>
+                      <span class="fs-12">Nombre de postes ouverts : 25 </span>
                     </div>
                   </div>
                   <a
@@ -799,9 +727,9 @@
                     </a>
                     <div class="ms-2 overflow-hidden">
                       <p class="text-dark fw-medium text-truncate mb-0">
-                        <a href="javascript:void(0);">Junior PHP Developer</a>
+                        <a href="javascript:void(0);">Développeur PHP Junior</a>
                       </p>
-                      <span class="fs-12">No of Openings : 20 </span>
+                      <span class="fs-12">Nombre de postes ouverts : 20</span>
                     </div>
                   </div>
                   <a
@@ -826,9 +754,11 @@
                     </a>
                     <div class="ms-2 overflow-hidden">
                       <p class="text-dark fw-medium text-truncate mb-0">
-                        <a href="javascript:void(0);">Junior React Developer </a>
+                        <a href="javascript:void(0);"
+                          >Développeur React Junior
+                        </a>
                       </p>
-                      <span class="fs-12">No of Openings : 30 </span>
+                      <span class="fs-12">Nombre de postes ouverts : 30 </span>
                     </div>
                   </div>
                   <a
@@ -853,9 +783,11 @@
                     </a>
                     <div class="ms-2 overflow-hidden">
                       <p class="text-dark fw-medium text-truncate mb-0">
-                        <a href="javascript:void(0);">Senior Laravel Developer</a>
+                        <a href="javascript:void(0);"
+                          >Développeur Laravel Senior</a
+                        >
                       </p>
-                      <span class="fs-12">No of Openings : 40 </span>
+                      <span class="fs-12">Nombre de postes ouverts : 40 </span>
                     </div>
                   </div>
                   <a
@@ -885,15 +817,15 @@
                         <a href="javascript:void(0);">Brian Villalobos</a>
                       </p>
                       <span class="fs-13 d-inline-flex align-items-center"
-                        >Exp : 5+ Years<i
+                        >Expérience : 5+ ans<i
                           class="ti ti-circle-filled fs-4 mx-2 text-primary"
                         ></i
-                        >USA</span
+                        >États-Unis</span
                       >
                     </div>
                   </div>
                   <span class="badge badge-secondary badge-xs"
-                    >UI/UX Designer</span
+                    >Designer UI/UX</span
                   >
                 </div>
                 <div
@@ -915,14 +847,16 @@
                         <a href="javascript:void(0);">Anthony Lewis</a>
                       </p>
                       <span class="fs-13 d-inline-flex align-items-center"
-                        >Exp : 4+ Years<i
+                        >Expérience : 4+ ans<i
                           class="ti ti-circle-filled fs-4 mx-2 text-primary"
                         ></i
-                        >USA</span
+                        >  États-Unis</span
                       >
                     </div>
                   </div>
-                  <span class="badge badge-info badge-xs">Python Developer</span>
+                  <span class="badge badge-info badge-xs"
+                    >Développeur Python</span
+                  >
                 </div>
                 <div
                   class="d-flex align-items-center justify-content-between mb-4"
@@ -943,14 +877,16 @@
                         <a href="javascript:void(0);">Stephan Peralt</a>
                       </p>
                       <span class="fs-13 d-inline-flex align-items-center"
-                        >Exp : 6+ Years<i
+                        > Expérience : 6+ ans<i
                           class="ti ti-circle-filled fs-4 mx-2 text-primary"
                         ></i
-                        >USA</span
+                        > États-Unis</span
                       >
                     </div>
                   </div>
-                  <span class="badge badge-pink badge-xs">Android Developer</span>
+                  <span class="badge badge-pink badge-xs"
+                    >Développeur Android</span
+                  >
                 </div>
                 <div
                   class="d-flex align-items-center justify-content-between mb-0"
@@ -971,14 +907,16 @@
                         <a href="javascript:void(0);">Doglas Martini</a>
                       </p>
                       <span class="fs-13 d-inline-flex align-items-center"
-                        >Exp : 2+ Years<i
+                        >Expérience : 2+ ans<i
                           class="ti ti-circle-filled fs-4 mx-2 text-primary"
                         ></i
-                        >USA</span
+                        > États-Unis</span
                       >
                     </div>
                   </div>
-                  <span class="badge badge-purple badge-xs">React Developer</span>
+                  <span class="badge badge-purple badge-xs"
+                    >Développeur React</span
+                  >
                 </div>
               </div>
             </div>
@@ -993,9 +931,11 @@
           <div
             class="card-header pb-2 d-flex align-items-center justify-content-between flex-wrap"
           >
-            <h5 class="mb-2">Employees</h5>
-            <a [routerLink]="routes.employeeList" class="btn btn-light btn-md mb-2"
-              >View All</a
+            <h5 class="mb-2">Employés</h5>
+            <a
+              [routerLink]="routes.employeeList"
+              class="btn btn-light btn-md mb-2"
+              >Voir tout</a
             >
           </div>
           <div class="card-body p-0">
@@ -1003,8 +943,8 @@
               <table class="table table-nowrap mb-0">
                 <thead>
                   <tr>
-                    <th>Name</th>
-                    <th>Department</th>
+                    <th>Nom</th>
+                    <th>Département</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -1046,13 +986,13 @@
                           <h6 class="fw-medium">
                             <a href="javascript:void(0);">Brian Villalobos</a>
                           </h6>
-                          <span class="fs-12">PHP Developer</span>
+                          <span class="fs-12">Développeur PHP</span>
                         </div>
                       </div>
                     </td>
                     <td>
                       <span class="badge badge-danger-transparent badge-xs"
-                        >Development</span
+                        >Développement</span
                       >
                     </td>
                   </tr>
@@ -1070,7 +1010,7 @@
                           <h6 class="fw-medium">
                             <a href="javascript:void(0);">Stephan Peralt</a>
                           </h6>
-                          <span class="fs-12">Executive</span>
+                          <span class="fs-12">Cadre dirigeant</span>
                         </div>
                       </div>
                     </td>
@@ -1094,13 +1034,13 @@
                           <h6 class="fw-medium">
                             <a href="javascript:void(0);">Doglas Martini</a>
                           </h6>
-                          <span class="fs-12">Project Manager</span>
+                          <span class="fs-12">Chef de projet</span>
                         </div>
                       </div>
                     </td>
                     <td>
                       <span class="badge badge-purple-transparent badge-xs"
-                        >Manager</span
+                        >Management</span
                       >
                     </td>
                   </tr>
@@ -1118,13 +1058,13 @@
                           <h6 class="fw-medium">
                             <a href="javascript:void(0);">Anthony Lewis</a>
                           </h6>
-                          <span class="fs-12">UI/UX Designer</span>
-                        </div>
+                          <span class="fs-12">Designer UI/UX</span>
+                      </div>
                       </div>
                     </td>
                     <td class="border-0">
                       <span class="badge badge-pink-transparent badge-xs"
-                        >UI/UX Design</span
+                        >Designer UI/UX</span
                       >
                     </td>
                   </tr>
@@ -1139,9 +1079,11 @@
       <!-- Todo -->
 
       <!-- /Todo -->
+    
     </div>
 
     <div class="row">
+      <!-- <app-ticket-charts></app-ticket-charts> -->
       <!-- Sales Overview -->
 
       <!-- /Sales Overview -->
@@ -1150,184 +1092,14 @@
       <!-- /Invoices -->
     </div>
 
-    <div class="row">
-      <!-- Projects -->
-      
-<div class="col-xxl-8 col-xl-7 d-flex">a ajouter quelque ...</div>
-      <!-- /Projects -->
-
-      <!-- Tasks Statistics -->
-      <div class="col-xxl-4 col-xl-5 d-flex">
-        a ajouetr quelque ;..
-      </div>
-      <!-- /Tasks Statistics -->
-    </div>
-
+   
     <div class="row">
       <!-- Schedules -->
 
       <!-- /Schedules -->
 
       <!-- Recent Activities -->
-      <div class="col-xxl-4 col-xl-6 d-flex">
-        <div class="card flex-fill">
-          <div
-            class="card-header pb-2 d-flex align-items-center justify-content-between flex-wrap"
-          >
-            <h5 class="mb-2">Recent Activities</h5>
-            <a [routerLink]="" class="btn btn-light btn-md mb-2">View All</a>
-          </div>
-          <div class="card-body">
-            <div class="recent-item">
-              <div class="d-flex justify-content-between">
-                <div class="d-flex align-items-center w-100">
-                  <a href="javscript:void(0);" class="avatar flex-shrink-0">
-                    <img
-                      src="assets/img/users/user-38.jpg"
-                      class="rounded-circle"
-                      alt="img"
-                    />
-                  </a>
-                  <div class="ms-2 flex-fill">
-                    <div
-                      class="d-flex align-items-center justify-content-between"
-                    >
-                      <h6 class="fs-medium text-truncate">
-                        <a href="javscript:void(0);">Matt Morgan</a>
-                      </h6>
-                      <p class="fs-13">05:30 PM</p>
-                    </div>
-                    <p class="fs-13">
-                      Added New Project
-                      <span class="text-primary">HRMS Dashboard</span>
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="recent-item">
-              <div class="d-flex justify-content-between">
-                <div class="d-flex align-items-center w-100">
-                  <a href="javscript:void(0);" class="avatar flex-shrink-0">
-                    <img
-                      src="assets/img/users/user-01.jpg"
-                      class="rounded-circle"
-                      alt="img"
-                    />
-                  </a>
-                  <div class="ms-2 flex-fill">
-                    <div
-                      class="d-flex align-items-center justify-content-between"
-                    >
-                      <h6 class="fs-medium text-truncate">
-                        <a href="javscript:void(0);">Jay Ze</a>
-                      </h6>
-                      <p class="fs-13">05:00 PM</p>
-                    </div>
-                    <p class="fs-13">Commented on Uploaded Document</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="recent-item">
-              <div class="d-flex justify-content-between">
-                <div class="d-flex align-items-center w-100">
-                  <a href="javscript:void(0);" class="avatar flex-shrink-0">
-                    <img
-                      src="assets/img/users/user-19.jpg"
-                      class="rounded-circle"
-                      alt="img"
-                    />
-                  </a>
-                  <div class="ms-2 flex-fill">
-                    <div
-                      class="d-flex align-items-center justify-content-between"
-                    >
-                      <h6 class="fs-medium text-truncate">
-                        <a href="javscript:void(0);">Mary Donald</a>
-                      </h6>
-                      <p class="fs-13">05:30 PM</p>
-                    </div>
-                    <p class="fs-13">Approved Task Projects</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="recent-item">
-              <div class="d-flex justify-content-between">
-                <div class="d-flex align-items-center w-100">
-                  <a href="javscript:void(0);" class="avatar flex-shrink-0">
-                    <img
-                      src="assets/img/users/user-11.jpg"
-                      class="rounded-circle"
-                      alt="img"
-                    />
-                  </a>
-                  <div class="ms-2 flex-fill">
-                    <div
-                      class="d-flex align-items-center justify-content-between"
-                    >
-                      <h6 class="fs-medium text-truncate">
-                        <a href="javscript:void(0);">George David</a>
-                      </h6>
-                      <p class="fs-13">06:00 PM</p>
-                    </div>
-                    <p class="fs-13">Requesting Access to Module Tickets</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="recent-item">
-              <div class="d-flex justify-content-between">
-                <div class="d-flex align-items-center w-100">
-                  <a href="javscript:void(0);" class="avatar flex-shrink-0">
-                    <img
-                      src="assets/img/users/user-20.jpg"
-                      class="rounded-circle"
-                      alt="img"
-                    />
-                  </a>
-                  <div class="ms-2 flex-fill">
-                    <div
-                      class="d-flex align-items-center justify-content-between"
-                    >
-                      <h6 class="fs-medium text-truncate">
-                        <a href="javscript:void(0);">Aaron Zeen</a>
-                      </h6>
-                      <p class="fs-13">06:30 PM</p>
-                    </div>
-                    <p class="fs-13">Downloaded App Reportss</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="recent-item">
-              <div class="d-flex justify-content-between">
-                <div class="d-flex align-items-center w-100">
-                  <a href="javscript:void(0);" class="avatar flex-shrink-0">
-                    <img
-                      src="assets/img/users/user-08.jpg"
-                      class="rounded-circle"
-                      alt="img"
-                    />
-                  </a>
-                  <div class="ms-2 flex-fill">
-                    <div
-                      class="d-flex align-items-center justify-content-between"
-                    >
-                      <h6 class="fs-medium text-truncate">
-                        <a href="javscript:void(0);">Hendry Daniel</a>
-                      </h6>
-                      <p class="fs-13">05:30 PM</p>
-                    </div>
-                    <p class="fs-13">Completed New Project <span>HMS</span></p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
       <!-- /Recent Activities -->
 
       <!-- Birthdays -->
@@ -1344,5 +1116,3 @@
 <!-- Add Project -->
 
 <!-- /Add Project -->
-
-

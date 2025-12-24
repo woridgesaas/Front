@@ -1,0 +1,261 @@
+<!-- Modal Bootstrap -->
+<div class="modal fade" id="detailsGroupModal" tabindex="-1" aria-labelledby="detailsGroupModal" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      
+      <!-- En-tête du modal -->
+      <div class="modal-header">
+        <div class="d-flex align-items-center">
+          <div class="me-3">
+              <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                <i class="ti ti-users text-white fs-4"></i>
+              </div>
+          </div>
+          <div>
+            <h5 class="modal-title mb-0" id="gestionMembresModalLabel">
+              Gérer les membres
+            </h5>
+            <p class="text-muted mb-0 small">
+              {{ groupe.nom }} • {{ nombreMembres }} membres
+            </p>
+          </div>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <!-- Corps du modal -->
+      <div class="modal-body">
+        
+        <!-- Section 1 : Membres actuels -->
+        <div class="mb-4">
+          <h6 class="border-bottom pb-2 mb-3">
+            <i class="ti ti-user-check me-2 text-success"></i>
+            Membres actuels
+            <span class="badge bg-primary ms-2">{{ nombreMembres }}</span>
+          </h6>
+          
+          @if (membresActuels.length > 0) {
+            <div class="row g-2">
+              @for (membre of membresActuels; track membre.id) {
+                <!-- Alternative avec badge cliquable -->
+              <div class="col-12 col-md-6">
+                <div class="card border-0 shadow-sm mb-2 position-relative">
+                  <div class="card-body py-2">
+                    <div class="d-flex align-items-center">
+                      
+                      <!-- Infos -->
+                        <div class="flex-grow-1">
+                          <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                              <h6 class="mb-0">{{ membre.nom }}</h6>
+                              <small class="text-muted">{{ membre.poste }}</small>
+                            </div>
+                            <div class="d-flex align-items-center gap-1">
+                              <!-- Badge du rôle -->
+                              <span class="badge" [ngClass]="{
+                                'bg-success': membre.role === 'admin',
+                                'bg-light text-dark': membre.role === 'membre'
+                              }">
+                                {{ formaterRole(membre.role) }}
+                              </span>
+                              
+                              <!-- Badge retirer (cliquable) -->
+                              @if (membre.role !== 'admin') {
+                                <button type="button" 
+                                        class="btn btn-sm bg-danger-subtle rounded-circle position-absolute"
+                                        style="top: -6px; right: -6px; z-index: 10; width: 24px; height: 24px; padding: 0;"
+                                        (click)="openConfirmModal(membre)"
+                                        title="Retirer du groupe">
+                                  <i class="ti ti-x" style="font-size: 12px;"></i>
+                                </button>
+                              }
+                              <!--Appele au modal et passer le nom et le boolean-->
+
+                          </div>
+                        </div>
+                              <div class="d-flex justify-content-between align-items-center mt-1">
+                                <div>
+                                  <small class="text-muted">
+                                    <i class="ti ti-building me-1"></i>{{ membre.departement }}
+                                  </small>
+                                  <small class="text-muted ms-3">
+                                    <i class="ti ti-mail me-1"></i>{{ membre.email }}
+                                  </small>
+                                </div>
+                              </div>
+                        </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+              }
+            </div>
+          } @else {
+            <div class="text-center py-4">
+              <i class="ti ti-users text-muted mb-3" style="font-size: 3rem;"></i>
+              <p class="text-muted mb-0">Aucun membre dans ce groupe</p>
+            </div>
+          }
+        </div>
+
+        <!-- Section 2 : Ajouter des membres -->
+        <div>
+          <h6 class="border-bottom pb-2 mb-3">
+            <i class="ti ti-user-plus me-2 text-primary"></i>
+            Ajouter de nouveaux membres
+          </h6>
+          
+          <!-- Barre de recherche -->
+          <div class="mb-3">
+            <div class="input-group">
+              <span class="input-group-text">
+                <i class="ti ti-search"></i>
+              </span>
+              <input type="text" 
+                     class="form-control" 
+                     [(ngModel)]="rechercheMembre"
+                     (ngModelChange)="filtrerUtilisateurs()"
+                     placeholder="Rechercher par nom, département ou poste...">
+            </div>
+          </div>
+
+          <!-- Filtres -->
+          <div class="mb-3">
+            <div class="d-flex align-items-center flex-wrap gap-2">
+              <span class="text-muted small me-2">Filtrer :</span>
+              @for (filtre of filtresDisponibles; track filtre.id) {
+                <button type="button" 
+                        class="btn btn-sm" 
+                        [class.btn-primary]="filtreActif?.id === filtre.id"
+                        [class.btn-outline-primary]="filtreActif?.id !== filtre.id"
+                        (click)="appliquerFiltre(filtre)">
+                  {{ filtre.nom }}
+                </button>
+              }
+              @if (filtreActif) {
+                <button type="button" 
+                        class="btn btn-sm btn-outline-secondary" 
+                        (click)="effacerFiltre()">
+                  <i class="ti ti-x me-1"></i>Effacer
+                </button>
+              }
+            </div>
+          </div>
+
+          <!-- Liste des utilisateurs disponibles -->
+          <div class="mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h6 class="mb-0">Utilisateurs disponibles</h6>
+              <span class="badge bg-primary">{{ utilisateursFiltres.length }}</span>
+            </div>
+            
+            @if (utilisateursFiltres.length > 0) {
+              <div class="table-responsive">
+                <table class="table table-hover table-sm mb-0">
+                  <thead class="table-light">
+                    <tr>
+                      <th width="40">
+                        <input type="checkbox" 
+                               class="form-check-input" 
+                               [checked]="tousSelectionnes"
+                               (change)="selectionnerTous($event)">
+                      </th>
+                      <th>Nom</th>
+                      <th>Département</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (utilisateur of utilisateursFiltres; track utilisateur.id) {
+                      <tr>
+                        <td>
+                          <input type="checkbox" 
+                                 class="form-check-input" 
+                                 [checked]="estSelectionne(utilisateur.id)"
+                                 (change)="toggleSelection(utilisateur.id)">
+                        </td>
+                        <td>
+                          <div class="d-flex align-items-center">
+                            <div>
+                              <div class="fw-medium">{{ utilisateur.nom }}</div>
+                              <small class="text-muted">{{ utilisateur.email }}</small>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <span class="badge bg-light text-dark">
+                            {{ utilisateur.departement }}
+                          </span>
+                        </td>
+                      
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            } @else {
+              <div class="text-center py-4 border rounded">
+                <i class="ti ti-user-search text-muted mb-3" style="font-size: 2.5rem;"></i>
+                <p class="text-muted mb-0">
+                  @if (rechercheMembre) {
+                    Aucun résultat pour "{{ rechercheMembre }}"
+                  } @else {
+                    Aucun utilisateur disponible
+                  }
+                </p>
+              </div>
+            }
+          </div>
+
+          <!-- affichage de la sélection -->
+          @if (membresSelectionnes.length > 0) {
+            <div class="alert alert-primary alert-dismissible fade show mb-3">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <i class="ti ti-user-plus me-2"></i>
+                  <strong>{{ membresSelectionnes.length }}</strong> 
+                  {{ membresSelectionnes.length === 1 ? 'membre sélectionné' : 'membres sélectionnés' }}
+                  <span class="ms-2">
+                    <small class="text-muted">{{ getNomsSelectionnes() }}</small>
+                  </span>
+                </div>
+                <button type="button" 
+                        class="btn-close" 
+                        (click)="viderSelection()"
+                        aria-label="Vider la sélection"></button>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Pied du modal -->
+      <div class="modal-footer">
+        <button type="button" 
+                class="btn btn-outline-secondary" 
+                data-bs-dismiss="modal">
+          <i class="ti ti-x me-1"></i>Annuler
+        </button>
+        
+        <button type="button" 
+                class="btn btn-primary"
+                [disabled]="membresSelectionnes.length === 0 || chargementUI"
+                (click)="ajouterMembres()">
+          @if (chargementUI) {
+            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          }
+          <i class="ti ti-user-plus me-1"></i>
+          Ajouter 
+          @if (membresSelectionnes.length > 0) {
+            <span class="badge bg-white text-primary ms-1">{{ membresSelectionnes.length }}</span>
+          }
+        </button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+<app-remove-confirmation 
+  [show]="showConfirm" 
+  [membreNom]="removedMember?.nom" 
+  (confirme)="removeMembre($event)">
+</app-remove-confirmation>

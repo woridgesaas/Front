@@ -24,7 +24,31 @@
   height:100vh !important;
 }
 .theme-green .bs-datepicker-head {
-  background-color: #F26522;
+  background-color: rgba(111, 45, 189, 0.25) !important;
+}
+/* Jour sélectionné */
+.bs-datepicker-body table td span.selected,
+.bs-datepicker-body table td span.select-start,
+.bs-datepicker-body table td span.select-end {
+  background-color: #6f2dbd !important; // mauve
+  color: #fff !important;
+}
+
+/* Intervalle entre deux dates */
+.bs-datepicker-body table td span.in-range {
+  background-color: rgba(111, 45, 189, 0.25) !important;
+  color: #000;
+}
+
+/* Hover sur un jour */
+.bs-datepicker-body table td span:hover {
+  background-color: #5a189a !important;
+  color: #fff;
+}
+/* Numéros de semaine (colonne gauche) */
+.bs-datepicker-body table td.week span {
+  color: #6f2dbd !important;   // mauve
+  font-weight: 500;
 }
 .ng-scrollbar-thumb[_ngcontent-ng-c2467238161]{
   background: none !important;
@@ -78,16 +102,16 @@ mat-select.custom-mat-select .mat-mdc-select-trigger {
   padding-left: 8px;
   font-family: "inter", sans-serif;
 }
-.mat-mdc-option {
+/*.mat-mdc-option {
   color:#72767D !important;
   &:focus,
   &.mat-mdc-option-active {
     &.mdc-list-item {
-      background: #F26522 !important;
+  background-color: rgba(111, 45, 189, 0.25) !important;
       color: white !important;
     }
   }
-}
+}*/
 app-admin .mat-mdc-option .mat-pseudo-checkbox-minimal{
   display: none;
 }
@@ -106,6 +130,7 @@ app-admin .mat-mdc-option .mat-pseudo-checkbox-minimal{
       background: transparent !important;
     }
   }
+
 
 }
 .track-statistics {
@@ -1498,3 +1523,19 @@ tag-input{
     }
   }
 }
+/* Logo */
+.logo {
+  max-width: 300px;
+}
+
+
+/* Mobile */
+@media (max-width: 768px) {
+  .error-img {
+    max-width: 280px;
+  }
+  .logo {
+    max-width: 100px;
+  }
+}
+

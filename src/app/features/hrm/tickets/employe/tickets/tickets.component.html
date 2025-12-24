@@ -1,0 +1,305 @@
+<div class="content">
+    <div class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
+            <app-breadcrumbs title="Tickets" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+            <div class="d-flex my-xl-auto right-content align-items-center flex-wrap ">
+            <div class="mb-2">
+                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#add_ticket" class="btn btn-primary d-flex align-items-center"><i class="ti ti-circle-plus me-2"></i>Ajouter une Ticket</a>
+            </div>
+            </div>
+    </div>
+    <!--Le tableau la list-->
+    <div class="card">
+    <!--Header du tableau-->
+        <div class="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3">
+        <h5>Mes Tickets</h5>
+        <div class="d-flex my-xl-auto right-content align-items-center flex-wrap row-gap-3">
+            <div class="me-3">
+            <div class="input-icon position-relative">
+                <span class="input-icon-addon">
+                <i class="ti ti-calendar text-gray-9"></i>
+                </span>
+                <input
+                type="text"
+                class="form-control date-range bookingrange"
+                bsDaterangepicker
+                [(ngModel)]="bsRangeValue"
+                [bsConfig]="{ adaptivePosition: true }"
+                placeholder="dd/mm/yyyy - dd/mm/yyyy"
+                />
+            </div>
+            </div>
+            <div class="dropdown me-3">
+            <a
+                href="javascript:void(0);"
+                class="dropdown-toggle btn btn-white d-inline-flex align-items-center"
+                data-bs-toggle="dropdown"
+            >
+                Statut
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end p-3">
+                <li>
+                <a href="javascript:void(0);" class="dropdown-item rounded-1"
+                    >Tous</a
+                >
+                </li>
+                <li>
+                <a href="javascript:void(0);" class="dropdown-item rounded-1"
+                    >En Cours</a
+                >
+                </li>
+                <li>
+                <a href="javascript:void(0);" class="dropdown-item rounded-1"
+                    >Résolu</a
+                >
+                </li>
+                <li>
+                <a href="javascript:void(0);" class="dropdown-item rounded-1"
+                    >Ouvert</a
+                >
+                </li>
+            </ul>
+            </div>
+
+            <div class="dropdown me-3">
+            <a
+                href="javascript:void(0);"
+                class="dropdown-toggle btn btn-white d-inline-flex align-items-center"
+                data-bs-toggle="dropdown"
+            >
+                Priorité
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end p-3">
+                <li>
+                <a href="javascript:void(0);" class="dropdown-item rounded-1"
+                    >Tous</a
+                >
+                </li>
+                <li>
+                <a href="javascript:void(0);" class="dropdown-item rounded-1"
+                    >Haut</a
+                >
+                </li>
+                <li>
+                <a href="javascript:void(0);" class="dropdown-item rounded-1"
+                    >Faible</a
+                >
+                </li>
+                <li>
+                <a href="javascript:void(0);" class="dropdown-item rounded-1"
+                    >Par default</a
+                >
+                </li>
+            </ul>
+            </div>
+            </div>
+        </div>
+    <!--Tableau ...-->
+    <div class="card-body p-0">
+  <div class="custom-datatable-filter">
+    <div class="dataTables_wrapper dt-bootstrap5 no-footer">
+      <div class="row">
+        <div class="col-sm-12 col-md-6">
+          <div class="dataTables_length">
+            <label>
+              Lignes par page 
+              @if(tickets.length > 0) {
+                <select
+                  [(ngModel)]="pageSize"
+                  (ngModelChange)="changePage(pageSize)"
+                  class="form-select form-select-sm"
+                >
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                </select>
+              } 
+              tickets
+            </label>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-6">
+          <div id="DataTables_Table_0_filter" class="dataTables_filter">
+            <label>
+              <input
+                [(ngModel)]="searchDataValue"
+                [ngModelOptions]="{ standalone: true }"
+                (ngModelChange)="searchData(searchDataValue)"
+                type="search"
+                class="form-control form-control-sm"
+                placeholder="Rechercher un ticket..."
+              />
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table
+          matSort
+          (matSortChange)="sortData($event)"
+          class="mat-sort table datanew table-center datatable dataTable mb-0"
+        >
+          <thead class="thead-light">
+            <tr>
+              <th class="no-sort">
+                <div
+                  class="form-check form-check-md"
+                  (click)="selectAll(initChecked)"
+                  (keydown.enter)="selectAll(initChecked)"
+                  tabindex="0"
+                >
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="select-all"
+                    [(ngModel)]="initChecked"
+                  />
+                </div>
+              </th>
+              <th mat-sort-header="numeroTicket">N° Ticket</th>
+              <th mat-sort-header="titre">Titre du ticket</th>
+              <th mat-sort-header="categorie">Catégorie</th>
+              <th mat-sort-header="priorite">Priorité</th>
+              <th mat-sort-header="statut">Statut</th>
+              <th mat-sort-header="createdAt">Date création</th>
+              <th class="no-sort">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (ticket of tickets; track ticket.id) {
+              <tr>
+                <td>
+                  <div class="form-check form-check-md">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      [(ngModel)]="ticket.isSelected"
+                    />
+                  </div>
+                </td>
+                
+                
+                <td>
+                  <div class="d-flex align-items-center">
+                    <div class="avatar avatar-md border avatar-rounded bg-light">
+                      <i class="ti ti-ticket text-primary"></i>
+                    </div>
+                    <div class="ms-2">
+                      <h6 class="fw-medium mb-0">{{ ticket.numeroTicket }}</h6>
+                    </div>
+                  </div>
+                </td>
+                
+                <!-- Titre -->
+                <td>
+                  <h6 class="fw-medium mb-1">
+                    <span>{{ ticket.titre }}</span>
+                  </h6>
+                  @if (ticket.description && ticket.description.length > 50) {
+                    <span class="fs-12 text-muted">{{ ticket.description.substring(0, 50) }}...</span>
+                  } @else if (ticket.description) {
+                    <span class="fs-12 text-muted">{{ ticket.description }}</span>
+                  }
+                </td>
+               
+                <td>
+                  <span class="badge bg-light text-dark border">
+                    {{ ticket.categorie }}
+                  </span>
+                </td>
+                
+                <!-- Priorite -->
+                <td>
+                  <span class="badge d-inline-flex align-items-center badge-xs"
+                    [ngClass]="{
+                      'badge-danger': ticket.priorite === 'Urgente',
+                      'badge-warning': ticket.priorite === 'Haute',
+                      'badge-info': ticket.priorite === 'Moyenne',
+                      'badge-success': ticket.priorite === 'Basse',
+                      'badge-secondary': ticket.priorite === 'Par default'
+                    }">
+                    <i class="ti ti-point-filled me-1"></i>{{ ticket.priorite }}
+                  </span>
+                </td>
+                
+                <!-- Statut -->
+                <td>
+                  <span class="badge d-inline-flex align-items-center badge-xs"
+                    [ngClass]="{
+                      'badge-primary': ticket.statut === 'Ouvert',
+                      'badge-info': ticket.statut === 'En Cours',
+                      'badge-success': ticket.statut === 'Résolu',
+                      'badge-secondary': ticket.statut === 'Fermé'
+                    }">
+                    <i class="ti ti-point-filled me-1"></i>{{ ticket.statut }}
+                  </span>
+                </td>
+                
+       
+                <td>
+                  <span class="text-muted">
+                    {{ formatDate(ticket.createdAt) }}
+                  </span>
+                </td>
+                
+              
+                <td>
+                  <div class="action-icon d-inline-flex">
+                    <!-- Voir details dans modal -->
+                    <button class="btn btn-sm btn-outline-primary" 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#ticketDetailModal"
+                            >
+                        <i class="ti ti-eye"></i> Détails
+                    </button>
+                    
+                    
+                    <!-- Supprimer ghi fermer | resolu -->
+                    @if (ticket.statut === 'Fermé' || ticket.statut === 'Résolu') {
+                      <a
+                        href="javascript:void(0);"
+                        class="text-danger"
+                        (click)="deleteTicket(ticket)"
+                        title="Supprimer">
+                        <i class="ti ti-trash"></i>
+                      </a>
+                    }
+                    
+                  </div>
+                </td>
+              </tr>
+            } 
+            
+            @if (tickets.length === 0) {
+              <tr>
+                <td colspan="8">
+                  <div class="text-center py-4">
+                    <div class="avatar avatar-xl avatar-rounded bg-light mb-3">
+                      <i class="ti ti-ticket-off text-muted"></i>
+                    </div>
+                    <h5 class="no-record mb-2">Aucun ticket trouvé</h5>
+                    <p class="text-muted mb-0">
+                      Vous n'avez pas encore créé de ticket.
+                    </p>
+                    
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination (seulement si nécessaire) -->
+    <app-custom-pagination></app-custom-pagination>
+
+    </div>
+  </div>
+</div>
+    </div>
+</div>
+
+<!--on pass pas de role ici creation simple non technique just pour un employer-->
+<app-ticket-create></app-ticket-create>
+<!--Details de ticket d'employe -->
+<app-ticket-details-modal></app-ticket-details-modal>

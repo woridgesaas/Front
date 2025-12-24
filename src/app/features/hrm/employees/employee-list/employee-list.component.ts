@@ -59,8 +59,8 @@ export class EmployeeListComponent implements OnDestroy {
   ) 
   {
     this.breadCrumbItems = [
-      { label: 'Employee' },
-      { label: 'Employee List', active: true }
+      { label: 'Employés' },
+      { label: 'Liste des Employés', active: true }
   ];
     this.data.getEmployeeList().subscribe((apiRes: apiResultFormat) => {
       this.actualData = apiRes.data;

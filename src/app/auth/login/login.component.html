@@ -1,0 +1,92 @@
+<div class="container-fuild">
+  <div class="w-100 overflow-hidden position-relative flex-wrap d-block vh-100">
+    <div class="row">
+
+    <!--* Backgroun image -->
+      <div class="col-lg-5">
+        <div class="d-lg-flex d-none flex-wrap vh-100 bg-primary-transparent">
+          <img src="assets/img/bg/login.png"alt="Background image"/>
+        </div>
+      </div>
+      
+      <div class="col-lg-7 col-md-12 col-sm-12">
+        <div class="row justify-content-center align-items-center vh-100 overflow-auto flex-wrap">
+          <div class="col-md-7 mx-auto vh-100">
+
+          <!--* Log in form -->
+            <form class="vh-100">
+              <div class="min-vh-100 d-flex flex-column justify-content-center p-3 p-md-5 pb-0">
+
+                <!--* Logo -->
+                  <div class=" mx-auto mb-5 text-center">
+                    <img src="assets/favicon_io/logo1.ico" class="img-fluid w-50" alt="Logo">
+                  </div>
+                
+                <div class="">
+                  <div class="text-center mb-3">
+                    <h2 class="mb-2">Se connecter</h2>
+                    <p class="mb-0"> Veuillez entrer vos coordonnées pour vous connecter</p>
+                  </div>
+
+                <!--* CIN input -->
+                  <div class="mb-3">
+                    <div class="input-group">
+                      <input type="text" value="" class="form-control border-end-0 rounded-start-4" placeholder="Entrer votre adress email"/>
+                      <span class="input-group-text border-start-0 rounded-end-4">
+                        <i class="fa-solid fa-envelope"></i>
+                      </span>
+                    </div>
+                  </div>
+
+                <!--* Password input-->
+                  <div class="mb-3">
+                    <div class="pass-group">
+                      <input [type]="password[0] ? 'text' : 'password'" class="pass-input form-control rounded-4" placeholder="Entrer votre mot de passe"/>
+                      <span class="ti toggle-password" [ngClass]="password[0] ? 'ti-eye' : 'ti-eye-off'" (click)="togglePassword(0)" (keydown.enter)="togglePassword(0)"tabindex="0"></span>
+                    </div>
+                  </div>
+
+                  
+                  <div class="d-flex align-items-center justify-content-between mb-3" >
+
+                  <!--* Remember me input -->
+                    <div class="d-flex align-items-center">
+                      <div class="form-check form-check-md mb-0">
+                        <input class="form-check-input" id="remember_me" type="checkbox"/>
+                        <label for="remember_me" class="form-check-label mt-0">Se souvenir de moi</label>
+                      </div>
+                    </div>
+
+                  <!--* Forget password link-->
+                    <div class="text-end">
+                      <a [routerLink]="routes.forgotPassword" class="hover-a">Mot de passe oublié ?</a>
+                    </div>
+
+                  </div>
+
+                <!--* Log in button -->
+                <!--! If credentials are valid, redirect to the index page -->
+                  <div class="mb-3">
+                    <button type="submit" class="btn btn-primary w-100 rounded-4"> 
+                      <i class="fa fa-sign-in-alt me-2"></i>
+                      <span> Se connecter </span>
+                    </button>
+                  </div>
+
+                </div>
+
+              <!--* Footer -->
+                <div class="mt-5 pb-4 text-center">
+                  <p class="mb-0 text-gray-9"> Copyright &copy; 2025 Woridge. Tous droits réservés. </p>
+                </div>
+
+              </div>
+             
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

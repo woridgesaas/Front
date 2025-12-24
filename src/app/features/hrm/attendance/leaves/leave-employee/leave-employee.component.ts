@@ -49,8 +49,8 @@ export class LeaveEmployeeComponent {
     private pagination: PaginationService
   ) {
     this.breadCrumbItems = [
-      { label: 'Employee' },
-      { label: 'Leaves', active: true }
+      { label: 'Employé' },
+      { label: 'Congés', active: true }
   ];
   this.data.getleaveEmployee().subscribe((apiRes: apiResultFormat) => {
     this.actualData = apiRes.data;
@@ -153,5 +153,15 @@ selectAll(initChecked: boolean) {
     });
   }
 }
+// Autoriser l’édition uniquement si le statut est "New"
+canEditLeave(status: string): boolean {
+  return status === 'New';
+}
+
+// Autoriser la suppression uniquement si le statut est "Declined" (ou Refused)
+canDeleteLeave(status: string): boolean {
+  return status === 'Declined' || status === 'Refused';
+}
+
 
 }

@@ -5,6 +5,7 @@ import {
   OnInit,
   ViewChild,
   HostListener,
+  AfterViewInit ,
   RendererFactory2,
 } from '@angular/core';
 import {
@@ -36,6 +37,7 @@ import { BreadcrumbsComponent } from '../../common/breadcrumbs/breadcrumbs.compo
 import { TagInputModule } from 'ngx-chips';
 import { DatePickerModule } from 'primeng/datepicker';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
+import { AnoncesChartComponent } from "../../application/social-feed/components/anonces-chart/anonces-chart.component";
 export interface ChartOptions {
   series: ApexAxisChartSeries;
   chart: ApexChart;
@@ -52,24 +54,28 @@ Chart.register(...registerables);
     templateUrl: './admin-dashboard.component.html',
     styleUrl: './admin-dashboard.component.scss',
     imports: [
-      CommonModule,
-      MatSelectModule,
-      FormsModule,
-      NgxEditorModule,
-      BsDatepickerModule,
-      FooterComponent,
-      RouterLink,
-      NgApexchartsModule,
-      CollapseHeaderComponent,
-      BreadcrumbsComponent,
-      TagInputModule,
-      DatePickerModule,
-      TimepickerModule
-    ]
+    CommonModule,
+    MatSelectModule,
+    FormsModule,
+    NgxEditorModule,
+    BsDatepickerModule,
+    FooterComponent,
+    RouterLink,
+    NgApexchartsModule,
+    BreadcrumbsComponent,
+    TagInputModule,
+    DatePickerModule,
+    TimepickerModule,
+    AnoncesChartComponent
+]
 })
+
 export class AdminDashboardComponent implements OnInit, OnDestroy {
   routes = routes;
   base = '';
+    departments: any[] = [];
+  private clockInterval: any;
+  now: Date = new Date();
   values: string[] = ['Jerald', 'Andrew', 'Philip', 'Davis'];
   values2: string[] = ['Hendry', 'James'];
   values3: string[] = ['Dwight'];
@@ -94,6 +100,8 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     [{ heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }],
     ['image'],
   ];
+private attendanceChart?: Chart;
+private semiDonutChart?: Chart;
 
   form = new FormGroup({
     editorContent: new FormControl('', Validators.required()),
@@ -120,7 +128,23 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
 
 
   }
-
+  selectedDepartment: string = '';
+selectDepartment(department: string) {
+  this.selectedDepartment = department;}
+ loadDepartments() {
+    this.departments = [
+      { Department: 'Finance' },
+      { Department: 'Développement d’applications' },
+      { Department: 'Gestion informatique' },
+      { Department: 'Développement Web' },
+      { Department: 'Ventes' },
+      { Department: 'UI / UX' },
+      { Department: 'Gestion des comptes' },
+      { Department: 'Marketing' },
+      { Department: 'Administration' },
+      { Department: 'Développement commercial' }
+    ];
+  }
   // Open the dropdown
   openDropdown() {
     this.dropdownOpen = true;
@@ -137,10 +161,15 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     this.editor = new Editor();
+        this.loadDepartments();
+
     this.breadCrumbItems = [
       { label: 'Dashboards' },
       { label: 'Admin Dashboard', active: true },
     ];
+     this.clockInterval = setInterval(() => {
+    this.now = new Date();
+  }, 1000);
     this.editor = new Editor();
     this.EmpDepartment = {
       chart: {
@@ -156,7 +185,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
           show: false,
         },
       },
-      colors: ['#FF6F28'],
+      colors: ['#583f9dff'],
       grid: {
         borderColor: '#E5E7EB',
         strokeDashArray: 5,
@@ -289,92 +318,102 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
         opacity: 1,
       },
     };
-    this.attendancedoughcharts();
-    this.mySemiDonutChart();
+ 
   }
+ngAfterViewInit(): void {
+  setTimeout(() => this.renderAttendanceChart());
+}
 
-  attendancedoughcharts() {
-    new Chart('attendancedoughcharts1', {
-      type: 'doughnut', // Chart type
-      data: {
-        labels: ['Late', 'Present', 'Permission', 'Absent'],
-        datasets: [
-          {
-            label: 'Semi Donut',
-            data: [40, 20, 30, 10],
-            backgroundColor: ['#0C4B5E', '#03C95A', '#FFC107', '#E70D0D'],
-            borderWidth: 5,
-            borderRadius: 10,
-            borderColor: '#fff', // Border between segments
-            hoverBorderWidth: 0, // Border radius for curved edges
-          },
-        ],
-      },
+renderAttendanceChart() {
+  this.attendancedoughcharts();
 
-      options: {
-        cutout: '60%',
-        rotation: -100,
-        circumference: 200,
-        layout: {
-          padding: {
-            top: -20, // Set to 0 to remove top padding
-            bottom: -20, // Set to 0 to remove bottom padding
-          },
+  window.addEventListener('resize', () => {
+    this.attendanceChart?.resize();
+  });
+}
+
+
+
+attendancedoughcharts() {
+  const canvas = document.getElementById(
+    'attendancedoughcharts1'
+  ) as HTMLCanvasElement | null;
+
+  if (!canvas) return;
+
+  // Détruire l'ancien chart si existe
+  this.attendanceChart?.destroy();
+
+  this.attendanceChart = new Chart(canvas, {
+    type: 'doughnut',
+    data: {
+      labels: ['Présente', 'Autorisation', 'Absent(e)'], 
+      datasets: [
+        {
+          data: [59, 2, 15], 
+          backgroundColor: [
+            '#a782d280', // vert - Présente
+            '#bd28efff', // jaune - Autorisation
+            '#6cb7e6ff', // rouge - Absent(e)
+          ],
+          borderWidth: 6,
+          borderColor: '#ffffff',
+          borderRadius: 8,
         },
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false, // Hide the legend
-          },
-        },
+      ],
+    },
+    options: {
+      cutout: '70%',
+      rotation: -100,
+      circumference: 200,
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false }, 
       },
-    });
-  }
-  mySemiDonutChart() {
-    new Chart('mySemiDonutChart1', {
-      type: 'doughnut', // Chart type
-      data: {
-        labels: ['Ongoing', 'Onhold', 'Completed', 'Overdue'],
-        datasets: [
-          {
-            label: 'Semi Donut',
-            data: [20, 40, 20, 10],
-            backgroundColor: ['#FFC107', '#1B84FF', '#03C95A', '#E70D0D'],
-            borderWidth: -10,
-            borderColor: 'transparent', // Border between segments
-            hoverBorderWidth: 0, // Border radius for curved edges
-            spacing: -30,
-          },
-        ],
+    },
+  });
+}
+
+
+ mySemiDonutChart() {
+  const canvas = document.getElementById(
+    'mySemiDonutChart1'
+  ) as HTMLCanvasElement | null;
+
+  if (!canvas) return;
+
+  this.semiDonutChart?.destroy();
+
+  this.semiDonutChart = new Chart(canvas, {
+    type: 'doughnut',
+    data: {
+      labels: ['Ongoing', 'Onhold', 'Completed', 'Overdue'],
+      datasets: [
+        {
+          data: [20, 40, 20, 10],
+          backgroundColor: ['#FFC107', '#1B84FF', '#03C95A', '#E70D0D'],
+        },
+      ],
+    },
+    options: {
+      cutout: '75%',
+      rotation: -100,
+      circumference: 185,
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
       },
-      options: {
-        cutout: '75%',
-        rotation: -100,
-        circumference: 185,
-        layout: {
-          padding: {
-            top: -20, // Set to 0 to remove top padding
-            bottom: 20, // Set to 0 to remove bottom padding
-          },
-        },
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false, // Hide the legend
-          },
-        },
-        elements: {
-          arc: {
-            borderWidth: -30, // Ensure consistent overlap
-            borderRadius: 30, // Add some rounding
-          },
-        },
-      },
-    });
-  }
+    },
+  });
+}
+
   ngOnDestroy(): void {
-    this.editor.destroy();
-  }
+  clearInterval(this.clockInterval); 
+  this.attendanceChart?.destroy();
+  this.semiDonutChart?.destroy();
+  this.editor.destroy();
+}
+
 }

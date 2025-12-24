@@ -68,4 +68,29 @@ export class LeaveModalComponent {
   toggleShow3(): void {
     this.isShown3 = !this.isShown3;
   }
+  // type sélectionné (ex: 'medical', 'exceptionnel', 'annuel', etc.)
+  selectedLeaveType: string = '';
+
+  // contrôle d’affichage du justificatif
+  showJustificatif: boolean = false;
+
+  // fichier sélectionné
+  selectedFile: File | null = null;
+
+  // appelé quand l’utilisateur change le type de congé
+  onLeaveTypeChange(type: string): void {
+    this.selectedLeaveType = type;
+
+    // afficher justificatif UNIQUEMENT pour médical ou exceptionnel
+    this.showJustificatif =
+      type === 'medical' || type === 'exceptionnel';
+  }
+
+  // récupération du fichier
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
+    }
+  }
 }

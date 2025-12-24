@@ -1,24 +1,42 @@
-<div class="container">
-    <div>
-        <div class="row justify-content-center align-items-center">
-            
-            <div class="col-md-8 d-flex justify-content-center align-items-center mx-auto">
-                <div>
-                    <div class="p-4 text-center">
-                        <img src="assets/img/logo.svg" alt="logo" class="img-fluid">
-                    </div>
-                    <div class="error-images mb-4">
-                        <img src="assets/img/bg/error-500.svg" alt="image" class="img-fluid">
-                    </div>
-                    <div class="text-center">
-                        <h1 class="mb-3">Oops, something went wrong</h1>
-                        <p class="fs-16 text-center">Server Error 500. We apologise and are fixing the <br> problem. Please try again at a  later stage</p>
-                        <div class="d-flex justify-content-center pb-4">
-                            <a [routerLink]="routes.index" class="btn btn-primary d-flex align-items-center "><i class="ti ti-arrow-left me-2"></i>Back to Dashboard</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="container min-vh-100 d-flex align-items-center">
+  <div class="row justify-content-center w-100">
+    <div class="col-md-8 col-lg-6 text-center">
+
+      <!-- Logo -->
+      <div class="mb-1">
+        <img
+          src="assets/favicon_io/big-logo-nobg.png"
+          alt="logo Woridge"
+          class="img-fluid logo"
+        />
+      </div>
+
+      <!-- Illustration erreur -->
+      <div class="error-images">
+        <img
+          src="assets/img/bg/error-500.png"
+          alt="Erreur serveur 500"
+          class="img-fluid"
+        />
+      </div>
+
+      <!-- Texte -->
+      <h1 class="mb-1">Oups, une erreur s’est produite</h1>
+      <p class="fs-16 text-muted mb-2">
+        Erreur serveur 500.<br />
+        Nous nous excusons pour ce désagrément et travaillons à la résolution du problème.
+        Veuillez réessayer ultérieurement.
+      </p>
+
+      <!-- Bouton -->
+      <a
+        [routerLink]="routes.index"
+        class="btn btn-primary px-4 py-2"
+      >
+        <i class="ti ti-arrow-left me-2"></i>
+        Retour au tableau de bord
+      </a>
+
     </div>
+  </div>
 </div>

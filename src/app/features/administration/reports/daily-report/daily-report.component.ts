@@ -1,21 +1,29 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild,AfterViewInit  } from '@angular/core';
 import { routes } from '../../../../shared/routes/routes';
 import { apiResultFormat, breadCrumbItems, dailyReport } from '../../../../shared/models/models';
 import { pageSelection, PaginationService, tablePageSize } from '../../../../shared/custom-pagination/pagination.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { DataService } from '../../../../shared/data/data.service';
+import { ChartComponent } from 'ng-apexcharts';
 import { Router } from '@angular/router';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import {
   ApexAxisChartSeries,
+  ApexNonAxisChartSeries,
   ApexChart,
+  ApexLegend,
+  ApexXAxis,
+  ApexYAxis,
   ApexDataLabels,
   ApexGrid,
   ApexStroke,
-  ApexTitleSubtitle,
-  ApexXAxis,
-  ChartComponent,
+  ApexPlotOptions,
+  ApexTooltip,
+  ApexResponsive,
+  ApexFill,
+  ChartType
 } from 'ng-apexcharts';
+
 import { Chart, registerables } from 'chart.js';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -25,25 +33,76 @@ import { CollapseHeaderComponent } from '../../../common/collapse-header/collaps
 import { BreadcrumbsComponent } from '../../../common/breadcrumbs/breadcrumbs.component';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-export interface ChartOptions  {
+// Donut / Pie
+// Complete DonutChartOptions
+export type DonutChartOptions = {
+  series: ApexNonAxisChartSeries;
+  chart: ApexChart;
+  labels: string[];
+  colors: string[];
+  legend: ApexLegend;
+  plotOptions?: ApexPlotOptions;   
+  dataLabels?: ApexDataLabels;    
+};
+
+
+// Complete AxisChartOptions
+export type AxisChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
   xaxis: ApexXAxis;
+  colors: string[];
+  plotOptions: ApexPlotOptions;
+};
+
+
+// Complete daily chart options
+export interface DailyChartOptions {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  xaxis: ApexXAxis;
+  yaxis: ApexYAxis;
   dataLabels: ApexDataLabels;
   grid: ApexGrid;
   stroke: ApexStroke;
-  title: ApexTitleSubtitle;
-};
+  legend: ApexLegend;
+  colors: string[];
+  tooltip?: ApexTooltip;
+  responsive?: ApexResponsive[];
+  plotOptions?: ApexPlotOptions;
+  fill?: ApexFill;
+}
+export interface ChartOptions {
+  series?: ApexAxisChartSeries | number[];
+  chart?: ApexChart;
+  xaxis?: ApexXAxis;
+  dataLabels?: ApexDataLabels;
+  grid?: ApexGrid;
+  stroke?: ApexStroke;
+  title?: ApexTitleSubtitle;
+  legend?: ApexLegend;
+  colors?: string[];
+  labels?: string[];
+}
 @Component({
     selector: 'app-daily-report',
     templateUrl: './daily-report.component.html',
     styleUrl: './daily-report.component.scss',
     imports: [CommonModule,FormsModule,MatSortModule,
       CollapseHeaderComponent,BreadcrumbsComponent,
-      CustomPaginationComponent,MatSelectModule,NgApexchartsModule,BsDatepickerModule]
+      MatSelectModule,NgApexchartsModule,BsDatepickerModule]
 })
 export class DailyReportComponent {
   public routes = routes;
+  public presenceDonut!: DonutChartOptions;
+
+
+public deptPresence!: AxisChartOptions;
+
+
+
+showTable = false;
+
   initChecked = false;
   // pagination variables
   public pageSize = 10;
@@ -63,7 +122,22 @@ export class DailyReportComponent {
   bsValue = new Date();
   bsRangeValue: Date[];
   maxDate = new Date();
-  public daily_chart: Partial<ChartOptions> | any;
+public daily_chart!: {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  colors: string[];
+  stroke: ApexStroke;
+  xaxis: ApexXAxis;
+  yaxis: ApexYAxis;
+  dataLabels: ApexDataLabels;
+  grid: ApexGrid;
+  legend: ApexLegend;
+  plotOptions: ApexPlotOptions;
+  fill: ApexFill;
+  tooltip: ApexTooltip;
+  responsive: ApexResponsive[];
+};
+
   @ViewChild('chart') chart!: ChartComponent;
   constructor(
     private data: DataService,
@@ -72,7 +146,7 @@ export class DailyReportComponent {
   ) {
     this.breadCrumbItems = [
       { label: 'HR' },
-      { label: 'Daily Report', active: true }
+      { label: 'Rapport quotidien', active: true }
   ];
   this.data.getdailyReport().subscribe((apiRes: apiResultFormat) => {
     this.actualData = apiRes.data;
@@ -112,7 +186,14 @@ private getTableData(pageOption: pageSelection): void {
     });
   });
 }
-
+ngAfterViewInit() {
+  const tooltipTriggerList = [].slice.call(
+    document.querySelectorAll('[data-bs-toggle="tooltip"]')
+  );
+  tooltipTriggerList.map(
+    (tooltipTriggerEl) => new (window as any).bootstrap.Tooltip(tooltipTriggerEl)
+  );
+}
 public row=true;
 public searchData(value: string): void {
     this.searchDataValue = value.trim().toLowerCase();
@@ -153,6 +234,22 @@ public sortData(sort: Sort) {
     });
   }
 }
+public absenceTypeChart!: AxisChartOptions & {
+  dataLabels: ApexDataLabels;   
+};
+public absenceTypeHorizontalChart!: {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  xaxis: ApexXAxis;
+  yaxis: ApexYAxis;
+  colors: string[];
+  plotOptions: ApexPlotOptions;
+  dataLabels: ApexDataLabels;
+  grid: ApexGrid;
+  legend?: ApexLegend;
+};
+
+
 public changePageSize(pageSize: number): void {
   this.pageSelection = [];
   this.limit = pageSize;
@@ -175,46 +272,262 @@ selectAll(initChecked: boolean) {
     });
   }
 }
-ngOnInit():void{
-  this.daily_chart={
-    series: [{
-      name: "Present",
-      data: [60, 40, 30, 20, 70, ] // Sample data for Present
-    }, {
-      name: "Absent",
-      data: [20, 60, 45, 60, 80,] // Sample data for Absent
-    }],
-    chart: {
-      height: 130, // Changed height
-      type: 'line',
-      zoom: {
-        enabled: false
+ngOnInit(): void {
+  const absenceValues = [8, 3, 2, 1, 1];
+const absenceTotal = absenceValues.reduce((a, b) => a + b, 0);
+  // Donut chart
+this.presenceDonut = {
+  series: [300, 15],
+  labels: ['Présent', 'Absent'],
+  chart: {
+    type: 'donut',
+    height: 260
+  },
+  colors: ['#22c55e', '#ef4444'],
+  legend: {
+    position: 'bottom',
+    fontSize: '13px'
+  },
+  plotOptions: {
+    pie: {
+      donut: {
+        size: '70%',
+        labels: {
+          show: true,
+          total: {
+            show: true,
+            label: 'Total',
+            fontSize: '14px',
+            color: '#6b7280'
+          }
+        }
       }
-    },
-    dataLabels: {
-      enabled: false
-    },
-    legend: {
-      show: false
-     },
-    stroke: {
-      curve: 'smooth' // You can change this to 'straight' if preferred
-    },
-    grid: {
-      row: {
-        colors: ['#f3f3f3', 'transparent'],
-        opacity: 0.5
+    }
+  },
+  dataLabels: { enabled: false }
+};
+this.absenceTypeHorizontalChart = {
+  series: [
+    {
+      name: 'Absences',
+      data: absenceValues
+    }
+  ],
+
+  chart: {
+    type: 'bar',
+    height: 360,
+    toolbar: { show: false }
+  },
+
+  plotOptions: {
+    bar: {
+      horizontal: true,
+      borderRadius: 10,
+      barHeight: '55%',
+      distributed: true
+    }
+  },
+
+  colors: [
+    '#ef4444', // Maladie
+    '#f97316', // Exceptionnel
+    '#eab308', // Annuel
+    '#3b82f6', // Autorisation
+    '#6b7280'  // Sans justification
+  ],
+
+  dataLabels: {
+    enabled: true,
+    textAnchor: 'start',
+    offsetX: 10,
+    formatter: (val: number) => {
+      const percent = ((val / absenceTotal) * 100).toFixed(1);
+      return `${val} (${percent}%)`;
+    }
+  },
+
+  // ✅ LES CATEGORIES ICI (ET PAS AILLEURS)
+  xaxis: {
+    categories: [
+      'Maladie',
+      'Exceptionnel',
+      'Annuel',
+      'Autorisation',
+      'Sans justification'
+    ],
+    min: 0,
+    max: Math.max(...absenceValues) + 2,
+    labels: {
+      style: {
+        fontSize: '12px',
+        colors: '#6b7280'
       }
-    },
-    xaxis: {
-      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
-    },
-    yaxis: {
-      labels: {
-        offsetX: -15,
+    }
+  },
+
+  yaxis: {
+    labels: {
+      style: {
+        fontSize: '13px',
+        colors: '#374151',
+        fontWeight: 500
       }
-    },
-    colors: ['#4CAF50', '#F44336'] // Green for Present, Red for Absent
+    }
+  },
+
+  grid: {
+    borderColor: '#eef0f4',
+    strokeDashArray: 4
+  },
+
+  legend: {
+    show: false
   }
+};
+
+
+this.absenceTypeChart = {
+  series: [
+    {
+      name: 'Nombre d’absences',
+      data: [8, 3, 2, 1, 1]
+    }
+  ],
+  chart: {
+    type: 'bar',
+    height: 300,
+    toolbar: { show: false }
+  },
+  xaxis: {
+    categories: [
+      'Maladie',
+      'Exceptionnel',
+      'Annuel',
+      'Autorisation',
+      'Sans justification'
+    ]
+  },
+  colors: ['#f97316'],
+  plotOptions: {
+    bar: {
+      borderRadius: 8,
+      columnWidth: '45%'
+    }
+  },
+  dataLabels: {
+    enabled: true
+  }
+};
+
+
+
+  // Department presence bar chart
+this.deptPresence = {
+  series: [{
+    name: 'Employés présents',
+    data: [78, 65, 52, 48, 40, 32]
+  }],
+
+  chart: {
+    type: 'bar',
+    height: 300,
+    toolbar: { show: false }
+  },
+
+  colors: ['#6366f1'],
+
+  xaxis: {
+    categories: [
+      'IT & Développement',
+      'Ventes',
+      'Marketing',
+      'Finance',
+      'RH',
+      'Support'
+    ],
+    labels: {
+      style: {
+        fontSize: '12px',
+        colors: '#6b7280'
+      }
+    }
+  },
+
+  plotOptions: {
+    bar: {
+      borderRadius: 8,
+      columnWidth: '45%'
+    }
+  }
+};
+
+
+
+
+  // Daily report line chart
+this.daily_chart = {
+  series: [
+    { name: 'Présent', data: [60, 40, 30, 20, 70] },
+    { name: 'Absent', data: [20, 60, 45, 60, 80] }
+  ],
+
+  chart: {
+    type: 'line',
+    height: 300,
+    zoom: { enabled: false },
+    toolbar: { show: false }
+  },
+
+  colors: ['#22c55e84', '#ef4444'],
+
+  stroke: {
+    curve: 'smooth',
+    width: 5        
+  },
+
+  xaxis: {
+    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+    labels: {
+      style: {
+        fontSize: '12px',
+        colors: '#6b7280'
+      }
+    }
+  },
+
+  yaxis: {
+    labels: {
+      style: {
+        fontSize: '12px',
+        colors: '#6b7280'
+      }
+    }
+  },
+
+  dataLabels: {
+    enabled: false
+  },
+
+  grid: {
+    borderColor: '#eef0f4',
+    strokeDashArray: 4
+  },
+
+  legend: {
+    show: false
+  },
+
+  tooltip: {
+    theme: 'light'
+  },
+
+  plotOptions: {},   // requis par ton type
+  fill: {},          // requis
+  responsive: []     // requis
+};
+
+
+
 }
 }

@@ -9,16 +9,17 @@ import { BreadcrumbsComponent } from '../../../common/breadcrumbs/breadcrumbs.co
     selector: 'app-payslip',
     templateUrl: './payslip.component.html',
     styleUrl: './payslip.component.scss',
-    imports: [CommonModule,CollapseHeaderComponent,BreadcrumbsComponent]
+    imports: [CommonModule, CollapseHeaderComponent, BreadcrumbsComponent]
 })
 export class PayslipComponent {
   public routes = routes;
   initChecked = false;
-  breadCrumbItems: breadCrumbItems[] =[];
-  constructor(){
+  breadCrumbItems: breadCrumbItems[] = [];
+  
+  constructor() {
     this.breadCrumbItems = [
-            { label: 'HR' },
-            { label: 'Payslip', active: true }
-        ];
+      { label: 'RH' },
+      { label: 'Bulletin de Paie', active: true }
+    ];
   }
 }

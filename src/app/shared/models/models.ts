@@ -1,6 +1,168 @@
+export interface Sondage {
+  id: number;
+  titre: string;
+  description?: string;
+  auteur: string;
+  departement: string;
+  dateCreation: string;       
+  dateExpiration: string;    
+  statut: 'Actif' | 'Expiré' ;
+  
+  // Options du sondage
+  options: SondageOption[];
+  
+  // donnes de participation
+  totalVotes: number;
+  tauxParticipation?: number; 
+  
+  // Pour l'afficher (fil d'actualité)  (votant)
+  selectedOption?: number;   
+  voted?: boolean;          
+  
+  // Pour l'affichage admin
+  participants?: number;     
+  participationRate?: number;
+  expiration?: number;
+  nbrOptions?: number;  
+  isSelected?: boolean;     
+}
+
+export interface SondageOption {
+  id: number;
+  texte: string;
+  votes: number;
+  pourcentage?: number;      
+  couleur?: string;          // Pour les charts
+}
+export interface SondageForm{
+    titre: string;
+    description?: string;
+    options: string[];
+}
+  export interface sondageEmployes{
+     id: number;
+    titre: string;
+    creeIlYa: string;
+    expireDans: number;
+    options: string[];
+    selectedOption?: number;
+    voted: boolean;
+    totalVotes: number;
+  }
+  export interface AnnonceForm{
+    titre: string;
+    contenu: string;
+    visibilite:'public' | 'departement';
+    departementId?: number; //pour visibilite = departement
+    hashtags?: string[];
+  }
   export interface pageSelection {
   skip: number;
   limit: number;
+}
+export interface TicketBase {
+  id: number;
+  numeroTicket: string;
+  titre: string;
+  description?: string;
+  categorie: string;
+  priorite: 'Basse' | 'Moyenne' | 'Haute' | 'Urgente' | 'Par default';
+  statut: 'Ouvert' | 'En Cours' | 'Résolu' | 'Fermé';
+  createdAt: string;
+  isSelected?:boolean;
+}
+
+
+export interface TicketAdmin extends TicketBase {
+  assignedTo: {
+    id: number;
+    nom: string;
+    avatar: string;
+  } | null;
+  departement: string;
+  updated: string;
+
+}
+export interface NewTicketForm {
+  titre: string;
+  description: string;
+  categorie: string;
+  priorite: 'Basse' | 'Moyenne' | 'Haute' | 'Urgente' | 'Par default';
+  statut?: 'Ouvert' | 'En Cours' | 'Résolu' | 'Fermé'; 
+  assignedTo?: number; // role = canAssigneTicket just
+  departement?: string; // role = canAssigneTicket just
+}
+export interface TicketDetailData extends TicketBase{
+  // Historique des statuts 
+  historiqueStatuts: Array<{
+    date: string;
+    statut: string;
+    description: string;
+  }>;
+  
+  // Pour les actions
+  noteFermeture?: string;
+}
+export interface ChatContact {
+  id: number;
+  name: string;
+  avatar: string;
+  role: string;
+  department: string;
+  status: 'online' | 'offline' | 'indisponible' | 'away';
+  lastMessage: string;
+  lastMessageTime: string;
+  unreadCount: number;
+  isPinned: boolean;
+}
+export interface ChatMessage {
+  id: number;
+  senderId: number;
+  receiverId: number;
+  type: 'text' | 'file' | 'image';
+  content: string;
+  fileName?: string;
+  fileSize?: string;
+  time: string;
+  read: boolean;
+  timestamp: Date;
+}
+export interface ChatItem {
+  id: number;
+  name: string;
+  avatar?: string;
+  type: 'contact' | 'group';
+  lastMessage?: string;
+  unreadCount?: number;
+}
+export interface SelectedItem {
+  id: number;
+  name: string;
+  type: 'contact' | 'group';
+}
+export interface ChatGroupItem extends ChatItem {
+  type: 'group';
+  memberCount: number;
+  description?: string;
+  isAdmin?: boolean;
+  members?: number[];
+}
+export interface ChatGroup {
+  id: number;
+  name: string;
+  description: string;
+  createdBy: {
+    id: number;
+    name: string;
+    avatar: string;
+  };
+  createdAt: Date;
+  status: 'actif' | 'fermé';
+  memberCount: number;
+  members: number[];  
+  type: 'department' | 'announcement' | '';
+  lastActivity?: Date;
+  isSelected?:boolean
 }
 export interface apiResultFormat {
   data: [];
@@ -418,17 +580,22 @@ export interface attendanceemployee {
 
 
 
-
 export interface promotion {
   sNo?: number;
-  isSelected: boolean;
-  Image: string;
-  PromotedEmployee: string;
-  Department: string;
-  DesignationFrom: string;
-  DesignationTo: string;
-  PromotionDate: string;
+  Image?: string;
+  PromotedEmployee?: string;
+  Department?: string;
+  DesignationFrom?: string;
+  DesignationTo?: string;
+
+  OldSalary?: number;   
+  Bonus?: number;       
+  NewSalary?: number;   
+
+  PromotionDate?: string;
+  isSelected?: boolean;
 }
+
 
 export interface resignation {
   sNo?: number;
@@ -634,18 +801,4 @@ export interface ApiData {
   apiKey: string;
   status: string;
   createdDate: string;
-}
-
-
-export interface callHistory {
-  sNo?: number;
-  isSelected: boolean;
-  Name: string;
-  Email: string;
-  Phone: string;
-  CallType: string;
-  Class: string;
-  Duration: string;
-  Image: string;
-  DateTime: string;
 }

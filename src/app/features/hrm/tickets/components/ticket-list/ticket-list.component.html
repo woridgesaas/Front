@@ -1,0 +1,48 @@
+    @for (ticket of tickets; track ticket.id; let i = $index) {
+    <div class="card">
+                <div class="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3">
+                    <h5 class="text-info fw-medium">{{ ticket.departement }}</h5>
+                    <div class="d-flex align-items-center">
+                        <span class="badge" 
+                            [ngClass]="{
+                                'badge-danger': ticket.priorite === 'Urgente',
+                                'badge-warning': ticket.priorite === 'Haute',
+                                'badge-info': ticket.priorite === 'Moyenne',
+                                'badge-success': ticket.priorite === 'Basse'
+                            }">
+                        <i class="ti ti-circle-filled fs-5 me-1"></i>{{ ticket.priorite }}
+                        </span>
+                        
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div>
+                        <span class="badge badge-info rounded-pill mb-2">{{ ticket.numeroTicket }}</span>
+                        <div class="d-flex align-items-center mb-2">
+                            <h5 class="fw-semibold me-2"><a [routerLink]="routes.ticketDetails">{{ ticket.titre }}</a></h5>
+                            <span class="badge bg-outline-warning d-flex align-items-center ms-1"><i class="ti ti-circle-filled fs-5 me-1"></i>{{ ticket.statut }}</span>
+                        </div>
+                        <div class="d-flex align-items-center flex-wrap row-gap-2">
+                          @if(ticket.assignedTo){
+                            <p class="d-flex align-items-center mb-0 me-2">
+                                <img [src]="ticket.assignedTo.avatar" 
+                                    class="avatar avatar-xs rounded-circle me-2" 
+                                    [alt]="ticket.assignedTo.nom">
+                                Assigné à <span class="text-dark ms-1">{{ ticket.assignedTo.nom }}</span>
+                            </p>
+                            }@else {
+                               <span class="badge me-2" style="background-color: #02a8b5;">
+                                <i class="ti ti-user-question me-1"></i>À assigner
+                              </span>
+                            }
+                            <p class="d-flex align-items-center mb-0 me-2"><i class="ti ti-calendar-bolt me-1"></i>{{ticket.updated}}</p>
+                        </div>
+                    </div>
+                </div>
+    </div>}@empty {
+        <div>list est vide</div>
+    }@if(tickets.length > 0) {
+        <div class="text-center mb-4">
+            <a href="javascript:void(0);" class="btn btn-primary"><i class="ti ti-loader-3 me-1"></i>Voir plus</a>
+        </div>
+    }
