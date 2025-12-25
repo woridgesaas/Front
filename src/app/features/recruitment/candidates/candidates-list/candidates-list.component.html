@@ -4,7 +4,7 @@
   <div class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
     <app-breadcrumbs title="Candidats" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
     <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
- 
+
       <div class="me-2 mb-2">
         <div class="dropdown">
           <a href="javascript:void(0);"
@@ -22,7 +22,6 @@
           </ul>
         </div>
       </div>
-      <app-collapse-header></app-collapse-header>
     </div>
   </div>
   <!-- /Breadcrumb -->
@@ -260,7 +259,7 @@
                       <input class="form-check-input" type="checkbox" id="select-all" [(ngModel)]="initChecked">
                     </div>
                   </th>
-                 
+
                   <th mat-sort-header="Candidate">Candidat</th>
                   <th mat-sort-header="Applied_Role">Poste Souhaité</th>
                   <th mat-sort-header="Phone">Téléphone</th>
@@ -278,19 +277,19 @@
                       <input class="form-check-input" type="checkbox" [(ngModel)]="data.isSelected">
                     </div>
                   </td>
-                
+
                   <td>
                     <div class="d-flex align-items-center file-name-icon">
-                      <a href="javascript:void(0);" class="avatar avatar-md bg-light rounded" 
-                         data-bs-toggle="modal" 
+                      <a href="javascript:void(0);" class="avatar avatar-md bg-light rounded"
+                         data-bs-toggle="modal"
                          data-bs-target="#details_modal"
                          (click)="ouvrirDetails(data)">
                         <img src="assets/img/users/{{data.Image}}" class="img-fluid rounded-circle" alt="img">
                       </a>
                       <div class="ms-2">
                         <h6 class="fw-medium">
-                          <a href="javascript:void(0);" 
-                             data-bs-toggle="modal" 
+                          <a href="javascript:void(0);"
+                             data-bs-toggle="modal"
                              data-bs-target="#details_modal"
                              (click)="ouvrirDetails(data)">
                             {{data.Candidate}}
@@ -315,7 +314,7 @@
                   </td>
                   <td>
                     <div class="dropdown">
-                      <button [class]="'badge border dropdown-toggle ' + getStatutBadgeClass(data.Status)" 
+                      <button [class]="'badge border dropdown-toggle ' + getStatutBadgeClass(data.Status)"
                               style="border: none; background: transparent;"
                               data-bs-toggle="dropdown">
                         <i class="ti ti-point-filled"></i>{{ traduireStatut(data.Status) }}
@@ -359,16 +358,16 @@
                   </td>
                   <td>
                     <div class="action-icon d-inline-flex">
-                      <a href="javascript:void(0);" 
-                         class="me-2" 
-                         data-bs-toggle="modal" 
+                      <a href="javascript:void(0);"
+                         class="me-2"
+                         data-bs-toggle="modal"
                          data-bs-target="#details_modal"
                          (click)="ouvrirDetails(data)"
                          title="Voir les détails">
                         <i class="ti ti-eye"></i>
                       </a>
-                      <a href="javascript:void(0);" 
-                         data-bs-toggle="modal" 
+                      <a href="javascript:void(0);"
+                         data-bs-toggle="modal"
                          data-bs-target="#delete_modal"
                          (click)="ouvrirModalSupprimer(data)"
                          title="Supprimer">

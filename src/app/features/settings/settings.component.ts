@@ -3,7 +3,6 @@ import { filter } from 'rxjs/operators';
 import { breadCrumbItems } from '../../shared/models/models';
 import { routes } from '../../shared/routes/routes';
 import { BreadcrumbsComponent } from '../common/breadcrumbs/breadcrumbs.component';
-import { CollapseHeaderComponent } from '../common/collapse-header/collapse-header.component';
 import { FooterComponent } from '../common/footer/footer.component';
 import { CommonModule } from '@angular/common';
 import {
@@ -21,7 +20,6 @@ import {
   imports: [
     RouterModule,
     BreadcrumbsComponent,
-    CollapseHeaderComponent,
     FooterComponent,
     CommonModule,
   ],
@@ -46,7 +44,7 @@ export class SettingsComponent implements OnInit {
       });
   }
 
-  //* Get deepest active child route 
+  //* Get deepest active child route
   private getDeepestChild(route: ActivatedRoute): ActivatedRoute {
     while (route.firstChild) {
       route = route.firstChild;

@@ -5,15 +5,14 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { MatSelectModule } from '@angular/material/select';
-import { RouterLink } from '@angular/router';
 
 @Component({
-    selector: 'app-employees-modal',
-    templateUrl: './employees-modal.component.html',
-    styleUrl: './employees-modal.component.scss',
-    imports: [CommonModule,BsDatepickerModule,MatSelectModule,RouterLink]
+  selector: 'app-employees-modal',
+  templateUrl: './employees-modal.component.html',
+  styleUrl: './employees-modal.component.scss',
+  imports: [CommonModule, BsDatepickerModule, MatSelectModule],
 })
-export class EmployeesModalComponent implements OnInit, OnDestroy{
+export class EmployeesModalComponent implements OnInit, OnDestroy {
   values: string[] = ['Jerald', 'Andrew', 'Philip', 'Davis'];
   values2: string[] = ['Hendry', 'James'];
   values3: string[] = ['Dwight'];
@@ -33,7 +32,7 @@ export class EmployeesModalComponent implements OnInit, OnDestroy{
   });
   selectedFieldSet: number[] = [0];
   selectedFieldSet2: number[] = [0];
-  isOpen = false
+  isOpen = false;
   openSuccessModal() {
     this.isOpen = !this.isOpen;
   }
@@ -60,29 +59,28 @@ export class EmployeesModalComponent implements OnInit, OnDestroy{
       this.selectedFieldSet2[0]--;
     }
   }
-    // Open the dropdown
-    openDropdown() {
-      this.dropdownOpen = true;
-    }
+  // Open the dropdown
+  openDropdown() {
+    this.dropdownOpen = true;
+  }
 
-    // Close the dropdown
-    closeDropdown() {
-      this.dropdownOpen = false;
-    }
+  // Close the dropdown
+  closeDropdown() {
+    this.dropdownOpen = false;
+  }
 
-    // Update displayed time when selection changes
-    onTimeChange() {
-      this.closeDropdown(); // Close dropdown after time selection
-    }
+  // Update displayed time when selection changes
+  onTimeChange() {
+    this.closeDropdown(); // Close dropdown after time selection
+  }
   ngOnInit(): void {
-
     this.editor = new Editor();
   }
   ngOnDestroy(): void {
-    this.isOpen = false
+    this.isOpen = false;
     this.editor.destroy();
   }
-  public password: boolean[] = [false,false,false,false];
+  public password: boolean[] = [false, false, false, false];
   togglePassword(index: number) {
     this.password[index] = !this.password[index];
   }

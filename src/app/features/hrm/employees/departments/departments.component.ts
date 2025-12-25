@@ -1,13 +1,20 @@
 import { Component, OnDestroy } from '@angular/core';
 import { routes } from '../../../../shared/routes/routes';
-import { apiResultFormat, breadCrumbItems, department } from '../../../../shared/models/models';
-import { pageSelection, PaginationService, tablePageSize } from '../../../../shared/custom-pagination/pagination.service';
+import {
+  apiResultFormat,
+  breadCrumbItems,
+  department,
+} from '../../../../shared/models/models';
+import {
+  pageSelection,
+  PaginationService,
+  tablePageSize,
+} from '../../../../shared/custom-pagination/pagination.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { DataService } from '../../../../shared/data/data.service';
 import { Router, RouterLink, RouterModule } from '@angular/router';
 import { Sort } from '@angular/material/sort';
 import { CommonModule } from '@angular/common';
-import { CollapseHeaderComponent } from '../../../common/collapse-header/collapse-header.component';
 import { BreadcrumbsComponent } from '../../../common/breadcrumbs/breadcrumbs.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { CustomPaginationComponent } from '../../../../shared/custom-pagination/custom-pagination.component';
@@ -15,12 +22,19 @@ import { FormsModule } from '@angular/forms';
 import { MatSortModule } from '@angular/material/sort';
 
 @Component({
-    selector: 'app-departments',
-    templateUrl: './departments.component.html',
-    styleUrl: './departments.component.scss',
-    imports: [CommonModule,RouterModule,
-      CustomPaginationComponent,
-      CollapseHeaderComponent,RouterLink,BreadcrumbsComponent,BsDatepickerModule,FormsModule,MatSortModule]
+  selector: 'app-departments',
+  templateUrl: './departments.component.html',
+  styleUrl: './departments.component.scss',
+  imports: [
+    CommonModule,
+    RouterModule,
+    CustomPaginationComponent,
+    RouterLink,
+    BreadcrumbsComponent,
+    BsDatepickerModule,
+    FormsModule,
+    MatSortModule,
+  ],
 })
 export class DepartmentsComponent implements OnDestroy {
   public routes = routes;
@@ -39,12 +53,12 @@ export class DepartmentsComponent implements OnDestroy {
   public pageSelection: pageSelection[] = [];
   dataSource!: MatTableDataSource<department>;
   public searchDataValue = '';
-  breadCrumbItems: breadCrumbItems[] =[];
+  breadCrumbItems: breadCrumbItems[] = [];
   bsValue = new Date();
   bsRangeValue: Date[];
   maxDate = new Date();
-  public password: boolean[] = [false,false,false,false];
-  isOpen = false
+  public password: boolean[] = [false, false, false, false];
+  isOpen = false;
   togglePassword(index: number) {
     this.password[index] = !this.password[index];
   }
@@ -52,18 +66,17 @@ export class DepartmentsComponent implements OnDestroy {
     this.isOpen = !this.isOpen;
   }
   ngOnDestroy(): void {
-    this.isOpen = false
+    this.isOpen = false;
   }
   constructor(
     private data: DataService,
     private router: Router,
     private pagination: PaginationService
-  ) 
-  {
+  ) {
     this.breadCrumbItems = [
       { label: 'Employés' },
-      { label: 'Départements', active: true }
-  ];
+      { label: 'Départements', active: true },
+    ];
     this.data.getdepartments().subscribe((apiRes: apiResultFormat) => {
       this.actualData = apiRes.data;
       this.pagination.tablePageSize.subscribe((res: tablePageSize) => {
@@ -72,7 +85,6 @@ export class DepartmentsComponent implements OnDestroy {
           this.pageSize = res.pageSize;
         }
       });
-      
     });
     this.maxDate.setDate(this.maxDate.getDate() + 7);
     this.bsRangeValue = [this.bsValue, this.maxDate];
@@ -103,13 +115,13 @@ export class DepartmentsComponent implements OnDestroy {
     });
   }
 
-  public row=true;
+  public row = true;
   public searchData(value: string): void {
     this.searchDataValue = value.trim().toLowerCase();
     this.dataSource.filter = this.searchDataValue;
     this.tableData = this.dataSource.filteredData;
     this.row = this.tableData.length > 0;
-  
+
     if (this.searchDataValue !== '') {
       // Handle filtered data
       this.pagination.calculatePageSize.next({

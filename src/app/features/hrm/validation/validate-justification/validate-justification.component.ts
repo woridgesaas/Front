@@ -1,41 +1,36 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-
 import { BreadcrumbsComponent } from '../../../common/breadcrumbs/breadcrumbs.component';
-import { CollapseHeaderComponent } from '../../../common/collapse-header/collapse-header.component';
 import { FooterComponent } from '../../../common/footer/footer.component';
 import { routes } from '../../../../shared/routes/routes';
-
 
 @Component({
   standalone: true,
   selector: 'app-validate-justification',
- templateUrl: './validate-Justification.component.html',
+  templateUrl: './validate-Justification.component.html',
   styleUrls: ['./validate-justification.component.scss'],
-imports: [
-  CommonModule,
-  FormsModule,              
-BsDatepickerModule,
-  BreadcrumbsComponent,
-  CollapseHeaderComponent,
-  FooterComponent
-],
-
+  imports: [
+    CommonModule,
+    FormsModule,
+    BsDatepickerModule,
+    BreadcrumbsComponent,
+    FooterComponent,
+  ],
 })
 export class ValidateJustificationComponent implements OnInit {
-bsRangeValue?: Date[];
+  bsRangeValue?: Date[];
 
   employees: any[] = [];
   departments: any[] = [];
   public routes = routes;
-breadCrumbItems = [
-  { label: 'Accueil', link: '/' },
-  { label: 'RH Interne', link: '/hrm' },
-  { label: 'Justifications', active: true }
-];
+  breadCrumbItems = [
+    { label: 'Accueil', link: '/' },
+    { label: 'RH Interne', link: '/hrm' },
+    { label: 'Justifications', active: true },
+  ];
 
   constructor(private http: HttpClient) {}
 
@@ -54,7 +49,7 @@ breadCrumbItems = [
       },
       error: (err) => {
         console.error('Erreur chargement employés', err);
-      }
+      },
     });
   }
 
@@ -72,7 +67,7 @@ breadCrumbItems = [
       { Department: 'Gestion des comptes' },
       { Department: 'Marketing' },
       { Department: 'Administration' },
-      { Department: 'Développement commercial' }
+      { Department: 'Développement commercial' },
     ];
   }
 
@@ -101,22 +96,21 @@ breadCrumbItems = [
   }
   selectedEmployee: any = null;
 
-openRefuseModal(emp: any) {
-  this.selectedEmployee = emp;
-  const modal = new (window as any).bootstrap.Modal(
-    document.getElementById('confirmRefuseModal')
-  );
-  modal.show();
-}
-
-confirmRefuse() {
-  if (this.selectedEmployee) {
-    this.selectedEmployee.Status = 'Refusée';
+  openRefuseModal(emp: any) {
+    this.selectedEmployee = emp;
+    const modal = new (window as any).bootstrap.Modal(
+      document.getElementById('confirmRefuseModal')
+    );
+    modal.show();
   }
 
-  const modalEl = document.getElementById('confirmRefuseModal');
-  const modal = (window as any).bootstrap.Modal.getInstance(modalEl);
-  modal.hide();
-}
+  confirmRefuse() {
+    if (this.selectedEmployee) {
+      this.selectedEmployee.Status = 'Refusée';
+    }
 
+    const modalEl = document.getElementById('confirmRefuseModal');
+    const modal = (window as any).bootstrap.Modal.getInstance(modalEl);
+    modal.hide();
+  }
 }

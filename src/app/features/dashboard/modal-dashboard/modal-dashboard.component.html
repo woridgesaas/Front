@@ -4,7 +4,10 @@
     <div
       class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3"
     >
-      <app-breadcrumbs title="Admin Dashboard" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+      <app-breadcrumbs
+        title="Admin Dashboard"
+        [breadcrumbItems]="breadCrumbItems"
+      ></app-breadcrumbs>
       <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
         <div class="me-2 mb-2">
           <div class="dropdown">
@@ -46,7 +49,6 @@
             />
           </div>
         </div>
-        <app-collapse-header></app-collapse-header>
       </div>
     </div>
     <!-- /Breadcrumb -->
@@ -75,8 +77,8 @@
               You have
               <span class="text-primary text-decoration-underline">21</span>
               Pending Approvals &
-              <span class="text-primary text-decoration-underline">14</span> Leave
-              Requests
+              <span class="text-primary text-decoration-underline">14</span>
+              Leave Requests
             </p>
           </div>
         </div>
@@ -102,7 +104,7 @@
 
     <div class="row">
       <!-- Widget Info -->
-          <div class="col-xxl-8 d-flex">
+      <div class="col-xxl-8 d-flex">
         <div class="row flex-fill">
           <div class="col-md-4 d-flex">
             <div class="card flex-fill">
@@ -110,9 +112,7 @@
                 <span class="avatar rounded-circle bg-primary mb-2">
                   <i class="ti ti-calendar-share fs-16"></i>
                 </span>
-                <h6 class="fs-13 fw-medium text-default mb-1">
-                  Attendance
-                </h6>
+                <h6 class="fs-13 fw-medium text-default mb-1">Attendance</h6>
                 <h3 class="mb-3">
                   91/99
                   <span class="fs-12 fw-medium text-success"
@@ -125,7 +125,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="col-md-4 d-flex">
             <div class="card flex-fill">
               <div class="card-body">
@@ -141,9 +141,7 @@
                     ><i class="fa-solid fa-caret-up me-1"></i>+2.1%</span
                   >
                 </h3>
-                <a [routerLink]="" class="link-default"
-                  >View All</a
-                >
+                <a [routerLink]="" class="link-default">View All</a>
               </div>
             </div>
           </div>
@@ -153,14 +151,18 @@
                 <span class="avatar rounded-circle bg-success mb-2">
                   <i class="ti ti-users-group fs-16"></i>
                 </span>
-                <h6 class="fs-13 fw-medium text-default mb-1">Job Applicants</h6>
+                <h6 class="fs-13 fw-medium text-default mb-1">
+                  Job Applicants
+                </h6>
                 <h3 class="mb-3">
                   98
                   <span class="fs-12 fw-medium text-success"
                     ><i class="fa-solid fa-caret-up me-1"></i>+2.1%</span
                   >
                 </h3>
-                <a [routerLink]="routes.jobList" class="link-default">View All</a>
+                <a [routerLink]="routes.jobList" class="link-default"
+                  >View All</a
+                >
               </div>
             </div>
           </div>
@@ -177,7 +179,9 @@
                     ><i class="fa-solid fa-caret-down me-1"></i>-11.2%</span
                   >
                 </h3>
-                <a [routerLink]="routes.candidateslist" class="link-default">View All</a>
+                <a [routerLink]="routes.candidateslist" class="link-default"
+                  >View All</a
+                >
               </div>
             </div>
           </div>
@@ -344,7 +348,9 @@
                 <div class="col-6">
                   <div class="p-2 flex-fill border-bottom text-end">
                     <p class="fs-13 mb-2">
-                      <i class="ti ti-square-filled me-2 text-secondary fs-12"></i
+                      <i
+                        class="ti ti-square-filled me-2 text-secondary fs-12"
+                      ></i
                       >Contract <span class="text-gray-9">(20%)</span>
                     </p>
                     <h2 class="display-1">112</h2>
@@ -362,7 +368,8 @@
                 <div class="col-6">
                   <div class="p-2 flex-fill text-end">
                     <p class="fs-13 mb-2">
-                      <i class="ti ti-square-filled text-pink me-2 fs-12"></i>WFH
+                      <i class="ti ti-square-filled text-pink me-2 fs-12"></i
+                      >WFH
                       <span class="text-gray-9">(20%)</span>
                     </p>
                     <h2 class="display-1">04</h2>
@@ -378,7 +385,10 @@
                 <span class="me-2">
                   <i class="ti ti-award-filled text-primary fs-24"></i>
                 </span>
-                <a [routerLink]="routes.employeeDetails" class="avatar avatar-md me-2">
+                <a
+                  [routerLink]="routes.employeeDetails"
+                  class="avatar avatar-md me-2"
+                >
                   <img
                     src="assets/img/profiles/avatar-24.jpg"
                     class="rounded-circle border border-white"
@@ -397,7 +407,9 @@
                 <h5 class="text-primary">99%</h5>
               </div>
             </div>
-            <a [routerLink]="routes.employeeList" class="btn btn-light btn-md w-100"
+            <a
+              [routerLink]="routes.employeeList"
+              class="btn btn-light btn-md w-100"
               >View All Employees</a
             >
           </div>
@@ -539,17 +551,23 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end p-3">
                   <li>
-                    <a href="javascript:void(0);" class="dropdown-item rounded-1"
+                    <a
+                      href="javascript:void(0);"
+                      class="dropdown-item rounded-1"
                       >Finance</a
                     >
                   </li>
                   <li>
-                    <a href="javascript:void(0);" class="dropdown-item rounded-1"
+                    <a
+                      href="javascript:void(0);"
+                      class="dropdown-item rounded-1"
                       >Development</a
                     >
                   </li>
                   <li>
-                    <a href="javascript:void(0);" class="dropdown-item rounded-1"
+                    <a
+                      href="javascript:void(0);"
+                      class="dropdown-item rounded-1"
                       >Marketing</a
                     >
                   </li>
@@ -565,17 +583,23 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end p-3">
                   <li>
-                    <a href="javascript:void(0);" class="dropdown-item rounded-1"
+                    <a
+                      href="javascript:void(0);"
+                      class="dropdown-item rounded-1"
                       >This Month</a
                     >
                   </li>
                   <li>
-                    <a href="javascript:void(0);" class="dropdown-item rounded-1"
+                    <a
+                      href="javascript:void(0);"
+                      class="dropdown-item rounded-1"
                       >This Week</a
                     >
                   </li>
                   <li>
-                    <a href="javascript:void(0);" class="dropdown-item rounded-1"
+                    <a
+                      href="javascript:void(0);"
+                      class="dropdown-item rounded-1"
                       >Today</a
                     >
                   </li>
@@ -597,7 +621,9 @@
                     />
                   </a>
                   <div class="ms-2">
-                    <h6 class="fs-14 fw-medium text-truncate">Daniel Esbella</h6>
+                    <h6 class="fs-14 fw-medium text-truncate">
+                      Daniel Esbella
+                    </h6>
                     <p class="fs-13">UI/UX Designer</p>
                   </div>
                 </div>
@@ -724,7 +750,9 @@
                 >
               </div>
             </div>
-            <a [routerLink]="routes.attendanceemployee" class="btn btn-light btn-md w-100"
+            <a
+              [routerLink]="routes.attendanceemployee"
+              class="btn btn-light btn-md w-100"
               >View All Attendance</a
             >
           </div>
@@ -741,7 +769,9 @@
             class="card-header pb-2 d-flex align-items-center justify-content-between flex-wrap"
           >
             <h5 class="mb-2">Jobs Applicants</h5>
-            <a [routerLink]="routes.jobList" class="btn btn-light btn-md mb-2">View All</a>
+            <a [routerLink]="routes.jobList" class="btn btn-light btn-md mb-2"
+              >View All</a
+            >
           </div>
           <div class="card-body">
             <ul
@@ -845,7 +875,9 @@
                     </a>
                     <div class="ms-2 overflow-hidden">
                       <p class="text-dark fw-medium text-truncate mb-0">
-                        <a href="javascript:void(0);">Junior React Developer </a>
+                        <a href="javascript:void(0);"
+                          >Junior React Developer
+                        </a>
                       </p>
                       <span class="fs-12">No of Openings : 30 </span>
                     </div>
@@ -872,7 +904,9 @@
                     </a>
                     <div class="ms-2 overflow-hidden">
                       <p class="text-dark fw-medium text-truncate mb-0">
-                        <a href="javascript:void(0);">Senior Laravel Developer</a>
+                        <a href="javascript:void(0);"
+                          >Senior Laravel Developer</a
+                        >
                       </p>
                       <span class="fs-12">No of Openings : 40 </span>
                     </div>
@@ -941,7 +975,9 @@
                       >
                     </div>
                   </div>
-                  <span class="badge badge-info badge-xs">Python Developer</span>
+                  <span class="badge badge-info badge-xs"
+                    >Python Developer</span
+                  >
                 </div>
                 <div
                   class="d-flex align-items-center justify-content-between mb-4"
@@ -969,7 +1005,9 @@
                       >
                     </div>
                   </div>
-                  <span class="badge badge-pink badge-xs">Android Developer</span>
+                  <span class="badge badge-pink badge-xs"
+                    >Android Developer</span
+                  >
                 </div>
                 <div
                   class="d-flex align-items-center justify-content-between mb-0"
@@ -997,7 +1035,9 @@
                       >
                     </div>
                   </div>
-                  <span class="badge badge-purple badge-xs">React Developer</span>
+                  <span class="badge badge-purple badge-xs"
+                    >React Developer</span
+                  >
                 </div>
               </div>
             </div>
@@ -1013,7 +1053,9 @@
             class="card-header pb-2 d-flex align-items-center justify-content-between flex-wrap"
           >
             <h5 class="mb-2">Employees</h5>
-            <a [routerLink]="routes.employeeList" class="btn btn-light btn-md mb-2"
+            <a
+              [routerLink]="routes.employeeList"
+              class="btn btn-light btn-md mb-2"
               >View All</a
             >
           </div>
@@ -1159,7 +1201,6 @@
 
       <!-- /Todo -->
     </div>
-
 
     <div class="row">
       <!-- Schedules -->
@@ -1329,7 +1370,7 @@
       <!-- /Recent Activities -->
 
       <!-- Birthdays -->
-      
+
       <!-- /Birthdays -->
     </div>
   </div>
@@ -1342,5 +1383,3 @@
 <!-- Add Project -->
 
 <!-- /Add Project -->
-
-

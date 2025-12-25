@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
 import { FooterComponent } from '../../common/footer/footer.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -19,14 +19,14 @@ interface Plateforme {
   selector: 'app-jobs',
   templateUrl: './jobs.component.html',
   styleUrl: './jobs.component.scss',
-  imports: [RouterOutlet, FooterComponent, CommonModule, RouterLink, FormsModule]
+  imports: [RouterOutlet, FooterComponent, CommonModule, FormsModule],
 })
 export class JobsComponent {
   public routes = routes;
 
   // Données partagées
   public jobsData: JobsInfo[] = [];
-  
+
   // Variables pour les modales
   offrePourPoster: JobsInfo | null = null;
   offrePourModifier: JobsInfo | null = null;
@@ -38,48 +38,48 @@ export class JobsComponent {
 
   // Plateformes disponibles
   plateformesDisponibles: Plateforme[] = [
-    { 
-      id: 'linkedin', 
-      nom: 'LinkedIn', 
+    {
+      id: 'linkedin',
+      nom: 'LinkedIn',
       icone: 'ti ti-brand-linkedin',
       description: 'Réseau professionnel mondial',
-      selectionnee: false 
+      selectionnee: false,
     },
-    { 
-      id: 'indeed', 
-      nom: 'Indeed', 
+    {
+      id: 'indeed',
+      nom: 'Indeed',
       icone: 'ti ti-briefcase',
-      description: 'Premier site d\'emploi mondial',
-      selectionnee: false 
+      description: "Premier site d'emploi mondial",
+      selectionnee: false,
     },
-    { 
-      id: 'facebook', 
-      nom: 'Facebook Jobs', 
+    {
+      id: 'facebook',
+      nom: 'Facebook Jobs',
       icone: 'ti ti-brand-facebook',
-      description: 'Offres d\'emploi sur Facebook',
-      selectionnee: false 
+      description: "Offres d'emploi sur Facebook",
+      selectionnee: false,
     },
-    { 
-      id: 'site', 
-      nom: 'Site Entreprise', 
+    {
+      id: 'site',
+      nom: 'Site Entreprise',
       icone: 'ti ti-world',
       description: 'Votre site carrières',
-      selectionnee: false 
+      selectionnee: false,
     },
-    { 
-      id: 'apec', 
-      nom: 'APEC', 
+    {
+      id: 'apec',
+      nom: 'APEC',
       icone: 'ti ti-user-check',
       description: 'Cadres et jeunes diplômés',
-      selectionnee: false 
+      selectionnee: false,
     },
-    { 
-      id: 'pole-emploi', 
-      nom: 'Pôle Emploi', 
+    {
+      id: 'pole-emploi',
+      nom: 'Pôle Emploi',
       icone: 'ti ti-building',
-      description: 'Service public de l\'emploi',
-      selectionnee: false 
-    }
+      description: "Service public de l'emploi",
+      selectionnee: false,
+    },
   ];
 
   constructor(private data: DataService) {
@@ -105,7 +105,7 @@ export class JobsComponent {
       Roll: '',
       Image: 'briefcase.svg',
       Experience: '',
-      isSelected: false
+      isSelected: false,
     } as JobsInfo;
   }
 
@@ -115,8 +115,14 @@ export class JobsComponent {
 
   creerOffre(): void {
     // Validation des champs obligatoires
-    if (!this.nouvelleOffre.Job_Title || !this.nouvelleOffre.Category || !this.nouvelleOffre.Location) {
-      alert('⚠️ Veuillez remplir tous les champs obligatoires (Titre, Catégorie, Localisation)');
+    if (
+      !this.nouvelleOffre.Job_Title ||
+      !this.nouvelleOffre.Category ||
+      !this.nouvelleOffre.Location
+    ) {
+      alert(
+        '⚠️ Veuillez remplir tous les champs obligatoires (Titre, Catégorie, Localisation)'
+      );
       return;
     }
 
@@ -129,20 +135,20 @@ export class JobsComponent {
     // Génération d'un ID unique
     this.nouvelleOffre.Job_ID = 'JOB-' + Date.now();
     this.nouvelleOffre.Posted_Date = new Date().toLocaleDateString('fr-FR');
-    
-    console.log('✅ Création de l\'offre:', this.nouvelleOffre);
+
+    console.log("✅ Création de l'offre:", this.nouvelleOffre);
 
     // Appel API (à implémenter)
     // this.data.creerOffre(this.nouvelleOffre).subscribe(...)
 
     // Ajout local
     this.jobsData.unshift({ ...this.nouvelleOffre });
-    
+
     // Afficher message de succès
     this.messageSucces = 'Offre Créée avec Succès !';
     this.detailSucces = `L'offre "${this.nouvelleOffre.Job_Title}" a été créée et ajoutée à votre liste.`;
     this.isOpen = true;
-    
+
     this.annulerModalCreer();
   }
 
@@ -154,7 +160,7 @@ export class JobsComponent {
   ouvrirModalPoster(offre: JobsInfo): void {
     this.offrePourPoster = { ...offre };
     // Réinitialiser toutes les sélections
-    this.plateformesDisponibles.forEach(p => p.selectionnee = false);
+    this.plateformesDisponibles.forEach((p) => (p.selectionnee = false));
   }
 
   togglePlateforme(plateforme: Plateforme): void {
@@ -166,15 +172,15 @@ export class JobsComponent {
 
     // Vérifier qu'au moins une plateforme est sélectionnée
     const plateformesSelectionnees = this.plateformesDisponibles
-      .filter(p => p.selectionnee)
-      .map(p => p.nom);
+      .filter((p) => p.selectionnee)
+      .map((p) => p.nom);
 
     if (plateformesSelectionnees.length === 0) {
       alert('⚠️ Veuillez sélectionner au moins une plateforme de publication');
       return;
     }
 
-    console.log('📤 Publication de l\'offre:', this.offrePourPoster.Job_Title);
+    console.log("📤 Publication de l'offre:", this.offrePourPoster.Job_Title);
     console.log('📍 Sur les plateformes:', plateformesSelectionnees);
 
     // Appel API (à implémenter)
@@ -182,15 +188,19 @@ export class JobsComponent {
 
     // Message de succès
     this.messageSucces = 'Offre Publiée avec Succès !';
-    this.detailSucces = `L'offre "${this.offrePourPoster.Job_Title}" a été publiée sur ${plateformesSelectionnees.length} plateforme(s) : ${plateformesSelectionnees.join(', ')}.`;
+    this.detailSucces = `L'offre "${
+      this.offrePourPoster.Job_Title
+    }" a été publiée sur ${
+      plateformesSelectionnees.length
+    } plateforme(s) : ${plateformesSelectionnees.join(', ')}.`;
     this.isOpen = true;
-    
+
     this.annulerModalPoster();
   }
 
   annulerModalPoster(): void {
     this.offrePourPoster = null;
-    this.plateformesDisponibles.forEach(p => p.selectionnee = false);
+    this.plateformesDisponibles.forEach((p) => (p.selectionnee = false));
   }
 
   // ============ MODIFICATION D'OFFRE ============
@@ -207,13 +217,15 @@ export class JobsComponent {
       return;
     }
 
-    console.log('✏️ Modification de l\'offre:', this.offrePourModifier);
+    console.log("✏️ Modification de l'offre:", this.offrePourModifier);
 
     // Appel API (à implémenter)
     // this.data.modifierOffre(this.offrePourModifier).subscribe(...)
 
     // Mise à jour locale
-    const index = this.jobsData.findIndex(o => o.Job_ID === this.offrePourModifier!.Job_ID);
+    const index = this.jobsData.findIndex(
+      (o) => o.Job_ID === this.offrePourModifier!.Job_ID
+    );
     if (index !== -1) {
       this.jobsData[index] = { ...this.offrePourModifier };
     }
@@ -238,15 +250,20 @@ export class JobsComponent {
   supprimerOffre(): void {
     if (!this.offrePourSupprimer) return;
 
-    console.log('🗑️ Suppression de l\'offre:', this.offrePourSupprimer.Job_Title);
+    console.log(
+      "🗑️ Suppression de l'offre:",
+      this.offrePourSupprimer.Job_Title
+    );
 
     // Appel API (à implémenter)
     // this.data.supprimerOffre(this.offrePourSupprimer.Job_ID).subscribe(...)
 
     const titreSupprime = this.offrePourSupprimer.Job_Title;
-    
+
     // Suppression locale
-    this.jobsData = this.jobsData.filter(o => o.Job_ID !== this.offrePourSupprimer!.Job_ID);
+    this.jobsData = this.jobsData.filter(
+      (o) => o.Job_ID !== this.offrePourSupprimer!.Job_ID
+    );
 
     // Message de succès
     this.messageSucces = 'Offre Supprimée';
@@ -266,6 +283,6 @@ export class JobsComponent {
   }
 
   getNombrePlateformesSelectionnees(): number {
-    return this.plateformesDisponibles.filter(p => p.selectionnee).length;
+    return this.plateformesDisponibles.filter((p) => p.selectionnee).length;
   }
 }
