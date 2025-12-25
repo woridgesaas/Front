@@ -18,10 +18,18 @@ import {
   ChartComponent,
   NgApexchartsModule,
 } from 'ng-apexcharts';
-import { BsDatepickerDirective, BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import {
+  BsDatepickerDirective,
+  BsDatepickerModule,
+} from 'ngx-bootstrap/datepicker';
 import { Chart, registerables } from 'chart.js';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { Editor, NgxEditorModule, Toolbar, Validators } from 'ngx-editor';
 import { breadCrumbItems } from '../../../shared/models/models';
 import { routes } from '../../../shared/routes/routes';
@@ -31,7 +39,6 @@ import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 import { FooterComponent } from '../../common/footer/footer.component';
 import { RouterLink } from '@angular/router';
-import { CollapseHeaderComponent } from '../../common/collapse-header/collapse-header.component';
 import { BreadcrumbsComponent } from '../../common/breadcrumbs/breadcrumbs.component';
 export interface ChartOptions {
   series: ApexAxisChartSeries;
@@ -46,24 +53,23 @@ export interface ChartOptions {
 Chart.register(...registerables);
 
 @Component({
-    selector: 'app-modal-dashboard',
-    templateUrl: './modal-dashboard.component.html',
-    styleUrl: './modal-dashboard.component.scss',
-    imports: [
-      CommonModule,
-      MatSelectModule,
-      FormsModule,
-      NgxEditorModule,
-      BsDatepickerModule,
-      FooterComponent,
-      RouterLink,
-      NgApexchartsModule,
-      CollapseHeaderComponent,
-      BreadcrumbsComponent,
-      ReactiveFormsModule
-    ]
+  selector: 'app-modal-dashboard',
+  templateUrl: './modal-dashboard.component.html',
+  styleUrl: './modal-dashboard.component.scss',
+  imports: [
+    CommonModule,
+    MatSelectModule,
+    FormsModule,
+    NgxEditorModule,
+    BsDatepickerModule,
+    FooterComponent,
+    RouterLink,
+    NgApexchartsModule,
+    BreadcrumbsComponent,
+    ReactiveFormsModule,
+  ],
 })
-export class ModalDashboardComponent  implements OnInit, OnDestroy {
+export class ModalDashboardComponent implements OnInit, OnDestroy {
   routes = routes;
   base = '';
   values: string[] = ['Jerald', 'Andrew', 'Philip', 'Davis'];
@@ -105,9 +111,8 @@ export class ModalDashboardComponent  implements OnInit, OnDestroy {
       // Move to the previous step
       this.selectedFieldSet[0]--;
     }
-
   }
-  constructor(private common: CommonService,public layout:SettingService) {
+  constructor(private common: CommonService, public layout: SettingService) {
     this.selectedYear = new Date(new Date().getFullYear(), 0, 1);
     this.bsConfig = {
       minMode: 'year',
@@ -115,16 +120,13 @@ export class ModalDashboardComponent  implements OnInit, OnDestroy {
     };
     this.common.base.subscribe((res: string) => {
       this.base = res;
-     if (this.base === 'layout-horizontal'){
-      
+      if (this.base === 'layout-horizontal') {
         layout.changeLayoutMode('14');
-      }else if (this.base === 'layout-dark'){
+      } else if (this.base === 'layout-dark') {
         layout.changeThemeColor('2');
-      }else {
-
+      } else {
       }
     });
-
   }
 
   // Open the dropdown
@@ -296,7 +298,7 @@ export class ModalDashboardComponent  implements OnInit, OnDestroy {
     };
     this.attendancedoughcharts();
     this.mySemiDonutChart();
-    if(this.base !== 'layout-dark'){
+    if (this.base !== 'layout-dark') {
       this.layout.changeThemeColor('1');
     }
   }
@@ -388,6 +390,5 @@ export class ModalDashboardComponent  implements OnInit, OnDestroy {
     this.layout.themeColor.next('1');
     this.layout.changeLayoutMode('2');
     this.layout.changeThemeColor('1');
-    
   }
 }

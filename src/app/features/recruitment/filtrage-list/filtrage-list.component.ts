@@ -1,8 +1,6 @@
-// filtrage-list.component.ts
 import { Component, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { RouterOutlet } from '@angular/router';
@@ -50,28 +48,26 @@ interface FiltrageForm {
     CommonModule,
     FormsModule,
     MatSortModule,
-    RouterLink,
     RouterOutlet,
     FooterComponent,
   ],
   templateUrl: './filtrage-list.component.html',
-  styleUrls: ['./filtrage-list.component.scss']
+  styleUrls: ['./filtrage-list.component.scss'],
 })
 export class FiltrageListComponent implements OnDestroy {
-  
   initChecked = false;
-  
+
   // Variables de pagination
   public pageSize = 10;
   public tableData: CandidateInfo[] = [];
   public actualData: CandidateInfo[] = [];
   public totalData = 0;
   dataSource!: MatTableDataSource<CandidateInfo>;
-  
+
   // Modal pour voir toutes les compétences
   showAllSkillsModal = false;
   selectedCandidateSkills: string[] = [];
-  
+
   // Formulaire de filtrage
   filtrageForm: FiltrageForm = {
     competences: [],
@@ -81,7 +77,7 @@ export class FiltrageListComponent implements OnDestroy {
     langues: [],
     localisation: '',
     certifications: '',
-    soft_skills: []
+    soft_skills: [],
   };
 
   // Inputs temporaires pour tags
@@ -92,15 +88,43 @@ export class FiltrageListComponent implements OnDestroy {
 
   // Listes prédéfinies
   competencesDisponibles = [
-    'Angular', 'React', 'Vue.js', 'Node.js', 'Python', 'Java', 'PHP', 
-    'C#', 'JavaScript', 'TypeScript', 'MongoDB', 'PostgreSQL', 'MySQL',
-    'Docker', 'Kubernetes', 'AWS', 'Azure', 'Machine Learning', 'Data Science'
+    'Angular',
+    'React',
+    'Vue.js',
+    'Node.js',
+    'Python',
+    'Java',
+    'PHP',
+    'C#',
+    'JavaScript',
+    'TypeScript',
+    'MongoDB',
+    'PostgreSQL',
+    'MySQL',
+    'Docker',
+    'Kubernetes',
+    'AWS',
+    'Azure',
+    'Machine Learning',
+    'Data Science',
   ];
 
   outilsDisponibles = [
-    'Git', 'Docker', 'Kubernetes', 'Jenkins', 'GitLab CI', 'Jira', 
-    'Confluence', 'Trello', 'Slack', 'VS Code', 'IntelliJ', 'Postman',
-    'Figma', 'Adobe XD', 'Photoshop'
+    'Git',
+    'Docker',
+    'Kubernetes',
+    'Jenkins',
+    'GitLab CI',
+    'Jira',
+    'Confluence',
+    'Trello',
+    'Slack',
+    'VS Code',
+    'IntelliJ',
+    'Postman',
+    'Figma',
+    'Adobe XD',
+    'Photoshop',
   ];
 
   experiencesDisponibles = [
@@ -110,7 +134,7 @@ export class FiltrageListComponent implements OnDestroy {
     '3-5 ans',
     '5-7 ans',
     '7-10 ans',
-    '10+ ans'
+    '10+ ans',
   ];
 
   diplomesDisponibles = [
@@ -118,26 +142,50 @@ export class FiltrageListComponent implements OnDestroy {
     'Bac+2 (DUT/BTS)',
     'Bac+3 (Licence)',
     'Bac+5 (Master/Ingénieur)',
-    'Bac+8 (Doctorat)'
+    'Bac+8 (Doctorat)',
   ];
 
   languesDisponibles = [
-    'Français', 'Anglais', 'Arabe', 'Espagnol', 'Allemand', 'Italien'
+    'Français',
+    'Anglais',
+    'Arabe',
+    'Espagnol',
+    'Allemand',
+    'Italien',
   ];
 
   niveauxLangue = [
-    'Débutant', 'Intermédiaire', 'Avancé', 'Courant', 'Bilingue'
+    'Débutant',
+    'Intermédiaire',
+    'Avancé',
+    'Courant',
+    'Bilingue',
   ];
 
   softSkillsDisponibles = [
-    'Leadership', 'Communication', 'Travail en équipe', 'Créativité',
-    'Problem solving', 'Gestion du temps', 'Adaptabilité', 'Autonomie',
-    'Esprit critique', 'Gestion de projet'
+    'Leadership',
+    'Communication',
+    'Travail en équipe',
+    'Créativité',
+    'Problem solving',
+    'Gestion du temps',
+    'Adaptabilité',
+    'Autonomie',
+    'Esprit critique',
+    'Gestion de projet',
   ];
 
   localisationsDisponibles = [
-    'Casablanca', 'Rabat', 'Marrakech', 'Fès', 'Tanger', 'Agadir',
-    'Oujda', 'Kenitra', 'Tétouan', 'Meknès'
+    'Casablanca',
+    'Rabat',
+    'Marrakech',
+    'Fès',
+    'Tanger',
+    'Agadir',
+    'Oujda',
+    'Kenitra',
+    'Tétouan',
+    'Meknès',
   ];
 
   filteredLocalisations: string[] = [];
@@ -166,14 +214,14 @@ export class FiltrageListComponent implements OnDestroy {
       Contract_Type: 'CDI',
       Languages: [
         { langue: 'Français', niveau: 'Courant' },
-        { langue: 'Anglais', niveau: 'Avancé' }
+        { langue: 'Anglais', niveau: 'Avancé' },
       ],
       Diploma: 'Bac+5 (Master/Ingénieur)',
       Tools: ['Git', 'Docker', 'Jenkins'],
       Certifications: ['AWS Certified', 'Angular Expert'],
       Soft_Skills: ['Leadership', 'Communication', 'Travail en équipe'],
       Sector: 'Informatique',
-      isSelected: false
+      isSelected: false,
     },
     {
       id: 2,
@@ -190,14 +238,14 @@ export class FiltrageListComponent implements OnDestroy {
       Contract_Type: 'CDI',
       Languages: [
         { langue: 'Français', niveau: 'Bilingue' },
-        { langue: 'Anglais', niveau: 'Intermédiaire' }
+        { langue: 'Anglais', niveau: 'Intermédiaire' },
       ],
       Diploma: 'Bac+3 (Licence)',
       Tools: ['Figma', 'Adobe XD', 'Git'],
       Certifications: ['UX Design Certificate'],
       Soft_Skills: ['Créativité', 'Communication', 'Autonomie'],
       Sector: 'Design',
-      isSelected: false
+      isSelected: false,
     },
     {
       id: 3,
@@ -214,15 +262,15 @@ export class FiltrageListComponent implements OnDestroy {
       Contract_Type: 'CDI',
       Languages: [
         { langue: 'Français', niveau: 'Courant' },
-        { langue: 'Anglais', niveau: 'Courant' }
+        { langue: 'Anglais', niveau: 'Courant' },
       ],
       Diploma: 'Bac+5 (Master/Ingénieur)',
       Tools: ['Git', 'Docker', 'Kubernetes', 'Jira'],
       Certifications: ['AWS Solutions Architect', 'Python Expert'],
       Soft_Skills: ['Problem solving', 'Autonomie', 'Leadership'],
       Sector: 'Informatique',
-      isSelected: false
-    }
+      isSelected: false,
+    },
   ];
 
   constructor() {
@@ -254,9 +302,10 @@ export class FiltrageListComponent implements OnDestroy {
   filterCompetences(): void {
     const search = this.competenceInput.toLowerCase();
     if (search) {
-      this.filteredCompetences = this.competencesDisponibles.filter(comp =>
-        comp.toLowerCase().includes(search) && 
-        !this.filtrageForm.competences.includes(comp)
+      this.filteredCompetences = this.competencesDisponibles.filter(
+        (comp) =>
+          comp.toLowerCase().includes(search) &&
+          !this.filtrageForm.competences.includes(comp)
       );
     } else {
       this.filteredCompetences = [];
@@ -291,9 +340,10 @@ export class FiltrageListComponent implements OnDestroy {
   filterOutils(): void {
     const search = this.outilInput.toLowerCase();
     if (search) {
-      this.filteredOutils = this.outilsDisponibles.filter(outil =>
-        outil.toLowerCase().includes(search) && 
-        !this.filtrageForm.outils.includes(outil)
+      this.filteredOutils = this.outilsDisponibles.filter(
+        (outil) =>
+          outil.toLowerCase().includes(search) &&
+          !this.filtrageForm.outils.includes(outil)
       );
     } else {
       this.filteredOutils = [];
@@ -311,11 +361,13 @@ export class FiltrageListComponent implements OnDestroy {
   // Gestion des langues avec niveau
   ajouterLangue(): void {
     if (this.langueInput && this.niveauInput) {
-      const existe = this.filtrageForm.langues.find(l => l.langue === this.langueInput);
+      const existe = this.filtrageForm.langues.find(
+        (l) => l.langue === this.langueInput
+      );
       if (!existe) {
         this.filtrageForm.langues.push({
           langue: this.langueInput,
-          niveau: this.niveauInput
+          niveau: this.niveauInput,
         });
         this.langueInput = '';
         this.niveauInput = '';
@@ -347,7 +399,7 @@ export class FiltrageListComponent implements OnDestroy {
   // Autocomplete localisation
   filterLocalisations(): void {
     const search = this.filtrageForm.localisation.toLowerCase();
-    this.filteredLocalisations = this.localisationsDisponibles.filter(loc =>
+    this.filteredLocalisations = this.localisationsDisponibles.filter((loc) =>
       loc.toLowerCase().includes(search)
     );
   }
@@ -378,19 +430,25 @@ export class FiltrageListComponent implements OnDestroy {
 
       // Filtrage par compétences
       if (this.filtrageForm.competences.length > 0) {
-        filteredCandidates = filteredCandidates.filter(c =>
-          this.filtrageForm.competences.some(comp =>
-            c.Skills.some(skill => skill.toLowerCase().includes(comp.toLowerCase()))
+        filteredCandidates = filteredCandidates.filter((c) =>
+          this.filtrageForm.competences.some((comp) =>
+            c.Skills.some((skill) =>
+              skill.toLowerCase().includes(comp.toLowerCase())
+            )
           )
         );
       }
 
       // Filtrage par outils
       if (this.filtrageForm.outils.length > 0) {
-        filteredCandidates = filteredCandidates.filter(c =>
-          c.Tools && this.filtrageForm.outils.some(outil =>
-            c.Tools!.some(t => t.toLowerCase().includes(outil.toLowerCase()))
-          )
+        filteredCandidates = filteredCandidates.filter(
+          (c) =>
+            c.Tools &&
+            this.filtrageForm.outils.some((outil) =>
+              c.Tools!.some((t) =>
+                t.toLowerCase().includes(outil.toLowerCase())
+              )
+            )
         );
       }
 
@@ -398,61 +456,81 @@ export class FiltrageListComponent implements OnDestroy {
       if (this.filtrageForm.experience) {
         const expRange = this.filtrageForm.experience;
         if (expRange === '0-1 an') {
-          filteredCandidates = filteredCandidates.filter(c => c.Experience_Years <= 1);
+          filteredCandidates = filteredCandidates.filter(
+            (c) => c.Experience_Years <= 1
+          );
         } else if (expRange === '1-2 ans') {
-          filteredCandidates = filteredCandidates.filter(c => c.Experience_Years >= 1 && c.Experience_Years <= 2);
+          filteredCandidates = filteredCandidates.filter(
+            (c) => c.Experience_Years >= 1 && c.Experience_Years <= 2
+          );
         } else if (expRange === '2-3 ans') {
-          filteredCandidates = filteredCandidates.filter(c => c.Experience_Years >= 2 && c.Experience_Years <= 3);
+          filteredCandidates = filteredCandidates.filter(
+            (c) => c.Experience_Years >= 2 && c.Experience_Years <= 3
+          );
         } else if (expRange === '3-5 ans') {
-          filteredCandidates = filteredCandidates.filter(c => c.Experience_Years >= 3 && c.Experience_Years <= 5);
+          filteredCandidates = filteredCandidates.filter(
+            (c) => c.Experience_Years >= 3 && c.Experience_Years <= 5
+          );
         } else if (expRange === '5-7 ans') {
-          filteredCandidates = filteredCandidates.filter(c => c.Experience_Years >= 5 && c.Experience_Years <= 7);
+          filteredCandidates = filteredCandidates.filter(
+            (c) => c.Experience_Years >= 5 && c.Experience_Years <= 7
+          );
         } else if (expRange === '7-10 ans') {
-          filteredCandidates = filteredCandidates.filter(c => c.Experience_Years >= 7 && c.Experience_Years <= 10);
+          filteredCandidates = filteredCandidates.filter(
+            (c) => c.Experience_Years >= 7 && c.Experience_Years <= 10
+          );
         } else if (expRange === '10+ ans') {
-          filteredCandidates = filteredCandidates.filter(c => c.Experience_Years >= 10);
+          filteredCandidates = filteredCandidates.filter(
+            (c) => c.Experience_Years >= 10
+          );
         }
       }
 
       // Filtrage par diplôme
       if (this.filtrageForm.diplome) {
-        filteredCandidates = filteredCandidates.filter(c =>
-          c.Diploma === this.filtrageForm.diplome
+        filteredCandidates = filteredCandidates.filter(
+          (c) => c.Diploma === this.filtrageForm.diplome
         );
       }
 
       // Filtrage par langues
       if (this.filtrageForm.langues.length > 0) {
-        filteredCandidates = filteredCandidates.filter(c =>
-          c.Languages && this.filtrageForm.langues.every(fl =>
-            c.Languages!.some(cl => cl.langue === fl.langue)
-          )
+        filteredCandidates = filteredCandidates.filter(
+          (c) =>
+            c.Languages &&
+            this.filtrageForm.langues.every((fl) =>
+              c.Languages!.some((cl) => cl.langue === fl.langue)
+            )
         );
       }
 
       // Filtrage par localisation
       if (this.filtrageForm.localisation) {
-        filteredCandidates = filteredCandidates.filter(c =>
-          c.Location.toLowerCase().includes(this.filtrageForm.localisation.toLowerCase())
+        filteredCandidates = filteredCandidates.filter((c) =>
+          c.Location.toLowerCase().includes(
+            this.filtrageForm.localisation.toLowerCase()
+          )
         );
       }
 
       // Filtrage par certifications
       if (this.filtrageForm.certifications) {
         const certs = this.filtrageForm.certifications.toLowerCase();
-        filteredCandidates = filteredCandidates.filter(c =>
-          c.Certifications && c.Certifications.some(cert =>
-            cert.toLowerCase().includes(certs)
-          )
+        filteredCandidates = filteredCandidates.filter(
+          (c) =>
+            c.Certifications &&
+            c.Certifications.some((cert) => cert.toLowerCase().includes(certs))
         );
       }
 
       // Filtrage par soft skills
       if (this.filtrageForm.soft_skills.length > 0) {
-        filteredCandidates = filteredCandidates.filter(c =>
-          c.Soft_Skills && this.filtrageForm.soft_skills.every(ss =>
-            c.Soft_Skills!.includes(ss)
-          )
+        filteredCandidates = filteredCandidates.filter(
+          (c) =>
+            c.Soft_Skills &&
+            this.filtrageForm.soft_skills.every((ss) =>
+              c.Soft_Skills!.includes(ss)
+            )
         );
       }
 
@@ -478,7 +556,7 @@ export class FiltrageListComponent implements OnDestroy {
       langues: [],
       localisation: '',
       certifications: '',
-      soft_skills: []
+      soft_skills: [],
     };
     this.competenceInput = '';
     this.outilInput = '';
@@ -506,7 +584,7 @@ export class FiltrageListComponent implements OnDestroy {
   }
 
   selectAll(initChecked: boolean): void {
-    this.tableData.forEach(f => f.isSelected = !initChecked);
+    this.tableData.forEach((f) => (f.isSelected = !initChecked));
   }
 
   public acceptCandidate(candidate: CandidateInfo): void {
@@ -528,8 +606,8 @@ export class FiltrageListComponent implements OnDestroy {
   public getStatusClass(status: string): string {
     const classes: { [key: string]: string } = {
       'En attente': 'badge-warning',
-      'Accepté': 'badge-success',
-      'Refusé': 'badge-danger'
+      Accepté: 'badge-success',
+      Refusé: 'badge-danger',
     };
     return classes[status] || 'badge-secondary';
   }

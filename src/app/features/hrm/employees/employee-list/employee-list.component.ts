@@ -1,13 +1,20 @@
 import { Component, OnDestroy } from '@angular/core';
 import { routes } from '../../../../shared/routes/routes';
-import { apiResultFormat, breadCrumbItems, employees } from '../../../../shared/models/models';
-import { pageSelection, PaginationService, tablePageSize } from '../../../../shared/custom-pagination/pagination.service';
+import {
+  apiResultFormat,
+  breadCrumbItems,
+  employees,
+} from '../../../../shared/models/models';
+import {
+  pageSelection,
+  PaginationService,
+  tablePageSize,
+} from '../../../../shared/custom-pagination/pagination.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { DataService } from '../../../../shared/data/data.service';
 import { Router, RouterLink } from '@angular/router';
 import { Sort } from '@angular/material/sort';
 import { BreadcrumbsComponent } from '../../../common/breadcrumbs/breadcrumbs.component';
-import { CollapseHeaderComponent } from '../../../common/collapse-header/collapse-header.component';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
@@ -15,10 +22,18 @@ import { CustomPaginationComponent } from '../../../../shared/custom-pagination/
 import { MatSortModule } from '@angular/material/sort';
 
 @Component({
-    selector: 'app-employee-list',
-    templateUrl: './employee-list.component.html',
-    styleUrl: './employee-list.component.scss',
-    imports: [CommonModule,RouterLink,BsDatepickerModule,CustomPaginationComponent,BreadcrumbsComponent,CollapseHeaderComponent,FormsModule,MatSortModule]
+  selector: 'app-employee-list',
+  templateUrl: './employee-list.component.html',
+  styleUrl: './employee-list.component.scss',
+  imports: [
+    CommonModule,
+    RouterLink,
+    BsDatepickerModule,
+    CustomPaginationComponent,
+    BreadcrumbsComponent,
+    FormsModule,
+    MatSortModule,
+  ],
 })
 export class EmployeeListComponent implements OnDestroy {
   public routes = routes;
@@ -37,12 +52,12 @@ export class EmployeeListComponent implements OnDestroy {
   public pageSelection: pageSelection[] = [];
   dataSource!: MatTableDataSource<employees>;
   public searchDataValue = '';
-  breadCrumbItems: breadCrumbItems[] =[];
+  breadCrumbItems: breadCrumbItems[] = [];
   bsValue = new Date();
   bsRangeValue: Date[];
   maxDate = new Date();
-  public password: boolean[] = [false,false,false,false];
-  isOpen = false
+  public password: boolean[] = [false, false, false, false];
+  isOpen = false;
   togglePassword(index: number) {
     this.password[index] = !this.password[index];
   }
@@ -50,18 +65,17 @@ export class EmployeeListComponent implements OnDestroy {
     this.isOpen = !this.isOpen;
   }
   ngOnDestroy(): void {
-    this.isOpen = false
+    this.isOpen = false;
   }
   constructor(
     private data: DataService,
     private router: Router,
     private pagination: PaginationService
-  ) 
-  {
+  ) {
     this.breadCrumbItems = [
       { label: 'Employés' },
-      { label: 'Liste des Employés', active: true }
-  ];
+      { label: 'Liste des Employés', active: true },
+    ];
     this.data.getEmployeeList().subscribe((apiRes: apiResultFormat) => {
       this.actualData = apiRes.data;
       this.pagination.tablePageSize.subscribe((res: tablePageSize) => {
@@ -70,7 +84,6 @@ export class EmployeeListComponent implements OnDestroy {
           this.pageSize = res.pageSize;
         }
       });
-      
     });
     this.maxDate.setDate(this.maxDate.getDate() + 7);
     this.bsRangeValue = [this.bsValue, this.maxDate];
@@ -101,13 +114,13 @@ export class EmployeeListComponent implements OnDestroy {
     });
   }
 
-  public row=true;
+  public row = true;
   public searchData(value: string): void {
     this.searchDataValue = value.trim().toLowerCase();
     this.dataSource.filter = this.searchDataValue;
     this.tableData = this.dataSource.filteredData;
     this.row = this.tableData.length > 0;
-  
+
     if (this.searchDataValue !== '') {
       // Handle filtered data
       this.pagination.calculatePageSize.next({
@@ -163,6 +176,4 @@ export class EmployeeListComponent implements OnDestroy {
       });
     }
   }
-
-
 }

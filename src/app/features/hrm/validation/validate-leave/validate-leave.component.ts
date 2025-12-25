@@ -2,9 +2,7 @@ import { FormsModule } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-// 🔹 composants partagés
 import { BreadcrumbsComponent } from '../../../common/breadcrumbs/breadcrumbs.component';
-import { CollapseHeaderComponent } from '../../../common/collapse-header/collapse-header.component';
 import { FooterComponent } from '../../../common/footer/footer.component';
 
 type LeaveStatus = 'En attente' | 'Acceptée' | 'Refusée';
@@ -13,7 +11,7 @@ interface LeaveRequest {
   id: number;
   employeeName: string;
   requestDate: string;
-  employeeRole: string; // ✅ nouveau
+  employeeRole: string;
   employeeImage?: string;
   leaveType: string;
   status: LeaveStatus;
@@ -30,7 +28,6 @@ interface LeaveRequest {
     FormsModule,
     BreadcrumbsComponent,
     BsDatepickerModule,
-    CollapseHeaderComponent,
     FooterComponent,
   ],
 })

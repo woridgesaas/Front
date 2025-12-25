@@ -27,15 +27,15 @@
         </div>
       </div>
       <div class="mb-2">
-        <a href="javascript:void(0);" 
-           data-bs-toggle="modal" 
-           data-bs-target="#add_modal" 
+        <a href="javascript:void(0);"
+           data-bs-toggle="modal"
+           data-bs-target="#add_modal"
            (click)="parent.ouvrirModalCreer()"
            class="btn btn-primary d-flex align-items-center">
           <i class="ti ti-circle-plus me-2"></i>Créer une Offre
         </a>
       </div>
-      <app-collapse-header></app-collapse-header>
+
     </div>
   </div>
   <!-- /Breadcrumb -->
@@ -181,24 +181,24 @@
                   <td>{{data.Posted_Date}}</td>
                   <td>
                     <div class="action-icon d-inline-flex">
-                      <button type="button" 
-                              class="btn btn-success btn-sm me-2" 
-                              data-bs-toggle="modal" 
-                              data-bs-target="#post_modal" 
-                              (click)="parent.ouvrirModalPoster(data)" 
+                      <button type="button"
+                              class="btn btn-success btn-sm me-2"
+                              data-bs-toggle="modal"
+                              data-bs-target="#post_modal"
+                              (click)="parent.ouvrirModalPoster(data)"
                               title="Publier">
                         <i class="ti ti-send"></i>
                       </button>
-                      <a href="javascript:void(0);" 
-                         class="me-2" 
-                         data-bs-toggle="modal" 
+                      <a href="javascript:void(0);"
+                         class="me-2"
+                         data-bs-toggle="modal"
                          data-bs-target="#edit_modal"
                          (click)="parent.ouvrirModalModifier(data)"
                          title="Modifier">
                         <i class="ti ti-edit"></i>
                       </a>
-                      <a href="javascript:void(0);" 
-                         data-bs-toggle="modal" 
+                      <a href="javascript:void(0);"
+                         data-bs-toggle="modal"
                          data-bs-target="#delete_modal"
                          (click)="parent.ouvrirModalSupprimer(data)"
                          title="Supprimer">

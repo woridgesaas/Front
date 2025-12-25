@@ -1,13 +1,20 @@
 import { Component, OnDestroy } from '@angular/core';
 import { routes } from '../../../../shared/routes/routes';
-import { apiResultFormat, breadCrumbItems, CandidateInfo, pageSelection } from '../../../../shared/models/models';
+import {
+  apiResultFormat,
+  breadCrumbItems,
+  CandidateInfo,
+  pageSelection,
+} from '../../../../shared/models/models';
 import { MatTableDataSource } from '@angular/material/table';
 import { DataService } from '../../../../shared/data/data.service';
 import { Router } from '@angular/router';
-import { PaginationService, tablePageSize } from '../../../../shared/custom-pagination/pagination.service';
+import {
+  PaginationService,
+  tablePageSize,
+} from '../../../../shared/custom-pagination/pagination.service';
 import { Sort } from '@angular/material/sort';
 import { BreadcrumbsComponent } from '../../../common/breadcrumbs/breadcrumbs.component';
-import { CollapseHeaderComponent } from '../../../common/collapse-header/collapse-header.component';
 import { CustomPaginationComponent } from '../../../../shared/custom-pagination/custom-pagination.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
@@ -21,14 +28,22 @@ import { CommonModule } from '@angular/common';
   selector: 'app-candidates-list',
   templateUrl: './candidates-list.component.html',
   styleUrl: './candidates-list.component.scss',
-  imports: [BreadcrumbsComponent, CollapseHeaderComponent, RouterModule,
-    DateRangePickerComponent, MatInputModule, FormsModule,
-    CustomPaginationComponent, MatSelectModule, MatSortModule, CommonModule]
+  imports: [
+    BreadcrumbsComponent,
+    RouterModule,
+    DateRangePickerComponent,
+    MatInputModule,
+    FormsModule,
+    CustomPaginationComponent,
+    MatSelectModule,
+    MatSortModule,
+    CommonModule,
+  ],
 })
 export class CandidatesListComponent implements OnDestroy {
   public routes = routes;
   initChecked = false;
-  
+
   // Variables de pagination
   public pageSize = 10;
   public tableData: CandidateInfo[] = [];
@@ -74,7 +89,7 @@ export class CandidatesListComponent implements OnDestroy {
   ) {
     this.breadCrumbItems = [
       { label: 'Recrutement' },
-      { label: 'Liste des Candidats', active: true }
+      { label: 'Liste des Candidats', active: true },
     ];
 
     this.data.getCandidatesList().subscribe((apiRes: apiResultFormat) => {
@@ -199,7 +214,9 @@ export class CandidatesListComponent implements OnDestroy {
     }
 
     // Mise à jour dans le tableau
-    const index = this.actualData.findIndex(c => c.Cand_ID === candidat.Cand_ID);
+    const index = this.actualData.findIndex(
+      (c) => c.Cand_ID === candidat.Cand_ID
+    );
     if (index !== -1) {
       this.actualData[index].Status = nouveauStatut;
     }
@@ -213,14 +230,21 @@ export class CandidatesListComponent implements OnDestroy {
   supprimerCandidat() {
     if (!this.candidatPourSupprimer) return;
 
-    console.log(' Suppression du candidat:', this.candidatPourSupprimer.Candidate);
+    console.log(
+      ' Suppression du candidat:',
+      this.candidatPourSupprimer.Candidate
+    );
 
     // Appel API
     // this.data.deleteCandidate(this.candidatPourSupprimer.Cand_ID).subscribe(...)
 
     // Suppression locale
-    this.tableData = this.tableData.filter(c => c.Cand_ID !== this.candidatPourSupprimer!.Cand_ID);
-    this.actualData = this.actualData.filter(c => c.Cand_ID !== this.candidatPourSupprimer!.Cand_ID);
+    this.tableData = this.tableData.filter(
+      (c) => c.Cand_ID !== this.candidatPourSupprimer!.Cand_ID
+    );
+    this.actualData = this.actualData.filter(
+      (c) => c.Cand_ID !== this.candidatPourSupprimer!.Cand_ID
+    );
     this.totalData = this.actualData.length;
 
     this.messageSucces = 'Candidat Supprimé';
@@ -246,30 +270,30 @@ export class CandidatesListComponent implements OnDestroy {
   // ============ UTILITAIRES ============
   getStatutBadgeClass(statut: string): string {
     const classes: { [key: string]: string } = {
-      'Embauché': 'border-success text-success',
-      'Hired': 'border-success text-success',
-      'Nouveau': 'border-purple text-purple',
-      'New': 'border-purple text-purple',
-      'Interviewé': 'border-info text-info',
-      'Interviewed': 'border-info text-info',
+      Embauché: 'border-success text-success',
+      Hired: 'border-success text-success',
+      Nouveau: 'border-purple text-purple',
+      New: 'border-purple text-purple',
+      Interviewé: 'border-info text-info',
+      Interviewed: 'border-info text-info',
       'Entretien Planifié': 'border-pink text-pink',
-      'Scheduled': 'border-pink text-pink',
+      Scheduled: 'border-pink text-pink',
       'Offre Envoyée': 'border-warning text-warning',
-      'Offered': 'border-warning text-warning',
-      'Refusé': 'border-danger text-danger',
-      'Rejected': 'border-danger text-danger'
+      Offered: 'border-warning text-warning',
+      Refusé: 'border-danger text-danger',
+      Rejected: 'border-danger text-danger',
     };
     return classes[statut] || 'border-secondary text-secondary';
   }
 
   traduireStatut(statut: string): string {
     const traductions: { [key: string]: string } = {
-      'Hired': 'Embauché',
-      'New': 'Nouveau',
-      'Interviewed': 'Interviewé',
-      'Scheduled': 'Entretien Planifié',
-      'Offered': 'Offre Envoyée',
-      'Rejected': 'Refusé'
+      Hired: 'Embauché',
+      New: 'Nouveau',
+      Interviewed: 'Interviewé',
+      Scheduled: 'Entretien Planifié',
+      Offered: 'Offre Envoyée',
+      Rejected: 'Refusé',
     };
     return traductions[statut] || statut;
   }

@@ -1,5 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Component, ElementRef, QueryList, ViewChildren , AfterViewInit, OnInit, ViewChild} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  QueryList,
+  ViewChildren,
+  AfterViewInit,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import {
   ApexAxisChartSeries,
   ApexChart,
@@ -19,8 +27,6 @@ import { FormsModule } from '@angular/forms';
 import { NgxEditorModule } from 'ngx-editor';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { FooterComponent } from '../../common/footer/footer.component';
-import { RouterLink } from '@angular/router';
-import { CollapseHeaderComponent } from '../../common/collapse-header/collapse-header.component';
 import { BreadcrumbsComponent } from '../../common/breadcrumbs/breadcrumbs.component';
 
 export interface ChartOptions {
@@ -33,38 +39,38 @@ export interface ChartOptions {
   title: ApexTitleSubtitle;
 }
 @Component({
-    selector: 'app-employee-dashboard',
-    templateUrl: './employee-dashboard.component.html',
-    styleUrl: './employee-dashboard.component.scss',
-    imports: [
-      CommonModule,
-      MatSelectModule,
-      FormsModule,
-      NgxEditorModule,
-      BsDatepickerModule,
-      FooterComponent,
-      NgApexchartsModule,
-      
-      BreadcrumbsComponent
-    ]
-})
+  selector: 'app-employee-dashboard',
+  templateUrl: './employee-dashboard.component.html',
+  styleUrl: './employee-dashboard.component.scss',
+  imports: [
+    CommonModule,
+    MatSelectModule,
+    FormsModule,
+    NgxEditorModule,
+    BsDatepickerModule,
+    FooterComponent,
+    NgApexchartsModule,
 
-export class EmployeeDashboardComponent implements AfterViewInit ,OnInit{
-     now: Date = new Date();
+    BreadcrumbsComponent,
+  ],
+})
+export class EmployeeDashboardComponent implements AfterViewInit, OnInit {
+  now: Date = new Date();
   private clockInterval!: any;
 
-  breadCrumbItems: breadCrumbItems[] =[];
+  breadCrumbItems: breadCrumbItems[] = [];
   public leaves_chart: Partial<ChartOptions> | any;
   public performance_chart2: Partial<ChartOptions> | any;
   @ViewChild('chart') chart!: ChartComponent;
-  @ViewChildren('circleProgress') circleProgressElements!: QueryList<ElementRef>;
+  @ViewChildren('circleProgress')
+  circleProgressElements!: QueryList<ElementRef>;
   today!: Date;
-  routes = routes
+  routes = routes;
   ngAfterViewInit() {
     this.updateProgress();
   }
   updateProgress() {
-    this.circleProgressElements.forEach(elementRef => {
+    this.circleProgressElements.forEach((elementRef) => {
       const element = elementRef.nativeElement;
       const value = parseInt(element.getAttribute('data-value'), 10);
       const left = element.querySelector('.progress-left .progress-bar');
@@ -72,25 +78,27 @@ export class EmployeeDashboardComponent implements AfterViewInit ,OnInit{
 
       if (value > 0) {
         if (value <= 50) {
-          right.style.transform = 'rotate(' + this.percentageToDegrees(value) + 'deg)';
+          right.style.transform =
+            'rotate(' + this.percentageToDegrees(value) + 'deg)';
         } else {
           right.style.transform = 'rotate(180deg)';
-          left.style.transform = 'rotate(' + this.percentageToDegrees(value - 50) + 'deg)';
+          left.style.transform =
+            'rotate(' + this.percentageToDegrees(value - 50) + 'deg)';
         }
       }
     });
   }
-startClock() {
+  startClock() {
     this.clockInterval = setInterval(() => {
       this.now = new Date();
     }, 1000);
   }
   ngOnInit(): void {
-     this.startClock();
-   this.today = new Date();
+    this.startClock();
+    this.today = new Date();
     this.breadCrumbItems = [
       { label: 'Dashboards' },
-      { label: 'Employee Dashboard', active: true }
+      { label: 'Employee Dashboard', active: true },
     ];
 
     /**
@@ -98,8 +106,8 @@ startClock() {
      * BreadCrumb
      */
     this.breadCrumbItems = [
-        { label: 'Dashboards' },
-        { label: 'Employee Dashboard', active: true }
+      { label: 'Dashboards' },
+      { label: 'Employee Dashboard', active: true },
     ];
     this.leaves_chart = {
       chart: {
@@ -107,84 +115,88 @@ startClock() {
         type: 'donut',
         toolbar: {
           show: false,
-        }
+        },
       },
       plotOptions: {
         bar: {
           horizontal: false,
-          columnWidth: '50%'
+          columnWidth: '50%',
         },
       },
       dataLabels: {
-        enabled: false
+        enabled: false,
       },
 
       series: [15, 10, 5, 10, 60],
       colors: ['#F26522', '#FFC107', '#E70D0D', '#03C95A', '#0C4B5E'],
-      responsive: [{
-        breakpoint: 480,
-        options: {
-          chart: {
-            width: 200
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200,
+            },
+            legend: {
+              show: false,
+            },
           },
-          legend: {
-            show: false
-          }
-        }
-      }],
+        },
+      ],
       legend: {
-        show: false
-      }
+        show: false,
+      },
     };
     this.performance_chart2 = {
-      series: [{
-        name: "performance",
-        data: [20, 20, 35, 35, 40, 60, 60]
-    }],
-      chart: {
-      height: 273,
-      type: 'area',
-      zoom: {
-        enabled: false
-      }
-    },
-    colors: ['#03C95A'],
-    dataLabels: {
-      enabled: false
-    },
-    stroke: {
-      curve: 'straight'
-    },
-    title: {
-      text: '',
-      align: 'left'
-    },
-    // grid: {
-    //   row: {
-    //     colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-    //     opacity: 0.5
-    //   },
-    // },
-    xaxis: {
-      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-    },
-    yaxis: {
-      min: 10,
-      max: 60,
-      tickAmount: 5,
-          labels: {
-            formatter: (val: number) => {
-              return val / 1 + 'K'
-            }
-          }
+      series: [
+        {
+          name: 'performance',
+          data: [20, 20, 35, 35, 40, 60, 60],
         },
-        legend: {
-          position: 'top',
-          horizontalAlign: 'left'
-        }
+      ],
+      chart: {
+        height: 273,
+        type: 'area',
+        zoom: {
+          enabled: false,
+        },
+      },
+      colors: ['#03C95A'],
+      dataLabels: {
+        enabled: false,
+      },
+      stroke: {
+        curve: 'straight',
+      },
+      title: {
+        text: '',
+        align: 'left',
+      },
+      // grid: {
+      //   row: {
+      //     colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+      //     opacity: 0.5
+      //   },
+      // },
+      xaxis: {
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+      },
+      yaxis: {
+        min: 10,
+        max: 60,
+        tickAmount: 5,
+        labels: {
+          formatter: (val: number) => {
+            return val / 1 + 'K';
+          },
+        },
+      },
+      legend: {
+        position: 'top',
+        horizontalAlign: 'left',
+      },
     };
   }
-  
+
   ngOnDestroy(): void {
     if (this.clockInterval) {
       clearInterval(this.clockInterval);
