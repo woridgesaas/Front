@@ -121,7 +121,7 @@ export class ModalDashboardComponent implements OnInit, OnDestroy {
     this.common.base.subscribe((res: string) => {
       this.base = res;
       if (this.base === 'layout-horizontal') {
-        layout.changeLayoutMode('14');
+        this.layout.switchLayout('horizontal');
       } else if (this.base === 'layout-dark') {
         layout.changeThemeColor('2');
       } else {
@@ -386,9 +386,9 @@ export class ModalDashboardComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy(): void {
     this.editor.destroy();
-    this.layout.layoutMode.next('2');
-    this.layout.themeColor.next('1');
-    this.layout.changeLayoutMode('2');
+
+    // restore defaults
+    this.layout.switchLayout('aside');
     this.layout.changeThemeColor('1');
   }
 }

@@ -1,20 +1,20 @@
 <!-- Sidebar -->
 <div
   class="sidebar"
+  id="sidebar"
   (mouseover)="miniSideBarMouseHover('over')"
   (mouseout)="miniSideBarMouseHover('out')"
-  (focus)="miniSideBarFocus('over')"
-  (blur)="miniSideBarBlur('out')"
-  id="sidebar"
 >
   <!-- Logo -->
   <div class="sidebar-logo">
     <a [routerLink]="routes.index" class="logo logo-normal">
       <img src="assets/favicon_io/big-logo-nobg.png" alt="Logo" />
     </a>
+
     <a [routerLink]="routes.index" class="logo-small">
       <img src="assets/favicon_io/logo.svg" alt="Logo" />
     </a>
+
     <a [routerLink]="routes.index" class="dark-logo">
       <img src="assets/favicon_io/big-logo-nobg.png" alt="Logo" />
     </a>
@@ -36,15 +36,17 @@
         <p class="fs-10">System Admin</p>
       </div>
     </div>
+
     <div class="input-group input-group-flat d-inline-flex mb-4">
       <span class="input-icon-addon">
         <i class="ti ti-search"></i>
       </span>
       <input type="text" class="form-control" placeholder="Search in HRMS" />
       <span class="input-group-text">
-        <kbd>CTRL + / </kbd>
+        <kbd>CTRL + /</kbd>
       </span>
     </div>
+
     <div
       class="d-flex align-items-center justify-content-between menu-item mb-3"
     >
@@ -57,11 +59,13 @@
           >
         </a>
       </div>
+
       <div class="me-3">
         <a href="javascript:void(0);" class="btn btn-menubar">
           <i class="ti ti-layout-grid-remove"></i>
         </a>
       </div>
+
       <div class="me-3">
         <a href="javascript:void(0);" class="btn btn-menubar position-relative">
           <i class="ti ti-brand-hipchat"></i>
@@ -71,6 +75,7 @@
           >
         </a>
       </div>
+
       <div class="me-3 notification-item">
         <a
           href="javascript:void(0);"
@@ -80,6 +85,7 @@
           <span class="notification-status-dot"></span>
         </a>
       </div>
+
       <div class="me-0">
         <a href="javascript:void(0);" class="btn btn-menubar">
           <i class="ti ti-message"></i>
@@ -87,131 +93,132 @@
       </div>
     </div>
   </div>
+
   <ng-scrollbar>
     <div class="sidebar-inner slimscroll">
       <div id="sidebar-menu" class="sidebar-menu">
         <ul>
           @for (mainTittle of side_bar_data; track mainTittle) {
-          <!--boule qui affiche Main , RH Extern , ..... -->
+          <!-- Section title -->
           <li class="menu-title">
             <span>{{ mainTittle.tittle }}</span>
           </li>
+
           <li>
             <ul>
-              @for (menu of mainTittle?.menu; track menu) { @if
-              (menu?.hasSubRoute === false) {
+              @for (menu of mainTittle?.menu; track menu) {
 
+              <!-- ============== NO SUB ROUTE ============== -->
+              @if (menu?.hasSubRoute === false && menu?.hasSubRouteTwo !== true)
+              {
               <li [class.active]="base === menu.base || page === menu.base">
                 <a [routerLink]="menu?.route" (click)="expandSubMenus(menu)">
                   <i [class]="'ti ti-' + menu.icon"></i>
                   <span>{{ menu?.menuValue }}</span>
                 </a>
               </li>
-              } @if (menu.hasSubRoute === true) {
-              <li class="submenu">
+              }
+
+              <!-- ============== SUB ROUTE LEVEL 1 ============== -->
+              @if (menu?.hasSubRoute === true) {
+              <li
+                class="submenu"
+                [ngClass]="{ subdrop: menu.showSubRoute === true }"
+              >
                 <a
                   href="javascript:void(0)"
                   (click)="expandSubMenus(menu)"
                   (keydown.enter)="expandSubMenus(menu)"
                   tabindex="0"
-                  [class.active]="
-                    base === menu.base ||
-                    page === menu.base ||
-                    (isOpen && menu.materialicons === 'start')
-                  "
-                  [ngClass]="{
-                    subdrop: menu.showSubRoute === true,
-                    'noti-dot': menu.dot === true
-                  }"
+                  [class.active]="base === menu.base || page === menu.base"
+                  [ngClass]="{ 'noti-dot': menu.dot === true }"
                 >
                   <i [class]="'ti ti-' + menu.icon"></i>
                   <span>{{ menu.menuValue }}</span>
+
                   <span
                     *ngIf="menu.dot === true"
                     class="badge badge-danger fs-10 fw-medium text-white p-1"
-                    >Hotee</span
                   >
+                    Hot
+                  </span>
+
                   <span class="menu-arrow"></span>
                 </a>
+
                 <ul
                   [ngClass]="
-                    menu.showSubRoute === true ||
-                    (isOpen && menu.materialicons === 'start')
-                      ? 'show-sub-menu'
-                      : 'hide-sub-menu'
+                    menu.showSubRoute ? 'show-sub-menu' : 'hide-sub-menu'
                   "
                 >
                   @for (subMenus of menu.subMenus; track subMenus) {
                   <li>
                     <a
                       [routerLink]="subMenus.route"
-                      [class.active]="
-                        (base === '' && subMenus.base === 'index') ||
-                        page === subMenus.base
-                      "
+                      [class.active]="page === subMenus.base"
                     >
                       @if (subMenus.currentActive === true) {
                       <span class="badge rounded-pill bg-primary float-end"
                         >1</span
                       >
                       }
-                      {{ subMenus.menuValue }}</a
-                    >
+                      {{ subMenus.menuValue }}
+                    </a>
                   </li>
                   }
                 </ul>
               </li>
-              } @if (menu.hasSubRouteTwo === true) {
-              <li class="submenu">
+              }
+
+              <!-- ============== SUB ROUTE LEVEL 2 ============== -->
+              @if (menu?.hasSubRouteTwo === true) {
+              <li
+                class="submenu"
+                [ngClass]="{ subdrop: menu.showSubRoute === true }"
+              >
                 <a
                   href="javascript:void(0);"
                   (click)="expandSubMenus(menu)"
-                  [class.active]="
-                    base === menu.base ||
-                    page === menu.base ||
-                    page1 === menu.base
-                  "
-                  [ngClass]="{ subdrop: menu.showSubRoute === true }"
+                  (keydown.enter)="expandSubMenus(menu)"
+                  tabindex="0"
+                  [class.active]="base === menu.base || page === menu.base"
                 >
                   <i [class]="'ti ti-' + menu.icon"></i>
                   <span>{{ menu.menuValue }}</span>
                   <span class="menu-arrow"></span>
                 </a>
+
                 <ul
                   [ngClass]="
-                    menu.showSubRoute === true
-                      ? 'show-sub-menu'
-                      : 'hide-sub-menu'
+                    menu.showSubRoute ? 'show-sub-menu' : 'hide-sub-menu'
                   "
                 >
-                  @for (subMenus of menu.subMenus; track subMenus) { @if
-                  (subMenus.customSubmenuTwo === false) {
+                  @for (subMenus of menu.subMenus; track subMenus) {
+
+                  <!-- if you DON'T have submenuTwo, just link -->
+                  @if (subMenus.customSubmenuTwo !== true) {
                   <li>
                     <a
                       [routerLink]="subMenus.route"
                       [class.active]="page === subMenus.base"
-                      (click)="openSubmenuOne(subMenus)"
-                      >{{ subMenus.menuValue }}</a
                     >
+                      {{ subMenus.menuValue }}
+                    </a>
                   </li>
-                  } @if (subMenus.customSubmenuTwo === true) {
+                  }
+
+                  <!-- if you DO have submenuTwo, show it always (no openSubmenuOne state) -->
+                  @if (subMenus.customSubmenuTwo === true) {
                   <li class="submenu submenu-two">
                     <a
                       href="javascript:void(0);"
                       [class.active]="page === subMenus.base"
-                      (click)="openSubmenuOne(subMenus)"
-                      [ngClass]="{ subdrop: openSubmenuOneItem === subMenus }"
                     >
                       {{ subMenus.menuValue }}
                       <span class="menu-arrow inside-submenu"></span>
                     </a>
-                    <ul
-                      [ngClass]="
-                        openSubmenuOneItem === subMenus
-                          ? 'show-sub-menu'
-                          : 'hide-sub-menu'
-                      "
-                    >
+
+                    <ul class="show-sub-menu">
                       @for (subMenuTwo of subMenus.subMenusTwo; track
                       subMenuTwo) {
                       <li>
@@ -231,7 +238,6 @@
               } }
             </ul>
           </li>
-
           }
         </ul>
       </div>
