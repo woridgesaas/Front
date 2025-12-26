@@ -219,10 +219,13 @@
                       ></a>
                       <a
                         href="javascript:void(0);"
+                        class="me-2 text-danger"
                         data-bs-toggle="modal"
-                        data-bs-target="#delete_modal"
-                        ><i class="ti ti-trash"></i
-                      ></a>
+                        data-bs-target="#confirmDeleteModal"
+                        (click)="openDelete(data)"
+                      >
+                        <i class="ti ti-trash"></i>
+                      </a>
                     </div>
                   </td>
                 </tr>
@@ -236,6 +239,10 @@
               </tbody>
             </table>
           </div>
+          <app-confirm-delete
+            [item]="selectedDepartment"
+            (confirm)="deleteDepartment($event)"
+          ></app-confirm-delete>
           <app-custom-pagination></app-custom-pagination>
         </div>
       </div>

@@ -1,0 +1,41 @@
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Header -->
+      <div class="modal-header border-0">
+        <h4 class="modal-title fw-semibold mb-0">
+          Confirmer la suppression
+        </h4>
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body text-center">
+        <span class="avatar avatar-xl bg-transparent-danger text-danger mb-3 d-inline-flex">
+          <i class="ti ti-trash-x fs-32"></i>
+        </span>
+
+        <p class="text-muted mb-0">
+          Voulez-vous vraiment supprimer cet élément ?
+        </p>
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer border-0 justify-content-center">
+        <button type="button" class="btn btn-light me-3" data-bs-dismiss="modal">
+          Annuler
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="onConfirm()"
+          data-bs-dismiss="modal"
+        >
+          Oui, Supprimer
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
