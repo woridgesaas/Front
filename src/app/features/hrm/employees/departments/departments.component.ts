@@ -20,9 +20,11 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { CustomPaginationComponent } from '../../../../shared/custom-pagination/custom-pagination.component';
 import { FormsModule } from '@angular/forms';
 import { MatSortModule } from '@angular/material/sort';
+import { ConfirmDeleteComponent } from '../../../common/confirm-delete/confirm-delete.component';
 
 @Component({
   selector: 'app-departments',
+   standalone: true,
   templateUrl: './departments.component.html',
   styleUrl: './departments.component.scss',
   imports: [
@@ -34,11 +36,13 @@ import { MatSortModule } from '@angular/material/sort';
     BsDatepickerModule,
     FormsModule,
     MatSortModule,
+    ConfirmDeleteComponent,
   ],
 })
 export class DepartmentsComponent implements OnDestroy {
   public routes = routes;
   initChecked = false;
+  selectedDepartment: any;
   // pagination variables
   public pageSize = 10;
   public tableData: department[] = [];
@@ -115,6 +119,13 @@ export class DepartmentsComponent implements OnDestroy {
     });
   }
 
+openDelete(department: any) {
+  this.selectedDepartment = department;
+}
+deleteDepartment(department: any) {
+  console.log('Suppression confirmée:', department);
+  // 👉 Appel API ici
+}
   public row = true;
   public searchData(value: string): void {
     this.searchDataValue = value.trim().toLowerCase();
