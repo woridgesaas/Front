@@ -454,7 +454,7 @@ export interface SubMenu2 {
   showSubRoute?: boolean;
   customSubmenuTwo?: boolean;
   subMenusTwo?: SubMenuTwo[];
-  action?: string;
+  action?: string;  // ✅ Cette ligne existe déjà dans votre code
 }
 
 export interface Menu {
@@ -477,7 +477,10 @@ export interface Menu {
   subMenus?: SubMenu2[];
   customSubmenuTwo?: boolean;
   subMenusTwo?: SubMenuTwo[];
+  action?: string;  // ✅ AJOUTEZ CETTE LIGNE
+  route?: string | null;  // ✅ AJOUTEZ AUSSI CELLE-CI si elle n'existe pas
 }
+
 
 export interface MainMenu {
   title: string;
