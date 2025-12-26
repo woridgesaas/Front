@@ -5,10 +5,12 @@
       <ul class="nav-menu">
         @for (mainTittle of side_bar_data; track mainTittle) {
         <li class="menu-title">
-          <span>{{ mainTittle.title }} dodo safae imane amine faty</span>
+          <span>{{ mainTittle.title }}</span>
         </li>
-        @for (menu of mainTittle?.menu; track menu) { @if (menu.hasSubRoute
-        ===true) {
+        @for (menu of mainTittle?.menu; track menu) { 
+        
+        <!-- ============== SUB ROUTE LEVEL 1 (avec action layoutChange) ============== -->
+        @if (menu.hasSubRoute === true) {
         <li class="submenu">
           <a
             href="javascript:void(0)"
@@ -29,20 +31,33 @@
           >
             @for (subMenus of menu.subMenus; track subMenus) {
             <li>
+              <!-- Si c'est le bouton de changement de layout -->
+              @if (subMenus.action === 'layoutChange') {
               <a
-                (click)="settings.switchLayout('aside')"
+                href="javascript:void(0)"
+                (click)="toggleLayout()"
+              >
+                {{ subMenus.menuValue }}
+              </a>
+              } @else {
+              <!-- Lien normal -->
+              <a
                 [routerLink]="subMenus.route"
                 [class.active]="
                   page === subMenus.base || base === subMenus.base
                 "
               >
-                {{ subMenus.menuValue }}</a
-              >
+                {{ subMenus.menuValue }}
+              </a>
+              }
             </li>
             }
           </ul>
         </li>
-        } @if (menu.hasSubRouteTwo === true) {
+        } 
+        
+        <!-- ============== SUB ROUTE LEVEL 2 ============== -->
+        @if (menu.hasSubRouteTwo === true) {
         <li class="submenu">
           <a
             href="javascript:void(0);"
@@ -66,18 +81,22 @@
             <span class="menu-arrow"></span>
           </a>
           <ul [ngClass]="menu.showSubRoute === true ? 'd-block' : 'd-none'">
-            @for (subMenus of menu.subMenus; track subMenus) { @if
-            (subMenus.customSubmenuTwo === false) {
+            @for (subMenus of menu.subMenus; track subMenus) { 
+            
+            @if (subMenus.customSubmenuTwo === false) {
             <li>
               <a
                 [class.active]="
                   base === subMenus.base || page === subMenus.base
                 "
                 [routerLink]="subMenus.route"
-                >{{ subMenus.menuValue }}</a
               >
+                {{ subMenus.menuValue }}
+              </a>
             </li>
-            } @if (subMenus.customSubmenuTwo === true) {
+            } 
+            
+            @if (subMenus.customSubmenuTwo === true) {
             <li class="submenu submenu-two">
               <a
                 href="javascript:void(0);"
@@ -98,16 +117,20 @@
                   <a
                     [class.active]="page === subMenuTwo.base"
                     [routerLink]="subMenuTwo.route"
-                    >{{ subMenuTwo.menuValue }}</a
                   >
+                    {{ subMenuTwo.menuValue }}
+                  </a>
                 </li>
                 }
               </ul>
             </li>
-            } }
+            } 
+            }
           </ul>
         </li>
-        } } }
+        } 
+        } 
+        }
       </ul>
     </div>
   </div>

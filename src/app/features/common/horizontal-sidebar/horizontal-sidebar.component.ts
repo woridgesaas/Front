@@ -7,6 +7,7 @@ import { SideBarService } from '../../../shared/side-bar/side-bar.service';
 import { CommonService } from '../../../shared/common/common.service';
 import { CommonModule } from '@angular/common';
 import { SettingService } from '../../../shared/settings/settings.service';
+
 @Component({
   selector: 'app-horizontal-sidebar',
   templateUrl: './horizontal-sidebar.component.html',
@@ -23,10 +24,9 @@ export class HorizontalSidebarComponent implements OnInit, OnDestroy {
   page = '';
   last = '';
   themeIcon = true;
-  toggleThemeIcon() {
-    this.themeIcon = !this.themeIcon;
-  }
+  
   side_bar_data: MainMenu[] = [];
+
   constructor(
     public router: Router,
     private data: DataService,
@@ -37,36 +37,75 @@ export class HorizontalSidebarComponent implements OnInit, OnDestroy {
     this.data.getSideBarData3.subscribe((res: MainMenu[]) => {
       this.side_bar_data = res;
     });
+    
     this.common.base.subscribe((res: string) => {
       this.base = res;
       this.collapseAllMenus();
     });
+    
     this.common.page.subscribe((res: string) => {
       this.page = res;
       this.collapseAllMenus();
     });
+    
     this.common.last.subscribe((res: string) => {
       this.last = res;
     });
+  }
 
-    // get sidebar data as observable because data is controlled for design to expand submenus
-    this.data.getSideBarData3.subscribe((res: MainMenu[]) => {
-      this.side_bar_data = res;
+  ngOnInit(): void {
+    this.router.events.subscribe((event: object) => {
+      if (event instanceof NavigationStart) {
+        const splitVal = event.url.split('/');
+        this.base = splitVal[1];
+        this.page = splitVal[2];
+        this.last = splitVal[3];
+      }
     });
   }
-  public menuToggle() {
+
+  ngOnDestroy(): void {
+    // this.data.resetData3();
+  }
+
+  //* Toggle entre horizontal et aside
+  public toggleLayout(): void {
+    const currentLayout = this.settings.layoutMode.getValue();
+    const newLayout = currentLayout === 'aside' ? 'horizontal' : 'aside';
+    this.settings.switchLayout(newLayout);
+  }
+
+  //* Toggle theme icon
+  toggleThemeIcon(): void {
+    this.themeIcon = !this.themeIcon;
+  }
+
+  //* Menu toggle
+  public menuToggle(): void {
     this.showSubMenusTab = !this.showSubMenusTab;
   }
-  private collapseAllMenus() {
+
+  //* Collapse all menus
+  private collapseAllMenus(): void {
     this.side_bar_data.forEach((mainMenus: MainMenu) => {
       mainMenus.menu.forEach((m: Menu) => {
         m.showSubRoute = false;
       });
     });
   }
+
+  //* Expand sub menus
   public expandSubMenus(menu: Menu): void {
+    // Si c'est le bouton de changement de layout
+    if (menu.action === 'layoutChange') {
+      this.toggleLayout();
+      return;
+    }
+
+    // Sinon, gérer l'expansion normale des sous-menus
     menu.showSubRoute = !menu.showSubRoute;
-    // collapse all other menus
+    
+    // Collapse all other menus
     this.side_bar_data.forEach((mainMenus: MainMenu) => {
       mainMenus.menu.forEach((m: Menu) => {
         if (m !== menu) {
@@ -78,9 +117,10 @@ export class HorizontalSidebarComponent implements OnInit, OnDestroy {
     sessionStorage.setItem('menuValue', menu.menuValue);
   }
 
+  //* Mini sidebar mouse hover
   public miniSideBarMouseHover(position: string): void {
     this.sideBar.toggleSideBar.subscribe((res: string) => {
-      if (res === 'true' || res === 'true') {
+      if (res === 'true') {
         if (position === 'over') {
           this.sideBar.expandSideBar.next(true);
           this.showSubMenusTab = false;
@@ -91,20 +131,9 @@ export class HorizontalSidebarComponent implements OnInit, OnDestroy {
       }
     });
   }
-  ngOnInit(): void {
-    this.router.events.subscribe((event: object) => {
-      if (event instanceof NavigationStart) {
-        const splitVal = event.url.split('/');
-        this.base = splitVal[1];
-        this.page = splitVal[2];
-        this.last = splitVal[3];
-      }
-    });
-  }
-  ngOnDestroy(): void {
-    //this.data.resetData2();
-  }
-  miniSideBarBlur(position: string) {
+
+  //* Mini sidebar blur
+  miniSideBarBlur(position: string): void {
     if (position === 'over') {
       this.sideBar.expandSideBar.next(true);
     } else {
@@ -112,18 +141,22 @@ export class HorizontalSidebarComponent implements OnInit, OnDestroy {
     }
   }
 
-  miniSideBarFocus(position: string) {
+  //* Mini sidebar focus
+  miniSideBarFocus(position: string): void {
     if (position === 'over') {
       this.sideBar.expandSideBar.next(true);
     } else {
       this.sideBar.expandSideBar.next(false);
     }
   }
+
+  //* Open submenus
   public submenus = false;
-  openSubmenus() {
+  openSubmenus(): void {
     this.submenus = !this.submenus;
   }
 
+  //* Open menu
   openMenu(menu: any): void {
     if (this.openMenuItem === menu) {
       this.openMenuItem = null;
@@ -131,6 +164,8 @@ export class HorizontalSidebarComponent implements OnInit, OnDestroy {
       this.openMenuItem = menu;
     }
   }
+
+  //* Open submenu one
   openSubmenuOne(subMenus: any): void {
     if (this.openSubmenuOneItem === subMenus) {
       this.openSubmenuOneItem = null;
