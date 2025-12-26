@@ -1,8 +1,12 @@
-<div [ngClass]="{'mini-sidebar': layoutMode === '2' || miniSidebar === true ,
-  'menu-horizontal': layoutMode === '3' ,
-  'layout-box-mode':layoutMode === '2' || expandMenu === true && miniSidebar === true,
-  'slide-nav': mobileSidebar === true
- }" style="--primary-rgb-picr : {{dthemeColor}}; --sidebar--rgb-picr : {{selectedColor}}; --topbar--rgb-picr : {{selectedColor1}};  --topbarcolor--rgb-picr : {{horizontalColor}};" [class.header-collapse]="isCollapsed">
+<div
+  [ngClass]="{
+    'mini-sidebar': layoutMode === 'aside' && !expandMenu,
+    'expand-menu': layoutMode === 'aside' && expandMenu,
+    'menu-horizontal': layoutMode === 'horizontal',
+    'slide-nav': mobileSidebar
+  }"
+>
+
 <!-- Le loader li kyban f lwl-->
 @if (showPreloader && !withoutWrapperPages) {
   <div id="global-loader">
@@ -16,9 +20,6 @@
       <app-horizontal-sidebar></app-horizontal-sidebar>
       }
   <router-outlet></router-outlet> <!-- les composans enfant ghdi ytrandraw ici -->
-  @if(!withoutWrapperPages && !withoutLayouts ) {
-  <app-theme-settings></app-theme-settings>
-  }
   </div>
 </div>
 

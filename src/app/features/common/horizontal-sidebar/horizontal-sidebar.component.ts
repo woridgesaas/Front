@@ -1,19 +1,19 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { routes } from '../../../shared/routes/routes';
 import { MainMenu, Menu } from '../../../shared/models/models';
-import { NavigationEnd, NavigationStart, Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { NavigationStart, Router, RouterLink } from '@angular/router';
 import { DataService } from '../../../shared/data/data.service';
 import { SideBarService } from '../../../shared/side-bar/side-bar.service';
 import { CommonService } from '../../../shared/common/common.service';
 import { CommonModule } from '@angular/common';
 import { SettingService } from '../../../shared/settings/settings.service';
 @Component({
-    selector: 'app-horizontal-sidebar',
-    templateUrl: './horizontal-sidebar.component.html',
-    styleUrl: './horizontal-sidebar.component.scss',
-    imports: [CommonModule,RouterLink]
+  selector: 'app-horizontal-sidebar',
+  templateUrl: './horizontal-sidebar.component.html',
+  styleUrl: './horizontal-sidebar.component.scss',
+  imports: [CommonModule, RouterLink],
 })
-export class HorizontalSidebarComponent implements OnInit, OnDestroy{
+export class HorizontalSidebarComponent implements OnInit, OnDestroy {
   public routes = routes;
   showSubMenusTab = true;
   public multilevel: boolean[] = [false, false, false];
@@ -22,7 +22,7 @@ export class HorizontalSidebarComponent implements OnInit, OnDestroy{
   base = '';
   page = '';
   last = '';
-  themeIcon=true;
+  themeIcon = true;
   toggleThemeIcon() {
     this.themeIcon = !this.themeIcon;
   }
@@ -32,53 +32,51 @@ export class HorizontalSidebarComponent implements OnInit, OnDestroy{
     private data: DataService,
     private sideBar: SideBarService,
     private common: CommonService,
-    public settings: SettingService 
+    public settings: SettingService
   ) {
     this.data.getSideBarData3.subscribe((res: MainMenu[]) => {
       this.side_bar_data = res;
-      
     });
     this.common.base.subscribe((res: string) => {
       this.base = res;
-      this.collapseAllMenus(); 
+      this.collapseAllMenus();
     });
     this.common.page.subscribe((res: string) => {
       this.page = res;
-      this.collapseAllMenus(); 
+      this.collapseAllMenus();
     });
     this.common.last.subscribe((res: string) => {
       this.last = res;
     });
-   
+
     // get sidebar data as observable because data is controlled for design to expand submenus
     this.data.getSideBarData3.subscribe((res: MainMenu[]) => {
       this.side_bar_data = res;
     });
-
   }
-public menuToggle() {
-  this.showSubMenusTab = !this.showSubMenusTab;
-}
-private collapseAllMenus() {
-  this.side_bar_data.forEach((mainMenus: MainMenu) => {
-    mainMenus.menu.forEach((m: Menu) => {
-      m.showSubRoute = false;
-    });
-  });
-}
-public expandSubMenus(menu: Menu): void {
-  menu.showSubRoute = !menu.showSubRoute;
-  // collapse all other menus
-  this.side_bar_data.forEach((mainMenus: MainMenu) => {
-    mainMenus.menu.forEach((m: Menu) => {
-      if (m !== menu) {
+  public menuToggle() {
+    this.showSubMenusTab = !this.showSubMenusTab;
+  }
+  private collapseAllMenus() {
+    this.side_bar_data.forEach((mainMenus: MainMenu) => {
+      mainMenus.menu.forEach((m: Menu) => {
         m.showSubRoute = false;
-      }
+      });
     });
-  });
+  }
+  public expandSubMenus(menu: Menu): void {
+    menu.showSubRoute = !menu.showSubRoute;
+    // collapse all other menus
+    this.side_bar_data.forEach((mainMenus: MainMenu) => {
+      mainMenus.menu.forEach((m: Menu) => {
+        if (m !== menu) {
+          m.showSubRoute = false;
+        }
+      });
+    });
 
-  sessionStorage.setItem('menuValue', menu.menuValue);
-}
+    sessionStorage.setItem('menuValue', menu.menuValue);
+  }
 
   public miniSideBarMouseHover(position: string): void {
     this.sideBar.toggleSideBar.subscribe((res: string) => {
@@ -100,10 +98,8 @@ public expandSubMenus(menu: Menu): void {
         this.base = splitVal[1];
         this.page = splitVal[2];
         this.last = splitVal[3];
-
       }
     });
-    
   }
   ngOnDestroy(): void {
     //this.data.resetData2();
