@@ -281,7 +281,7 @@ export class DataService {
           menuValue: 'Dashboard',
           hasSubRoute: true,
           showSubRoute: false,
-          icon: 'smart-home',
+          icon: 'layout-dashboard',
           base: 'dashboard',
           materialicons: 'start',
           subMenus: [
@@ -302,7 +302,7 @@ export class DataService {
           route: routes.apps,
           hasSubRouteTwo: true,
           showSubRoute: false,
-          icon: 'layout-grid-add',
+          icon: 'building-community',
           base: 'application',
           materialicons: 'dashboard',
           subMenus: [
@@ -424,7 +424,7 @@ export class DataService {
     },
     {
       tittle: 'RH Intern',
-      icon: 'file',
+      icon: 'briefcase-2',
       showAsTab: false,
       separateRoute: false,
       menu: [
@@ -434,7 +434,7 @@ export class DataService {
           base: 'employee-list',
           hasSubRoute: false,
           showSubRoute: false,
-          icon: 'file',
+          icon: 'users',
           materialicons: 'confirmation_number',
           subMenus: [],
         },
@@ -444,7 +444,7 @@ export class DataService {
           base: 'contrats',
           hasSubRoute: false,
           showSubRoute: false,
-          icon: 'file',
+          icon: 'file-description',
           materialicons: 'confirmation_number',
           subMenus: [],
         },
@@ -475,7 +475,7 @@ export class DataService {
           base: 'attendance-admin',
           hasSubRoute: false,
           showSubRoute: false,
-          icon: 'file-time',
+          icon: 'clock-check',
           materialicons: 'track_changes',
           subMenus: [],
         },
@@ -493,7 +493,7 @@ export class DataService {
         {
           menuValue: 'Validation',
           base: 'validation',
-          icon: 'file-time',
+          icon: 'checklist',
           materialicons: 'fact_check',
           hasSubRoute: true,
           showSubRoute: false,
@@ -527,7 +527,7 @@ export class DataService {
           route: routes.resignation,
           hasSubRoute: false,
           showSubRoute: false,
-          icon: 'external-link',
+          icon: 'logout',
           base: 'resignation',
           materialicons: 'settings',
           subMenus: [],
@@ -536,7 +536,7 @@ export class DataService {
     },
     {
       tittle: 'RH-Extern',
-      icon: 'file',
+      icon: 'user-search',
       showAsTab: false,
       separateRoute: false,
       menu: [
@@ -545,7 +545,7 @@ export class DataService {
           route: routes.jobList,
           hasSubRoute: false,
           showSubRoute: false,
-          icon: 'timeline',
+          icon: 'clipboard-list',
           base: 'jobs',
           materialicons: 'confirmation_number',
           subMenus: [],
@@ -555,7 +555,7 @@ export class DataService {
           route: routes.candidateslist,
           hasSubRoute: false,
           showSubRoute: false,
-          icon: 'user-shield',
+          icon: 'users',
           base: 'candidates',
           materialicons: 'shopping_bag',
           subMenus: [],
@@ -566,7 +566,7 @@ export class DataService {
           hasSubRoute: false,
           showSubRoute: false,
           icon: 'user-shield',
-          base: 'filtrage-list',
+          base: 'filter',
           materialicons: 'shopping_bag',
           subMenus: [],
         },
@@ -575,7 +575,7 @@ export class DataService {
           route: routes.Entretient,
           hasSubRoute: false,
           showSubRoute: false,
-          icon: 'user-shield',
+          icon: 'calendar-event',
           base: 'interviews-planning',
           materialicons: 'shopping_bag',
           subMenus: [],
@@ -697,7 +697,7 @@ export class DataService {
           menuValue: 'Dashboard',
           hasSubRoute: true,
           showSubRoute: false,
-          icon: 'smart-home',
+          icon: 'layout-dashboard',
           base: 'dashboard',
           subMenus: [
             {
@@ -716,7 +716,7 @@ export class DataService {
           menuValue: 'Intranet',
           hasSubRouteTwo: true,
           showSubRoute: false,
-          icon: 'layout-grid-add',
+          icon: 'building-community',
           base: 'application',
           subMenus: [
             {
@@ -815,7 +815,8 @@ export class DataService {
           menuValue: 'RH Intern',
           hasSubRouteTwo: true,
           showSubRoute: false,
-          icon: 'user-star',
+          icon: 'briefcase',
+
           base: 'client',
           base2: 'project',
           base3: 'crm',
@@ -900,7 +901,7 @@ export class DataService {
           menuValue: 'RH Externe',
           hasSubRoute: true,
           showSubRoute: false,
-          icon: 'users',
+          icon: 'clipboard-list',
           base: 'rh-externe',
           subMenus: [
             {
@@ -967,7 +968,7 @@ export class DataService {
           menuValue: 'Paramètres',
           hasSubRouteTwo: true,
           showSubRoute: false,
-          icon: 'user-star',
+          icon: 'settings',
           base: 'settings',
           subMenus: [
             {

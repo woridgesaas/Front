@@ -76,7 +76,7 @@
             "
             [ngClass]="{ subdrop: menu.showSubRoute === true }"
           >
-            <i class="ti ti-cube"></i>
+            <i [class]="'ti ti-' + menu.icon"></i>
             <span>{{ menu.menuValue }}</span>
             <span class="menu-arrow"></span>
           </a>
