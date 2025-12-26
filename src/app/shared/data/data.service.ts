@@ -554,7 +554,7 @@ export class DataService {
       menu: [
         {
           menuValue: 'Offres',
-          route: routes.jobsList,
+          route: routes.jobList,
           hasSubRoute: false,
           showSubRoute: false,
           icon: 'timeline',
@@ -932,7 +932,7 @@ export class DataService {
           subMenus: [
             {
               menuValue: 'Offres',
-              route: routes.jobsList,
+              route: routes.jobList,
               base: 'jobs-list',
             },
             {
