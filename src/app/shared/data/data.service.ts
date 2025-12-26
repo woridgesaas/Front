@@ -407,8 +407,8 @@ export class DataService {
               customSubmenuTwo: false,
               hasSubRoute: false,
               showSubRoute: false,
-              base : 'documents-administratif'
-            }
+              base: 'documents-administratif',
+            },
           ],
         },
       ],
@@ -419,7 +419,7 @@ export class DataService {
       showAsTab: false,
       separateRoute: false,
       menu: [
-         {
+        {
           menuValue: 'Contrats',
           route: routes.contract,
           base: 'contrats',
@@ -591,33 +591,6 @@ export class DataService {
           base: 'interviews-planning',
           materialicons: 'shopping_bag',
           subMenus: [],
-        },
-      ],
-    },
-    {
-      tittle: 'Fiche de paie',
-      icon: 'file',
-      showAsTab: false,
-      separateRoute: false,
-      menu: [
-        {
-          menuValue: 'paiement',
-          base: 'payroll',
-          hasSubRoute: true,
-          showSubRoute: false,
-          icon: 'cash',
-          subMenus: [
-            // {
-            //   menuValue: 'Employee Salary',
-            //   route: '/payroll/employee-salary',
-            //   base: 'employee-salary',
-            // },
-            {
-              menuValue: 'Fiche',
-              route: '/payroll/payslip',
-              base: 'payslip',
-            },
-          ],
         },
       ],
     },
@@ -836,8 +809,7 @@ export class DataService {
                 {
                   menuValue: 'Documents administratif',
                   route: routes.documentsEmployee,
-
-                }
+                },
               ],
             },
           ],
@@ -989,7 +961,6 @@ export class DataService {
           icon: 'user-star',
           base: 'administration',
           subMenus: [
-           
             {
               menuValue: 'Rapports',
               base: 'reports',

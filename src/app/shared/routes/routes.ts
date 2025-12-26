@@ -67,9 +67,6 @@ export const routes = {
   providentfund: '/sales/provident-fund',
   taxes: '/sales/taxes',
 
-  // employeesalary: '/payroll/employee-salary',
-  payslip: '/payroll/payslip',
-  policies: '/policies/main',
 
   employeereport: '/reports/employee-report',
   payslipreport: '/reports/payslip-report',

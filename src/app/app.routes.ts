@@ -252,8 +252,20 @@ export const routes: Routes = [
                 './features/hrm/employees/departments/departments.component'
               ).then((m) => m.DepartmentsComponent),
           },
-          {path:'geenrate/contract' , loadComponent: ()=>import('./features/hrm/contract/contract.component').then(m=>m.ContractComponent)},
-          {path:'documents',loadComponent:()=>import('./features/hrm/documents/documents.component').then(m=>m.DocumentsComponent)},
+          {
+            path: 'geenrate/contract',
+            loadComponent: () =>
+              import('./features/hrm/contract/contract.component').then(
+                (m) => m.ContractComponent
+              ),
+          },
+          {
+            path: 'documents',
+            loadComponent: () =>
+              import('./features/hrm/documents/documents.component').then(
+                (m) => m.DocumentsComponent
+              ),
+          },
         ],
       },
       {
@@ -405,9 +417,6 @@ export const routes: Routes = [
                 './features/recruitment/candidates/candidates-list/candidates-list.component'
               ).then((m) => m.CandidatesListComponent),
           },
-
-          // {path: 'candidates-grid', loadComponent: () => import('./features/recruitment/candidates/candidates-grid/candidates-grid.component').then(m => m.CandidatesGridComponent),},
-          // {path: 'candidates-kanban', loadComponent: () => import('./features/recruitment/candidates/candidates-kanban/candidates-kanban.component').then(m => m.CandidatesKanbanComponent),},
         ],
       },
       {
@@ -443,31 +452,6 @@ export const routes: Routes = [
           ).then((m) => m.InterviewsPlanningComponent),
         children: [],
       },
-
-      {
-        path: 'payroll',
-        loadComponent: () =>
-          import('./features/finance/payroll/payroll.component').then(
-            (m) => m.PayrollComponent
-          ),
-        children: [
-          // {
-          //   path: 'employee-salary',
-          //   loadComponent: () =>
-          //     import(
-          //       './features/finance/payroll/employee-salary/employee-salary.component'
-          //     ).then((m) => m.EmployeeSalaryComponent),
-          // },
-          {
-            path: 'payslip',
-            loadComponent: () =>
-              import(
-                './features/finance/payroll/payslip/payslip.component'
-              ).then((m) => m.PayslipComponent),
-          },
-        ],
-      },
-
       {
         path: 'reports',
         loadComponent: () =>
