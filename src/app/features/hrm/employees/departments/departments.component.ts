@@ -58,12 +58,18 @@ export class DepartmentsComponent implements OnDestroy {
   maxDate = new Date();
   public password: boolean[] = [false, false, false, false];
   isOpen = false;
+ selectedItem!: department;
+
   togglePassword(index: number) {
     this.password[index] = !this.password[index];
   }
   openSuccessModal() {
     this.isOpen = !this.isOpen;
   }
+openDeleteModal(item: department) {
+  this.selectedItem = item;
+}
+
   ngOnDestroy(): void {
     this.isOpen = false;
   }
@@ -84,39 +90,43 @@ export class DepartmentsComponent implements OnDestroy {
     this.maxDate.setDate(this.maxDate.getDate() + 7);
     this.bsRangeValue = [this.bsValue, this.maxDate];
   }
-  private getTableData(pageOption: pageSelection): void {
-    this.data.getdepartments().subscribe((apiRes: apiResultFormat) => {
-      this.tableData = [];
-      this.tableDataCopy = [];
-      this.serialNumberArray = [];
-      this.totalData = apiRes.totalData;
-      apiRes.data.map((res: department, index: number) => {
-        const serialNumber = index + 1;
-        if (index >= pageOption.skip && serialNumber <= pageOption.limit) {
-          res.sNo = serialNumber;
-          this.tableData.push(res);
-          this.tableDataCopy.push(res);
-          this.serialNumberArray.push(serialNumber);
-        }
-      });
-      this.dataSource = new MatTableDataSource<department>(this.actualData);
-      this.pagination.calculatePageSize.next({
-        totalData: this.totalData,
-        pageSize: this.pageSize,
-        tableData: this.tableData,
-        tableDataCopy: this.tableDataCopy,
-        serialNumberArray: this.serialNumberArray,
-      });
-    });
-  }
+private getTableData(pageOption: pageSelection): void {
+  this.tableData = [];
+  this.tableDataCopy = [];
+  this.serialNumberArray = [];
 
-  openDelete(department: any) {
-    this.selectedDepartment = department;
-  }
-  deleteDepartment(department: any) {
-    console.log('Suppression confirmée:', department);
-    //  Appel API ici
-  }
+  this.actualData.forEach((res: department, index: number) => {
+    const serialNumber = index + 1;
+
+    if (index >= pageOption.skip && serialNumber <= pageOption.limit) {
+      res.sNo = serialNumber;
+      this.tableData.push(res);
+      this.tableDataCopy.push(res);
+      this.serialNumberArray.push(serialNumber);
+    }
+  });
+
+  //  IMPORTANT
+  this.dataSource = new MatTableDataSource<department>(this.tableData);
+
+  this.pagination.calculatePageSize.next({
+    totalData: this.actualData.length,
+    pageSize: this.pageSize,
+    tableData: this.tableData,
+    tableDataCopy: this.tableDataCopy,
+    serialNumberArray: this.serialNumberArray,
+  });
+}
+
+deleteItem(item: department) {
+  this.actualData = this.actualData.filter(
+    d => d.Department !== item.Department
+  );
+
+  this.getTableData({ skip: this.skip, limit: this.limit });
+}
+
+
   public row = true;
   public searchData(value: string): void {
     this.searchDataValue = value.trim().toLowerCase();
