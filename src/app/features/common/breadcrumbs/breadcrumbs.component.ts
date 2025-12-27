@@ -1,31 +1,22 @@
-import { Component, Input } from '@angular/core';
-import { routes } from '../../../shared/routes/routes';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { BreadcrumbService } from '../../../shared/services/breadcrumb.service';
+import { Observable } from 'rxjs';
+import { BreadcrumbItem } from '../../../shared/models/breadcrumb.model';
 
 @Component({
-    selector: 'app-breadcrumbs',
-    templateUrl: './breadcrumbs.component.html',
-    styleUrls: ['./breadcrumbs.component.scss'],
-    imports: [CommonModule]
+  selector: 'app-breadcrumbs',
+  standalone: true,
+  imports: [CommonModule, RouterModule],
+  templateUrl: './breadcrumbs.component.html',
+  styleUrls: ['./breadcrumbs.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
-/**
- * Bread Crumbs Component
- */
 export class BreadcrumbsComponent {
-routes = routes
-  @Input() title: string | undefined;
-  @Input()
-  breadcrumbItems!: {
-    active?: boolean;
-    label?: string;
-  }[];
+  breadcrumbs$: Observable<BreadcrumbItem[]>;
 
-  Item!: {
-    label?: string;
-  }[];
-
-
-
-
+  constructor(private breadcrumbService: BreadcrumbService) {
+    this.breadcrumbs$ = this.breadcrumbService.breadcrumbs$;
+  }
 }

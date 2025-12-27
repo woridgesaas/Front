@@ -88,12 +88,6 @@ export class InterviewsPlanningComponent {
   messageSucces = '';
   detailSucces = '';
 
-  // Breadcrumb
-  breadCrumbItems = [
-    { label: 'Recrutement' },
-    { label: 'Planification des Entretiens', active: true },
-  ];
-
   constructor() {
     this.chargerDonnees();
   }

@@ -22,11 +22,6 @@ import { BreadcrumbsComponent } from '../../../common/breadcrumbs/breadcrumbs.co
   imports: [CommonModule, NgApexchartsModule, BreadcrumbsComponent],
 })
 export class LeaveReportComponent {
-  breadCrumbItems = [
-    { label: 'RH' },
-    { label: 'Rapport des Congés', active: true },
-  ];
-
   // ================= KPI (ICÔNES CORRIGÉES) =================
   kpis = [
     {

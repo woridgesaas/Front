@@ -1,10 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { routes } from '../../../../shared/routes/routes';
-import {
-  apiResultFormat,
-  breadCrumbItems,
-  department,
-} from '../../../../shared/models/models';
+import { apiResultFormat, department } from '../../../../shared/models/models';
 import {
   pageSelection,
   PaginationService,
@@ -24,7 +20,7 @@ import { ConfirmDeleteComponent } from '../../../common/confirm-delete/confirm-d
 
 @Component({
   selector: 'app-departments',
-   standalone: true,
+  standalone: true,
   templateUrl: './departments.component.html',
   styleUrl: './departments.component.scss',
   imports: [
@@ -57,7 +53,6 @@ export class DepartmentsComponent implements OnDestroy {
   public pageSelection: pageSelection[] = [];
   dataSource!: MatTableDataSource<department>;
   public searchDataValue = '';
-  breadCrumbItems: breadCrumbItems[] = [];
   bsValue = new Date();
   bsRangeValue: Date[];
   maxDate = new Date();
@@ -77,10 +72,6 @@ export class DepartmentsComponent implements OnDestroy {
     private router: Router,
     private pagination: PaginationService
   ) {
-    this.breadCrumbItems = [
-      { label: 'Employés' },
-      { label: 'Départements', active: true },
-    ];
     this.data.getdepartments().subscribe((apiRes: apiResultFormat) => {
       this.actualData = apiRes.data;
       this.pagination.tablePageSize.subscribe((res: tablePageSize) => {
@@ -119,13 +110,13 @@ export class DepartmentsComponent implements OnDestroy {
     });
   }
 
-openDelete(department: any) {
-  this.selectedDepartment = department;
-}
-deleteDepartment(department: any) {
-  console.log('Suppression confirmée:', department);
-  // 👉 Appel API ici
-}
+  openDelete(department: any) {
+    this.selectedDepartment = department;
+  }
+  deleteDepartment(department: any) {
+    console.log('Suppression confirmée:', department);
+    // 👉 Appel API ici
+  }
   public row = true;
   public searchData(value: string): void {
     this.searchDataValue = value.trim().toLowerCase();

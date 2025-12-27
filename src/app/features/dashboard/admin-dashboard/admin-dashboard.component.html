@@ -4,11 +4,7 @@
     <div
       class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3"
     >
-      <app-breadcrumbs
-        title="Admin Dashboard"
-        [breadcrumbItems]="breadCrumbItems"
-      >
-      </app-breadcrumbs>
+      <app-breadcrumbs> </app-breadcrumbs>
 
       <!-- Date / Heure card (agrandie) -->
       <div class="dashboard-datetime-card">
@@ -168,8 +164,8 @@
           <div class="col-md-3 d-flex">
             <div class="card flex-fill">
               <div class="card-body">
-             <span class="avatar rounded-circle bg-green-custom mb-2">
-                  <i class="ti ti-ticket  fs-16 "></i>
+                <span class="avatar rounded-circle bg-green-custom mb-2">
+                  <i class="ti ti-ticket fs-16"></i>
                 </span>
 
                 <h6 class="fs-13 fw-medium text-default mb-1">
@@ -259,95 +255,82 @@
     <div class="row">
       <!-- Total Employee -->
       <div class="col-xxl-4 d-flex">
+        <div class="card flex-fill">
+          <div
+            class="card-header pb-2 d-flex align-items-center justify-content-between flex-wrap"
+          >
+            <h5 class="mb-2">Employés totaux</h5>
+            <div class="dropdown mb-2">
+              <a
+                href="javascript:void(0);"
+                class="btn btn-white border btn-sm d-inline-flex align-items-center"
+                data-bs-toggle="dropdown"
+              >
+                <i class="ti ti-calendar me-1"></i>cette semaine
+              </a>
+            </div>
+          </div>
 
-  <div class="card flex-fill">
-    <div
-      class="card-header pb-2 d-flex align-items-center justify-content-between flex-wrap"
-    >
-      <h5 class="mb-2">Employés totaux</h5>
-      <div class="dropdown mb-2">
-        <a
-          href="javascript:void(0);"
-          class="btn btn-white border btn-sm d-inline-flex align-items-center"
-          data-bs-toggle="dropdown"
-        >
-          <i class="ti ti-calendar me-1"></i>cette semaine
-        </a>
+          <div class="card-body">
+            <!-- Total -->
+            <div class="d-flex align-items-center justify-content-between mb-1">
+              <p class="fs-13 mb-3">Nombre total d'employés</p>
+              <h3 class="mb-3">154</h3>
+            </div>
+
+            <div class="progress-stacked emp-stack mb-3">
+              <div class="progress" style="width: 73%">
+                <div class="progress-bar bg-fulltime"></div>
+              </div>
+
+              <div class="progress" style="width: 25%">
+                <div class="progress-bar bg-contractor"></div>
+              </div>
+
+              <div class="progress" style="width: 2%">
+                <div class="progress-bar bg-remote"></div>
+              </div>
+            </div>
+
+            <!-- ===== Stats ===== -->
+            <div class="border mb-3 employee-stats">
+              <div class="row gx-0">
+                <!-- À temps plein -->
+                <div class="col-6">
+                  <div class="p-3 border-end border-bottom">
+                    <span class="stat-badge bg-fulltime">
+                      À temps plein (73%)
+                    </span>
+                    <h2 class="stat-number color-fulltime">112</h2>
+                  </div>
+                </div>
+
+                <!-- Contracter -->
+                <div class="col-6 text-end">
+                  <div class="p-3 border-bottom">
+                    <span class="stat-badge bg-contractor">
+                      Contracter (25%)
+                    </span>
+                    <h2 class="stat-number color-contractor">38</h2>
+                  </div>
+                </div>
+
+                <!-- Télétravail -->
+                <div class="col-12">
+                  <div class="p-3">
+                    <span class="stat-badge bg-remote"> Télétravail (2%) </span>
+                    <h2 class="stat-number color-remote">04</h2>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <a [routerLink]="" class="btn btn-light btn-md w-100">
+              Afficher tous les employés
+            </a>
+          </div>
+        </div>
       </div>
-    </div>
-
-    <div class="card-body">
-
-      <!-- Total -->
-      <div class="d-flex align-items-center justify-content-between mb-1">
-        <p class="fs-13 mb-3">Nombre total d'employés</p>
-        <h3 class="mb-3">154</h3>
-      </div>
-
-  <div class="progress-stacked emp-stack mb-3">
-
-  <div class="progress" style="width: 73%">
-    <div class="progress-bar bg-fulltime"></div>
-  </div>
-
-  <div class="progress" style="width: 25%">
-    <div class="progress-bar bg-contractor"></div>
-  </div>
-
-  <div class="progress" style="width: 2%">
-    <div class="progress-bar bg-remote"></div>
-  </div>
-
-</div>
-
-      <!-- ===== Stats ===== -->
- <div class="border mb-3 employee-stats">
-  <div class="row gx-0">
-
-    <!-- À temps plein -->
-    <div class="col-6">
-      <div class="p-3 border-end border-bottom">
-        <span class="stat-badge bg-fulltime">
-          À temps plein (73%)
-        </span>
-        <h2 class="stat-number color-fulltime">112</h2>
-      </div>
-    </div>
-
-    <!-- Contracter -->
-    <div class="col-6 text-end">
-      <div class="p-3 border-bottom">
-        <span class="stat-badge bg-contractor">
-          Contracter (25%)
-        </span>
-        <h2 class="stat-number color-contractor">38</h2>
-      </div>
-    </div>
-
-    <!-- Télétravail -->
-    <div class="col-12">
-      <div class="p-3">
-        <span class="stat-badge bg-remote">
-          Télétravail (2%)
-        </span>
-        <h2 class="stat-number color-remote">04</h2>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-
-      <a
-        [routerLink]=""
-        class="btn btn-light btn-md w-100"
-      >
-        Afficher tous les employés
-      </a>
-
-    </div>
-  </div>
-</div>
 
       <!-- /Total Employee -->
 
@@ -399,25 +382,26 @@
             </div>
             <h6 class="mb-3">Statut</h6>
             <div class="d-flex align-items-center justify-content-between">
-  <p class="f-13 mb-2">
-    <i class="ti ti-circle-filled status-present me-1"></i>Présente
-  </p>
-  <p class="f-13 fw-medium text-gray-9 mb-2">59%</p>
-</div>
+              <p class="f-13 mb-2">
+                <i class="ti ti-circle-filled status-present me-1"></i>Présente
+              </p>
+              <p class="f-13 fw-medium text-gray-9 mb-2">59%</p>
+            </div>
 
-<div class="d-flex align-items-center justify-content-between">
-  <p class="f-13 mb-2">
-    <i class="ti ti-circle-filled status-permission me-1"></i>Autorisation
-  </p>
-  <p class="f-13 fw-medium text-gray-9 mb-2">2%</p>
-</div>
+            <div class="d-flex align-items-center justify-content-between">
+              <p class="f-13 mb-2">
+                <i class="ti ti-circle-filled status-permission me-1"></i
+                >Autorisation
+              </p>
+              <p class="f-13 fw-medium text-gray-9 mb-2">2%</p>
+            </div>
 
-<div class="d-flex align-items-center justify-content-between mb-2">
-  <p class="f-13 mb-2">
-    <i class="ti ti-circle-filled status-absent me-1"></i>Absent(e)
-  </p>
-  <p class="f-13 fw-medium text-gray-9 mb-2">15%</p>
-</div>
+            <div class="d-flex align-items-center justify-content-between mb-2">
+              <p class="f-13 mb-2">
+                <i class="ti ti-circle-filled status-absent me-1"></i>Absent(e)
+              </p>
+              <p class="f-13 fw-medium text-gray-9 mb-2">15%</p>
+            </div>
 
             <div
               class="bg-light br-5 box-shadow-xs p-2 pb-0 d-flex align-items-center justify-content-between flex-wrap"
@@ -467,56 +451,55 @@
       <!-- Clock-In/Out -->
       <div class="col-xxl-4 col-xl-6 d-flex">
         <div class="card flex-fill">
-         <div class="card-header pb-2 d-flex align-items-center justify-content-between">
+          <div
+            class="card-header pb-2 d-flex align-items-center justify-content-between"
+          >
+            <h5 class="mb-0">Pointage à l'arrivée/au départ</h5>
 
-  <h5 class="mb-0">Pointage à l'arrivée/au départ</h5>
+            <div class="d-flex align-items-center gap-2">
+              <!-- Dropdown Départements -->
+              <div class="dropdown">
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center border-0 fs-13"
+                  data-bs-toggle="dropdown"
+                >
+                  <i class="ti ti-building me-1"></i>
+                  Départements
+                </button>
 
-  <div class="d-flex align-items-center gap-2">
+                <ul class="dropdown-menu dropdown-menu-end p-2">
+                  @for (dept of departments; track dept.Department) {
+                  <li>
+                    <a
+                      href="javascript:void(0);"
+                      class="dropdown-item"
+                      (click)="selectDepartment(dept.Department)"
+                    >
+                      {{ dept.Department }}
+                    </a>
+                  </li>
+                  }
+                </ul>
+              </div>
 
-    <!-- Dropdown Départements -->
-    <div class="dropdown">
-      <button
-        type="button"
-        class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center border-0 fs-13"
-        data-bs-toggle="dropdown"
-      >
-        <i class="ti ti-building me-1"></i>
-        Départements
-      </button>
+              <!-- Dropdown Date -->
+              <div class="dropdown">
+                <button
+                  class="btn btn-sm btn-outline-secondary d-flex align-items-center border-0 fs-13"
+                  data-bs-toggle="dropdown"
+                >
+                  <i class="ti ti-calendar me-1"></i> Aujourd'hui
+                </button>
 
-      <ul class="dropdown-menu dropdown-menu-end p-2">
-        @for (dept of departments; track dept.Department) {
-          <li>
-            <a
-              href="javascript:void(0);"
-              class="dropdown-item"
-              (click)="selectDepartment(dept.Department)"
-            >
-              {{ dept.Department }}
-            </a>
-          </li>
-        }
-      </ul>
-    </div>
-
-    <!-- Dropdown Date -->
-    <div class="dropdown">
-      <button
-        class="btn btn-sm btn-outline-secondary d-flex align-items-center border-0 fs-13"
-        data-bs-toggle="dropdown"
-      >
-        <i class="ti ti-calendar me-1"></i> Aujourd'hui
-      </button>
-
-      <ul class="dropdown-menu dropdown-menu-end p-3">
-        <li><a class="dropdown-item">Ce mois-ci</a></li>
-        <li><a class="dropdown-item">Cette semaine</a></li>
-        <li><a class="dropdown-item">Aujourd'hui</a></li>
-      </ul>
-    </div>
-
-  </div>
-</div>
+                <ul class="dropdown-menu dropdown-menu-end p-3">
+                  <li><a class="dropdown-item">Ce mois-ci</a></li>
+                  <li><a class="dropdown-item">Cette semaine</a></li>
+                  <li><a class="dropdown-item">Aujourd'hui</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
 
           <div class="card-body">
             <div>
@@ -628,7 +611,7 @@
                 </div>
               </div>
             </div>
-         
+
             <a
               [routerLink]="routes.attendanceemployee"
               class="btn btn-light btn-md w-100"
@@ -849,8 +832,8 @@
                       <span class="fs-13 d-inline-flex align-items-center"
                         >Expérience : 4+ ans<i
                           class="ti ti-circle-filled fs-4 mx-2 text-primary"
-                        ></i
-                        >  États-Unis</span
+                        ></i>
+                        États-Unis</span
                       >
                     </div>
                   </div>
@@ -876,11 +859,11 @@
                       <p class="text-dark fw-medium text-truncate mb-0">
                         <a href="javascript:void(0);">Stephan Peralt</a>
                       </p>
-                      <span class="fs-13 d-inline-flex align-items-center"
-                        > Expérience : 6+ ans<i
+                      <span class="fs-13 d-inline-flex align-items-center">
+                        Expérience : 6+ ans<i
                           class="ti ti-circle-filled fs-4 mx-2 text-primary"
-                        ></i
-                        > États-Unis</span
+                        ></i>
+                        États-Unis</span
                       >
                     </div>
                   </div>
@@ -909,8 +892,8 @@
                       <span class="fs-13 d-inline-flex align-items-center"
                         >Expérience : 2+ ans<i
                           class="ti ti-circle-filled fs-4 mx-2 text-primary"
-                        ></i
-                        > États-Unis</span
+                        ></i>
+                        États-Unis</span
                       >
                     </div>
                   </div>
@@ -1059,7 +1042,7 @@
                             <a href="javascript:void(0);">Anthony Lewis</a>
                           </h6>
                           <span class="fs-12">Designer UI/UX</span>
-                      </div>
+                        </div>
                       </div>
                     </td>
                     <td class="border-0">
@@ -1079,7 +1062,6 @@
       <!-- Todo -->
 
       <!-- /Todo -->
-    
     </div>
 
     <div class="row">
@@ -1092,7 +1074,6 @@
       <!-- /Invoices -->
     </div>
 
-   
     <div class="row">
       <!-- Schedules -->
 

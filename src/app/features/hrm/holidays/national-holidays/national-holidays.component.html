@@ -1,15 +1,11 @@
 <div class="page-wrapper">
   <div class="content">
-
     <!-- ================= Breadcrumb + Button ================= -->
     <div
       class="page-breadcrumb mb-3 d-flex align-items-center justify-content-between"
     >
       <!-- Breadcrumb -->
-      <app-breadcrumbs
-        title="Fêtes nationales"
-        [breadcrumbItems]="breadCrumbItems"
-      ></app-breadcrumbs>
+      <app-breadcrumbs></app-breadcrumbs>
 
       <!-- Bouton à droite -->
       <button
@@ -21,14 +17,13 @@
         Ajouter fête nationale
       </button>
     </div>
-   
 
     <div class="row mb-4">
-
       <div class="col-lg-3 col-md-6 d-flex">
         <div class="card flex-fill">
-          <div class="card-body d-flex align-items-center justify-content-between">
-
+          <div
+            class="card-body d-flex align-items-center justify-content-between"
+          >
             <div class="d-flex align-items-center overflow-hidden">
               <span class="avatar avatar-lg bg-primary rounded-circle me-2">
                 <i class="ti ti-calendar"></i>
@@ -45,15 +40,15 @@
                 Aujourd’hui
               </span>
             </div>
-
           </div>
         </div>
       </div>
 
       <div class="col-lg-3 col-md-6 d-flex">
         <div class="card flex-fill">
-          <div class="card-body d-flex align-items-center justify-content-between">
-
+          <div
+            class="card-body d-flex align-items-center justify-content-between"
+          >
             <div class="d-flex align-items-center overflow-hidden">
               <span class="avatar avatar-lg bg-success rounded-circle me-2">
                 <i class="ti ti-flag"></i>
@@ -72,60 +67,53 @@
                 1 Jan
               </span>
             </div>
-
           </div>
         </div>
       </div>
-
     </div>
     <div class="card">
+      <div
+        class="card-header d-flex align-items-center justify-content-between"
+      >
+        <h5 class="mb-0">Liste des fêtes nationales</h5>
 
-     <div
-  class="card-header d-flex align-items-center justify-content-between"
->
-  <h5 class="mb-0">Liste des fêtes nationales</h5>
+        <!-- FILTRES ALIGNÉS SUR LA MÊME LIGNE -->
+        <div class="d-flex align-items-center gap-2 flex-nowrap">
+          <!-- Filtre mois -->
+          <select
+            class="form-select month-filter"
+            style="width: 180px"
+            [(ngModel)]="selectedMonth"
+          >
+            <option value="">Tous les mois</option>
+            <option *ngFor="let month of months" [value]="month.value">
+              {{ month.label }}
+            </option>
+          </select>
 
-  <!-- FILTRES ALIGNÉS SUR LA MÊME LIGNE -->
-  <div class="d-flex align-items-center gap-2 flex-nowrap">
-
-    <!-- Filtre mois -->
-    <select
-      class="form-select month-filter"
-      style="width: 180px"
-      [(ngModel)]="selectedMonth"
-    >
-      <option value="">Tous les mois</option>
-      <option *ngFor="let month of months" [value]="month.value">
-        {{ month.label }}
-      </option>
-    </select>
-
-    <!-- Date range -->
-    <div class="input-icon position-relative" style="width: 260px">
-      <span class="input-icon-addon">
-        <i class="ti ti-calendar text-gray-9"></i>
-      </span>
-      <input
-        type="text"
-        class="form-control date-range"
-        bsDaterangepicker
-        [(ngModel)]="bsRangeValue"
-        [bsConfig]="{ adaptivePosition: true }"
-        placeholder="dd/mm/yyyy - dd/mm/yyyy"
-      />
-    </div>
-
-  </div>
-</div>
+          <!-- Date range -->
+          <div class="input-icon position-relative" style="width: 260px">
+            <span class="input-icon-addon">
+              <i class="ti ti-calendar text-gray-9"></i>
+            </span>
+            <input
+              type="text"
+              class="form-control date-range"
+              bsDaterangepicker
+              [(ngModel)]="bsRangeValue"
+              [bsConfig]="{ adaptivePosition: true }"
+              placeholder="dd/mm/yyyy - dd/mm/yyyy"
+            />
+          </div>
+        </div>
+      </div>
 
       <!-- ===== /Card Header ===== -->
 
       <!-- ===== Card Body ===== -->
       <div class="card-body p-0">
         <div class="table-responsive">
-          <table
-            class="table datanew table-center datatable dataTable mb-0"
-          >
+          <table class="table datanew table-center datatable dataTable mb-0">
             <thead class="thead-light">
               <tr>
                 <th class="text-center">Fêtes nationales</th>
@@ -154,9 +142,7 @@
 
               <tr>
                 <td class="text-center">Nouvel An Amazigh</td>
-                <td class="text-center" dir="rtl">
-                  رأس السنة الأمازيغية
-                </td>
+                <td class="text-center" dir="rtl">رأس السنة الأمازيغية</td>
                 <td class="text-center">14 janvier 2025</td>
                 <td class="text-center">1</td>
               </tr>
@@ -177,18 +163,14 @@
 
               <tr>
                 <td class="text-center">Récupération d’Oued Eddahab</td>
-                <td class="text-center" dir="rtl">
-                  ذكرى استرجاع وادي الذهب
-                </td>
+                <td class="text-center" dir="rtl">ذكرى استرجاع وادي الذهب</td>
                 <td class="text-center">14 août 2025</td>
                 <td class="text-center">1</td>
               </tr>
 
               <tr>
                 <td class="text-center">Révolution du Roi et du Peuple</td>
-                <td class="text-center" dir="rtl">
-                  ثورة الملك والشعب
-                </td>
+                <td class="text-center" dir="rtl">ثورة الملك والشعب</td>
                 <td class="text-center">20 août 2025</td>
                 <td class="text-center">1</td>
               </tr>
@@ -224,103 +206,89 @@
           </table>
         </div>
       </div>
-
     </div>
   </div>
 
   <app-footer></app-footer>
-<div
-  class="modal fade"
-  id="addNationalHolidayModal"
-  tabindex="-1"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content">
+  <div
+    class="modal fade"
+    id="addNationalHolidayModal"
+    tabindex="-1"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <!-- ===== Modal Header ===== -->
+        <div class="modal-header">
+          <h5 class="modal-title">Ajouter une fête nationale</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+          ></button>
+        </div>
 
-      <!-- ===== Modal Header ===== -->
-      <div class="modal-header">
-        <h5 class="modal-title">Ajouter une fête nationale</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-        ></button>
-      </div>
-
-      <!-- ===== Modal Body ===== -->
-      <div class="modal-body">
-        <form class="row g-3">
-
-          <!-- Nom FR -->
-          <div class="col-md-6">
-            <label class="form-label">Fête nationale</label>
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Ex : Fête du Trône"
-            />
-          </div>
-
-          <!-- Nom AR -->
-          <div class="col-md-6">
-            <label class="form-label text-end d-block">
-              العيد الوطني
-            </label>
-            <input
-              type="text"
-              class="form-control text-end"
-              dir="rtl"
-              placeholder="مثال: عيد العرش"
-            />
-          </div>
-
-          <!-- Date -->
-          <div class="col-md-6">
-            <label class="form-label">Date</label>
-            <div class="input-icon position-relative">
-              <span class="input-icon-addon">
-                <i class="ti ti-calendar"></i>
-              </span>
+        <!-- ===== Modal Body ===== -->
+        <div class="modal-body">
+          <form class="row g-3">
+            <!-- Nom FR -->
+            <div class="col-md-6">
+              <label class="form-label">Fête nationale</label>
               <input
-                type="date"
+                type="text"
                 class="form-control"
+                placeholder="Ex : Fête du Trône"
               />
             </div>
-          </div>
 
-          <!-- Nombre de jours -->
-          <div class="col-md-6">
-            <label class="form-label">Nombre de jours</label>
-            <input
-              type="number"
-              class="form-control"
-              min="1"
-              value="1"
-              disabled
-            />
-          </div>
+            <!-- Nom AR -->
+            <div class="col-md-6">
+              <label class="form-label text-end d-block"> العيد الوطني </label>
+              <input
+                type="text"
+                class="form-control text-end"
+                dir="rtl"
+                placeholder="مثال: عيد العرش"
+              />
+            </div>
 
-        </form>
+            <!-- Date -->
+            <div class="col-md-6">
+              <label class="form-label">Date</label>
+              <div class="input-icon position-relative">
+                <span class="input-icon-addon">
+                  <i class="ti ti-calendar"></i>
+                </span>
+                <input type="date" class="form-control" />
+              </div>
+            </div>
+
+            <!-- Nombre de jours -->
+            <div class="col-md-6">
+              <label class="form-label">Nombre de jours</label>
+              <input
+                type="number"
+                class="form-control"
+                min="1"
+                value="1"
+                disabled
+              />
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer d-flex gap-2">
+          <button
+            type="button"
+            class="btn btn-white border"
+            data-bs-dismiss="modal"
+          >
+            Annuler
+          </button>
+
+          <button type="submit" class="btn btn-primary">Enregistrer</button>
+        </div>
       </div>
-
-   <div class="modal-footer d-flex gap-2">
-  <button
-    type="button"
-    class="btn btn-white border"
-    data-bs-dismiss="modal"
-  >
-    Annuler
-  </button>
-
-  <button type="submit" class="btn btn-primary">
-    Enregistrer
-  </button>
-</div>
-
-
     </div>
   </div>
-</div>
-
 </div>

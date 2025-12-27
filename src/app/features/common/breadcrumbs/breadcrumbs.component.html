@@ -1,16 +1,22 @@
-<div class="my-auto mb-2">
-  <h2 class="mb-1">{{title}}</h2>
-  <nav>
-    <ol class="breadcrumb mb-0">
-      <li class="breadcrumb-item">
-        <a [href]="routes.index" ><i class="fa fa-home"></i></a>
-      </li>
-      @for ( item of breadcrumbItems; track $index) {
-        <ng-container>
-            <li class="breadcrumb-item" [ngClass]="{'active': item.active === true}">{{ item.label }}
-            </li>
-        </ng-container>
-        }
-    </ol>
-  </nav>
-</div>
+<nav *ngIf="breadcrumbs$ | async as breadcrumbs" aria-label="breadcrumb">
+  <ol class="breadcrumb mb-0">
+
+    <!--* Home (clickable) -->
+    <li class="breadcrumb-item">
+      <a routerLink="/" aria-label="Home">
+        <i class="fa fa-home"></i>
+      </a>
+    </li>
+
+    <!--* Other breadcrumbs (text only) -->
+    <li
+      *ngFor="let item of breadcrumbs"
+      class="breadcrumb-item"
+      [class.active]="item.active"
+      aria-current="page"
+    >
+      <span>{{ item.label }}</span>
+    </li>
+
+  </ol>
+</nav>

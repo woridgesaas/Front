@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-
 import { BreadcrumbsComponent } from '../../../common/breadcrumbs/breadcrumbs.component';
 import { FooterComponent } from '../../../common/footer/footer.component';
 
@@ -16,27 +15,19 @@ import { FooterComponent } from '../../../common/footer/footer.component';
     RouterModule,
     BsDatepickerModule,
     BreadcrumbsComponent,
-    FooterComponent
+    FooterComponent,
   ],
   templateUrl: './religious-holidays.component.html',
-styleUrls: ['../holidays.components.scss']
+  styleUrls: ['../holidays.components.scss'],
 })
 export class ReligiousHolidaysComponent {
-
   today = new Date();
 
   nextHoliday = {
     name: 'Aïd Al-Fitr',
     date: new Date('2025-03-20'),
-    days: 2
+    days: 2,
   };
-
-  breadCrumbItems = [
-    { label: 'Employée', link: '/employee' },
-    { label: 'Jours fériés' },
-    { label: 'Fêtes religieuses', active: true }
-  ];
 
   bsRangeValue?: Date[];
 }
-

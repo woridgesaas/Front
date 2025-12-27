@@ -3,11 +3,11 @@
 
     <!-- Breadcrumb -->
     <div class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
-      <app-breadcrumbs title="Chat" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+      <app-breadcrumbs></app-breadcrumbs>
     </div>
 
     <div class="chat-wrapper">
-  
+
   <!-- SIDEBAR : Liste des contacts et groupes -->
   <div class="chat-sidebar" [class.show]="isSidebarVisible">
 
@@ -16,9 +16,9 @@
       <h5>Messages</h5>
       <div class="search-box">
         <i class="ti ti-search"></i>
-        <input 
-          type="text" 
-          placeholder="Rechercher..." 
+        <input
+          type="text"
+          placeholder="Rechercher..."
           [(ngModel)]="searchQuery"
           (ngModelChange)="searchItems()">
       </div>
@@ -26,11 +26,11 @@
 
     <!-- ONGLETS Contacts/Groupes -->
     <div class="sidebar-tabs">
-      <button [class.active]="activeTab === 'contacts'" 
+      <button [class.active]="activeTab === 'contacts'"
               (click)="switchTab('contacts')">
         <i class="ti ti-user"></i> Contacts
       </button>
-      <button [class.active]="activeTab === 'groups'" 
+      <button [class.active]="activeTab === 'groups'"
               (click)="switchTab('groups')">
         <i class="ti ti-users"></i> Groupes
       </button>
@@ -38,20 +38,20 @@
 
     <!-- Liste selon l'onglet actif -->
     <div class="items-list">
-      
+
       <!-- Contacts -->
       @if (activeTab === 'contacts') {
         @for (item of filteredItems; track item.id) {
-          <div class="item contact-item" 
+          <div class="item contact-item"
               [class.active]="selectedItem?.id === item.id"
               (click)="selectItem(item)">
-            
+
             <!-- Avatar contact -->
             <div class="avatar-wrapper">
               <img [src]="item.avatar" [alt]="item.name">
               <span class="status-indicator" [class]="item.status"></span>
             </div>
-            
+
             <!-- Infos contact -->
             <div class="item-info">
               <div class="name-time">
@@ -68,14 +68,14 @@
           </div>
         }
       }
-      
+
       <!-- Groupes -->
       @if (activeTab === 'groups') {
         @for (item of filteredItems; track item.id) {
-          <div class="item group-item" 
+          <div class="item group-item"
               [class.active]="selectedItem?.id === item.id"
               (click)="selectItem(item)">
-            
+
             <!-- Avatar groupe -->
             <div class="group-avatar">
               @if (item.avatar) {
@@ -84,7 +84,7 @@
                 <i class="ti ti-users"></i>
               }
             </div>
-            
+
             <!-- Infos groupe -->
             <div class="item-info">
               <div class="name-time">
@@ -101,7 +101,7 @@
           </div>
         }
       }
-      
+
       <!-- Message vide -->
       @if (filteredItems.length === 0) {
         <div class="no-items">
@@ -116,20 +116,20 @@
       }
     </div>
   </div>
-  
+
   <!-- ZONE PRINCIPALE : Chat -->
   <div class="chat-main">
-    
+
     <!-- En-tête du chat -->
     @if (selectedItem) {
       <div class="chat-header">
         <div class="chat-info">
-          
+
           <!-- Bouton retour mobile -->
           <button class="back-btn d-md-none" (click)="deselectItem()">
             <i class="ti ti-arrow-left"></i>
           </button>
-          
+
           <!-- Avatar -->
           <div class="chat-avatar">
             @if (activeTab === 'contacts') {
@@ -147,11 +147,11 @@
               </div>
             }
           </div>
-          
+
           <!-- Infos -->
           <div class="chat-details">
             <h5>{{ selectedItem.name }}</h5>
-            
+
             @if (activeTab === 'contacts') {
               <p class="chat-subtitle">
                 {{ getStatusText(selectedItem.status) }}
@@ -168,12 +168,12 @@
               </p>
             }
           </div>
-          
+
           <!-- Actions supplémentaires pour groupes (admin) -->
           @if (activeTab === 'groups' && isGroupAdmin()) {
             <div class="group-actions">
-              <button data-bs-toggle="modal" 
-                      data-bs-target="#detailsGroupModal" 
+              <button data-bs-toggle="modal"
+                      data-bs-target="#detailsGroupModal"
                       title="Gérer les membres">
                 <i class="ti ti-user-plus"></i>
               </button>
@@ -181,14 +181,14 @@
           }
         </div>
       </div>
-      
+
       <!-- Messages -->
       <div class="messages-container">
         <div class="messages-scroll">
           <div class="messages">
             @for (message of messages; track message.id) {
               <div class="message" [class.sent]="message.senderId === currentUser.id">
-                
+
                 <!-- Avatar expéditeur -->
                 @if (message.senderId !== currentUser.id) {
                   @if (activeTab === 'contacts') {
@@ -201,15 +201,15 @@
                     </div>
                   }
                 }
-                
+
                 <!-- Contenu du message -->
                 <div class="message-content">
-                  
+
                   <!-- Message texte -->
                   @if (message.type === 'text') {
                     <div class="text-message">{{ message.content }}</div>
                   }
-                  
+
                   <!-- Métadonnées -->
                   <div class="message-meta">
                     <span class="time">{{ message.time }}</span>
@@ -224,7 +224,7 @@
                     }
                   </div>
                 </div>
-                
+
                 <!-- Message envoyé par moi -->
                 @if (message.senderId === currentUser.id) {
                   <img [src]="currentUser.avatar" class="sender-avatar">
@@ -234,12 +234,12 @@
           </div>
         </div>
       </div>
-      
+
       <!-- Zone de saisie -->
       <div class="message-input-area">
         <form (ngSubmit)="sendMessage()">
           <div class="input-toolbar">
-            
+
             <!-- Actions -->
             <div class="input-actions">
               <button type="button" class="btn btn-link" title="Joindre un fichier">
@@ -247,16 +247,16 @@
                 <input type="file" hidden (change)="attachFile($event)">
               </button>
             </div>
-            
+
             <!-- Zone de texte -->
-            <textarea 
-              [(ngModel)]="newMessage" 
+            <textarea
+              [(ngModel)]="newMessage"
               name="message"
               placeholder="Écrivez votre message..."
               (keydown.enter)="onEnterPress($event)"
               rows="1">
             </textarea>
-            
+
             <!-- Bouton d'envoi -->
             <button type="submit" class="btn btn-primary" [disabled]="!newMessage.trim()">
               <i class="ti ti-send"></i>
@@ -264,7 +264,7 @@
           </div>
         </form>
       </div>
-      
+
     } @else {
       <!-- Écran d'accueil si aucun item sélectionné -->
       <div class="welcome-screen">

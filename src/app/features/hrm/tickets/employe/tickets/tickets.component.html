@@ -1,6 +1,6 @@
 <div class="content">
     <div class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
-            <app-breadcrumbs title="Tickets" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+            <app-breadcrumbs></app-breadcrumbs>
             <div class="d-flex my-xl-auto right-content align-items-center flex-wrap ">
             <div class="mb-2">
                 <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#add_ticket" class="btn btn-primary d-flex align-items-center"><i class="ti ti-circle-plus me-2"></i>Ajouter une Ticket</a>
@@ -101,7 +101,7 @@
         <div class="col-sm-12 col-md-6">
           <div class="dataTables_length">
             <label>
-              Lignes par page 
+              Lignes par page
               @if(tickets.length > 0) {
                 <select
                   [(ngModel)]="pageSize"
@@ -112,7 +112,7 @@
                   <option value="10">10</option>
                   <option value="25">25</option>
                 </select>
-              } 
+              }
               tickets
             </label>
           </div>
@@ -177,8 +177,8 @@
                     />
                   </div>
                 </td>
-                
-                
+
+
                 <td>
                   <div class="d-flex align-items-center">
                     <div class="avatar avatar-md border avatar-rounded bg-light">
@@ -189,7 +189,7 @@
                     </div>
                   </div>
                 </td>
-                
+
                 <!-- Titre -->
                 <td>
                   <h6 class="fw-medium mb-1">
@@ -201,13 +201,13 @@
                     <span class="fs-12 text-muted">{{ ticket.description }}</span>
                   }
                 </td>
-               
+
                 <td>
                   <span class="badge bg-light text-dark border">
                     {{ ticket.categorie }}
                   </span>
                 </td>
-                
+
                 <!-- Priorite -->
                 <td>
                   <span class="badge d-inline-flex align-items-center badge-xs"
@@ -221,7 +221,7 @@
                     <i class="ti ti-point-filled me-1"></i>{{ ticket.priorite }}
                   </span>
                 </td>
-                
+
                 <!-- Statut -->
                 <td>
                   <span class="badge d-inline-flex align-items-center badge-xs"
@@ -234,26 +234,26 @@
                     <i class="ti ti-point-filled me-1"></i>{{ ticket.statut }}
                   </span>
                 </td>
-                
-       
+
+
                 <td>
                   <span class="text-muted">
                     {{ formatDate(ticket.createdAt) }}
                   </span>
                 </td>
-                
-              
+
+
                 <td>
                   <div class="action-icon d-inline-flex">
                     <!-- Voir details dans modal -->
-                    <button class="btn btn-sm btn-outline-primary" 
-                            data-bs-toggle="modal" 
+                    <button class="btn btn-sm btn-outline-primary"
+                            data-bs-toggle="modal"
                             data-bs-target="#ticketDetailModal"
                             >
                         <i class="ti ti-eye"></i> Détails
                     </button>
-                    
-                    
+
+
                     <!-- Supprimer ghi fermer | resolu -->
                     @if (ticket.statut === 'Fermé' || ticket.statut === 'Résolu') {
                       <a
@@ -264,12 +264,12 @@
                         <i class="ti ti-trash"></i>
                       </a>
                     }
-                    
+
                   </div>
                 </td>
               </tr>
-            } 
-            
+            }
+
             @if (tickets.length === 0) {
               <tr>
                 <td colspan="8">
@@ -281,7 +281,7 @@
                     <p class="text-muted mb-0">
                       Vous n'avez pas encore créé de ticket.
                     </p>
-                    
+
                   </div>
                 </td>
               </tr>

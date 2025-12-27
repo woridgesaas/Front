@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Component,
   ElementRef,
@@ -19,7 +18,6 @@ import {
   ChartComponent,
   NgApexchartsModule,
 } from 'ng-apexcharts';
-import { breadCrumbItems } from '../../../shared/models/models';
 import { routes } from '../../../shared/routes/routes';
 import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
@@ -50,7 +48,6 @@ export interface ChartOptions {
     BsDatepickerModule,
     FooterComponent,
     NgApexchartsModule,
-
     BreadcrumbsComponent,
   ],
 })
@@ -58,7 +55,6 @@ export class EmployeeDashboardComponent implements AfterViewInit, OnInit {
   now: Date = new Date();
   private clockInterval!: any;
 
-  breadCrumbItems: breadCrumbItems[] = [];
   public leaves_chart: Partial<ChartOptions> | any;
   public performance_chart2: Partial<ChartOptions> | any;
   @ViewChild('chart') chart!: ChartComponent;
@@ -96,19 +92,6 @@ export class EmployeeDashboardComponent implements AfterViewInit, OnInit {
   ngOnInit(): void {
     this.startClock();
     this.today = new Date();
-    this.breadCrumbItems = [
-      { label: 'Dashboards' },
-      { label: 'Employee Dashboard', active: true },
-    ];
-
-    /**
-     *
-     * BreadCrumb
-     */
-    this.breadCrumbItems = [
-      { label: 'Dashboards' },
-      { label: 'Employee Dashboard', active: true },
-    ];
     this.leaves_chart = {
       chart: {
         height: 255,

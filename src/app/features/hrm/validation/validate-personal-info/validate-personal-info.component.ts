@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-
 import { BreadcrumbsComponent } from '../../../common/breadcrumbs/breadcrumbs.component';
 import { FooterComponent } from '../../../common/footer/footer.component';
 
@@ -32,12 +31,6 @@ interface PersonalInfoRequest {
   ],
 })
 export class ValidateInfoPersonnelComponent implements OnInit {
-  breadCrumbItems = [
-    { label: 'RH' },
-    { label: 'Validation' },
-    { label: 'Infos personnelles', active: true },
-  ];
-
   requests: PersonalInfoRequest[] = [
     {
       id: 1,

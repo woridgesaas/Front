@@ -9,23 +9,16 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-national-holidays',
   standalone: true,
   imports: [
-    CommonModule,            // ✅ OBLIGATOIRE pour *ngFor
+    CommonModule, // ✅ OBLIGATOIRE pour *ngFor
     FooterComponent,
     BreadcrumbsComponent,
     BsDatepickerModule,
-    FormsModule
+    FormsModule,
   ],
   templateUrl: './national-holidays.component.html',
-  styleUrls: ['../holidays.components.scss']
+  styleUrls: ['../holidays.components.scss'],
 })
 export class NationalHolidaysComponent implements OnInit {
-
-  breadCrumbItems = [
-    { label: 'Employée', link: '/employee' },
-    { label: 'Jours fériés' },
-    { label: 'Fêtes nationales', active: true }
-  ];
-
   bsRangeValue?: Date[];
 
   selectedMonth: number | '' = '';
