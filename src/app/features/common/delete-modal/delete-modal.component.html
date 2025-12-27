@@ -1,43 +1,55 @@
-<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
+<div
+  class="modal fade"
+  [id]="modalId"
+  tabindex="-1"
+  aria-hidden="true"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+>
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-
-      <!-- Header -->
-      <div class="modal-header border-0">
-        <h4 class="modal-title fw-semibold mb-0">
-          Confirmer la suppression
-        </h4>
-      </div>
-
+    <div class="modal-content confirm-modal">
       <!-- Body -->
-      <div class="modal-body text-center">
-        <span class="avatar avatar-xl bg-transparent-danger text-danger mb-3 d-inline-flex">
-          <i class="ti ti-trash-x fs-32"></i>
-        </span>
+      <div class="modal-body text-center px-4 py-4">
+        <!-- ICÔNE STATIQUE -->
 
-        
-
-        <p class="text-muted mb-0">
-          Voulez-vous vraiment supprimer cet élément ?
-        </p>
-      </div>
-
-      <!-- Footer -->
-      <div class="modal-footer border-0 justify-content-center">
-        <button type="button" class="btn btn-light me-3" data-bs-dismiss="modal">
-          Annuler
-        </button>
-
-        <button
-          type="button"
-          class="btn btn-danger"
-          (click)="onConfirm()"
-          data-bs-dismiss="modal"
+        <div
+          class="avatar avatar-xl bg-danger-transparent rounded-circle mx-auto mb-3"
         >
-          Oui, Supprimer
-        </button>
-      </div>
+          <i class="ti ti-trash fs-36 text-danger"></i>
+        </div>
 
+        <!-- TITRE DYNAMIQUE -->
+        <h5 class="fw-semibold mb-2">
+          {{ title }}
+        </h5>
+
+        <!-- MESSAGE DYNAMIQUE -->
+        <p class="text-muted mb-4">
+          {{ message }}
+        </p>
+
+        <!-- ACTIONS -->
+        <div class="d-flex justify-content-center gap-3">
+          <button
+            type="button"
+            class="btn btn-outline-secondary px-4"
+            data-bs-dismiss="modal"
+          >
+            <i class="ti ti-x me-1"></i>
+            Annuler
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-danger px-4"
+            (click)="onConfirm()"
+            data-bs-dismiss="modal"
+          >
+            <i class="ti ti-trash me-1"></i>
+            Supprimer
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

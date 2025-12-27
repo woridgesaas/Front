@@ -216,10 +216,10 @@
                       ></a>
                       <a
                         href="javascript:void(0);"
-                        class="me-2 text-danger"
+                        class="text-danger"
                         data-bs-toggle="modal"
-                        data-bs-target="#confirmDeleteModal"
-                        (click)="openDelete(data)"
+                        data-bs-target="#deleteModal"
+                        (click)="openDeleteModal(data)"
                       >
                         <i class="ti ti-trash"></i>
                       </a>
@@ -237,9 +237,20 @@
             </table>
           </div>
           <app-confirm-delete
-            [item]="selectedDepartment"
-            (confirm)="deleteDepartment($event)"
-          ></app-confirm-delete>
+            modalId="deleteModal"
+            title="Supprimer Département"
+            [message]="
+              selectedItem
+                ? 'Êtes-vous sûr de vouloir supprimer le département ' +
+                  selectedItem.Department +
+                  ' ?'
+                : ''
+            "
+            [item]="selectedItem"
+            (confirm)="deleteItem($event)"
+          >
+          </app-confirm-delete>
+
           <app-custom-pagination></app-custom-pagination>
         </div>
       </div>
