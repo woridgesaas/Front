@@ -9,6 +9,8 @@ import { MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { DemandeDocumentModalComponent } from './components/demande-document-modal/demande-document-modal.component';
 import { DocumentTemplate } from '../../../shared/models/document-template.model';
+import { CancelModalComponent } from '../../common/cancel-modal/cancel-modal.component';
+
 interface DocumentDemande {
   id: string;
   documentCode: string;
@@ -26,6 +28,7 @@ interface DocumentDemande {
 @Component({
   selector: 'app-documents',
   imports: [
+    CancelModalComponent,//autorise l'utilisation de <app-cancel-modal>
     CustomPaginationComponent,
     FormsModule,
     CommonModule,
@@ -52,7 +55,8 @@ export class DocumentsComponent implements OnDestroy {
   public totalData = 0;
   showFilter = false;
   public searchDataValue = '';
-
+selectedDemande: any;
+actionType: 'cancel' | 'delete' = 'cancel';
   dataSource!: MatTableDataSource<DocumentDemande>;
 
   // Filtres
@@ -73,6 +77,11 @@ export class DocumentsComponent implements OnDestroy {
   ngOnInit(): void {
     this.loadDemandes();
   }
+openCancelModal(demande: any) {
+  this.selectedDemande = demande;
+  this.actionType = 'cancel';
+}
+
 
   loadDemandes(): void {
     // Donéne mocjked statiqument
@@ -297,9 +306,18 @@ export class DocumentsComponent implements OnDestroy {
     alert('downloaded :)');
   }
 
-  cancelDemande(demande: DocumentDemande): void {
-    alert('Annuler demande:' + demande.id);
+cancelDemande(demande: DocumentDemande): void {
+  for (let i = 0; i < this.actualData.length; i++) {
+    if (this.actualData[i].id === demande.id) {
+      this.actualData[i].status = 'rejected';
+      break;
+    }
   }
+
+  // rafraîchir le tableau
+  this.getTableData({ skip: this.skip, limit: this.limit });
+}
+
 
   deleteDemande(demande: DocumentDemande): void {
     if (confirm(`Supprimer la demande "${demande.documentName}" ?`)) {
