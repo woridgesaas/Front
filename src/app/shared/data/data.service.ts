@@ -597,29 +597,29 @@ export class DataService {
           icon: 'user-star',
           subMenus: [
             {
-              menuValue: 'Employee Report',
-              route: '/reports/employee-report',
+              menuValue: 'Rapport des employés',
+              route: routes.employeereport,
               base: 'employee-report',
             },
             {
-              menuValue: 'Payslip Report',
-              route: '/reports/payslip-report',
+              menuValue: 'Rapport de paiement',
+              route: routes.payslipreport,
               base: 'payslip-report',
             },
             {
-              menuValue: 'Attendance Report',
-              route: '/reports/attendance-report',
+              menuValue: 'Rapport des présences/absences',
+              route: routes.attendancereport,
               base: 'attendance-report',
             },
             {
-              menuValue: 'Leave Report',
-              route: '/reports/leave-report',
+              menuValue: 'Rapport des congés',
+              route: routes.leavereport,
               base: 'leave-report',
             },
             {
-              menuValue: 'Rapport quotidient',
+              menuValue: 'Rapport quotidien',
               route: '/reports/daily-report',
-              base: 'daily-report',
+              base: routes.dailyreport,
             },
           ],
         },
@@ -823,7 +823,7 @@ export class DataService {
           base5: 'ticket',
           subMenus: [
             {
-              menuValue: 'Liste des Employés',
+              menuValue: 'Liste des employés',
               route: routes.employeeList,
               base: 'employee-list',
               customSubmenuTwo: false,
@@ -880,7 +880,7 @@ export class DataService {
                   showSubRoute: false,
                 },
                 {
-                  menuValue: 'Valider Info personnel',
+                  menuValue: 'Valider info personnel',
                   route: routes.validatePersonalInfo,
                   base: 'validate-personal-info',
                   hasSubRoute: false,
@@ -936,29 +936,29 @@ export class DataService {
           base: 'administration',
           subMenus: [
             {
-              menuValue: 'Rapport des Employés',
+              menuValue: 'Rapport des employés',
               route: routes.employeereport,
               base: 'employee-report',
             },
             {
               menuValue: 'Rapport de paiement',
-              route: '/reports/payslip-report',
+              route: routes.payslipreport,
               base: 'payslip-report',
             },
             {
-              menuValue: 'Rapport des Présences',
-              route: '/reports/attendance-report',
+              menuValue: 'Rapport des présences/absences',
+              route: routes.attendancereport,
               base: 'attendance-report',
             },
             {
-              menuValue: 'Rapport des Congés',
-              route: '/reports/leave-report',
+              menuValue: 'Rapport des congés',
+              route: routes.leavereport,
               base: 'leave-report',
             },
             {
               menuValue: 'Rapport quotidien',
               route: '/reports/daily-report',
-              base: 'daily-report',
+              base: routes.dailyreport,
             },
           ],
         },

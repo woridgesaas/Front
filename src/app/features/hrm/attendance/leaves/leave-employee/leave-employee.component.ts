@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { routes } from '../../../../../shared/routes/routes';
 import {
   apiResultFormat,
-  breadCrumbItems,
   leaveEmployee,
 } from '../../../../../shared/models/models';
 import {
@@ -52,7 +51,6 @@ export class LeaveEmployeeComponent {
   public pageSelection: pageSelection[] = [];
   dataSource!: MatTableDataSource<leaveEmployee>;
   public searchDataValue = '';
-  breadCrumbItems: breadCrumbItems[] = [];
   bsValue = new Date();
   bsRangeValue: Date[];
   maxDate = new Date();
@@ -61,10 +59,6 @@ export class LeaveEmployeeComponent {
     private router: Router,
     private pagination: PaginationService
   ) {
-    this.breadCrumbItems = [
-      { label: 'Employé' },
-      { label: 'Congés', active: true },
-    ];
     this.data.getleaveEmployee().subscribe((apiRes: apiResultFormat) => {
       this.actualData = apiRes.data;
       this.pagination.tablePageSize.subscribe((res: tablePageSize) => {

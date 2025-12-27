@@ -1,11 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Component,
   OnDestroy,
   OnInit,
   ViewChild,
   HostListener,
-  RendererFactory2,
 } from '@angular/core';
 import {
   ApexAxisChartSeries,
@@ -31,7 +29,6 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { Editor, NgxEditorModule, Toolbar, Validators } from 'ngx-editor';
-import { breadCrumbItems } from '../../../shared/models/models';
 import { routes } from '../../../shared/routes/routes';
 import { CommonService } from '../../../shared/common/common.service';
 import { SettingService } from '../../../shared/settings/settings.service';
@@ -84,7 +81,6 @@ export class ModalDashboardComponent implements OnInit, OnDestroy {
   }
   public EmpDepartment: Partial<ChartOptions> | any;
   public SalesIncome: Partial<ChartOptions> | any;
-  breadCrumbItems: breadCrumbItems[] = [];
   bsConfig: Partial<BsDatepickerConfig>;
   selectedYear: Date | undefined;
   selectedTime: Date = new Date(); // Default time
@@ -144,10 +140,6 @@ export class ModalDashboardComponent implements OnInit, OnDestroy {
     this.closeDropdown(); // Close dropdown after time selection
   }
   ngOnInit(): void {
-    this.breadCrumbItems = [
-      { label: 'Dashboards' },
-      { label: 'Admin Dashboard', active: true },
-    ];
     this.editor = new Editor();
     this.EmpDepartment = {
       chart: {

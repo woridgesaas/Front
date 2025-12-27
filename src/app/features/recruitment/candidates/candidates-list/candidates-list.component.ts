@@ -2,7 +2,6 @@ import { Component, OnDestroy } from '@angular/core';
 import { routes } from '../../../../shared/routes/routes';
 import {
   apiResultFormat,
-  breadCrumbItems,
   CandidateInfo,
   pageSelection,
 } from '../../../../shared/models/models';
@@ -58,7 +57,6 @@ export class CandidatesListComponent implements OnDestroy {
   public pageSelection: pageSelection[] = [];
   dataSource!: MatTableDataSource<CandidateInfo>;
   public searchDataValue = '';
-  breadCrumbItems: breadCrumbItems[] = [];
   public password: boolean[] = [false, false, false, false];
   isOpen = false;
 
@@ -87,11 +85,6 @@ export class CandidatesListComponent implements OnDestroy {
     private router: Router,
     private pagination: PaginationService
   ) {
-    this.breadCrumbItems = [
-      { label: 'Recrutement' },
-      { label: 'Liste des Candidats', active: true },
-    ];
-
     this.data.getCandidatesList().subscribe((apiRes: apiResultFormat) => {
       this.actualData = apiRes.data;
       this.pagination.tablePageSize.subscribe((res: tablePageSize) => {

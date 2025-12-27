@@ -22,12 +22,6 @@ import { BreadcrumbsComponent } from '../../../common/breadcrumbs/breadcrumbs.co
   imports: [CommonModule, NgApexchartsModule, BreadcrumbsComponent],
 })
 export class AttendanceReportComponent implements OnInit {
-  // ================= Breadcrumb =================
-  breadCrumbItems = [
-    { label: 'RH' },
-    { label: 'Rapport de Présence', active: true },
-  ];
-
   // ================= KPI (SANS RETARD) =================
   kpis = [
     {

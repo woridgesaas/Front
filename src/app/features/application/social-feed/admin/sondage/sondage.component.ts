@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MatSortModule, MatSort, Sort } from '@angular/material/sort';
-import { breadCrumbItems, Sondage } from '../../../../../shared/models/models';
+import { Sondage } from '../../../../../shared/models/models';
 import { routes } from '../../../../../shared/routes/routes';
 import { CustomPaginationComponent } from '../../../../../shared/custom-pagination/custom-pagination.component';
 import { BreadcrumbsComponent } from '../../../../common/breadcrumbs/breadcrumbs.component';
@@ -31,9 +31,6 @@ export class SondageComponent {
 
   // Routes
   routes = routes;
-
-  // Breadcrumb
-  breadCrumbItems: breadCrumbItems[] = [];
 
   // Données du tableau
   tableData: Partial<Sondage>[] = [];
@@ -166,14 +163,6 @@ export class SondageComponent {
       nbrOptions: 5,
     },
   ];
-
-  constructor() {
-    this.breadCrumbItems = [
-      { label: 'Intranet' },
-      { label: 'Administration' },
-      { label: 'Liste des sondages', active: true },
-    ];
-  }
 
   ngOnInit(): void {
     this.tableData = [...this.mockData];

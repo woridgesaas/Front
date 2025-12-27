@@ -1,10 +1,6 @@
 import { Component } from '@angular/core';
 import { routes } from '../../../shared/routes/routes';
-import {
-  apiResultFormat,
-  breadCrumbItems,
-  promotion,
-} from '../../../shared/models/models';
+import { apiResultFormat, promotion } from '../../../shared/models/models';
 import {
   pageSelection,
   PaginationService,
@@ -53,7 +49,6 @@ export class PromotionComponent {
   public pageSelection: pageSelection[] = [];
   dataSource!: MatTableDataSource<promotion>;
   public searchDataValue = '';
-  breadCrumbItems: breadCrumbItems[] = [];
   bsValue = new Date();
   bsRangeValue: Date[];
   maxDate = new Date();
@@ -62,10 +57,6 @@ export class PromotionComponent {
     private router: Router,
     private pagination: PaginationService
   ) {
-    this.breadCrumbItems = [
-      { label: 'Performance' },
-      { label: 'Promotion', active: true },
-    ];
     this.data.getpromotion().subscribe((apiRes: apiResultFormat) => {
       this.actualData = apiRes.data;
       this.pagination.tablePageSize.subscribe((res: tablePageSize) => {

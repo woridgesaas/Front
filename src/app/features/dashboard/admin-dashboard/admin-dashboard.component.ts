@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Component,
   OnDestroy,
@@ -25,7 +24,6 @@ import { Chart, registerables } from 'chart.js';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { FormControl, FormGroup, FormsModule } from '@angular/forms';
 import { Editor, NgxEditorModule, Toolbar, Validators } from 'ngx-editor';
-import { breadCrumbItems } from '../../../shared/models/models';
 import { routes } from '../../../shared/routes/routes';
 import { CommonService } from '../../../shared/common/common.service';
 import { SettingService } from '../../../shared/settings/settings.service';
@@ -87,7 +85,6 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
   }
   public EmpDepartment: Partial<ChartOptions> | any;
   public SalesIncome: Partial<ChartOptions> | any;
-  breadCrumbItems: breadCrumbItems[] = [];
   bsConfig: Partial<BsDatepickerConfig>;
   selectedYear: Date | undefined;
   selectedTime: Date = new Date(); // Default time
@@ -159,11 +156,6 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.editor = new Editor();
     this.loadDepartments();
-
-    this.breadCrumbItems = [
-      { label: 'Dashboards' },
-      { label: 'Admin Dashboard', active: true },
-    ];
     this.clockInterval = setInterval(() => {
       this.now = new Date();
     }, 1000);

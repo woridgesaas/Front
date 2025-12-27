@@ -32,11 +32,6 @@ interface LeaveRequest {
   ],
 })
 export class ValidateLeaveComponent implements OnInit {
-  breadCrumbItems = [
-    { label: 'RH' },
-    { label: 'Validation' },
-    { label: 'Congés', active: true },
-  ];
 
   /* ================== DONNÉES ================== */
 

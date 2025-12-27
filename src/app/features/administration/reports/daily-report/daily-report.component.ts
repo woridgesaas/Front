@@ -148,10 +148,6 @@ export class DailyReportComponent {
     private router: Router,
     private pagination: PaginationService
   ) {
-    this.breadCrumbItems = [
-      { label: 'HR' },
-      { label: 'Rapport quotidien', active: true },
-    ];
     this.data.getdailyReport().subscribe((apiRes: apiResultFormat) => {
       this.actualData = apiRes.data;
       this.pagination.tablePageSize.subscribe((res: tablePageSize) => {

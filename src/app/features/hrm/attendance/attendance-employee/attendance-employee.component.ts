@@ -3,7 +3,6 @@ import { routes } from '../../../../shared/routes/routes';
 import {
   apiResultFormat,
   attendanceemployee,
-  breadCrumbItems,
 } from '../../../../shared/models/models';
 import {
   pageSelection,
@@ -58,7 +57,6 @@ export class AttendanceEmployeeComponent {
   public pageSelection: pageSelection[] = [];
   dataSource!: MatTableDataSource<attendanceemployee>;
   public searchDataValue = '';
-  breadCrumbItems: breadCrumbItems[] = [];
   bsValue = new Date();
   bsRangeValue: Date[];
   maxDate = new Date();
@@ -67,10 +65,6 @@ export class AttendanceEmployeeComponent {
     private router: Router,
     private pagination: PaginationService
   ) {
-    this.breadCrumbItems = [
-      { label: 'Employés' },
-      { label: 'Présence', active: true },
-    ];
     this.data.getattendanceemployee().subscribe((apiRes: apiResultFormat) => {
       this.actualData = apiRes.data;
       this.pagination.tablePageSize.subscribe((res: tablePageSize) => {

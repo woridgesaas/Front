@@ -26,11 +26,6 @@ export class ValidateJustificationComponent implements OnInit {
   employees: any[] = [];
   departments: any[] = [];
   public routes = routes;
-  breadCrumbItems = [
-    { label: 'Accueil', link: '/' },
-    { label: 'RH Interne', link: '/hrm' },
-    { label: 'Justifications', active: true },
-  ];
 
   constructor(private http: HttpClient) {}
 

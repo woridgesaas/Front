@@ -1,32 +1,34 @@
 <div class="content">
-
   <!-- ================= HEADER ================= -->
-  <div class="d-md-flex d-block align-items-center justify-content-between mb-4">
-    <app-breadcrumbs
-      title="Rapport des Congés"
-      [breadcrumbItems]="breadCrumbItems">
-    </app-breadcrumbs>
+  <div
+    class="d-md-flex d-block align-items-center justify-content-between mb-4"
+  >
+    <app-breadcrumbs> </app-breadcrumbs>
     <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
-            <div class="me-2 mb-2">
-                <div class="dropdown">
-                    <a href="javascript:void(0);" class="dropdown-toggle btn btn-white d-inline-flex align-items-center" data-bs-toggle="dropdown">
-                        <i class="ti ti-file-export me-1"></i>Exporter
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end p-3">
-                        <li>
-                            <a href="javascript:void(0);" class="dropdown-item rounded-1">
-                                <i class="ti ti-file-type-pdf me-1"></i>Exporter en PDF
-                            </a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0);" class="dropdown-item rounded-1">
-                                <i class="ti ti-file-type-xls me-1"></i>Exporter en Excel
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+      <div class="me-2 mb-2">
+        <div class="dropdown">
+          <a
+            href="javascript:void(0);"
+            class="dropdown-toggle btn btn-white d-inline-flex align-items-center"
+            data-bs-toggle="dropdown"
+          >
+            <i class="ti ti-file-export me-1"></i>Exporter
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end p-3">
+            <li>
+              <a href="javascript:void(0);" class="dropdown-item rounded-1">
+                <i class="ti ti-file-type-pdf me-1"></i>Exporter en PDF
+              </a>
+            </li>
+            <li>
+              <a href="javascript:void(0);" class="dropdown-item rounded-1">
+                <i class="ti ti-file-type-xls me-1"></i>Exporter en Excel
+              </a>
+            </li>
+          </ul>
         </div>
+      </div>
+    </div>
   </div>
 
   <!-- ================= KPI ================= -->
@@ -45,7 +47,9 @@
           </div>
 
           <p class="fs-12 mb-0">
-            <span [ngClass]="kpi.evolution >= 0 ? 'text-success' : 'text-danger'">
+            <span
+              [ngClass]="kpi.evolution >= 0 ? 'text-success' : 'text-danger'"
+            >
               {{ kpi.evolution }}%
             </span>
             vs mois dernier
@@ -70,14 +74,14 @@
         [plotOptions]="leaveEvolutionChart.plotOptions"
         [xaxis]="leaveEvolutionChart.xaxis"
         [legend]="leaveEvolutionChart.legend"
-        [colors]="leaveEvolutionChart.colors">
+        [colors]="leaveEvolutionChart.colors"
+      >
       </apx-chart>
     </div>
   </div>
 
   <!-- ================= CHART 2 & 3 ================= -->
   <div class="row mb-4">
-
     <div class="col-xl-6">
       <div class="card h-100">
         <div class="card-header">
@@ -92,7 +96,8 @@
             [chart]="leaveTypeDonutChart.chart"
             [labels]="leaveTypeDonutChart.labels"
             [colors]="leaveTypeDonutChart.colors"
-            [legend]="leaveTypeDonutChart.legend">
+            [legend]="leaveTypeDonutChart.legend"
+          >
           </apx-chart>
         </div>
       </div>
@@ -113,12 +118,12 @@
             [plotOptions]="leaveByDepartmentChart.plotOptions"
             [xaxis]="leaveByDepartmentChart.xaxis"
             [tooltip]="leaveByDepartmentChart.tooltip"
-            [colors]="leaveByDepartmentChart.colors">
+            [colors]="leaveByDepartmentChart.colors"
+          >
           </apx-chart>
         </div>
       </div>
     </div>
-
   </div>
 
   <!-- ================= CHART 4 ================= -->
@@ -136,9 +141,9 @@
         [stroke]="leaveApprovalRateChart.stroke"
         [fill]="leaveApprovalRateChart.fill"
         [xaxis]="leaveApprovalRateChart.xaxis"
-        [colors]="leaveApprovalRateChart.colors">
+        [colors]="leaveApprovalRateChart.colors"
+      >
       </apx-chart>
     </div>
   </div>
-
 </div>

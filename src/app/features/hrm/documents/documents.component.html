@@ -1,11 +1,8 @@
 <div class="content">
   <!-- Breadcrums -->
   <div class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
-    <app-breadcrumbs
-      title="Documents administratifs"
-      [breadcrumbItems]="breadCrumbItems">
-    </app-breadcrumbs>
-    
+    <app-breadcrumbs></app-breadcrumbs>
+
     <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
       <div class="mb-2">
         <a href="javascript:void(0);"
@@ -38,21 +35,21 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-end p-3">
             <li>
-              <a href="javascript:void(0);" 
+              <a href="javascript:void(0);"
                  class="dropdown-item rounded-1"
                  (click)="applyStatusFilter('')">
                 Tous les statuts
               </a>
             </li>
             <li>
-              <a href="javascript:void(0);" 
+              <a href="javascript:void(0);"
                  class="dropdown-item rounded-1"
                  (click)="applyStatusFilter('pending')">
                 En attente
               </a>
             </li>
             <li>
-              <a href="javascript:void(0);" 
+              <a href="javascript:void(0);"
                  class="dropdown-item rounded-1"
                  (click)="applyStatusFilter('in_progress')">
                 En traitement
@@ -61,14 +58,14 @@
             <li>
             </li>
             <li>
-              <a href="javascript:void(0);" 
+              <a href="javascript:void(0);"
                  class="dropdown-item rounded-1"
                  (click)="applyStatusFilter('completed')">
                 Terminé
               </a>
             </li>
             <li>
-              <a href="javascript:void(0);" 
+              <a href="javascript:void(0);"
                  class="dropdown-item rounded-1"
                  (click)="applyStatusFilter('rejected')">
                 Rejeté
@@ -76,7 +73,7 @@
             </li>
           </ul>
         </div>
-        
+
         <!-- Filtre Catégorie -->
         <div class="dropdown">
           <a href="javascript:void(0);"
@@ -90,7 +87,7 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-end p-3">
             <li>
-              <a href="javascript:void(0);" 
+              <a href="javascript:void(0);"
                  class="dropdown-item rounded-1"
                  (click)="applyCategoryFilter('')">
                 Toutes catégories
@@ -98,7 +95,7 @@
             </li>
             @for (category of categories; track category) {
               <li>
-                <a href="javascript:void(0);" 
+                <a href="javascript:void(0);"
                    class="dropdown-item rounded-1"
                    (click)="applyCategoryFilter(category)">
                   {{ category }}
@@ -109,7 +106,7 @@
         </div>
       </div>
     </div>
-    
+
     <div class="card-body p-0">
       <div class="custom-datatable-filter">
         <div class="dataTables_wrapper dt-bootstrap5 no-footer">
@@ -117,7 +114,7 @@
             <div class="col-sm-12 col-md-6">
               <div class="dataTables_length">
                 <label>
-                  Lignes par page 
+                  Lignes par page
                   @if (tableData.length > 0) {
                     <select [(ngModel)]="pageSize"
                             (ngModelChange)="changePageSize(pageSize)"
@@ -144,7 +141,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="table-responsive">
             <table matSort
                    (matSortChange)="sortData($event)"
@@ -170,7 +167,7 @@
                   <th class="no-sort">Actions</th>
                 </tr>
               </thead>
-              
+
               <tbody>
                 @for (data of tableData; track data) {
                   <tr>
@@ -181,9 +178,9 @@
                                [(ngModel)]="data.isSelected" />
                       </div>
                     </td>
-                    
+
                     <td>
-                      <a href="javascript:void(0);" 
+                      <a href="javascript:void(0);"
                          class="fw-medium"
                          (click)="viewDetails(data)">
                         {{ data.documentName }}
@@ -192,13 +189,13 @@
                         {{ data.description }}
                       </div>
                     </td>
-                    
+
                     <td>{{ data.category }}</td>
-                    
+
                     <td>
                       {{ data.requestDate | date:'dd/MM/yyyy' }}
                     </td>
-                    
+
                     <td>
                       <span class="badge d-inline-flex align-items-center badge-xs"
                             [ngClass]="getStatusBadgeClass(data.status)">
@@ -206,7 +203,7 @@
                         {{ getStatusText(data.status) }}
                       </span>
                     </td>
-                    
+
                     <td>
                       @if (data.processedDate) {
                         {{ data.processedDate | date:'dd/MM/yyyy' }}
@@ -214,7 +211,7 @@
                         <span class="text-muted">-</span>
                       }
                     </td>
-                    
+
                    <td>
                     <div class="action-icon">
                         <!-- Télécharger -->
@@ -226,7 +223,7 @@
                             <i class="ti ti-download text-success"></i>
                         </a>
                         }
-                        
+
                         <!-- Voir détails -->
                         <a href="javascript:void(0);"
                         class="me-2"
@@ -234,7 +231,7 @@
                         title="Détails">
                         <i class="ti ti-eye"></i>
                         </a>
-                        
+
                         <!-- Annuler -->
                         @if (data.status === 'pending' || data.status === 'in_progress') {
                         <a href="javascript:void(0);"
@@ -244,7 +241,7 @@
                             <i class="ti ti-x text-warning"></i>
                         </a>
                         }
-                        
+
                         <!-- Bouton suppression avec tooltip -->
                         <a href="javascript:void(0);"
                         class="text-danger position-relative"
@@ -258,7 +255,7 @@
                     </td>
                 </tr>
                 }
-                
+
                 @if (tableData.length === 0) {
                   <tr>
                     <td colspan="7">
@@ -269,7 +266,7 @@
               </tbody>
             </table>
           </div>
-          
+
           <!-- Pagination -->
           @if (tableData.length > 0) {
             <app-custom-pagination

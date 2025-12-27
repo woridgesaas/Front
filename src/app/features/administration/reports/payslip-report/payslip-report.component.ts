@@ -1,6 +1,5 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { routes } from '../../../../shared/routes/routes';
-import { breadCrumbItems } from '../../../../shared/models/models';
 import { DataService } from '../../../../shared/data/data.service';
 import { Router } from '@angular/router';
 import {
@@ -59,7 +58,6 @@ Chart.register(...registerables);
 })
 export class PayslipReportComponent implements OnInit {
   public routes = routes;
-  breadCrumbItems: breadCrumbItems[] = [];
   bsValue = new Date();
   bsRangeValue: Date[];
   maxDate = new Date();
@@ -87,11 +85,6 @@ export class PayslipReportComponent implements OnInit {
   @ViewChild('chart') chart!: ChartComponent;
 
   constructor(private data: DataService, private router: Router) {
-    this.breadCrumbItems = [
-      { label: 'RH' },
-      { label: 'Rapports de Paie', active: true },
-    ];
-
     this.maxDate.setDate(this.maxDate.getDate() + 7);
     this.bsRangeValue = [this.bsValue, this.maxDate];
   }
