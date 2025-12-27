@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { BreadcrumbsComponent } from '../../../common/breadcrumbs/breadcrumbs.component';
 import { FooterComponent } from '../../../common/footer/footer.component';
+import { KpisComponent } from '../../../common/kpis/kpis.component';
 
 type Status = 'En attente' | 'Acceptée' | 'Refusée';
 
@@ -28,6 +29,8 @@ interface PersonalInfoRequest {
     BsDatepickerModule,
     BreadcrumbsComponent,
     FooterComponent,
+    KpisComponent,
+
   ],
 })
 export class ValidateInfoPersonnelComponent implements OnInit {
@@ -158,4 +161,31 @@ export class ValidateInfoPersonnelComponent implements OnInit {
   get refused() {
     return this.requests.filter((r) => r.status === 'Refusée').length;
   }
+  kpis = [
+  {
+    title: 'Total des demandes',
+    value: this.total,
+    icon: 'fa-solid fa-file-lines',
+    color: 'primary',
+  },
+  {
+    title: 'En attente',
+    value: this.pending,
+    icon: 'fa-solid fa-clock',
+    color: 'warning',
+  },
+  {
+    title: 'Acceptées',
+    value: this.accepted,
+    icon: 'fa-solid fa-check',
+    color: 'success',
+  },
+  {
+    title: 'Refusées',
+    value: this.refused,
+    icon: 'fa-solid fa-xmark',
+    color: 'danger',
+  },
+];
+
 }
