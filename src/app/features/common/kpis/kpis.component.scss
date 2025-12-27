@@ -1,0 +1,84 @@
+/* =========================
+   HOST
+   ========================= */
+:host {
+  display: block;
+  width: 100%;
+}
+
+/* =========================
+   CARD
+   ========================= */
+.kpi-card {
+  border-radius: 14px;
+  border: 1px solid #eef1f6;
+  transition: all 0.2s ease;
+}
+
+.kpi-card:hover {
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.card-body {
+  padding: 20px 22px;
+}
+
+/* =========================
+   TEXTE
+   ========================= */
+.kpi-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.kpi-value {
+  font-size: 30px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+/* =========================
+   ICÔNE (STYLE EXACT IMAGE 1)
+   ========================= */
+.kpi-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 2px solid;
+}
+
+/* Icône */
+.kpi-icon i {
+  font-size: 26px;
+  font-weight: 600;
+}
+
+/* =========================
+   COULEURS (Bootstrap-like)
+   ========================= */
+.kpi-primary {
+  color: #8b5cf6;
+}
+
+.kpi-success {
+  color: #22c55e;
+}
+
+.kpi-info {
+  color: #3b82f6;
+}
+
+.kpi-warning {
+  color: #f59e0b;
+}
+
+.kpi-danger {
+  color: #ef4444;
+}

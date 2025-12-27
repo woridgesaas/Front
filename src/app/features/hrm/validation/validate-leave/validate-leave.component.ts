@@ -4,6 +4,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { BreadcrumbsComponent } from '../../../common/breadcrumbs/breadcrumbs.component';
 import { FooterComponent } from '../../../common/footer/footer.component';
+import { KpisComponent } from '../../../common/kpis/kpis.component';
 
 type LeaveStatus = 'En attente' | 'Acceptée' | 'Refusée';
 
@@ -29,6 +30,7 @@ interface LeaveRequest {
     BreadcrumbsComponent,
     BsDatepickerModule,
     FooterComponent,
+    KpisComponent,
   ],
 })
 export class ValidateLeaveComponent implements OnInit {
@@ -213,4 +215,31 @@ export class ValidateLeaveComponent implements OnInit {
   get refused() {
     return this.leaveRequests.filter((r) => r.status === 'Refusée').length;
   }
+  kpis = [
+  {
+    title: 'Total des demandes',
+    value: this.total,
+    icon: 'fa-solid fa-file-lines',
+    color: 'primary',
+  },
+  {
+    title: 'En attente',
+    value: this.pending,
+    icon: 'fa-solid fa-clock',
+    color: 'warning',
+  },
+  {
+    title: 'Acceptées',
+    value: this.accepted,
+    icon: 'fa-solid fa-check',
+    color: 'success',
+  },
+  {
+    title: 'Refusées',
+    value: this.refused,
+    icon: 'fa-solid fa-xmark',
+    color: 'danger',
+  },
+];
+
 }
