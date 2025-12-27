@@ -16,7 +16,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { CustomPaginationComponent } from '../../../../shared/custom-pagination/custom-pagination.component';
 import { FormsModule } from '@angular/forms';
 import { MatSortModule } from '@angular/material/sort';
-import { ConfirmDeleteComponent } from '../../../common/confirm-delete/confirm-delete.component';
+import { ConfirmDeleteComponent } from '../../../common/delete-modal/delete-modal.component';
 
 @Component({
   selector: 'app-departments',
@@ -115,7 +115,7 @@ export class DepartmentsComponent implements OnDestroy {
   }
   deleteDepartment(department: any) {
     console.log('Suppression confirmée:', department);
-    // 👉 Appel API ici
+    //  Appel API ici
   }
   public row = true;
   public searchData(value: string): void {

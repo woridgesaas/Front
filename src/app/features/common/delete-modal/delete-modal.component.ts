@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 @Component({
   selector: 'app-confirm-delete',
   standalone: true,
-  templateUrl: './confirm-delete.component.html',
+  templateUrl: './delete-modal.component.html',
 })
 export class ConfirmDeleteComponent {
   @Input() item: any; // élément à supprimer
