@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
-import { routes } from '../../../shared/routes/routes';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { LogoComponent } from '../Common/logo/logo.component';
+import { IllustrationComponent } from '../Common/illustration/illustration.component';
+import { DescriptionComponent } from '../Common/description/description.component';
+import { ButtonComponent } from '../Common/button/button.component';
 
 @Component({
     selector: 'app-under-construction',
     templateUrl: './under-construction.component.html',
     styleUrl: './under-construction.component.scss',
-    imports: [CommonModule,RouterLink]
+    imports: [CommonModule,LogoComponent,IllustrationComponent,DescriptionComponent,ButtonComponent]
 })
 export class UnderConstructionComponent {
-routes= routes
 }

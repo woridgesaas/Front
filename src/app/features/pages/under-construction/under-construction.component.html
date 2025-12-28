@@ -1,36 +1,28 @@
-<div class="bg-linear-gradiant">
-  <div class="main-wrapper">
+<div class="container min-vh-100 d-flex align-items-center">
+  <div class="row justify-content-center w-100">
+    <div class="col-md-8 col-lg-6 text-center">
 
-    <div class="container">
-      <div>
-        <!-- Page Wrapper -->
-        <div class="Page-wrapper">
-          <div class="row justify-content-center align-items-center">
-            <div class="col-md-8 d-flex justify-content-center align-items-center mx-auto">
-              <div>
-                <div class="p-4 text-center">
-                  <img src="assets/img/logo.svg" alt="logo" class="img-fluid">
-                </div>
-                <div class="error-images mb-4">
-                  <img src="assets/img/bg/under-construction.svg" alt="image" class="img-fluid">
-                </div>
-                <div class="text-center">
-                  <h1 class="mb-3">Under Construction</h1>
-                  <p class="fs-16 text-center">We're currently upgrading our platform to serve
-                    you better <br> Stay tuned for exciting updates!
-                  </p>
-                  <div class="d-flex justify-content-center pb-4">
-                    <a [routerLink]="routes.index" class="btn btn-primary d-flex align-items-center "><i class="ti ti-arrow-left me-2"></i>Back to Dashboard</a>
-                  </div>
-                </div>
-              </div>
+      <!-- Logo -->
+      <app-logo></app-logo>
 
-            </div>
-          </div>
-        </div>
-        <!-- /Page Wrapper -->
-
+      <!-- Illustration en construction -->
+      <div class="error-images">
+        <app-illustration
+        backgroundImage="assets/img/bg/under-construction.svg"
+        alt="Page en construction"
+        class="img-fluid"></app-illustration>
       </div>
+
+      <!-- Texte -->
+
+        <app-description
+        title="Page en construction"
+        text="    Nous mettons actuellement à niveau notre plateforme pour mieux vous servir.
+         Restez à l'écoute pour des mises à jour passionnantes !"
+      ></app-description>
+
+      <!-- Bouton -->
+      <app-button></app-button>
 
     </div>
   </div>
