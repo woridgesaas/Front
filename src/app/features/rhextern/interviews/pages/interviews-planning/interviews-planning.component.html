@@ -4,6 +4,12 @@
       <!-- Breadcrumb -->
       <div class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
         <app-breadcrumbs></app-breadcrumbs>
+  
+        <div class="d-flex align-items-center gap-2">
+          <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#create_interview_modal" (click)="openCreateModal()">
+            <i class="ti ti-calendar-plus me-2"></i>Planifier un Entretien
+          </button>
+        </div>
       </div>
   
       <!-- Filtres -->
