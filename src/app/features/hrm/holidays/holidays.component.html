@@ -1,9 +1,38 @@
-<div class="card">
-  <div class="card-header">
-    <h5>Jours des fêtes</h5>
+<div class="content">
+
+  <!-- ===== Breadcrumb (PAS DE page-wrapper en plus) ===== -->
+  <div
+    class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3"
+  >
+    <app-breadcrumbs></app-breadcrumbs>
   </div>
 
-  
+  <!-- ===== STATS (cards) ===== -->
+  <app-holiday-stats [holidays]="filteredHolidays"></app-holiday-stats>
 
-  <router-outlet></router-outlet>
+  <!-- ===== CARD : Liste des jours fériés ===== -->
+  <div class="card">
+
+    <!-- Header + filtres  -->
+    <div
+      class="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3"
+    >
+      <h5 class="mb-0">Liste des jours fériés</h5>
+
+      <app-holiday-filters
+        [(type)]="selectedType"
+        [(month)]="selectedMonth"
+        [(range)]="bsRangeValue"
+      ></app-holiday-filters>
+    </div>
+
+    <!-- Table -->
+    <div class="card-body p-0">
+      <app-holiday-table
+        [holidays]="filteredHolidays"
+      ></app-holiday-table>
+    </div>
+
+  </div>
+
 </div>

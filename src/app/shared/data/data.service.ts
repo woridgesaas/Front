@@ -412,11 +412,10 @@ export class DataService {
             },
             {
               menuValue: 'Jours fériés',
+              route: routes.holidays,
               base: 'holidays',
-              route: routes.nationalHolidays,
               hasSubRoute: false,
               showSubRoute: false,
-              customSubmenuTwo: false,
             },
           ],
         },
@@ -805,8 +804,8 @@ export class DataService {
             },
             {
               menuValue: 'Jours fériés',
-              route: routes.nationalHolidays,
-              base: 'national-holidays',
+              route: routes.holidays,
+              base: 'holidays',
             },
           ],
         },

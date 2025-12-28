@@ -333,6 +333,18 @@ export const routes: Routes = [
               title: 'Documents administratifs',
             },
           },
+                //* Holidays routes
+      {
+        path: 'holidays',
+        loadComponent: () =>
+          import('./features/hrm/holidays/holidays.component').then(
+            (m) => m.HolidaysComponent
+          ),
+        data: {
+          breadcrumb: 'Jours fériés',
+          title: 'Jours fériés',
+        },
+      },
         ],
       },
 
@@ -375,39 +387,7 @@ export const routes: Routes = [
         ],
       },
 
-      //* Holidays routes
-      {
-        path: 'holidays',
-        loadComponent: () =>
-          import('./features/hrm/holidays/holidays.component').then(
-            (m) => m.HolidaysComponent
-          ),
-        data: { breadcrumb: 'Jours fériés', title: 'Jours fériés' },
-        children: [
-          {
-            path: 'religious-holidays',
-            loadComponent: () =>
-              import(
-                './features/hrm/holidays/religious-holidays/religious-holidays.component'
-              ).then((m) => m.ReligiousHolidaysComponent),
-            data: {
-              breadcrumb: 'Fêtes religieuses',
-              title: 'Fêtes religieuses',
-            },
-          },
-          {
-            path: 'national-holidays',
-            loadComponent: () =>
-              import(
-                './features/hrm/holidays/national-holidays/national-holidays.component'
-              ).then((m) => m.NationalHolidaysComponent),
-            data: {
-              breadcrumb: 'Jours fériés nationaux',
-              title: 'Jours fériés nationaux',
-            },
-          },
-        ],
-      },
+
 
       //* Attendance routes
       {

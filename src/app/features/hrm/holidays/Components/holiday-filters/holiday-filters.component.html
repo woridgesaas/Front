@@ -1,0 +1,49 @@
+<div class="d-flex align-items-center gap-2 flex-wrap">
+
+  <!-- Type -->
+  <select
+    class="form-select"
+    style="width: 150px"
+    [ngModel]="type"
+    (ngModelChange)="typeChange.emit($event)"
+  >
+    <option value="all">Tous</option>
+    <option value="national">National</option>
+    <option value="religious">Religieux</option>
+  </select>
+
+  <!-- Mois -->
+  <select
+    class="form-select"
+    style="width: 170px"
+    [ngModel]="month"
+    (ngModelChange)="monthChange.emit($event)"
+  >
+    <option value="">Tous les mois</option>
+    <option *ngFor="let m of months" [value]="m.value">
+      {{ m.label }}
+    </option>
+  </select>
+
+  <!-- Période -->
+  <div
+          class="d-flex my-xl-auto right-content align-items-center flex-wrap"
+        >
+          <div class="me-3">
+            <div class="input-icon position-relative">
+              <span class="input-icon-addon">
+                <i class="ti ti-calendar text-gray-9"></i>
+              </span>
+              <input
+                type="text"
+                class="form-control date-range"
+                bsDaterangepicker
+                [(ngModel)]="bsRangeValue"
+                [bsConfig]="{ adaptivePosition: true }"
+                placeholder="dd/mm/yyyy - dd/mm/yyyy"
+              />
+            </div>
+          </div>
+        </div>
+
+</div>

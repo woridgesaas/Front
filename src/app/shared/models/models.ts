@@ -543,14 +543,15 @@ export interface designation {
   Status: string;
 }
 
-export interface holiday {
-  sNo?: number;
-  isSelected: boolean;
-  Title: string;
-  Date: string;
-  Description: string;
-  Status: string;
+export interface Holiday {
+  id: number;
+  type: 'national' | 'religious';
+  nameFr: string;
+  nameAr: string;
+  date: Date;
+  days: number;
 }
+
 
 export interface attendanceadmin {
   sNo?: number;
