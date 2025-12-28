@@ -291,7 +291,7 @@ export const routes: Routes = [
             path: 'departments',
             loadComponent: () =>
               import(
-                './features/hrm/employees/departments/departments.component'
+                './features/hrm/departments/departments.component'
               ).then((m) => m.DepartmentsComponent),
             data: { breadcrumb: 'Départements', title: 'Départements' },
           },

@@ -1,0 +1,25 @@
+<div class="d-flex align-items-center gap-2 flex-wrap">
+
+  <!-- Statut -->
+  <select
+    class="form-select"
+    style="width: 160px"
+    [ngModel]="status"
+    (ngModelChange)="statusChange.emit($event)"
+  >
+    <option value="all">Tous</option>
+    <option value="Actif">Actif</option>
+    <option value="Inactif">Inactif</option>
+  </select>
+
+  <!-- Recherche -->
+  <input
+    type="text"
+    class="form-control"
+    style="width: 220px"
+    placeholder="Rechercher..."
+    [ngModel]="search"
+    (ngModelChange)="searchChange.emit($event)"
+  />
+
+</div>

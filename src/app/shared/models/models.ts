@@ -527,12 +527,13 @@ export interface employees {
 }
 
 export interface department {
-  sNo?: number;
-  isSelected: boolean;
+  id: number;
   Department: string;
-  NoOfEmployees: string;
-  Status: string;
+  NoOfEmployees: number;
+  Status: 'Actif' | 'Inactif';
+  isSelected: boolean;
 }
+
 
 export interface designation {
   sNo?: number;
