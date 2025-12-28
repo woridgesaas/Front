@@ -1,12 +1,57 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { RouterLink, RouterOutlet } from '@angular/router';
+import { BreadcrumbsComponent } from '../../common/breadcrumbs/breadcrumbs.component';
+import { FooterComponent } from '../../common/footer/footer.component';
+import { HolidayStatsComponent } from './Components/holiday-stats/holiday-stats.component';
+import { HolidayFiltersComponent } from './Components/holiday-filters/holiday-filters.component';
+import { HolidayTableComponent } from './Components/holiday-table/holiday-table.component';
+import { Holiday } from '../../../shared/models/models';
+import {HolidayService } from '../../../shared/services/holiday.service'
 
 @Component({
   selector: 'app-holidays',
   standalone: true,
   imports: [
-    RouterOutlet   
+    CommonModule,
+    FormsModule,
+    BreadcrumbsComponent,
+   
+    HolidayStatsComponent,
+    HolidayFiltersComponent,
+    HolidayTableComponent,
   ],
   templateUrl: './holidays.component.html',
 })
-export class HolidaysComponent {}
+export class HolidaysComponent {
+
+  holidays: Holiday[] = [];
+  selectedMonth: number | '' = '';
+  bsRangeValue: Date[] = [];
+  selectedType: 'all' | 'national' | 'religious' = 'all';
+
+  constructor(private holidayService: HolidayService) {
+    this.loadHolidays();
+  }
+
+  loadHolidays() {
+    this.holidayService.getHolidays().subscribe(data => {
+      this.holidays = data;
+    });
+  }
+
+  get filteredHolidays(): Holiday[] {
+    return this.holidays.filter(h => {
+      const byType =
+        this.selectedType === 'all' || h.type === this.selectedType;
+
+      const byMonth =
+        !this.selectedMonth || h.date.getMonth() + 1 === this.selectedMonth;
+
+      return byType && byMonth;
+    });
+  }
+}
+
+

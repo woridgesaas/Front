@@ -49,9 +49,7 @@ export const routes = {
   validatePersonalInfo: '/validation/validate-personal-info',
 
   //* Holidays routes
-  holidays: '/holidays',
-  nationalHolidays: '/holidays/national-holidays',
-  religiousHolidays: '/holidays/religious-holidays',
+  holidays: '/employees/holidays',
 
   //* Leaves routes
   leaveemployee: '/attendance/leaves/leave-employee',
