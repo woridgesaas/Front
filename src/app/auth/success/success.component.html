@@ -1,49 +1,52 @@
 <div class="container-fuild">
   <div class="w-100 overflow-hidden position-relative flex-wrap d-block vh-100">
     <div class="row">
-
-     <!--* Background image -->
+      <!--* Background image -->
       <div class="col-lg-5">
-        <div class="d-lg-flex align-items-center justify-content-center d-none flex-wrap vh-100 bg-primary-transparent">
+        <div
+          class="d-lg-flex align-items-center justify-content-center d-none flex-wrap vh-100 bg-primary-transparent"
+        >
           <div>
-            <img src="assets/img/bg/success_reset_password.png" alt="Backgroun image"/>
+            <img
+              src="assets/img/bg/success_reset_password.png"
+              alt="Backgroun image"
+            />
           </div>
         </div>
       </div>
 
       <div class="col-lg-7 col-md-12 col-sm-12">
-        <div class="row justify-content-center align-items-center vh-100 overflow-auto flex-wrap">
+        <div
+          class="row justify-content-center align-items-center vh-100 overflow-auto flex-wrap"
+        >
           <div class="col-md-7 mx-auto vh-100">
-            
-              <div class="min-vh-100 d-flex flex-column justify-content-center p-3 p-md-5 pb-0">
+            <div
+              class="min-vh-100 d-flex flex-column justify-content-center p-3 p-md-5 pb-0"
+            >
+              <!--* Logo -->
+              <app-logo></app-logo>
 
-             <!--* Logo -->
-                <div class=" mx-auto mb-5 text-center">
-                    <img src="assets/favicon_io/logo1.ico" class="img-fluid w-50" alt="Logo">
+              <div class="">
+                <app-description
+                  title="Succès"
+                  text="Votre nouveau mot de passe a été enregistré avec succès."
+                ></app-description>
+
+                <!--* Back to log in page link -->
+                <div class="mb-3">
+                  <a
+                    [routerLink]="routes.login"
+                    class="btn btn-primary w-100 rounded-4"
+                  >
+                    Retour à la page de connexion
+                  </a>
                 </div>
-
-                <div class="">
-
-                  <div class="text-center mb-3">
-                    <img src="assets/img/icons/success.svg" alt="Success icon" class="img-fluid mb-3"/>
-                    <h2 class="mb-2"> Succès </h2>
-                    <p class="mb-0"> Votre nouveau mot de passe a été enregistré avec succès. </p>
-                  </div>
-
-                 <!--* Back to log in page link -->
-                  <div class="mb-3">
-                    <a [routerLink]="routes.login" class="btn btn-primary w-100 rounded-4"> Retour à la page de connexion </a>
-                  </div>
-
-                </div>
-
-             <!--* Footer -->
-                <div class="mt-5 pb-4 text-center">
-                  <p class="mb-0 text-gray-9"> Copyright &copy; 2025 Woridge. Tous droits réservés. </p>
-                </div>
-
               </div>
-            
+
+              <!--* Footer -->
+              <app-footer></app-footer>
+              
+            </div>
           </div>
         </div>
       </div>

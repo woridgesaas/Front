@@ -59,22 +59,6 @@ export const routes: Routes = [
           ),
         data: { title: 'Écran verrouillé' },
       },
-      {
-        path: 'error-404',
-        loadComponent: () =>
-          import('./auth/error-404/error-404.component').then(
-            (m) => m.Error404Component
-          ),
-        data: { title: 'Page non trouvée' },
-      },
-      {
-        path: 'error-500',
-        loadComponent: () =>
-          import('./auth/error-500/error-500.component').then(
-            (m) => m.Error500Component
-          ),
-        data: { title: 'Erreur serveur' },
-      },
     ],
   },
 
@@ -659,6 +643,22 @@ export const routes: Routes = [
       ).then((m) => m.UnderConstructionComponent),
     data: { title: 'Page en construction' },
   },
+   {
+        path: 'error-404',
+        loadComponent: () =>
+          import('./features/pages/error-404/error-404.component').then(
+            (m) => m.Error404Component
+          ),
+        data: { title: 'Page non trouvée' },
+      },
+      {
+        path: 'error-500',
+        loadComponent: () =>
+          import('./features/pages/error-500/error-500.component').then(
+            (m) => m.Error500Component
+          ),
+        data: { title: 'Erreur serveur' },
+      },
 
   //* Fallback route
   {

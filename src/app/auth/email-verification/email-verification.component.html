@@ -1,87 +1,110 @@
 <div class="container-fuild">
   <div class="w-100 overflow-hidden position-relative flex-wrap d-block vh-100">
     <div class="row">
-
-    <!--* Background image -->
-      <div class="col-lg-5">
-        <div class="d-lg-flex align-items-center justify-content-center d-none flex-wrap vh-100 bg-primary-transparent">
-          <div>
-            <img src="assets/img/bg/email_verification.png" alt="Background image" />
-          </div>
-        </div>
+      <!--* Background image -->
+      <div class="col-lg-5 d-none d-lg-block p-0 bg-primary-transparent">
+        <app-illustration
+          backgroundImage="assets/img/bg/email_verification.png"
+        ></app-illustration>
       </div>
 
       <div class="col-lg-7 col-md-12 col-sm-12">
-        <div class="row justify-content-center align-items-center vh-100 overflow-auto flex-wrap">
+        <div
+          class="row justify-content-center align-items-center vh-100 overflow-auto flex-wrap"
+        >
           <div class="col-md-7 mx-auto p-4">
-
-        <!--* Email verification form -->
+            <!--* Email verification form -->
             <form class="digit-group">
               <div>
-
                 <!--* Logo -->
-                <div class=" mx-auto mb-5 text-center">
-                    <img src="assets/favicon_io/logo1.ico" class="img-fluid w-25" alt="Logo">
-                </div>
+                <app-logo></app-logo>
 
                 <div class="">
-                  <div class="text-center mb-3">
-                    <h2 class="mb-2"> Vérification par e-mail </h2>
-                    <p class="mb-0"> Veuillez entrer le code de confirmation envoyé à <span class="hover-a">*****doe@exemple.com</span> </p>
-                  </div>
-                
-                  <div class="text-center otp-input">
+                  <app-description
+                    title="Vérification par e-mail"
+                    text="Veuillez entrer le code de confirmation envoyé à *****doe@exemple.com"
+                  ></app-description>
 
+                  <div class="text-center otp-input">
                     <!--* Digits input -->
                     <div class="d-flex align-items-center mb-3">
-                      <input type="text" class="rounded w-50 py-sm-3 py-2 text-center fs-26 fw-bold me-3" id="digit-1" name="digit-1" data-next="digit-2" maxlength="1"/>
-                      <input type="text" class="rounded w-50 py-sm-3 py-2 text-center fs-26 fw-bold me-3" id="digit-2" name="digit-2" data-next="digit-3" data-previous="digit-1" maxlength="1"/>
-                      <input type="text" class="rounded w-50 py-sm-3 py-2 text-center fs-26 fw-bold me-3" id="digit-3" name="digit-3" data-next="digit-4" data-previous="digit-2" maxlength="1"/>
-                      <input type="text" class="rounded w-50 py-sm-3 py-2 text-center fs-26 fw-bold" id="digit-4" name="digit-4" data-next="digit-5" data-previous="digit-3" maxlength="1"/>
+                      <input
+                        type="text"
+                        class="rounded w-50 py-sm-3 py-2 text-center fs-26 fw-bold me-3"
+                        id="digit-1"
+                        name="digit-1"
+                        data-next="digit-2"
+                        maxlength="1"
+                      />
+                      <input
+                        type="text"
+                        class="rounded w-50 py-sm-3 py-2 text-center fs-26 fw-bold me-3"
+                        id="digit-2"
+                        name="digit-2"
+                        data-next="digit-3"
+                        data-previous="digit-1"
+                        maxlength="1"
+                      />
+                      <input
+                        type="text"
+                        class="rounded w-50 py-sm-3 py-2 text-center fs-26 fw-bold me-3"
+                        id="digit-3"
+                        name="digit-3"
+                        data-next="digit-4"
+                        data-previous="digit-2"
+                        maxlength="1"
+                      />
+                      <input
+                        type="text"
+                        class="rounded w-50 py-sm-3 py-2 text-center fs-26 fw-bold"
+                        id="digit-4"
+                        name="digit-4"
+                        data-next="digit-5"
+                        data-previous="digit-3"
+                        maxlength="1"
+                      />
                     </div>
 
-                    
                     <div>
-
-                     <!--* Display the time -->
+                      <!--* Display the time -->
                       <div class="badge bg-medium-purple mb-3">
                         <p class="d-flex align-items-center">
                           <i class="fa fa-clock me-1"></i>09:59
                         </p>
                       </div>
-                      
-                      
-                     <!--* Resend code link -->
+
+                      <!--* Resend code link -->
                       <div class="mb-3 d-flex justify-content-center">
-                        <p class="text-gray-9"> Tu n'as pas reçu le code ?
-                          <a href="javascript:void(0);" class="text-primary hover-a"> Renvoyer le code</a>
+                        <p class="text-gray-9">
+                          Tu n'as pas reçu le code ?
+                          <a
+                            href="javascript:void(0);"
+                            class="text-primary hover-a"
+                          >
+                            Renvoyer le code</a
+                          >
                         </p>
                       </div>
                     </div>
-
                   </div>
 
                   <!--* Verify button -->
                   <!--! If the code is correct, redirect to reset password page-->
                   <div class="mb-3">
-                    <button type="submit" class="btn btn-primary w-100 rounded-4"> 
+                    <button
+                      type="submit"
+                      class="btn btn-primary w-100 rounded-4"
+                    >
                       <i class="fa fa-check-circle me-2"></i>
                       <span> Vérifier </span>
                     </button>
                   </div>
-
                 </div>
-
 
                 <!--* Footer-->
-                <div class="mt-5 pb-4 text-center">
-                  <p class="mb-0 text-gray-9"> Copyright &copy; 2025 Woridge. Tous droits réservés. </p>
-                </div>
-
+               <app-footer></app-footer>
               </div>
-
             </form>
-
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import { Component, Renderer2 } from '@angular/core';
-import { routes } from '../../shared/routes/routes';
+import { routes } from '../../../shared/routes/routes';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
