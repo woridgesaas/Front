@@ -1,16 +1,20 @@
 import { Component, Renderer2 } from '@angular/core';
 import { routes } from '../../../shared/routes/routes';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { LogoComponent } from '../Common/logo/logo.component';
+import { IllustrationComponent } from '../Common/illustration/illustration.component';
+import { DescriptionComponent } from '../Common/description/description.component';
+import { ButtonComponent } from '../Common/button/button.component';
 
 @Component({
     selector: 'app-error-404',
     templateUrl: './error-404.component.html',
     styleUrl: './error-404.component.scss',
-    imports: [CommonModule,RouterLink]
+    imports: [CommonModule,LogoComponent,IllustrationComponent,DescriptionComponent,ButtonComponent]
 })
 export class Error404Component {
-  public routes=routes;
+
   constructor(
     private router: Router,
     private renderer:Renderer2
