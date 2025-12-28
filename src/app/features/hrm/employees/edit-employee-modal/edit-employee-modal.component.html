@@ -1,0 +1,721 @@
+<!-- Modifier Employé - Formulaire Multi-étapes -->
+<div class="modal fade" id="edit_employee_multistep">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="d-flex align-items-center">
+            <h4 class="modal-title me-2">Modifier les Informations de l'Employé</h4>
+          </div>
+          <button
+            type="button"
+            class="btn-close custom-btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+            (click)="resetForm()"
+          >
+            <i class="ti ti-x"></i>
+          </button>
+        </div>
+  
+        <!-- Indicateur d'étapes avec Bootstrap Nav Pills -->
+        <div class="modal-body pt-3 pb-0">
+          <ul class="nav nav-pills nav-justified mb-4">
+            <li class="nav-item">
+              <a 
+                class="nav-link" 
+                [class.active]="currentStep === 1"
+                (click)="goToStep(1)"
+                style="cursor: pointer;"
+              >
+                <i class="ti ti-user me-2"></i>
+                <span class="d-none d-md-inline">Informations Personnelles</span>
+                <span class="d-inline d-md-none">Info</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a 
+                class="nav-link" 
+                [class.active]="currentStep === 2"
+                (click)="goToStep(2)"
+                style="cursor: pointer;"
+              >
+                <i class="ti ti-building-bank me-2"></i>
+                <span class="d-none d-md-inline">Informations Bancaires</span>
+                <span class="d-inline d-md-none">Banque</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a 
+                class="nav-link" 
+                [class.active]="currentStep === 3"
+                (click)="goToStep(3)"
+                style="cursor: pointer;"
+              >
+                <i class="ti ti-school me-2"></i>
+                <span class="d-none d-md-inline">Formation</span>
+                <span class="d-inline d-md-none">Formation</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a 
+                class="nav-link" 
+                [class.active]="currentStep === 4"
+                (click)="goToStep(4)"
+                style="cursor: pointer;"
+              >
+                <i class="ti ti-briefcase me-2"></i>
+                <span class="d-none d-md-inline">Expérience</span>
+                <span class="d-inline d-md-none">Expérience</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+  
+        <form [formGroup]="editEmployeeForm" (ngSubmit)="onSubmit()">
+          <!-- Étape 1: Informations Personnelles -->
+          <div class="tab-content" *ngIf="currentStep === 1">
+            <div class="modal-body pb-0">
+              <h5 class="mb-3 text-primary">
+                <i class="ti ti-user me-2"></i>Informations Personnelles
+              </h5>
+              <div class="row">
+                <div class="col-md-12 mb-3">
+                  <div class="d-flex align-items-center flex-wrap row-gap-3 bg-light w-100 rounded p-3">
+                    <div class="d-flex align-items-center justify-content-center avatar avatar-xxl rounded-circle border border-dashed me-2 flex-shrink-0 text-dark frames">
+                      <i class="ti ti-photo text-gray-2 fs-16"></i>
+                    </div>
+                    <div class="profile-upload">
+                      <div class="mb-2">
+                        <h6 class="mb-1">Photo de Profil</h6>
+                        <p class="fs-12">L'image doit être inférieure à 4 MB (Format: JPG, PNG)</p>
+                      </div>
+                      <div class="profile-uploader d-flex align-items-center">
+                        <div class="drag-upload-btn btn btn-sm btn-primary me-2">
+                          Parcourir
+                          <input
+                            type="file"
+                            class="form-control image-sign"
+                            accept="image/*"
+                            (change)="onFileSelected($event)"
+                          />
+                        </div>
+                        <a href="javascript:void(0);" class="btn btn-light btn-sm">Supprimer</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Prénom <span class="text-danger">*</span></label>
+                    <input 
+                      type="text" 
+                      class="form-control" 
+                      formControlName="firstName"
+                      placeholder="Entrez le prénom"
+                      [class.is-invalid]="isFieldInvalid('firstName')"
+                    />
+                    <div class="invalid-feedback" *ngIf="isFieldInvalid('firstName')">
+                      Le prénom est requis
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Nom <span class="text-danger">*</span></label>
+                    <input 
+                      type="text" 
+                      class="form-control" 
+                      formControlName="lastName"
+                      placeholder="Entrez le nom"
+                      [class.is-invalid]="isFieldInvalid('lastName')"
+                    />
+                    <div class="invalid-feedback" *ngIf="isFieldInvalid('lastName')">
+                      Le nom est requis
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">CIN <span class="text-danger">*</span></label>
+                    <input 
+                      type="text" 
+                      class="form-control" 
+                      formControlName="cin"
+                      placeholder="Ex: AB123456"
+                      maxlength="8"
+                      [class.is-invalid]="isFieldInvalid('cin')"
+                    />
+                    <div class="invalid-feedback" *ngIf="isFieldInvalid('cin')">
+                      Le CIN est requis (format: 2 lettres + 6 chiffres)
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="col-md-6">
+                  <div class="mb-3 ngx-date-birth">
+                    <label class="form-label">Date de Naissance <span class="text-danger">*</span></label>
+                    <div class="input-icon-end position-relative">
+                      <input
+                        type="text"
+                        class="form-control datetimepicker"
+                        bsDatepicker
+                        formControlName="birthDate"
+                        container=".ngx-date-birth"
+                        [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD/MM/YYYY' }"
+                        placeholder="JJ/MM/AAAA"
+                        [class.is-invalid]="isFieldInvalid('birthDate')"
+                      />
+                      <span class="input-icon-addon">
+                        <i class="ti ti-calendar text-gray-7"></i>
+                      </span>
+                    </div>
+                    <div class="invalid-feedback d-block" *ngIf="isFieldInvalid('birthDate')">
+                      La date de naissance est requise
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Email Professionnel <span class="text-danger">*</span></label>
+                    <input 
+                      type="email" 
+                      class="form-control" 
+                      formControlName="email"
+                      placeholder="exemple@entreprise.ma"
+                      [class.is-invalid]="isFieldInvalid('email')"
+                    />
+                    <div class="invalid-feedback" *ngIf="isFieldInvalid('email')">
+                      Un email valide est requis
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Téléphone <span class="text-danger">*</span></label>
+                    <input 
+                      type="tel" 
+                      class="form-control" 
+                      formControlName="phone"
+                      placeholder="0612345678"
+                      maxlength="10"
+                      [class.is-invalid]="isFieldInvalid('phone')"
+                    />
+                    <div class="invalid-feedback" *ngIf="isFieldInvalid('phone')">
+                      Le téléphone est requis (10 chiffres)
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="col-md-12">
+                  <div class="mb-3">
+                    <label class="form-label">Adresse Complète</label>
+                    <textarea 
+                      class="form-control" 
+                      formControlName="address"
+                      rows="2"
+                      placeholder="Numéro, rue, quartier, ville"
+                    ></textarea>
+                  </div>
+                </div>
+  
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Département <span class="text-danger">*</span></label>
+                    <mat-select
+                      formControlName="department"
+                      placeholder="Sélectionner un département"
+                      class="select custom-mat-select"
+                      [class.is-invalid]="isFieldInvalid('department')"
+                    >
+                      <mat-option value="finance">Finance</mat-option>
+                      <mat-option value="rh">Ressources Humaines</mat-option>
+                      <mat-option value="it">Technologies de l'Information</mat-option>
+                      <mat-option value="commercial">Commercial</mat-option>
+                      <mat-option value="production">Production</mat-option>
+                      <mat-option value="logistique">Logistique</mat-option>
+                    </mat-select>
+                    <div class="invalid-feedback d-block" *ngIf="isFieldInvalid('department')">
+                      Le département est requis
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Poste <span class="text-danger">*</span></label>
+                    <mat-select
+                      formControlName="position"
+                      placeholder="Sélectionner un poste"
+                      class="select custom-mat-select"
+                      [class.is-invalid]="isFieldInvalid('position')"
+                    >
+                      <mat-option value="manager">Manager</mat-option>
+                      <mat-option value="developer">Développeur</mat-option>
+                      <mat-option value="analyst">Analyste</mat-option>
+                      <mat-option value="accountant">Comptable</mat-option>
+                      <mat-option value="technician">Technicien</mat-option>
+                      <mat-option value="assistant">Assistant(e)</mat-option>
+                    </mat-select>
+                    <div class="invalid-feedback d-block" *ngIf="isFieldInvalid('position')">
+                      Le poste est requis
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Étape 2: Informations Bancaires -->
+          <div class="tab-content" *ngIf="currentStep === 2">
+            <div class="modal-body pb-0">
+              <h5 class="mb-3 text-primary">
+                <i class="ti ti-building-bank me-2"></i>Informations Bancaires
+              </h5>
+              <div class="alert alert-info d-flex align-items-center" role="alert">
+                <i class="ti ti-info-circle me-2"></i>
+                <small>Ces informations sont confidentielles et utilisées uniquement pour le traitement de la paie.</small>
+              </div>
+              <div class="row" formGroupName="bankInfo">
+                <div class="col-md-12">
+                  <div class="mb-3">
+                    <label class="form-label">Nom de la Banque <span class="text-danger">*</span></label>
+                    <mat-select
+                      formControlName="bankName"
+                      placeholder="Sélectionner une banque"
+                      class="select custom-mat-select"
+                      [class.is-invalid]="isFieldInvalid('bankInfo.bankName')"
+                    >
+                      <mat-option value="attijariwafa">Attijariwafa Bank</mat-option>
+                      <mat-option value="bmce">BMCE Bank of Africa</mat-option>
+                      <mat-option value="bmci">BMCI</mat-option>
+                      <mat-option value="cih">CIH Bank</mat-option>
+                      <mat-option value="bp">Banque Populaire</mat-option>
+                      <mat-option value="cdm">Crédit du Maroc</mat-option>
+                      <mat-option value="cam">Crédit Agricole du Maroc</mat-option>
+                      <mat-option value="sgm">Société Générale Maroc</mat-option>
+                      <mat-option value="cfg">CFG Bank</mat-option>
+                      <mat-option value="autre">Autre</mat-option>
+                    </mat-select>
+                    <div class="invalid-feedback d-block" *ngIf="isFieldInvalid('bankInfo.bankName')">
+                      Le nom de la banque est requis
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">RIB (24 chiffres) <span class="text-danger">*</span></label>
+                    <input 
+                      type="text" 
+                      class="form-control" 
+                      formControlName="rib"
+                      placeholder="123456789012345678901234"
+                      maxlength="24"
+                      [class.is-invalid]="isFieldInvalid('bankInfo.rib')"
+                    />
+                    <div class="invalid-feedback" *ngIf="isFieldInvalid('bankInfo.rib')">
+                      Le RIB doit contenir exactement 24 chiffres
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">IBAN</label>
+                    <input 
+                      type="text" 
+                      class="form-control" 
+                      formControlName="iban"
+                      placeholder="MA64011519000001205000534921"
+                      maxlength="28"
+                    />
+                    <small class="text-muted">Format: MA + 26 caractères</small>
+                  </div>
+                </div>
+  
+                <div class="col-md-12">
+                  <div class="mb-3">
+                    <label class="form-label">Agence Bancaire</label>
+                    <input 
+                      type="text" 
+                      class="form-control" 
+                      formControlName="branch"
+                      placeholder="Nom et adresse de l'agence"
+                    />
+                  </div>
+                </div>
+  
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Code Agence</label>
+                    <input 
+                      type="text" 
+                      class="form-control" 
+                      formControlName="branchCode"
+                      placeholder="Ex: 1234"
+                      maxlength="6"
+                    />
+                  </div>
+                </div>
+  
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Ville de l'Agence</label>
+                    <input 
+                      type="text" 
+                      class="form-control" 
+                      formControlName="branchCity"
+                      placeholder="Ex: Casablanca, Rabat..."
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Étape 3: Formation -->
+          <div class="tab-content" *ngIf="currentStep === 3">
+            <div class="modal-body pb-0">
+              <h5 class="mb-3 text-primary d-flex justify-content-between align-items-center">
+                <span><i class="ti ti-school me-2"></i>Parcours de Formation</span>
+                <button type="button" class="btn btn-sm btn-primary" (click)="addEducation()">
+                  <i class="ti ti-plus me-1"></i>Ajouter
+                </button>
+              </h5>
+              
+              <div formArrayName="education">
+                <div *ngFor="let edu of educationArray.controls; let i = index" [formGroupName]="i" class="education-item border rounded p-3 mb-3 position-relative">
+                  <button 
+                    type="button" 
+                    class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2"
+                    (click)="removeEducation(i)"
+                    *ngIf="educationArray.length > 1"
+                  >
+                    <i class="ti ti-trash"></i>
+                  </button>
+                  
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label class="form-label">Diplôme <span class="text-danger">*</span></label>
+                        <mat-select
+                          formControlName="degree"
+                          placeholder="Sélectionner le diplôme"
+                          class="select custom-mat-select"
+                        >
+                          <mat-option value="bac">Baccalauréat</mat-option>
+                          <mat-option value="deust">DEUST</mat-option>
+                          <mat-option value="dut">DUT</mat-option>
+                          <mat-option value="licence">Licence</mat-option>
+                          <mat-option value="licence_pro">Licence Professionnelle</mat-option>
+                          <mat-option value="master">Master</mat-option>
+                          <mat-option value="master_spe">Master Spécialisé</mat-option>
+                          <mat-option value="doctorat">Doctorat</mat-option>
+                          <mat-option value="ingenieur">Diplôme d'Ingénieur</mat-option>
+                          <mat-option value="autre">Autre</mat-option>
+                        </mat-select>
+                      </div>
+                    </div>
+  
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label class="form-label">Spécialité <span class="text-danger">*</span></label>
+                        <input 
+                          type="text" 
+                          class="form-control" 
+                          formControlName="fieldOfStudy"
+                          placeholder="Ex: Informatique, Finance..."
+                        />
+                      </div>
+                    </div>
+  
+                    <div class="col-md-12">
+                      <div class="mb-3">
+                        <label class="form-label">Établissement <span class="text-danger">*</span></label>
+                        <input 
+                          type="text" 
+                          class="form-control" 
+                          formControlName="institution"
+                          placeholder="Nom de l'université ou école"
+                        />
+                      </div>
+                    </div>
+  
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label class="form-label">Ville</label>
+                        <input 
+                          type="text" 
+                          class="form-control" 
+                          formControlName="city"
+                          placeholder="Ville de l'établissement"
+                        />
+                      </div>
+                    </div>
+  
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label class="form-label">Pays</label>
+                        <input 
+                          type="text" 
+                          class="form-control" 
+                          formControlName="country"
+                          placeholder="Maroc"
+                          value="Maroc"
+                        />
+                      </div>
+                    </div>
+  
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label class="form-label">Année de Début <span class="text-danger">*</span></label>
+                        <input 
+                          type="number" 
+                          class="form-control" 
+                          formControlName="startYear"
+                          placeholder="Ex: 2018"
+                          min="1970"
+                          [max]="currentYear"
+                        />
+                      </div>
+                    </div>
+  
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label class="form-label">Année de Fin <span class="text-danger">*</span></label>
+                        <input 
+                          type="number" 
+                          class="form-control" 
+                          formControlName="endYear"
+                          placeholder="Ex: 2021"
+                          min="1970"
+                          [max]="currentYear + 10"
+                        />
+                      </div>
+                    </div>
+  
+                    <div class="col-md-12">
+                      <div class="mb-3">
+                        <label class="form-label">Mention</label>
+                        <mat-select
+                          formControlName="grade"
+                          placeholder="Sélectionner la mention"
+                          class="select custom-mat-select"
+                        >
+                          <mat-option value="">Aucune</mat-option>
+                          <mat-option value="passable">Passable</mat-option>
+                          <mat-option value="assez_bien">Assez Bien</mat-option>
+                          <mat-option value="bien">Bien</mat-option>
+                          <mat-option value="tres_bien">Très Bien</mat-option>
+                          <mat-option value="excellent">Excellent</mat-option>
+                        </mat-select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+  
+              <div class="alert alert-warning" *ngIf="educationArray.length === 0">
+                <i class="ti ti-alert-triangle me-2"></i>
+                Aucune formation ajoutée. Cliquez sur "Ajouter" pour renseigner votre parcours.
+              </div>
+            </div>
+          </div>
+  
+          <!-- Étape 4: Expérience Professionnelle -->
+          <div class="tab-content" *ngIf="currentStep === 4">
+            <div class="modal-body pb-0">
+              <h5 class="mb-3 text-primary d-flex justify-content-between align-items-center">
+                <span><i class="ti ti-briefcase me-2"></i>Expérience Professionnelle</span>
+                <button type="button" class="btn btn-sm btn-primary" (click)="addExperience()">
+                  <i class="ti ti-plus me-1"></i>Ajouter
+                </button>
+              </h5>
+              
+              <div formArrayName="experience">
+                <div *ngFor="let exp of experienceArray.controls; let i = index" [formGroupName]="i" class="experience-item border rounded p-3 mb-3 position-relative">
+                  <button 
+                    type="button" 
+                    class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2"
+                    (click)="removeExperience(i)"
+                    *ngIf="experienceArray.length > 1"
+                  >
+                    <i class="ti ti-trash"></i>
+                  </button>
+                  
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label class="form-label">Intitulé du Poste <span class="text-danger">*</span></label>
+                        <input 
+                          type="text" 
+                          class="form-control" 
+                          formControlName="jobTitle"
+                          placeholder="Ex: Développeur Web, Chef de Projet..."
+                        />
+                      </div>
+                    </div>
+  
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label class="form-label">Entreprise <span class="text-danger">*</span></label>
+                        <input 
+                          type="text" 
+                          class="form-control" 
+                          formControlName="company"
+                          placeholder="Nom de l'entreprise"
+                        />
+                      </div>
+                    </div>
+  
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label class="form-label">Secteur d'Activité</label>
+                        <mat-select
+                          formControlName="industry"
+                          placeholder="Sélectionner le secteur"
+                          class="select custom-mat-select"
+                        >
+                          <mat-option value="it">Technologies de l'Information</mat-option>
+                          <mat-option value="finance">Banque et Finance</mat-option>
+                          <mat-option value="telecom">Télécommunications</mat-option>
+                          <mat-option value="industrie">Industrie</mat-option>
+                          <mat-option value="construction">BTP et Construction</mat-option>
+                          <mat-option value="commerce">Commerce et Distribution</mat-option>
+                          <mat-option value="tourisme">Tourisme et Hôtellerie</mat-option>
+                          <mat-option value="transport">Transport et Logistique</mat-option>
+                          <mat-option value="agriculture">Agriculture</mat-option>
+                          <mat-option value="education">Éducation</mat-option>
+                          <mat-option value="sante">Santé</mat-option>
+                          <mat-option value="autre">Autre</mat-option>
+                        </mat-select>
+                      </div>
+                    </div>
+  
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label class="form-label">Ville</label>
+                        <input 
+                          type="text" 
+                          class="form-control" 
+                          formControlName="location"
+                          placeholder="Ville de l'entreprise"
+                        />
+                      </div>
+                    </div>
+  
+                    <div class="col-md-6">
+                      <div class="mb-3 ngx-date-exp-start-{{i}}">
+                        <label class="form-label">Date de Début <span class="text-danger">*</span></label>
+                        <div class="input-icon-end position-relative">
+                          <input
+                            type="text"
+                            class="form-control datetimepicker"
+                            bsDatepicker
+                            formControlName="startDate"
+                            [attr.container]="'.ngx-date-exp-start-' + i"
+                            [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD/MM/YYYY' }"
+                            placeholder="JJ/MM/AAAA"
+                          />
+                          <span class="input-icon-addon">
+                            <i class="ti ti-calendar text-gray-7"></i>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+  
+                    <div class="col-md-6">
+                      <div class="mb-3 ngx-date-exp-end-{{i}}">
+                        <label class="form-label">Date de Fin</label>
+                        <div class="input-icon-end position-relative">
+                          <input
+                            type="text"
+                            class="form-control datetimepicker"
+                            bsDatepicker
+                            formControlName="endDate"
+                            [attr.container]="'.ngx-date-exp-end-' + i"
+                            [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD/MM/YYYY' }"
+                            placeholder="JJ/MM/AAAA"
+                            [disabled]="exp.get('isCurrent')?.value"
+                          />
+                          <span class="input-icon-addon">
+                            <i class="ti ti-calendar text-gray-7"></i>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+  
+                    <div class="col-md-12">
+                      <div class="mb-3">
+                        <div class="form-check">
+                          <input 
+                            class="form-check-input" 
+                            type="checkbox" 
+                            formControlName="isCurrent"
+                            [id]="'currentJob' + i"
+                          />
+                          <label class="form-check-label" [for]="'currentJob' + i">
+                            Je travaille actuellement dans cette entreprise
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+  
+              <div class="alert alert-warning" *ngIf="experienceArray.length === 0">
+                <i class="ti ti-alert-triangle me-2"></i>
+                Aucune expérience ajoutée. Cliquez sur "Ajouter" pour renseigner votre parcours professionnel.
+              </div>
+            </div>
+          </div>
+  
+          <!-- Footer avec boutons de navigation -->
+          <div class="modal-footer d-flex justify-content-between align-items-center">
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              data-bs-dismiss="modal"
+              (click)="cancelAndClose()"
+            >
+              <i class="ti ti-x me-1"></i>Fermer
+            </button>
+            
+            <div class="d-flex gap-2">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                *ngIf="currentStep > 1"
+                (click)="previousStep()"
+              >
+                <i class="ti ti-arrow-left me-1"></i>Précédent
+              </button>
+  
+              <button
+                type="button"
+                class="btn btn-primary"
+                *ngIf="currentStep < 4"
+                (click)="nextStep()"
+              >
+                Suivant<i class="ti ti-arrow-right ms-1"></i>
+              </button>
+              
+              <button
+                type="button"
+                class="btn btn-success"
+                (click)="saveCurrentSection()"
+              >
+                <i class="ti ti-check me-1"></i>Enregistrer Section {{ currentStep }}
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
