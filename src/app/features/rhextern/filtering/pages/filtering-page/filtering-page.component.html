@@ -1,0 +1,29 @@
+<div class="page-wrapper">
+  <router-outlet></router-outlet>
+
+  <div class="content container pt-5">
+
+    <!-- Breadcrumb -->
+    <div class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
+      <app-breadcrumbs></app-breadcrumbs>
+    </div>
+
+    <!-- Formulaire -->
+    <app-filter-form
+      (onFilter)="handleFilter($event)"
+      (onReset)="handleReset()">
+    </app-filter-form>
+
+    <!-- Résultats -->
+    @if(showResults || isLoading) {
+      <app-filter-results
+        [candidates]="candidates"
+        [isLoading]="isLoading"
+        (onAction)="handleAction($event)">
+      </app-filter-results>
+    }
+
+  </div>
+
+  <app-footer></app-footer>
+</div>

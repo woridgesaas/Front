@@ -490,71 +490,53 @@ export const routes: Routes = [
       },
 
       //* Candidates routes
+     
       {
         path: 'candidates',
         loadComponent: () =>
-          import('./features/recruitment/candidates/candidates.component').then(
-            (m) => m.CandidatesComponent
-          ),
-        data: { breadcrumb: 'Candidats', title: 'Candidats' },
-        children: [
-          {
-            path: 'candidates-list',
-            loadComponent: () =>
-              import(
-                './features/recruitment/candidates/candidates-list/candidates-list.component'
-              ).then((m) => m.CandidatesListComponent),
-            data: {
-              breadcrumb: 'Liste des candidats',
-              title: 'Liste des candidats',
-            },
-          },
-        ],
+          import('./features/rhextern/candidates/components/candidates-list/candidates-list.component')
+            .then((m) => m.CandidatesListComponent),
+        data: {
+          breadcrumb: 'Candidats',
+          title: 'Liste des candidats',
+        },
       },
 
       //* Jobs routes
       {
-        path: 'jobs',
+        path: 'jobs-list',
         loadComponent: () =>
-          import('./features/recruitment/jobs/jobs.component').then(
-            (m) => m.JobsComponent
-          ),
-        data: { breadcrumb: 'Offres', title: 'Offres' },
-        children: [
-          {
-            path: 'jobs-list',
-            loadComponent: () =>
-              import(
-                './features/recruitment/jobs/jobs-list/jobs-list.component'
-              ).then((m) => m.JobsListComponent),
-            data: { breadcrumb: 'Liste des offres', title: 'Liste des offres' },
-          },
-        ],
+          import(
+            './features/rhextern/jobs/components/jobs-list/jobs-list.component'
+          ).then((m) => m.JobsListComponent),
+        data: { breadcrumb: 'Offres d\'emploi', title: 'Offres d\'emploi' },
       },
 
       //* Filter route
+      
       {
         path: 'filtrage',
         loadComponent: () =>
           import(
-            './features/recruitment/filtrage-list/filtrage-list.component'
-          ).then((m) => m.FiltrageListComponent),
+            './features/rhextern/filtering/pages/filtering-page/filtering-page.component'
+          ).then((m) => m.FilteringPageComponent),
         children: [],
         data: { breadcrumb: 'Filtrage', title: 'Filtrage' },
       },
 
+
       //* Interview route
       {
-        path: 'entretient',
+        path: 'entretiens',  
         loadComponent: () =>
           import(
-            './features/recruitment/interviews-planning/interviews-planning.component'
+            './features/rhextern/interviews/pages/interviews-planning/interviews-planning.component'
           ).then((m) => m.InterviewsPlanningComponent),
         children: [],
         data: {
           breadcrumb: 'Planification des entretiens',
-          title: 'Planification des entretiens',
-        },
+          title: 'Planification des Entretiens',
+        }
       },
 
       //* Reports routes

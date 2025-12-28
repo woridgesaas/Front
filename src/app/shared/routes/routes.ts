@@ -72,16 +72,16 @@ export const routes = {
   resignation: '/resignation',
 
   //* Jobs route
-  jobList: '/jobs/jobs-list',
+  jobList: 'jobs-list',
 
   //* Candidates route
-  candidateslist: '/candidates/candidates-list',
+  candidateslist: '/candidates',
 
   //* filter AI route
   FiltrageList: '/filtrage',
 
   //* Interview route
-  Entretient: '/entretient',
+  Entretient: '/entretiens',
 
   //* Settings routes
   changePassword: '/settings/change-password',

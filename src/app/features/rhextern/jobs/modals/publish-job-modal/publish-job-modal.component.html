@@ -1,0 +1,117 @@
+<div class="modal fade" [class.show]="isVisible" [style.display]="isVisible ? 'block' : 'none'" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <!-- Header -->
+        <div class="modal-header border-bottom">
+          <h4 class="modal-title">
+            <i class="ti ti-send me-2"></i>Publier l'Offre d'Emploi
+          </h4>
+          <button type="button" class="btn-close" (click)="close()" aria-label="Close"></button>
+        </div>
+  
+        <!-- Body -->
+        <div class="modal-body" *ngIf="job">
+          <!-- Résumé de l'offre -->
+          <div class="card bg-light border-0 mb-4">
+            <div class="card-body">
+              <div class="d-flex align-items-start">
+                <div class="avatar avatar-lg bg-primary-transparent rounded me-3">
+                  <i class="ti ti-briefcase fs-24 text-primary"></i>
+                </div>
+                <div class="flex-grow-1">
+                  <h5 class="mb-1">{{ job.Job_Title }}</h5>
+                  <div class="d-flex flex-wrap gap-2 mb-2">
+                    <span class="badge bg-primary-transparent">
+                      <i class="ti ti-category me-1"></i>{{ job.Category }}
+                    </span>
+                    <span class="badge bg-info-transparent">
+                      <i class="ti ti-file-text me-1"></i>{{ job.Roll }}
+                    </span>
+                  </div>
+                  <div class="text-muted small">
+                    <i class="ti ti-map-pin me-1"></i>{{ job.Location }}
+                    <span class="mx-2">•</span>
+                    <i class="ti ti-currency-euro me-1"></i>{{ job.Salary_Range }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Sélection des plateformes -->
+          <div class="mb-4">
+            <h6 class="fw-semibold mb-2">
+              <i class="ti ti-world me-1"></i>Choisir les Plateformes de Publication
+            </h6>
+            <p class="text-muted small mb-3">
+              Sélectionnez une ou plusieurs plateformes où vous souhaitez diffuser cette offre
+            </p>
+  
+            <div class="row g-3">
+              <div class="col-md-6" *ngFor="let plateforme of plateformes">
+                <div class="card border-2 platform-card h-100" 
+                     [class.border-primary]="plateforme.selectionnee" 
+                     [class.bg-primary-light]="plateforme.selectionnee"
+                     (click)="togglePlateforme(plateforme)" 
+                     style="cursor: pointer; transition: all 0.3s ease;">
+                  <div class="card-body p-3">
+                    <div class="d-flex align-items-center">
+                      <div class="form-check me-3">
+                        <input class="form-check-input" 
+                               type="checkbox" 
+                               [checked]="plateforme.selectionnee"
+                               [id]="'platform-' + plateforme.id"
+                               (click)="$event.stopPropagation()">
+                      </div>
+                      <div class="avatar avatar-md rounded-circle me-3"
+                           [class.bg-primary]="plateforme.selectionnee"
+                           [class.bg-light]="!plateforme.selectionnee">
+                        <i [class]="plateforme.icone + ' fs-20'"
+                           [class.text-white]="plateforme.selectionnee"
+                           [class.text-primary]="!plateforme.selectionnee"></i>
+                      </div>
+                      <div class="flex-grow-1">
+                        <h6 class="mb-0 fw-semibold">{{ plateforme.nom }}</h6>
+                        <small class="text-muted">{{ plateforme.description }}</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Options supplémentaires -->
+          <div class="card bg-light border-0">
+            <div class="card-body p-3">
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="notifyTeam" checked>
+                <label class="form-check-label" for="notifyTeam">
+                  Notifier l'équipe RH par email
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="featuredJob">
+                <label class="form-check-label" for="featuredJob">
+                  Marquer comme offre à la une (mise en avant)
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Footer -->
+        <div class="modal-footer border-top">
+          <button type="button" class="btn btn-light" (click)="close()">
+            <i class="ti ti-x me-1"></i>Annuler
+          </button>
+          <button type="button" class="btn btn-success" (click)="publish()">
+            <i class="ti ti-send me-1"></i>Publier Maintenant
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Backdrop -->
+  <div class="modal-backdrop fade" [class.show]="isVisible" *ngIf="isVisible"></div>

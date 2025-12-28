@@ -1,0 +1,23 @@
+<div class="tag-input">
+    <!-- Tags sélectionnés -->
+    <div class="tags" *ngIf="selectedTags.length > 0">
+      <span class="tag" *ngFor="let tag of selectedTags">
+        {{ tag }}
+        <button type="button" (click)="removeTag(tag)">×</button>
+      </span>
+    </div>
+
+    <!-- Input -->
+    <div class="input-wrapper">
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="inputValue"
+        (keyup.enter)="addTag()"
+        [placeholder]="placeholder"
+      />
+      <button type="button" class="btn-add" (click)="addTag()">
+        + Ajouter
+      </button>
+    </div>
+  </div>
