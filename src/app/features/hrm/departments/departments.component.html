@@ -1,0 +1,69 @@
+<div class="content">
+  <div
+    class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3"
+  >
+    <app-breadcrumbs></app-breadcrumbs>
+    <!-- ADD -->
+    <button
+      class="btn btn-primary"
+      data-bs-toggle="modal"
+      data-bs-target="#add_department"
+    >
+      Ajouter Département
+    </button>
+  </div>
+
+  <!-- STATS -->
+  <app-departments-stats
+    [departments]="filteredDepartments"
+  ></app-departments-stats>
+
+  <!-- CARD -->
+  <div class="card mb-0">
+    <div
+      class="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3"
+    >
+      <h5 class="mb-0">Liste des départements</h5>
+
+      <app-departments-filters
+        [(status)]="selectedStatus"
+        [(search)]="searchValue"
+      ></app-departments-filters>
+    </div>
+
+    <div class="card-body p-0">
+      <!-- TABLE -->
+      <app-departments-table
+        [departments]="filteredDepartments"
+        (edit)="openEditModal($event)"
+        (delete)="openDelete($event)"
+      ></app-departments-table>
+
+      <!-- MODALS -->
+      <app-add-department-modal
+        (add)="addDepartment($event)"
+      ></app-add-department-modal>
+
+      <app-edit-department-modal
+        *ngIf="selectedDepartment"
+        [department]="selectedDepartment"
+        (update)="saveEdit($event)"
+      ></app-edit-department-modal>
+
+      <!-- MODAL DELETE -->
+      <app-confirm-delete
+        modalId="deleteModal"
+        title="Supprimer Département"
+        [message]="
+          selectedItem
+            ? 'Êtes-vous sûr de vouloir supprimer le département ' +
+              selectedItem.Department +
+              ' ?'
+            : ''
+        "
+        [item]="selectedItem"
+        (confirm)="deleteItem()"
+      ></app-confirm-delete>
+    </div>
+  </div>
+</div>
