@@ -2,12 +2,24 @@ import { Component, Renderer2 } from '@angular/core';
 import { routes } from '../../shared/routes/routes';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { IllustrationComponent } from '../Common/illustration/illustration.component';
+import { LogoComponent } from '../Common/logo/logo.component';
+import { DescriptionComponent } from '../Common/description/description.component';
+import { FooterComponent } from '../Common/footer/footer.component';
+
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrl: './login.component.scss',
-    imports: [CommonModule,RouterLink]
+    imports: [
+      CommonModule,
+      RouterLink,
+      IllustrationComponent,
+      LogoComponent,
+      DescriptionComponent,
+      FooterComponent,
+    ]
 })
 export class LoginComponent {
   public routes = routes
