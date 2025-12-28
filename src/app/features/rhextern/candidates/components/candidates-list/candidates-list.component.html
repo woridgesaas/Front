@@ -1,0 +1,343 @@
+<div class="page-wrapper">
+    <router-outlet></router-outlet>
+  
+    <div class="content">
+      <!-- Breadcrumb -->
+      <div class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
+        <app-breadcrumbs></app-breadcrumbs>
+        <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
+          <div class="me-2 mb-2">
+            <div class="dropdown">
+              <a href="javascript:void(0);"
+                class="dropdown-toggle btn btn-white d-inline-flex align-items-center"
+                data-bs-toggle="dropdown">
+                <i class="ti ti-file-export me-1"></i>Exporter
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end p-3">
+                <li>
+                  <a href="javascript:void(0);" class="dropdown-item rounded-1">
+                    <i class="ti ti-file-type-pdf me-1"></i>Exporter en PDF
+                  </a>
+                </li>
+                <li>
+                  <a href="javascript:void(0);" class="dropdown-item rounded-1">
+                    <i class="ti ti-file-type-xls me-1"></i>Exporter en Excel
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /Breadcrumb -->
+  
+      <!-- Modal Détails -->
+      <app-details-modal
+        [candidate]="candidateDetails"
+        (close)="onDetailsClose()"
+        (viewCV)="onViewCV($event)"
+        (downloadCV)="onDownloadCV($event)">
+      </app-details-modal>
+  
+      <!-- Tableau des candidats -->
+      <div class="card">
+        <div class="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3">
+          <h5>
+            <i class="ti ti-users me-2"></i>Liste des Candidats
+            <span class="badge bg-primary-transparent ms-2">{{ totalCandidates }} candidats</span>
+          </h5>
+          <div class="d-flex my-xl-auto right-content align-items-center flex-wrap row-gap-3">
+            <div class="me-3">
+              <app-date-range-picker></app-date-range-picker>
+            </div>
+            <div class="dropdown me-3">
+              <a href="javascript:void(0);"
+                class="dropdown-toggle btn btn-white d-inline-flex align-items-center"
+                data-bs-toggle="dropdown">
+                <i class="ti ti-briefcase me-1"></i>Poste
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end p-3">
+                <li>
+                  <a href="javascript:void(0);" class="dropdown-item rounded-1">Comptable</a>
+                </li>
+                <li>
+                  <a href="javascript:void(0);" class="dropdown-item rounded-1">Développeur</a>
+                </li>
+                <li>
+                  <a href="javascript:void(0);" class="dropdown-item rounded-1">Technicien</a>
+                </li>
+              </ul>
+            </div>
+            <div class="dropdown me-3">
+              <a href="javascript:void(0);"
+                class="dropdown-toggle btn btn-white d-inline-flex align-items-center"
+                data-bs-toggle="dropdown">
+                <i class="ti ti-status-change me-1"></i>Statut
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end p-3">
+                <li>
+                  <a href="javascript:void(0);" class="dropdown-item rounded-1">Tous</a>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                  <a href="javascript:void(0);" class="dropdown-item rounded-1">Nouveau</a>
+                </li>
+                <li>
+                  <a href="javascript:void(0);" class="dropdown-item rounded-1">Entretien Planifié</a>
+                </li>
+                <li>
+                  <a href="javascript:void(0);" class="dropdown-item rounded-1">Interviewé</a>
+                </li>
+                <li>
+                  <a href="javascript:void(0);" class="dropdown-item rounded-1">Embauché</a>
+                </li>
+                <li>
+                  <a href="javascript:void(0);" class="dropdown-item rounded-1">Refusé</a>
+                </li>
+              </ul>
+            </div>
+            <div class="dropdown">
+              <a href="javascript:void(0);"
+                class="dropdown-toggle btn btn-white d-inline-flex align-items-center"
+                data-bs-toggle="dropdown">
+                <i class="ti ti-sort-descending me-1"></i>Trier
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end p-3">
+                <li>
+                  <a href="javascript:void(0);" class="dropdown-item rounded-1">Récemment Ajouté</a>
+                </li>
+                <li>
+                  <a href="javascript:void(0);" class="dropdown-item rounded-1">Croissant (A-Z)</a>
+                </li>
+                <li>
+                  <a href="javascript:void(0);" class="dropdown-item rounded-1">Décroissant (Z-A)</a>
+                </li>
+                <li>
+                  <a href="javascript:void(0);" class="dropdown-item rounded-1">Mois Dernier</a>
+                </li>
+                <li>
+                  <a href="javascript:void(0);" class="dropdown-item rounded-1">7 Derniers Jours</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+  
+        <div class="card-body p-0">
+          <div class="custom-datatable-filter">
+            <div class="dataTables_wrapper dt-bootstrap5 no-footer">
+              
+              <!-- Barre d'outils -->
+              <div class="row">
+                <div class="col-sm-12 col-md-6">
+                  <div class="dataTables_length">
+                    <label> Lignes par Page
+                      <select 
+                        [(ngModel)]="pageSize" 
+                        (ngModelChange)="onPageSizeChange()" 
+                        class="form-select form-select-sm">
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                      </select>
+                      Entrées
+                    </label>
+                  </div>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                  <div id="DataTables_Table_0_filter" class="dataTables_filter">
+                    <label>
+                      <input 
+                        [(ngModel)]="searchTerm"
+                        (ngModelChange)="onSearchChange()"
+                        type="search" 
+                        class="form-control form-control-sm"
+                        placeholder=" Rechercher un candidat..." />
+                    </label>
+                  </div>
+                </div>
+              </div>
+  
+              <!-- Tableau -->
+              <div class="table-responsive">
+                <table 
+                  matSort 
+                  (matSortChange)="onSortChange($event)" 
+                  class="mat-sort table datanew table-center datatable dataTable mb-0">
+                  
+                  <thead class="thead-light">
+                    <tr>
+                      <th class="no-sort">
+                        <div class="form-check form-check-md" 
+                          (click)="toggleSelectAll()" 
+                          (keydown.enter)="toggleSelectAll()" 
+                          tabindex="0">
+                          <input 
+                            class="form-check-input" 
+                            type="checkbox" 
+                            id="select-all"
+                            [(ngModel)]="allSelected">
+                        </div>
+                      </th>
+                      <th mat-sort-header="Candidate">Candidat</th>
+                      <th mat-sort-header="Applied_Role">Poste Souhaité</th>
+                      <th mat-sort-header="Phone">Téléphone</th>
+                      <th mat-sort-header="Applied_Date">Date</th>
+                      <th>CV</th>
+                      <th mat-sort-header="Status">Statut</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+  
+                  <tbody>
+                    @for (candidate of paginatedCandidates; track candidate.Cand_ID) {
+                    <tr>
+                      <!-- Checkbox -->
+                      <td>
+                        <div class="form-check form-check-md">
+                          <input 
+                            class="form-check-input" 
+                            type="checkbox"
+                            [(ngModel)]="candidate.isSelected">
+                        </div>
+                      </td>
+  
+                      <!-- Candidat -->
+                      <td>
+                        <div class="d-flex align-items-center file-name-icon">
+                          <a href="javascript:void(0);" 
+                            class="avatar avatar-md bg-light rounded"
+                            data-bs-toggle="modal"
+                            data-bs-target="#details_modal"
+                            (click)="openDetailsModal(candidate)">
+                            <img 
+                              src="assets/img/users/{{ candidate.Image }}" 
+                              class="img-fluid rounded-circle" 
+                              alt="img">
+                          </a>
+                          <div class="ms-2">
+                            <h6 class="fw-medium">
+                              <a href="javascript:void(0);"
+                                data-bs-toggle="modal"
+                                data-bs-target="#details_modal"
+                                (click)="openDetailsModal(candidate)">
+                                {{ candidate.Candidate }}
+                              </a>
+                            </h6>
+                            <span class="d-block mt-1 text-muted small">{{ candidate.Email }}</span>
+                          </div>
+                        </div>
+                      </td>
+  
+                      <!-- Poste -->
+                      <td>{{ candidate.Applied_Role }}</td>
+  
+                      <!-- Téléphone -->
+                      <td>{{ candidate.Phone }}</td>
+  
+                      <!-- Date -->
+                      <td>{{ candidate.Applied_Date }}</td>
+                      
+                      <!-- CV -->
+                      <td>
+                        <div class="d-inline-flex">
+                          <a href="javascript:void(0);" 
+                            class="text-primary me-2 fs-16"
+                            (click)="onViewCV(candidate)" 
+                            title="Voir le CV">
+                            <i class="ti ti-file-text"></i>
+                          </a>
+                          <a href="javascript:void(0);" 
+                            class="text-primary fs-16"
+                            (click)="onDownloadCV(candidate)" 
+                            title="Télécharger le CV">
+                            <i class="ti ti-download"></i>
+                          </a>
+                        </div>
+                      </td>
+  
+                      <!-- Statut avec dropdown -->
+                      <td>
+                        <div class="dropdown">
+                          <button 
+                            [class]="'badge border dropdown-toggle ' + statusConfig[candidate.Status].badge"
+                            style="border: none; background: transparent;"
+                            data-bs-toggle="dropdown">
+                            <i class="ti ti-point-filled"></i>{{ statusConfig[candidate.Status].label }}
+                          </button>
+                          <ul class="dropdown-menu dropdown-menu-end">
+                            <li class="dropdown-header">Changer le Statut</li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li *ngFor="let status of getAvailableStatuses()">
+                              <a 
+                                class="dropdown-item"
+                                [class.text-danger]="status === statusEnum.REJECTED"
+                                href="javascript:void(0);"
+                                (click)="onStatusChange(candidate, status)">
+                                <i [class]="'ti ' + statusConfig[status].icon + ' me-2 ' + statusConfig[status].iconColor"></i>
+                                {{ statusConfig[status].label }}
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </td>
+  
+                      <!-- Actions -->
+                      <td>
+                        <div class="action-icon d-inline-flex">
+                          <a href="javascript:void(0);"
+                            class="me-2"
+                            data-bs-toggle="modal"
+                            data-bs-target="#details_modal"
+                            (click)="openDetailsModal(candidate)"
+                            title="Voir les détails">
+                            <i class="ti ti-eye"></i>
+                          </a>
+                          <a href="javascript:void(0);"
+                            data-bs-toggle="modal"
+                            data-bs-target="#deleteModal"
+                            (click)="openDeleteModal(candidate)"
+                            title="Supprimer">
+                            <i class="ti ti-trash"></i>
+                          </a>
+                        </div>
+                      </td>
+                    </tr>
+                    }
+  
+                    <!-- Message si vide -->
+                    @if (paginatedCandidates.length === 0) {
+                    <tr>
+                      <td colspan="8" class="text-center py-5">
+                        <div class="avatar avatar-xl bg-light rounded-circle mx-auto mb-3">
+                          <i class="ti ti-user-off fs-36 text-muted"></i>
+                        </div>
+                        <h5 class="mb-2">Aucun candidat trouvé</h5>
+                        <p class="text-muted">Aucune correspondance avec votre recherche</p>
+                      </td>
+                    </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+  
+              <!-- Pagination -->
+              <app-custom-pagination></app-custom-pagination>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Modal de suppression générique -->
+    <app-confirm-delete
+      modalId="deleteModal"
+      title="Supprimer Candidat"
+      [message]="selectedItem ? 'Êtes-vous sûr de vouloir supprimer ' + selectedItem.Candidate + ' ?' : ''"
+      [item]="selectedItem"
+      (confirm)="confirmDelete($event)">
+    </app-confirm-delete>
+  
+    <app-footer></app-footer>
+  </div>

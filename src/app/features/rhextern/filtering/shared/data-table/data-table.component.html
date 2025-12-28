@@ -1,0 +1,26 @@
+<div class="data-table">
+    <table>
+      <thead>
+        <tr>
+          <th *ngFor="let col of columns" (click)="col.sortable && sort(col.key)">
+            {{ col.label }}
+            <span *ngIf="sortKey === col.key">{{ sortDir === 'asc' ? '↑' : '↓' }}</span>
+          </th>
+          <th *ngIf="showActions">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of sortedData">
+          <td *ngFor="let col of columns">{{ getValue(row, col.key) }}</td>
+          <td *ngIf="showActions">
+            <ng-content></ng-content>
+          </td>
+        </tr>
+        <tr *ngIf="sortedData.length === 0">
+          <td [attr.colspan]="columns.length + (showActions ? 1 : 0)" class="empty">
+            Aucune donnée
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
