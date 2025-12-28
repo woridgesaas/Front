@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { routes } from '../../../../shared/routes/routes';
+import { routes } from '../../../../../shared/routes/routes';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterModule } from '@angular/router';
 import { EmployeeDetailModalComponent } from '../employee-detail-modal/employee-detail-modal.component';

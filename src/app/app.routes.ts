@@ -281,7 +281,7 @@ export const routes: Routes = [
             path: 'employee-details',
             loadComponent: () =>
               import(
-                './features/hrm/employees/employee-details/employee-details.component'
+                './features/hrm/employees/profilemployee/employee-details/employee-details.component'
               ).then((m) => m.EmployeeDetailsComponent),
             data: {
               title: "Détails d'employé",
