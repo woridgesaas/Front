@@ -52,7 +52,7 @@ export const routes = {
   holidays: '/employees/holidays',
 
   //* Leaves routes
-  leaveemployee: '/attendance/leaves/leave-employee',
+  leaveemployee: '/leaves/leave-employee',
 
   //* Attendance routes
   attendanceadmin: '/attendance/attendance-admin',

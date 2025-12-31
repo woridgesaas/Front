@@ -1,24 +1,25 @@
 import { Component } from '@angular/core';
-import { routes } from '../../../../../shared/routes/routes';
+import { routes } from '../../../../shared/routes/routes';
 import {
   apiResultFormat,
   leaveEmployee,
-} from '../../../../../shared/models/models';
+} from '../../../../shared/models/models';
 import {
   pageSelection,
   PaginationService,
   tablePageSize,
-} from '../../../../../shared/custom-pagination/pagination.service';
+} from '../../../../shared/custom-pagination/pagination.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { DataService } from '../../../../../shared/data/data.service';
+import { DataService } from '../../../../shared/data/data.service';
 import { Router } from '@angular/router';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-import { BreadcrumbsComponent } from '../../../../common/breadcrumbs/breadcrumbs.component';
-import { CustomPaginationComponent } from '../../../../../shared/custom-pagination/custom-pagination.component';
+import { BreadcrumbsComponent } from '../../../common/breadcrumbs/breadcrumbs.component';
+import { CustomPaginationComponent } from '../../../../shared/custom-pagination/custom-pagination.component';
 import { FormsModule } from '@angular/forms';
+import { FooterComponent } from '../../../common/footer/footer.component';
 
 @Component({
   selector: 'app-leave-employee',
@@ -32,6 +33,7 @@ import { FormsModule } from '@angular/forms';
     MatSortModule,
     BreadcrumbsComponent,
     CustomPaginationComponent,
+    FooterComponent,
   ],
 })
 export class LeaveEmployeeComponent {

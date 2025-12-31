@@ -1,0 +1,14 @@
+<div class="row mb-4 g-3">
+  <div
+    class="col-md-3 col-sm-6"
+    *ngFor="let kpi of kpis; trackBy: trackByTitle"
+  >
+    <app-kpi-card
+      [title]="kpi.title"
+      [value]="kpi.value"
+      [icon]="kpi.icon"
+      [color]="kpi.color">
+    </app-kpi-card>
+  </div>
+</div>
+

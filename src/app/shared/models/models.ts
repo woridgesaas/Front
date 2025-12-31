@@ -4,34 +4,34 @@ export interface Sondage {
   description?: string;
   auteur: string;
   departement: string;
-  dateCreation: string;       
-  dateExpiration: string;    
+  dateCreation: string;
+  dateExpiration: string;
   statut: 'Actif' | 'Expiré' ;
-  
+
   // Options du sondage
   options: SondageOption[];
-  
+
   // donnes de participation
   totalVotes: number;
-  tauxParticipation?: number; 
-  
+  tauxParticipation?: number;
+
   // Pour l'afficher (fil d'actualité)  (votant)
-  selectedOption?: number;   
-  voted?: boolean;          
-  
+  selectedOption?: number;
+  voted?: boolean;
+
   // Pour l'affichage admin
-  participants?: number;     
+  participants?: number;
   participationRate?: number;
   expiration?: number;
-  nbrOptions?: number;  
-  isSelected?: boolean;     
+  nbrOptions?: number;
+  isSelected?: boolean;
 }
 
 export interface SondageOption {
   id: number;
   texte: string;
   votes: number;
-  pourcentage?: number;      
+  pourcentage?: number;
   couleur?: string;          // Pour les charts
 }
 export interface SondageForm{
@@ -88,18 +88,18 @@ export interface NewTicketForm {
   description: string;
   categorie: string;
   priorite: 'Basse' | 'Moyenne' | 'Haute' | 'Urgente' | 'Par default';
-  statut?: 'Ouvert' | 'En Cours' | 'Résolu' | 'Fermé'; 
+  statut?: 'Ouvert' | 'En Cours' | 'Résolu' | 'Fermé';
   assignedTo?: number; // role = canAssigneTicket just
   departement?: string; // role = canAssigneTicket just
 }
 export interface TicketDetailData extends TicketBase{
-  // Historique des statuts 
+  // Historique des statuts
   historiqueStatuts: Array<{
     date: string;
     statut: string;
     description: string;
   }>;
-  
+
   // Pour les actions
   noteFermeture?: string;
 }
@@ -159,7 +159,7 @@ export interface ChatGroup {
   createdAt: Date;
   status: 'actif' | 'fermé';
   memberCount: number;
-  members: number[];  
+  members: number[];
   type: 'department' | 'announcement' | '';
   lastActivity?: Date;
   isSelected?:boolean
@@ -349,6 +349,8 @@ export interface Star {
   show?: boolean;
   half?: boolean;
 }
+
+
 export interface SideBarMenu {
   showMyTab?: boolean;
   menuValue: string;
@@ -554,8 +556,10 @@ export interface Holiday {
 
 
 export interface attendanceadmin {
+  Date: string | number | Date;
+  Department: string | null;
   sNo?: number;
-  isSelected: boolean;
+  isSelected?: boolean;
   Employee: string;
   Image: string;
   Role: string;
@@ -565,24 +569,33 @@ export interface attendanceadmin {
   Late: string;
   Production: number;
   ProductionHours: string;
-  Status: string;
+  Status: 'Present' | 'Absent' | 'Overtime';
+  isOvertime?: boolean;
+  overtimeDecision?: 'PENDING' | 'APPROVED' | 'REJECTED';
 }
 
 export interface attendanceemployee {
   sNo?: number;
-  isSelected: boolean;
   Date: string;
   CheckIn: string;
   Status: string;
   CheckOut: string;
   Break: string;
   Late: string;
-  Overtime: string;
+  overtimeDecision?: 'PENDING' | 'APPROVED' | 'REJECTED';
   Production: number;
   ProductionHours: string;
+  overtimeApproved?: boolean;
+  isSelected?: boolean;
 }
-
-
+export type OvertimeDecision = 'APPROVED' | 'REJECTED' | 'PENDING';
+export interface AttendanceRow {
+  Date: string;
+  CheckIn: string;
+  CheckOut: string;
+  ProductionHours: string | number;
+  OvertimeDecision?: OvertimeDecision; // ⚠️ optionnel (API)
+}
 
 export interface promotion {
   sNo?: number;
@@ -592,12 +605,18 @@ export interface promotion {
   DesignationFrom?: string;
   DesignationTo?: string;
 
-  OldSalary?: number;   
-  Bonus?: number;       
-  NewSalary?: number;   
+  OldSalary?: number;
+  Bonus?: number;
+  NewSalary?: number;
 
   PromotionDate?: string;
   isSelected?: boolean;
+}
+export interface pageSizeCal {
+  totalData: number;
+  pageSize: number;
+  tableData: any[];
+  serialNumberArray?: number[]; // ✅ optionnel
 }
 
 

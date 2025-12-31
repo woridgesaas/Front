@@ -1,0 +1,91 @@
+    <div
+      class="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3"
+    >
+<h5>Historique des Présences</h5>
+
+<div class="d-flex my-xl-auto right-content align-items-center flex-wrap row-gap-3">
+  <div class="me-3">
+    <div class="input-icon position-relative">
+      <span class="input-icon-addon">
+        <i class="ti ti-calendar text-gray-9"></i>
+      </span>
+      <input
+        type="text"
+        class="form-control date-range bookingrange"
+        bsDaterangepicker
+        [ngModel]="bsRangeValue"
+        (ngModelChange)="bsRangeValueChange.emit($event)"
+        [bsConfig]="{ adaptivePosition: true }"
+        placeholder="dd/mm/yyyy - dd/mm/yyyy"
+      />
+    </div>
+  </div>
+
+  <div class="dropdown me-3">
+    <a
+      href="javascript:void(0);"
+      class="dropdown-toggle btn btn-white d-inline-flex align-items-center"
+      data-bs-toggle="dropdown"
+    >
+      Sélectionner Statut
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end p-3">
+      <li>
+        <a
+          href="javascript:void(0);"
+          class="dropdown-item rounded-1"
+          (click)="statusChange.emit('Present')"
+        >
+          Présent
+        </a>
+      </li>
+      <li>
+        <a
+          href="javascript:void(0);"
+          class="dropdown-item rounded-1"
+          (click)="statusChange.emit('Absent')"
+        >
+          Absent
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="dropdown">
+    <a
+      href="javascript:void(0);"
+      class="dropdown-toggle btn btn-white d-inline-flex align-items-center"
+      data-bs-toggle="dropdown"
+    >
+      Trier par : 7 derniers jours
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end p-3">
+      <li>
+        <a class="dropdown-item rounded-1" (click)="sortChange.emit('recent')">
+          Récemment ajouté
+        </a>
+      </li>
+      <li>
+        <a class="dropdown-item rounded-1" (click)="sortChange.emit('asc')">
+          Croissant
+        </a>
+      </li>
+      <li>
+        <a class="dropdown-item rounded-1" (click)="sortChange.emit('desc')">
+          Décroissant
+        </a>
+      </li>
+      <li>
+        <a class="dropdown-item rounded-1" (click)="sortChange.emit('month')">
+          Mois dernier
+        </a>
+      </li>
+      <li>
+        <a class="dropdown-item rounded-1" (click)="sortChange.emit('7days')">
+          7 derniers jours
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+    </div>
