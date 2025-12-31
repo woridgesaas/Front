@@ -1,0 +1,70 @@
+  <div class="messages-scroll">
+    <div class="messages">
+      @for (message of messages; track message.id) {
+        <div class="message" [class.sent]="message.senderId === currentUser?.id">
+
+          <!-- Avatar expéditeur -->
+          @if (message.senderId !== currentUser?.id) {
+            @if (activeTab === 'contacts') {
+              <!-- Contact : avatar du contact -->
+               @if(selectedContact?.avatar){
+                    <img [src]="selectedContact?.avatar" 
+                        [alt]="selectedContact?.name" 
+                        class="sender-avatar"
+                    >
+               }
+              
+            } @else {
+              <!-- Groupe : avatar par défaut -->
+              <div class="sender-avatar group-sender">
+                <i class="ti ti-user"></i>
+              </div>
+            }
+          }
+
+          <!-- Contenu du message -->
+          <div class="message-content">
+
+            <!-- Message texte -->
+            @if (message.type === 'text') {
+              <div class="text-message">{{ message.content }}</div>
+            }
+
+            <!-- Métadonnées -->
+            <div class="message-meta">
+              <span class="time">{{ message.time }}</span>
+              @if (message.senderId === currentUser?.id) {
+                <span class="read-status">
+                  @if (message.read) {
+                    <i class="ti ti-checks text-success"></i>
+                  } @else {
+                    <i class="ti ti-check"></i>
+                  }
+                </span>
+              }
+            </div>
+          </div>
+
+          <!-- Message envoyé par moi -->
+          @if (message.senderId === currentUser?.id) {
+            @if(currentUser.avatar){
+                <img [src]="currentUser?.avatar" 
+                 [alt]="currentUser?.name" 
+                 class="sender-avatar"
+               >
+            }
+           
+          }
+        </div>
+      }
+      
+      <!-- Message vide -->
+      @if (messages.length === 0) {
+        <div class="no-messages">
+          <p class="text-muted text-center py-4">
+            Aucun message. Commencez la conversation !
+          </p>
+        </div>
+      }
+    </div>
+  </div>

@@ -336,7 +336,7 @@ export const routes: Routes = [
       {
         path: 'tickets',
         loadComponent: () =>
-          import('./features/hrm/tickets/tickets.component').then(
+          import('./features/application/tickets/tickets.component').then(
             (m) => m.TicketsComponent
           ),
         data: { breadcrumb: 'Tickets', title: 'Tickets' },
@@ -344,7 +344,7 @@ export const routes: Routes = [
           {
             path: 'ticket-list',
             loadComponent: () =>
-              import('./features/hrm/tickets/ticket/ticket.component').then(
+              import('./features/application/tickets/ticket/ticket.component').then(
                 (m) => m.TicketComponent
               ),
             data: {
@@ -356,7 +356,7 @@ export const routes: Routes = [
             path: 'ticket-details',
             loadComponent: () =>
               import(
-                './features/hrm/tickets/ticket-details/ticket-details.component'
+                './features/application/tickets/ticket-details/ticket-details.component'
               ).then((m) => m.TicketDetailsComponent),
             data: { title: 'Détails du ticket' },
           },
@@ -364,7 +364,7 @@ export const routes: Routes = [
             path: 'mes-tickets',
             loadComponent: () =>
               import(
-                './features/hrm/tickets/employe/tickets/tickets.component'
+                './features/application/tickets/employe/tickets/tickets.component'
               ).then((m) => m.TicketsComponent),
             data: { breadcrumb: 'Mes tickets', title: 'Mes tickets' },
           },
