@@ -404,10 +404,14 @@ export const routes: Routes = [
               title: 'Mes présence/absence',
             },
           },
-          {
+
+        ],
+      },
+//* Leave routes
+           {
             path: 'leaves',
             loadComponent: () =>
-              import('./features/hrm/attendance/leaves/leaves.component').then(
+              import('./features/hrm/leaves/leaves.component').then(
                 (m) => m.LeavesComponent
               ),
             data: { breadcrumb: 'Congés', title: 'Congés' },
@@ -416,7 +420,7 @@ export const routes: Routes = [
                 path: 'leave-employee',
                 loadComponent: () =>
                   import(
-                    './features/hrm/attendance/leaves/leave-employee/leave-employee.component'
+                    './features/hrm//leaves/leave-employee/leave-employee.component'
                   ).then((m) => m.LeaveEmployeeComponent),
                 data: {
                   breadcrumb: 'Mes congés',
@@ -425,8 +429,6 @@ export const routes: Routes = [
               },
             ],
           },
-        ],
-      },
 
       //* Promotion route
       {

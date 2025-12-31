@@ -1,0 +1,94 @@
+<div
+  class="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3"
+>
+  <h5>Suivi des présences des employés</h5>
+
+  <div
+    class="d-flex my-xl-auto right-content align-items-center flex-wrap row-gap-3"
+  >
+    <!-- Date range -->
+    <div class="me-3">
+      <div class="input-icon position-relative">
+        <span class="input-icon-addon">
+          <i class="ti ti-calendar text-gray-9"></i>
+        </span>
+        <input
+          type="text"
+          class="form-control date-range bookingrange"
+          bsDaterangepicker
+          [(ngModel)]="dateRange"
+          [bsConfig]="{ adaptivePosition: true }"
+          placeholder="dd/mm/yyyy - dd/mm/yyyy"
+          (ngModelChange)="onDateChange()"
+        />
+      </div>
+    </div>
+
+    <!-- Département -->
+    <div class="dropdown me-3">
+      <a
+        href="javascript:void(0);"
+        class="dropdown-toggle btn btn-white"
+        data-bs-toggle="dropdown"
+      >
+        Département
+      </a>
+      <ul class="dropdown-menu dropdown-menu-end p-3">
+        <li *ngFor="let dep of departments">
+          <a
+            href="javascript:void(0);"
+            class="dropdown-item rounded-1"
+            (click)="onDepartmentChange(dep)"
+          >
+            {{ dep }}
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Statut -->
+    <div class="dropdown me-3">
+      <a
+        href="javascript:void(0);"
+        class="dropdown-toggle btn btn-white"
+        data-bs-toggle="dropdown"
+      >
+        Statut
+      </a>
+      <ul class="dropdown-menu dropdown-menu-end p-3">
+        <li *ngFor="let s of statuses">
+          <a
+            href="javascript:void(0);"
+            class="dropdown-item rounded-1"
+            (click)="onStatusChange(s)"
+          >
+            {{ s }}
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Tri -->
+    <div class="dropdown">
+      <a
+        href="javascript:void(0);"
+        class="dropdown-toggle btn btn-white"
+        data-bs-toggle="dropdown"
+      >
+        Trier
+      </a>
+      <ul class="dropdown-menu dropdown-menu-end p-3">
+        <li *ngFor="let o of sortOptions">
+          <a
+            href="javascript:void(0);"
+            class="dropdown-item rounded-1"
+            (click)="onSortChange(o)"
+          >
+            {{ o }}
+          </a>
+        </li>
+      </ul>
+    </div>
+    
+  </div>
+</div>
