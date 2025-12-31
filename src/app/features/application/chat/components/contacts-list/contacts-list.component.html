@@ -1,0 +1,42 @@
+<div class="items-list">
+  <!-- Contacts -->
+  @for (contact of filteredContacts; track contact.id) {
+    <div class="item contact-item"
+        [class.active]="selectedContact?.id === contact.id"
+        (click)="selectContact(contact)">
+
+      <!-- Avatar contact -->
+      <div class="avatar-wrapper">
+        <img [src]="contact.avatar" [alt]="contact.name">
+        <span class="status-indicator" [class]="contact.status"></span>
+      </div>
+
+      <!-- Infos contact -->
+      <div class="item-info">
+        <div class="name-time">
+          <h6>{{ contact.name }}</h6>
+          <span class="time">{{ formatRelativeTime(contact.lastMessageTime) }}</span>
+        </div>
+        <div class="preview-badge">
+          <p class="item-preview">{{ contact.lastMessage }}</p>
+          @if (contact.unreadCount > 0) {
+            <span class="badge bg-primary">{{ contact.unreadCount }}</span>
+          }
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Message vide -->
+  @if (filteredContacts.length === 0) {
+    <div class="no-items">
+      <p class="text-muted text-center py-4">
+        @if (searchQuery) {
+          Aucun résultat pour "{{ searchQuery }}"
+        } @else {
+          Aucun contact
+        }
+      </p>
+    </div>
+  }
+</div>

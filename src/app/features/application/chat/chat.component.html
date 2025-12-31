@@ -20,7 +20,7 @@
           type="text"
           placeholder="Rechercher..."
           [(ngModel)]="searchQuery"
-          (ngModelChange)="searchItems()">
+         >
       </div>
     </div>
 
@@ -38,83 +38,24 @@
 
     <!-- Liste selon l'onglet actif -->
     <div class="items-list">
-
-      <!-- Contacts -->
-      @if (activeTab === 'contacts') {
-        @for (item of filteredItems; track item.id) {
-          <div class="item contact-item"
-              [class.active]="selectedItem?.id === item.id"
-              (click)="selectItem(item)">
-
-            <!-- Avatar contact -->
-            <div class="avatar-wrapper">
-              <img [src]="item.avatar" [alt]="item.name">
-              <span class="status-indicator" [class]="item.status"></span>
-            </div>
-
-            <!-- Infos contact -->
-            <div class="item-info">
-              <div class="name-time">
-                <h6>{{ item.name }}</h6>
-                <span class="time">{{ formatRelativeTime(item.lastMessageTime) }}</span>
-              </div>
-              <div class="preview-badge">
-                <p class="item-preview">{{ item.lastMessage }}</p>
-                @if (item.unreadCount > 0) {
-                  <span class="badge bg-primary">{{ item.unreadCount }}</span>
-                }
-              </div>
-            </div>
-          </div>
+        @if (activeTab === 'contacts') {
+          <app-contacts-list
+            [contacts]="contacts"
+            [selectedContact]="selectedContact"
+            [searchQuery]="searchQuery"
+            (contactSelected)="onContactSelected($event)">
+          </app-contacts-list>
         }
-      }
-
-      <!-- Groupes -->
-      @if (activeTab === 'groups') {
-        @for (item of filteredItems; track item.id) {
-          <div class="item group-item"
-              [class.active]="selectedItem?.id === item.id"
-              (click)="selectItem(item)">
-
-            <!-- Avatar groupe -->
-            <div class="group-avatar">
-              @if (item.avatar) {
-                <img [src]="item.avatar" [alt]="item.name">
-              } @else {
-                <i class="ti ti-users"></i>
-              }
-            </div>
-
-            <!-- Infos groupe -->
-            <div class="item-info">
-              <div class="name-time">
-                <h6>{{ item.name }}</h6>
-                <span class="time">{{ item.memberCount }} membres</span>
-              </div>
-              <div class="preview-badge">
-                <p class="item-preview">{{ item.description || 'Groupe de discussion' }}</p>
-                @if (item.unreadCount > 0) {
-                  <span class="badge bg-primary">{{ item.unreadCount }}</span>
-                }
-              </div>
-            </div>
-          </div>
+        
+        @if (activeTab === 'groups') {
+          <app-groups-list
+            [groups]="groups"
+            [selectedGroup]="selectedGroup"
+            [searchQuery]="searchQuery"
+            (groupSelected)="onGroupSelected($event)">
+          </app-groups-list>
         }
-      }
-
-      <!-- Message vide -->
-      @if (filteredItems.length === 0) {
-        <div class="no-items">
-          <p class="text-muted text-center py-4">
-            @if (searchQuery) {
-              Aucun résultat pour "{{ searchQuery }}"
-            } @else {
-              {{ activeTab === 'contacts' ? 'Aucun contact' : 'Aucun groupe' }}
-            }
-          </p>
-        </div>
-      }
-    </div>
+  </div>
   </div>
 
   <!-- ZONE PRINCIPALE : Chat -->
@@ -122,176 +63,34 @@
 
     <!-- En-tête du chat -->
     @if (selectedItem) {
-      <div class="chat-header">
-        <div class="chat-info">
+       <app-chat-header
+        [activeTab]="activeTab"
+        [selectedContact]="selectedContact"
+        [selectedGroup]="selectedGroup"
+        [currentUser]="currentUser"
+        (back)="deselectItem()"
+        (manageGroup)="openGroupManagement()">
+    </app-chat-header>
 
-          <!-- Bouton retour mobile -->
-          <button class="back-btn d-md-none" (click)="deselectItem()">
-            <i class="ti ti-arrow-left"></i>
-          </button>
-
-          <!-- Avatar -->
-          <div class="chat-avatar">
-            @if (activeTab === 'contacts') {
-              <!-- Avatar contact -->
-              <img [src]="selectedItem.avatar" [alt]="selectedItem.name">
-              <span class="status-indicator" [class]="selectedItem.status"></span>
-            } @else {
-              <!-- Avatar groupe -->
-              <div class="group-avatar-large">
-                @if (selectedItem.avatar) {
-                  <img [src]="selectedItem.avatar" [alt]="selectedItem.name">
-                } @else {
-                  <i class="ti ti-users"></i>
-                }
-              </div>
-            }
-          </div>
-
-          <!-- Infos -->
-          <div class="chat-details">
-            <h5>{{ selectedItem.name }}</h5>
-
-            @if (activeTab === 'contacts') {
-              <p class="chat-subtitle">
-                {{ getStatusText(selectedItem.status) }}
-                @if (selectedItem.role) {
-                  • {{ selectedItem.role }}
-                }
-              </p>
-            } @else {
-              <p class="chat-subtitle">
-                {{ selectedItem.memberCount }} membres
-                @if (selectedItem.description) {
-                  • {{ selectedItem.description }}
-                }
-              </p>
-            }
-          </div>
-
-          <!-- Actions supplémentaires pour groupes (admin) -->
-          @if (activeTab === 'groups' && isGroupAdmin()) {
-            <div class="group-actions">
-              <button data-bs-toggle="modal"
-                      data-bs-target="#detailsGroupModal"
-                      title="Gérer les membres">
-                <i class="ti ti-user-plus"></i>
-              </button>
-            </div>
-          }
-        </div>
-      </div>
-
-      <!-- Messages -->
+      <!-- Messages envoi de selectedContact pour afficher le avatar :)-->
       <div class="messages-container">
-        <div class="messages-scroll">
-          <div class="messages">
-            @for (message of messages; track message.id) {
-              <div class="message" [class.sent]="message.senderId === currentUser.id">
-
-                <!-- Avatar expéditeur -->
-                @if (message.senderId !== currentUser.id) {
-                  @if (activeTab === 'contacts') {
-                    <!-- Contact : avatar du contact -->
-                    <img [src]="selectedItem.avatar" class="sender-avatar">
-                  } @else {
-                    <!-- Groupe : avatar par défaut -->
-                    <div class="sender-avatar group-sender">
-                      <i class="ti ti-user"></i>
-                    </div>
-                  }
-                }
-
-                <!-- Contenu du message -->
-                <div class="message-content">
-
-                  <!-- Message texte -->
-                  @if (message.type === 'text') {
-                    <div class="text-message">{{ message.content }}</div>
-                  }
-
-                  <!-- Métadonnées -->
-                  <div class="message-meta">
-                    <span class="time">{{ message.time }}</span>
-                    @if (message.senderId === currentUser.id) {
-                      <span class="read-status">
-                        @if (message.read) {
-                          <i class="ti ti-checks text-success"></i>
-                        } @else {
-                          <i class="ti ti-check"></i>
-                        }
-                      </span>
-                    }
-                  </div>
-                </div>
-
-                <!-- Message envoyé par moi -->
-                @if (message.senderId === currentUser.id) {
-                  <img [src]="currentUser.avatar" class="sender-avatar">
-                }
-              </div>
-            }
-          </div>
-        </div>
+         <app-chat-messages
+          [messages]="messages"
+          [selectedContact]="selectedContact"        
+          [currentUser]="currentUser"
+          [activeTab]="activeTab">
+        </app-chat-messages>
       </div>
 
       <!-- Zone de saisie -->
-      <div class="message-input-area">
-        <form (ngSubmit)="sendMessage()">
-          <div class="input-toolbar">
-
-            <!-- Actions -->
-            <div class="input-actions">
-              <button type="button" class="btn btn-link" title="Joindre un fichier">
-                <i class="ti ti-paperclip"></i>
-                <input type="file" hidden (change)="attachFile($event)">
-              </button>
-            </div>
-
-            <!-- Zone de texte -->
-            <textarea
-              [(ngModel)]="newMessage"
-              name="message"
-              placeholder="Écrivez votre message..."
-              (keydown.enter)="onEnterPress($event)"
-              rows="1">
-            </textarea>
-
-            <!-- Bouton d'envoi -->
-            <button type="submit" class="btn btn-primary" [disabled]="!newMessage.trim()">
-              <i class="ti ti-send"></i>
-            </button>
-          </div>
-        </form>
-      </div>
+      <app-chat-footer 
+        (messageSent)="onMessageSent($event)"
+        (enterPressed)="onEnterKeyPressed($event)"
+      ></app-chat-footer>
 
     } @else {
       <!-- Écran d'accueil si aucun item sélectionné -->
-      <div class="welcome-screen">
-        <div class="welcome-content">
-          <div class="avatar avatar-xl bg-light mb-3">
-            <i class="ti ti-message-chatbot text-primary"></i>
-          </div>
-          <h4>Messagerie interne</h4>
-          <p class="text-muted">
-            Sélectionnez une conversation ou recherchez
-            @if (activeTab === 'contacts') {
-              un collègue
-            } @else {
-              un groupe
-            }
-          </p>
-          <div class="flex">
-            <button class="btn bg-btn mt-3 me-2 text-white" (click)="toggleSidebar()">
-              <i class="ti ti-plus me-2"></i>Nouvelle conversation
-            </button>
-            <!-- Juste pour les admins -->
-            <button [routerLink]="[routes.groups]" class="btn bg-btn text-white mt-3 me-3">
-              <i class="ti ti-plus me-2"></i>Créer un groupe
-            </button>
-          </div>
-        </div>
-      </div>
+      <app-welcome-screen [activeTab]="activeTab"></app-welcome-screen>
     }
   </div>
 </div>

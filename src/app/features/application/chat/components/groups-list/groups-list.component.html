@@ -1,0 +1,45 @@
+<div class="items-list">
+  <!-- Groupes -->
+  @for (group of filteredGroups; track group.id) {
+    <div class="item group-item"
+        [class.active]="selectedGroup?.id === group.id"
+        (click)="selectGroup(group)">
+
+      <!-- Avatar groupe -->
+      <div class="group-avatar">
+        @if (group.avatar) {
+          <img [src]="group.avatar" [alt]="group.name">
+        } @else {
+          <i class="ti ti-users"></i>
+        }
+      </div>
+
+      <!-- Infos groupe -->
+      <div class="item-info">
+        <div class="name-time">
+          <h6>{{ group.name }}</h6>
+          <span class="time">{{ group.memberCount }} membres</span>
+        </div>
+        <div class="preview-badge">
+          <p class="item-preview">{{ group.description || 'Groupe de discussion' }}</p>
+          @if (group.unreadCount! > 0) {
+            <span class="badge bg-primary">{{ group.unreadCount }}</span>
+          }
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Message vide -->
+  @if (filteredGroups.length === 0) {
+    <div class="no-items">
+      <p class="text-muted text-center py-4">
+        @if (searchQuery) {
+          Aucun résultat pour "{{ searchQuery }}"
+        } @else {
+          Aucun groupe
+        }
+      </p>
+    </div>
+  }
+</div>

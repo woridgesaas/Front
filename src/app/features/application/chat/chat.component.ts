@@ -9,10 +9,14 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
 import { BreadcrumbsComponent } from '../../common/breadcrumbs/breadcrumbs.component';
 import { ChatService } from '../../../shared/data/chat-service';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 import { routes } from '../../../shared/routes/routes';
 import { DetailsGroupModalComponent } from './components/details-group-modal/details-group-modal.component';
-
+import { ContactsListComponent } from './components/contacts-list/contacts-list.component';
+import { GroupsListComponent } from './components/groups-list/groups-list.component';
+import { WelcomeScreenComponent } from './components/welcome-screen/welcome-screen.component';
+import { ChatHeaderComponent } from './components/chat-header/chat-header.component';
+import { ChatMessagesComponent } from './components/chat-messages/chat-messages.component';
+import { ChatFooterComponent } from './components/chat-footer/chat-footer.component';
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
@@ -22,13 +26,17 @@ import { DetailsGroupModalComponent } from './components/details-group-modal/det
     NgScrollbarModule,
     BreadcrumbsComponent,
     FormsModule,
-    RouterLink,
     DetailsGroupModalComponent,
+    ContactsListComponent,
+    GroupsListComponent,
+    WelcomeScreenComponent,
+    ChatHeaderComponent,
+    ChatMessagesComponent,
+    ChatFooterComponent
   ],
 })
 export class ChatComponent implements OnInit {
-  routes = routes;
-  // Utilisateur courant { id: number; name: string; avatar: string } est le type des prop :)
+   routes = routes;
   currentUser = {
     id: 0,
     name: '',
@@ -38,11 +46,11 @@ export class ChatComponent implements OnInit {
   // Données
   contacts: ChatContact[] = [];
   groups: ChatGroupItem[] = [];
-  filteredItems: any[] = []; // Contacts OU groupes selon l'onglet
 
   // Sélection
   activeTab: 'contacts' | 'groups' = 'contacts';
-  selectedItem: any = null; // Peut être contact ou groupe
+  selectedContact: ChatContact | null = null;
+  selectedGroup: ChatGroupItem | null = null;
 
   // Messages
   messages: ChatMessage[] = [];
@@ -58,6 +66,10 @@ export class ChatComponent implements OnInit {
 
   constructor(private chatService: ChatService) {}
 
+  get selectedItem(): any {
+    return this.activeTab === 'contacts' ? this.selectedContact : this.selectedGroup;
+  }
+
   ngOnInit(): void {
     this.initChat();
   }
@@ -71,126 +83,88 @@ export class ChatComponent implements OnInit {
   /** === GESTION DES ONGLETS === */
   switchTab(tab: 'contacts' | 'groups'): void {
     this.activeTab = tab;
-    this.selectedItem = null;
-    this.searchItems();
+    this.selectedContact = null;
+    this.selectedGroup = null;
+    this.messages = [];
   }
 
   /** === CHARGEMENT DES DONNES === */
   private loadItems(): void {
     this.contacts = this.chatService.getContacts();
-
     this.groups = this.getMockGroups();
-    this.searchItems();
   }
 
-  /** === RECHERCHE ET FILTRAGE === */
-  searchItems(): void {
-    if (this.activeTab === 'contacts') {
-      this.filteredItems = this.filterContacts();
-    } else {
-      this.filteredItems = this.filterGroups();
-    }
-  }
-
-  private filterContacts(): ChatContact[] {
-    let result = [...this.contacts];
-
-    if (this.activeFilter === 'unread') {
-      result = result.filter((c) => c.unreadCount > 0);
-    }
-
-    // Recherche texte
-    if (this.searchQuery.trim()) {
-      const term = this.searchQuery.toLowerCase().trim();
-      result = result.filter(
-        (c) =>
-          c.name.toLowerCase().includes(term) ||
-          c.department.toLowerCase().includes(term)
-      );
-    }
-
-    return result;
-  }
-
-  private filterGroups(): ChatGroupItem[] {
-    let result = [...this.groups];
-
-    // Recherche texte
-    if (this.searchQuery.trim()) {
-      const term = this.searchQuery.toLowerCase().trim();
-      result = result.filter(
-        (g) =>
-          g.name.toLowerCase().includes(term) ||
-          g.description?.toLowerCase().includes(term)
-      );
-    }
-
-    return result;
-  }
-
-  selectItem(item: any): void {
-    this.selectedItem = item;
-    if (this.activeTab === 'contacts') {
-      this.loadContactMessages(item.id);
-    } else {
-      this.loadGroupMessages(item.id);
-    }
-
-    // Marquer comme lu si c'est un contact
-    if (this.activeTab === 'contacts') {
-      this.chatService.markAsRead(item.id);
-    }
-
-    // Cacher sidebar sur mobile
+  /** === events emiter depuis fils :) === */
+  onContactSelected(contact: ChatContact): void {
+    this.selectedContact = contact;
+    this.selectedGroup = null;
+    this.loadContactMessages(contact.id);
+    this.chatService.markAsRead(contact.id);
+    
     if (window.innerWidth < 768) {
       this.isSidebarVisible = false;
     }
   }
 
-  deselectItem(): void {
-    this.selectedItem = null;
-    this.messages = [];
-    this.isSidebarVisible = true;
+  onGroupSelected(group: ChatGroupItem): void {
+    this.selectedGroup = group;
+    this.selectedContact = null;
+    this.loadGroupMessages(group.id);
+    
+    if (window.innerWidth < 768) {
+      this.isSidebarVisible = false;
+    }
+  }
+  //mesg emiter par le chat-footer :)
+  onMessageSent(event:string):void{
+    this.newMessage = event;
+    this.sendMessage();
+  }
+  onEnterKeyPressed(event:string):void{
+    this.newMessage = event;
+    this.onEnterPress();
   }
 
+  /** === GESTION DES MESSAGES === */
   private loadContactMessages(contactId: number): void {
     this.messages = this.chatService.getMessages(contactId);
   }
 
   private loadGroupMessages(groupId: number): void {
-    // Simulation de messages de groupe
     this.messages = this.getMockGroupMessages(groupId);
   }
 
   sendMessage(): void {
-    if (!this.selectedItem || !this.newMessage.trim()) return;
+    console.log(this.newMessage);
+    
+    const selectedItem = this.selectedItem;
+    if (!selectedItem || !this.newMessage.trim()) return;
 
     if (this.activeTab === 'contacts') {
       // Message 1-to-1
-      this.chatService.sendMessage(
-        this.selectedItem.id,
-        this.newMessage.trim()
-      );
+      this.chatService.sendMessage(selectedItem.id, this.newMessage.trim());
+      this.loadContactMessages(selectedItem.id);
     } else {
       // Message de groupe (simulation)
-      alert('Message de groupe envoyé:' + this.newMessage);
-    }
-
-    // Recharger les messages
-    if (this.activeTab === 'contacts') {
-      this.loadContactMessages(this.selectedItem.id);
-    } else {
-      this.loadGroupMessages(this.selectedItem.id);
+      this.messages.push({
+        id: Date.now(),
+        senderId: this.currentUser.id,
+        receiverId: selectedItem.id,
+        type: 'text',
+        content: this.newMessage.trim(),
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        read: true,
+        timestamp: new Date()
+      });
     }
 
     this.newMessage = '';
+    console.log(this.newMessage);
+    
   }
 
-  onEnterPress(event: any): void {
-    if (event.key === 'Enter' && !event.shiftKey) {
-      event.preventDefault();
-      this.sendMessage();
-    }
+  onEnterPress(): void {
+    this.sendMessage();
   }
 
   /** === SIMULATION GROUPES === */
@@ -249,81 +223,49 @@ export class ChatComponent implements OnInit {
     ];
   }
 
-  /** === HAllpers === */
-  getStatusText(status: string): string {
-    const statusMap: { [key: string]: string } = {
-      online: 'En ligne',
-      offline: 'Hors ligne',
-    };
-    return statusMap[status] || status;
-  }
-
-  formatRelativeTime(timeString: string): string {
-    if (timeString === "À l'instant") return timeString;
-    return timeString;
-  }
+  /** === HELPERS === */
 
   toggleSidebar(): void {
     this.isSidebarVisible = !this.isSidebarVisible;
   }
 
-  /** === ACTIONS === */
-  attachFile(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files?.length) {
-      console.log('Fichier joint:', input.files[0].name);
-      input.value = '';
-    }
+  deselectItem(): void {
+    this.selectedContact = null;
+    this.selectedGroup = null;
+    this.messages = [];
+    this.isSidebarVisible = true;
   }
 
-  downloadFile(message: ChatMessage): void {
-    if (message.type === 'file' || message.type === 'image') {
-      alert(`Téléchargement de "${message.fileName}"`);
-    }
-  }
-
+  /** === SIMULATION MESSAGES === */
   private simulateIncomingMessage(): void {
     setTimeout(() => {
       const availableContacts = this.contacts.filter(
-        (c) => c.status === 'online' && c.id !== this.selectedItem?.id
+        (c) => c.status === 'online' && c.id !== this.selectedContact?.id
       );
 
       if (availableContacts.length > 0) {
-        const randomContact =
-          availableContacts[
-            Math.floor(Math.random() * availableContacts.length)
-          ];
-        const messages = [
-          'Salut !',
-          'Tu as une minute ?',
-          'La réunion est à 15h',
-        ];
+        const randomContact = availableContacts[Math.floor(Math.random() * availableContacts.length)];
+        const messages = ['Salut !', 'Tu as une minute ?', 'La réunion est à 15h'];
 
         this.chatService.simulateIncomingMessage(
           randomContact.id,
           messages[Math.floor(Math.random() * messages.length)]
         );
 
-        this.searchItems(); // Rafraîchir la liste
+        this.contacts = this.chatService.getContacts();
       }
     }, 5000);
   }
-
-  /** === ACTIONS GROUPES (admin) === */
-  isGroupAdmin(): boolean {
-    console.log(
-      'currentUser.id:',
-      this.currentUser.id,
-      typeof this.currentUser.id
-    );
-    // Simulation
-    return this.currentUser.id === 1;
+ openGroupManagement(): void {
+    const modalElement = document.getElementById('detailsGroupModal');
+  
+  if (modalElement) {
+    alert(modalElement)
+    const modal = new (window as any).bootstrap.Modal(modalElement);
+    modal.show();
   }
-
-  openGroupSettings(): void {
-    if (this.activeTab === 'groups' && this.selectedItem) {
-      alert('Paramètres du groupe:' + this.selectedItem.name);
-      // Ouvrir modal de paramètres
-    }
+    
+    
   }
+ 
 }

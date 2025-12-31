@@ -1,0 +1,60 @@
+  <div class="chat-header">
+    <div class="chat-info">
+
+      <!-- Bouton retour mobile -->
+      <button class="back-btn d-md-none" (click)="onBackClick()">
+        <i class="ti ti-arrow-left"></i>
+      </button>
+
+      <!-- Avatar -->
+      <div class="chat-avatar">
+        @if (activeTab === 'contacts' && selectedContact) {
+          <!-- Avatar contact -->
+          <img [src]="selectedContact.avatar" [alt]="selectedContact.name">
+          <span class="status-indicator" [class]="selectedContact.status"></span>
+        } @else if (activeTab === 'groups' && selectedGroup) {
+          <!-- Avatar groupe -->
+          <div class="group-avatar-large">
+            @if (selectedGroup.avatar) {
+              <img [src]="selectedGroup.avatar" [alt]="selectedGroup.name">
+            } @else {
+              <i class="ti ti-users"></i>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Infos -->
+      <div class="chat-details">
+        <h5>{{ selectedItem?.name }}</h5>
+
+        @if (activeTab === 'contacts' && selectedContact) {
+          <p class="chat-subtitle">
+            {{ getStatusText(selectedContact.status) }}
+            @if (selectedContact.role) {
+              • {{ selectedContact.role }}
+            }
+          </p>
+        } @else if (activeTab === 'groups' && selectedGroup) {
+          <p class="chat-subtitle">
+            {{ selectedGroup.memberCount }} membres
+            @if (selectedGroup.description) {
+              • {{ selectedGroup.description }}
+            }
+          </p>
+        }
+      </div>
+
+      <!-- Actions  pour groupes (admin) -->
+      @if (activeTab === 'groups' && selectedGroup) {
+        <div class="group-actions">
+          <button (click)="onManageGroupClick()"
+                  title="Gérer les membres">
+            <i class="ti ti-user-plus"></i>
+          </button>
+          
+          
+        </div>
+      }
+    </div>
+  </div>

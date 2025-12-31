@@ -1,0 +1,28 @@
+ <div class="message-input-area">
+        <form (ngSubmit)="onSendClick()">
+          <div class="input-toolbar">
+
+            <!-- Actions -->
+            <div class="input-actions">
+              <button type="button" class="btn btn-link" title="Joindre un fichier">
+                <i class="ti ti-paperclip"></i>
+                <input type="file" hidden >
+              </button>
+            </div>
+
+            <!-- Zone de texte -->
+            <textarea
+              [(ngModel)]="newMessage"
+              name="message"
+              placeholder="Écrivez votre message..."
+              (keydown.enter)="onEnterPress($event)"
+              rows="1">
+            </textarea>
+
+            <!-- Bouton d'envoi -->
+            <button type="submit" class="btn btn-primary" [disabled]="!newMessage.trim()">
+              <i class="ti ti-send"></i>
+            </button>
+          </div>
+        </form>
+    </div>
