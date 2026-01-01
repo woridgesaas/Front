@@ -1,0 +1,104 @@
+<!-- Modifier Contact d'Urgence -->
+<div class="modal fade" id="edit_emergency">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Détails du Contact d'Urgence</h4>
+          <button
+            type="button"
+            class="btn-close custom-btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          >
+            <i class="ti ti-x"></i>
+          </button>
+        </div>
+        <form (ngSubmit)="onSubmit()">
+          <div class="modal-body pb-0">
+            <div class="row">
+              <!-- Nom -->
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">
+                    Nom <span class="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="contact.name"
+                    name="name"
+                    placeholder="Nom complet du contact"
+                    required
+                  />
+                </div>
+              </div>
+  
+              <!-- Relation -->
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">Relation</label>
+                  <select
+                    class="form-select"
+                    [(ngModel)]="contact.relation"
+                    name="relation"
+                  >
+                    <option value="">Sélectionner une relation</option>
+                    <option *ngFor="let rel of relations" [value]="rel">
+                      {{ rel }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+  
+              <!-- Téléphone 1 -->
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">
+                    Téléphone 1 <span class="text-danger">*</span>
+                  </label>
+                  <input
+                    type="tel"
+                    class="form-control"
+                    [(ngModel)]="contact.phone1"
+                    name="phone1"
+                    placeholder="+212 6 12 34 56 78"
+                    required
+                  />
+                </div>
+              </div>
+  
+              <!-- Téléphone 2 -->
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">Téléphone 2</label>
+                  <input
+                    type="tel"
+                    class="form-control"
+                    [(ngModel)]="contact.phone2"
+                    name="phone2"
+                    placeholder="+212 6 12 34 56 78"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Footer -->
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-white border me-2"
+              data-bs-dismiss="modal"
+              (click)="resetForm()"
+            >
+              Annuler
+            </button>
+            <button type="submit" class="btn btn-primary">
+              Enregistrer
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- /Modifier Contact d'Urgence -->
