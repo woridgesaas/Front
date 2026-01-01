@@ -9,6 +9,7 @@ import { ConfirmDeleteComponent } from "../../common/delete-modal/delete-modal.c
 import { AddDepartmentModalComponent } from "./components/departments-modal/add-department-modal/add-department-modal.component";
 import { EditDepartmentModalComponent } from "./components/departments-modal/edit-department-modal/edit-department-modal.component";
 import { CommonModule } from '@angular/common';
+import { Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-departments',
@@ -32,20 +33,42 @@ export class DepartmentsComponent {
   selectedItem!: department;
 
   @ViewChild(EditDepartmentModalComponent) editModal!: EditDepartmentModalComponent;
-
+openAddModal = false;
   selectedStatus: 'all' | 'Actif' | 'Inactif' = 'all';
   searchValue = '';
 
   constructor(private departmentService: DepartmentService) {
     this.loadDepartments();
   }
+isEditModalOpen = false;
+
+openEdit(dep: department) {
+  this.selectedDepartment = { ...dep };
+  this.isEditModalOpen = true;
+}
+
 
   loadDepartments() {
     this.departmentService.getAll().subscribe(data => {
       this.departments = data;
     });
   }
+sortData(sort: Sort) {
+  const data = [...this.departments];
 
+  if (!sort.active || sort.direction === '') {
+    this.departments = data;
+    return;
+  }
+
+  this.departments = data.sort((a, b) => {
+    const aValue = (a as any)[sort.active];
+    const bValue = (b as any)[sort.active];
+
+    return (aValue < bValue ? -1 : 1) *
+      (sort.direction === 'asc' ? 1 : -1);
+  });
+}
   get filteredDepartments(): department[] {
     return this.departments.filter(d => {
       const byStatus =
@@ -63,9 +86,6 @@ export class DepartmentsComponent {
     this.departments = [...this.departments, dep];
   }
 
-openEditModal(dep: department) {
-  this.selectedDepartment = { ...dep };
-}
 
 closeEditModal() {
   this.selectedDepartment = null;

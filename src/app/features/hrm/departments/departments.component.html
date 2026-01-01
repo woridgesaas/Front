@@ -4,11 +4,7 @@
   >
     <app-breadcrumbs></app-breadcrumbs>
     <!-- ADD -->
-    <button
-      class="btn btn-primary"
-      data-bs-toggle="modal"
-      data-bs-target="#add_department"
-    >
+    <button class="btn btn-primary" (click)="openAddModal = true">
       Ajouter Département
     </button>
   </div>
@@ -33,22 +29,29 @@
 
     <div class="card-body p-0">
       <!-- TABLE -->
-      <app-departments-table
-        [departments]="filteredDepartments"
-        (edit)="openEditModal($event)"
-        (delete)="openDelete($event)"
-      ></app-departments-table>
+<app-departments-table
+  [departments]="filteredDepartments"
+  (edit)="openEdit($event)"
+  (delete)="openDelete($event)"
+  (sort)="sortData($event)"
+>
+</app-departments-table>
+
 
       <!-- MODALS -->
       <app-add-department-modal
+        [open]="openAddModal"
+        (cancel)="openAddModal = false"
         (add)="addDepartment($event)"
       ></app-add-department-modal>
 
       <app-edit-department-modal
-        *ngIf="selectedDepartment"
-        [department]="selectedDepartment"
+        [open]="isEditModalOpen"
+        [department]="selectedDepartment!"
+        (cancel)="isEditModalOpen = false"
         (update)="saveEdit($event)"
-      ></app-edit-department-modal>
+      >
+      </app-edit-department-modal>
 
       <!-- MODAL DELETE -->
       <app-confirm-delete

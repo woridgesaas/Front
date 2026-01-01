@@ -1,13 +1,13 @@
 
-.col-department {
-  width: 25%;
-    text-align: center;
 
-}
-table {
-  width: 100%;
+/* Centre le texte + la flèche de tri */
+::ng-deep th.mat-sort-header {
+  text-align: center;
 }
 
+::ng-deep .mat-sort-header-container {
+  justify-content: center;
+}
 
 
 .col-status {

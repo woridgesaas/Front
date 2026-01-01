@@ -1,26 +1,19 @@
-<!-- Ajouter Département -->
-<div class="modal fade" id="add_department" tabindex="-1">
+<div class="modal-backdrop fade show" *ngIf="open"></div>
+
+<div class="modal fade show d-block" *ngIf="open">
   <div class="modal-dialog modal-dialog-centered modal-md">
     <div class="modal-content">
+   <app-modal-header
+  title="Ajouter département"
+  icon="ti ti-building"
+  (close)="onCancel()">
+</app-modal-header>
 
-      <!-- Header -->
-      <div class="modal-header">
-        <h4 class="modal-title">Ajouter Département</h4>
-        <button
-          type="button"
-          class="btn-close custom-btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        >
-          <i class="ti ti-x"></i>
-        </button>
-      </div>
 
       <!-- Form -->
       <form (ngSubmit)="submit()">
         <div class="modal-body pb-0">
           <div class="row">
-
             <!-- Nom -->
             <div class="col-md-12">
               <div class="mb-3">
@@ -34,12 +27,10 @@
                 />
               </div>
             </div>
-
             <!-- Statut -->
             <div class="col-md-12">
               <div class="mb-3">
                 <label class="form-label">Statut</label>
-
                 <mat-select
                   class="select custom-mat-select"
                   placeholder="Sélectionner"
@@ -50,34 +41,17 @@
                   <mat-option value="Actif">Actif</mat-option>
                   <mat-option value="Inactif">Inactif</mat-option>
                 </mat-select>
-
               </div>
             </div>
-
           </div>
         </div>
-
-        <!-- Footer -->
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-light me-2"
-            data-bs-dismiss="modal"
-          >
-            Annuler
-          </button>
-
-          <button
-            type="submit"
-            class="btn btn-primary"
-            data-bs-dismiss="modal"
-          >
-            Ajouter Département
-          </button>
-        </div>
+        <app-modal-footer
+          submitText="Ajouter département"
+          submitIcon="ti ti-check"
+          (cancel)="onCancel()"
+        >
+        </app-modal-footer>
       </form>
-
     </div>
   </div>
 </div>
-<!-- /Ajouter Département -->
