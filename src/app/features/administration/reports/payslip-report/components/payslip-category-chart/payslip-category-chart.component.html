@@ -1,0 +1,33 @@
+<div class="card flex-fill">
+                <div class="card-header border-0 pb-0">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <span class="me-2"><i class="ti ti-chart-histogram text-warning"></i></span>
+                            <h5 class="mb-0">Composition de la Rémunération</h5>
+                        </div>
+                        <div class="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle btn btn-sm fs-12 btn-white d-inline-flex align-items-center" data-bs-toggle="dropdown">
+                                6 Derniers Mois
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end p-2">
+                                <li><a href="javascript:void(0);" class="dropdown-item rounded-1">3 Mois</a></li>
+                                <li><a href="javascript:void(0);" class="dropdown-item rounded-1">6 Mois</a></li>
+                                <li><a href="javascript:void(0);" class="dropdown-item rounded-1">12 Mois</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <apx-chart
+                        [series]="evolutionMensuelleChart.series"
+                        [chart]="evolutionMensuelleChart.chart"
+                        [plotOptions]="evolutionMensuelleChart.plotOptions"
+                        [dataLabels]="evolutionMensuelleChart.dataLabels"
+                        [xaxis]="evolutionMensuelleChart.xaxis"
+                        [yaxis]="evolutionMensuelleChart.yaxis"
+                        [colors]="evolutionMensuelleChart.colors"
+                        [legend]="evolutionMensuelleChart.legend"
+                        [tooltip]="evolutionMensuelleChart.tooltip">
+                    </apx-chart>
+                </div>
+            </div>
