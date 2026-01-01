@@ -19,7 +19,12 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { BreadcrumbsComponent } from '../../../common/breadcrumbs/breadcrumbs.component';
 import { CustomPaginationComponent } from '../../../../shared/custom-pagination/custom-pagination.component';
 import { FormsModule } from '@angular/forms';
-import { FooterComponent } from '../../../common/footer/footer.component';
+import { LeavesKpisComponent } from '../Components/leaves-kpis/leaves-kpis.component';
+import { FilterComponent } from '../../../common/filter/filter.component';
+import { LeavesTableComponent } from '../Components/leaves-table/leaves-table.component';
+import { ConfirmDeleteComponent } from '../../../common/delete-modal/delete-modal.component';
+import { LeavesToolbarComponent } from '../Components/leaves-toolbar/leaves-toolbar.component';
+import { LeavesModalStateService } from '../services/leaves-modal-state.service';
 
 @Component({
   selector: 'app-leave-employee',
@@ -33,10 +38,15 @@ import { FooterComponent } from '../../../common/footer/footer.component';
     MatSortModule,
     BreadcrumbsComponent,
     CustomPaginationComponent,
-    FooterComponent,
+    LeavesKpisComponent,
+    FilterComponent,
+    LeavesTableComponent,
+    ConfirmDeleteComponent,
+    LeavesToolbarComponent,
   ],
 })
 export class LeaveEmployeeComponent {
+  selectedLeave: leaveEmployee | null = null;
   public routes = routes;
   initChecked = false;
   // pagination variables
@@ -56,10 +66,12 @@ export class LeaveEmployeeComponent {
   bsValue = new Date();
   bsRangeValue: Date[];
   maxDate = new Date();
+
   constructor(
     private data: DataService,
     private router: Router,
-    private pagination: PaginationService
+    private pagination: PaginationService,
+    private modalState: LeavesModalStateService
   ) {
     this.data.getleaveEmployee().subscribe((apiRes: apiResultFormat) => {
       this.actualData = apiRes.data;
@@ -150,24 +162,54 @@ export class LeaveEmployeeComponent {
       pageSize: this.pageSize,
     });
   }
-  selectAll(initChecked: boolean) {
-    if (!initChecked) {
-      this.tableData.forEach((f) => {
-        f.isSelected = true;
-      });
-    } else {
-      this.tableData.forEach((f) => {
-        f.isSelected = false;
-      });
-    }
-  }
-  // Autoriser l’édition uniquement si le statut est "New"
-  canEditLeave(status: string): boolean {
-    return status === 'New';
+
+ onEditClick(leave: leaveEmployee): void {
+  this.selectedLeave = leave;
+}
+  onSearchChange(value: string): void {
+    this.searchDataValue = value;
+    this.searchData(value); // logique existante
   }
 
-  // Autoriser la suppression uniquement si le statut est "Declined" (ou Refused)
-  canDeleteLeave(status: string): boolean {
-    return status === 'Declined' || status === 'Refused';
+  onDeleteClick(leave: any): void {
+    this.selectedLeave = leave;
+  }
+
+  confirmDelete(leave: any): void {
+    // 🔥 ici tu appelles ton service backend
+    // ex:
+    // this.leavesService.deleteLeave(leave.Id).subscribe(() => {
+    //   this.loadData();
+    // });
+
+    console.log('DELETE CONFIRMED:', leave);
+  }
+
+  onPageSizeChange(size: number): void {
+    this.pageSize = size;
+    this.changePageSize(size); // logique existante
+  }
+
+  openDeleteModal(leave: any): void {
+    this.selectedLeave = leave;
+  }
+  onDateFilter(range: Date[] | null) {
+    console.log('DATE:', range);
+  }
+
+  onTypeFilter(type: string) {
+    console.log('TYPE:', type);
+  }
+
+  onApproverFilter(name: string) {
+    console.log('APPROVER:', name);
+  }
+
+  onStatusFilter(status: string) {
+    console.log('STATUS:', status);
+  }
+
+  onSortFilter(sort: string) {
+    console.log('SORT:', sort);
   }
 }
