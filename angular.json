@@ -68,6 +68,7 @@
               "src/assets/scss/main.scss",
               "src/custom-theme.scss",
               "src/styles.scss"
+            
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
