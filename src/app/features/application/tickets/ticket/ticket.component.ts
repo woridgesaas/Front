@@ -12,6 +12,7 @@ import { TicketChartsComponent } from '../components/ticket-charts/ticket-charts
 import { TicketListComponent } from '../components/ticket-list/ticket-list.component';
 import { TechnicienService } from '../../../../shared/data/technicien-service';
 import { TicketCreateComponent } from '../components/ticket-create/ticket-create.component';
+import { TechnicienListComponent } from '../components/technicien-list/technicien-list.component';
 @Component({
   selector: 'app-ticket',
   templateUrl: './ticket.component.html',
@@ -28,6 +29,7 @@ import { TicketCreateComponent } from '../components/ticket-create/ticket-create
     MatSortModule,
     BreadcrumbsComponent,
     TicketCreateComponent,
+    TechnicienListComponent
   ],
 })
 export class TicketComponent implements OnInit {
