@@ -692,6 +692,7 @@ export interface leaveEmployee {
   To: string;
   NoOfDays: string;
   Status: string;
+  justificatif?: File;
 }
 
 

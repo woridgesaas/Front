@@ -1,0 +1,133 @@
+<div
+  class="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3"
+>
+  <div class="d-flex">
+    <h5 class="mb-0 fw-semibold">Liste des congés</h5>
+  </div>
+  <div class="d-flex align-items-center flex-wrap column-gap-3 row-gap-3">
+    <!-- Date range -->
+    <div class="input-icon position-relative">
+      <span class="input-icon-addon">
+        <i class="ti ti-calendar text-gray-9"></i>
+      </span>
+      <input
+        type="text"
+        class="form-control date-range bookingrange"
+        bsDaterangepicker
+        [(ngModel)]="dateRange"
+        [bsConfig]="{ adaptivePosition: true }"
+        placeholder="dd/mm/yyyy - dd/mm/yyyy"
+        (ngModelChange)="onDateChange()"
+      />
+    </div>
+
+    <!-- Type -->
+    <div class="dropdown">
+      <a class="dropdown-toggle btn btn-sm btn-white" data-bs-toggle="dropdown">
+        Type de congé
+      </a>
+      <ul class="dropdown-menu dropdown-menu-end p-3">
+        <li *ngFor="let type of leaveTypes">
+          <a class="dropdown-item" (click)="selectType(type)">
+            {{ type }}
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Approved by -->
+    <div class="dropdown">
+      <a class="dropdown-toggle btn btn-sm btn-white" data-bs-toggle="dropdown">
+        Approuvé par
+      </a>
+      <ul class="dropdown-menu dropdown-menu-end p-3">
+        <li *ngFor="let approver of approvers">
+          <a class="dropdown-item" (click)="selectApprover(approver)">
+            {{ approver }}
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Status -->
+    <div class="dropdown">
+      <a
+        href="javascript:void(0);"
+        class="dropdown-toggle btn btn-sm btn-white d-inline-flex align-items-center"
+        data-bs-toggle="dropdown"
+      >
+        Sélectionner statut
+      </a>
+      <ul class="dropdown-menu dropdown-menu-end p-3">
+        <li>
+          <a
+            href="javascript:void(0);"
+            class="dropdown-item rounded-1 d-flex justify-content-start align-items-center"
+            ><span
+              class="rounded-circle bg-transparent-success d-flex justify-content-center align-items-center me-2"
+              ><i class="ti ti-point-filled text-success"></i></span
+            >Approuvé</a
+          >
+        </li>
+        <li>
+          <a
+            href="javascript:void(0);"
+            class="dropdown-item rounded-1 d-flex justify-content-start align-items-center"
+            ><span
+              class="rounded-circle bg-transparent-danger d-flex justify-content-center align-items-center me-2"
+              ><i class="ti ti-point-filled text-danger"></i></span
+            >Refusé</a
+          >
+        </li>
+        <li>
+          <a
+            href="javascript:void(0);"
+            class="dropdown-item rounded-1 d-flex justify-content-start align-items-center"
+            ><span
+              class="rounded-circle bg-transparent-purple d-flex justify-content-center align-items-center me-2"
+              ><i class="ti ti-point-filled text-purple"></i></span
+            >Nouveau</a
+          >
+        </li>
+      </ul>
+    </div>
+
+    <!-- Sort -->
+    <div class="dropdown">
+      <a
+        href="javascript:void(0);"
+        class="dropdown-toggle btn btn-sm btn-white d-inline-flex align-items-center"
+        data-bs-toggle="dropdown"
+      >
+        Trier par : Derniers 7 jours
+      </a>
+      <ul class="dropdown-menu dropdown-menu-end p-3">
+        <li>
+          <a href="javascript:void(0);" class="dropdown-item rounded-1"
+            >Récemment ajouté</a
+          >
+        </li>
+        <li>
+          <a href="javascript:void(0);" class="dropdown-item rounded-1"
+            >Croissant</a
+          >
+        </li>
+        <li>
+          <a href="javascript:void(0);" class="dropdown-item rounded-1"
+            >Décroissant</a
+          >
+        </li>
+        <li>
+          <a href="javascript:void(0);" class="dropdown-item rounded-1"
+            >Mois dernier</a
+          >
+        </li>
+        <li>
+          <a href="javascript:void(0);" class="dropdown-item rounded-1"
+            >Derniers 7 jours</a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
