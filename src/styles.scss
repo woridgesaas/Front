@@ -3,6 +3,7 @@
 @import url("https://cdn.jsdelivr.net/npm/lightgallery@2.0.0-beta.4/css/lightgallery.css");
 @import url("https://cdn.jsdelivr.net/npm/lightgallery@2.0.0-beta.4/css/lg-zoom.css");
 @import url("https://cdn.jsdelivr.net/npm/lightgallery@2.0.0-beta.4/css/lg-video.css");
+// @import "~ngx-editor/prebuilt-themes/ng-bundle.css";
 // @import '@fontsource/inter/variable.css';
 
 
@@ -1539,3 +1540,118 @@ tag-input{
   }
 }
 
+// ngx-editor-test
+
+/* ============================================
+   NGX EDITOR - Styles personnalisés
+   ============================================ */
+
+/* Conteneur principal */
+.NgxEditor__Wrapper {
+  border: 1px solid #dee2e6;
+  border-radius: 0.375rem;
+  overflow: hidden;
+  background: #fff;
+}
+
+/* Barre de menu */
+.NgxEditor__MenuBar {
+  background: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+  padding: 8px 12px;
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+/* Boutons de la toolbar */
+.NgxEditor__MenuItem {
+  background: transparent;
+  border: 1px solid transparent;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.NgxEditor__MenuItem:hover {
+  background: #e9ecef;
+  border-color: #dee2e6;
+}
+
+.NgxEditor__MenuItem--Active {
+  background: #0d6efd;
+  color: white;
+}
+
+.NgxEditor__Separator {
+  width: 1px;
+  background: #dee2e6;
+  margin: 0 8px;
+}
+
+/* Zone d'édition */
+.NgxEditor {
+  min-height: 200px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.NgxEditor__Content {
+  padding: 12px 16px;
+  outline: none;
+  line-height: 1.6;
+  color: #212529;
+}
+
+.NgxEditor__Content:focus {
+  outline: none;
+}
+
+/* Placeholder */
+.NgxEditor__Content--Empty::before {
+  content: attr(data-placeholder);
+  color: #6c757d;
+  pointer-events: none;
+}
+
+/* Styles du contenu */
+.NgxEditor__Content h1 { font-size: 2em; font-weight: bold; margin: 0.67em 0; }
+.NgxEditor__Content h2 { font-size: 1.5em; font-weight: bold; margin: 0.75em 0; }
+.NgxEditor__Content h3 { font-size: 1.17em; font-weight: bold; margin: 0.83em 0; }
+.NgxEditor__Content h4 { font-size: 1em; font-weight: bold; margin: 1em 0; }
+.NgxEditor__Content h5 { font-size: 0.83em; font-weight: bold; margin: 1.17em 0; }
+.NgxEditor__Content h6 { font-size: 0.67em; font-weight: bold; margin: 1.33em 0; }
+
+.NgxEditor__Content p { margin: 0.5em 0; }
+.NgxEditor__Content ul, 
+.NgxEditor__Content ol { margin: 0.5em 0; padding-left: 2em; }
+.NgxEditor__Content li { margin: 0.25em 0; }
+.NgxEditor__Content a { color: #0d6efd; text-decoration: underline; }
+.NgxEditor__Content strong { font-weight: bold; }
+.NgxEditor__Content em { font-style: italic; }
+.NgxEditor__Content code { 
+  background: #f8f9fa; 
+  padding: 2px 4px; 
+  border-radius: 3px;
+  font-family: monospace;
+}
+
+.NgxEditor__Content blockquote {
+  border-left: 4px solid #dee2e6;
+  padding-left: 1em;
+  margin: 1em 0;
+  color: #6c757d;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .NgxEditor__MenuBar {
+    padding: 6px 8px;
+  }
+  
+  .NgxEditor__MenuItem {
+    padding: 4px 8px;
+    font-size: 0.875rem;
+  }
+}

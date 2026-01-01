@@ -5,9 +5,11 @@ import { Router, RouterOutlet } from '@angular/router';
 import { routes } from '../../../../../shared/routes/routes';
 import {
   apiResultFormat,
-  JobsInfo,
   pageSelection,
 } from '../../../../../shared/models/models';
+
+// ← IMPORTANT : Importer JobsInfo depuis le modèle local qui contient Description
+import { JobsInfo, Plateforme } from '../../models/jobs.model';
 
 import { MatTableDataSource } from '@angular/material/table';
 import { Sort } from '@angular/material/sort';
@@ -30,9 +32,7 @@ import { CreateJobModalComponent } from '../../modals/create-job-modal/create-jo
 import { EditJobModalComponent } from '../../modals/edit-job-modal/edit-job-modal.component';
 import { PublishJobModalComponent } from '../../modals/publish-job-modal/publish-job-modal.component';
 
-import { Plateforme } from '../../models/jobs.model';
 import { JobsService } from '../../services/jobs.service';
-
 
 declare const bootstrap: any;
 
@@ -85,7 +85,7 @@ export class JobsListComponent implements OnDestroy {
   showPublishModal = false;
   currentJob!: JobsInfo;
 
-  //  Pour le modal de suppression
+  // Pour le modal de suppression
   selectedItem: JobsInfo | null = null;
 
   // Plateformes
@@ -110,9 +110,15 @@ export class JobsListComponent implements OnDestroy {
 
   private loadJobs(): void {
     this.data.getJobList().subscribe((apiRes: apiResultFormat) => {
-      console.log(' Données reçues:', apiRes.data);
+      console.log('📊 Données reçues:', apiRes.data);
       
-      this.jobsData = apiRes.data;
+      // ← MIGRATION : Ajouter Description aux jobs existants
+      this.jobsData = (apiRes.data as any[]).map(job => ({
+        ...job,
+        Description: job.Description || '',
+        Number_of_Positions: job.Number_of_Positions || 1
+      }));
+      
       this.totalData = this.jobsData.length;
       this.getTableData({ skip: 0, limit: this.pageSize });
     });
@@ -210,7 +216,7 @@ export class JobsListComponent implements OnDestroy {
   }
 
   openEditModal(job: JobsInfo): void {
-    this.currentJob = { ...job };
+    this.currentJob = this.jobsService.cloneJob(job);
     this.showEditModal = true;
   }
 
@@ -223,7 +229,7 @@ export class JobsListComponent implements OnDestroy {
   onJobCreated(job: JobsInfo): void {
     const validation = this.jobsService.validateJob(job);
     if (!validation.isValid) {
-      alert(' ' + validation.errors.join('\n'));
+      alert('⚠️ ' + validation.errors.join('\n'));
       return;
     }
 
@@ -233,13 +239,13 @@ export class JobsListComponent implements OnDestroy {
     this.jobsData.unshift(job);
     this.getTableData({ skip: 0, limit: this.pageSize });
     this.showCreateModal = false;
-    alert(` L'offre "${job.Job_Title}" créée !`);
+    alert(`✅ L'offre "${job.Job_Title}" créée !`);
   }
 
   onJobUpdated(job: JobsInfo): void {
     const validation = this.jobsService.validateJob(job);
     if (!validation.isValid) {
-      alert(' ' + validation.errors.join('\n'));
+      alert('⚠️ ' + validation.errors.join('\n'));
       return;
     }
 
@@ -249,49 +255,43 @@ export class JobsListComponent implements OnDestroy {
       this.getTableData({ skip: this.skip, limit: this.limit });
     }
     this.showEditModal = false;
-    alert(` L'offre "${job.Job_Title}" modifiée !`);
+    alert(`✅ L'offre "${job.Job_Title}" modifiée !`);
   }
 
   onJobPublished(job: JobsInfo): void {
     const selected = this.plateformes.filter(p => p.selectionnee);
     if (selected.length === 0) {
-      alert(' Veuillez sélectionner au moins une plateforme');
+      alert('⚠️ Veuillez sélectionner au moins une plateforme');
       return;
     }
     this.showPublishModal = false;
-    alert(` L'offre "${job.Job_Title}" publiée sur ${selected.length} plateforme(s) !`);
+    alert(`✅ L'offre "${job.Job_Title}" publiée sur ${selected.length} plateforme(s) !`);
   }
 
-  //  Ouvrir le modal de suppression (définit selectedItem ET ouvre le modal )
+  // Ouvrir le modal de suppression
   onJobDeleted(job: JobsInfo): void {
-    // console.log(' Ouverture modal suppression pour:', job);
     this.selectedItem = job;
     
-    //  Ouvrir le modal Bootstrap manuellement
     setTimeout(() => {
       const modalElement = document.getElementById('deleteJobModal');
       if (modalElement) {
         const modal = new bootstrap.Modal(modalElement);
         modal.show();
       } else {
-        console.error(' Modal deleteJobModal introuvable');
+        console.error('❌ Modal deleteJobModal introuvable');
       }
     }, 100);
   }
 
-  //  Confirmer la suppression 
+  // Confirmer la suppression
   confirmDelete(job: JobsInfo): void {
-    // console.log(' Suppression confirmée pour:', job);
-    
     if (!job) {
-      // console.error(' Aucun job à supprimer');
       return;
     }
 
     this.jobsData = this.jobsData.filter(j => j.Job_ID !== job.Job_ID);
     this.getTableData({ skip: this.skip, limit: this.limit });
     
-    //  Fermer le modal Bootstrap
     const modalElement = document.getElementById('deleteJobModal');
     if (modalElement) {
       const modalInstance = bootstrap.Modal.getInstance(modalElement);
@@ -301,7 +301,6 @@ export class JobsListComponent implements OnDestroy {
     }
     
     this.selectedItem = null;
-    // alert(`L'offre "${job.Job_Title}" supprimée !`);
   }
 
   closeCreateModal(): void {
