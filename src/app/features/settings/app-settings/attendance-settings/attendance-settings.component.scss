@@ -1,0 +1,13 @@
+.presence-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+//* Mobile
+@media (max-width: 576px) {
+  .presence-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+}

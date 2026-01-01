@@ -1,0 +1,10 @@
+@use "../../../../../../../assets/scss/utils/variables" as vars;
+
+.cursor-pointer:hover .card-body {
+  background-color: vars.$primary-transparent;
+}
+
+.cursor-pointer:focus-visible {
+  outline: 2px solid vars.$primary;
+  outline-offset: 2px;
+}

@@ -1,10 +1,4 @@
-export type DocumentCategory =
-  | 'Contrats'
-  | 'Attestations'
-  | 'Fin de contrat'
-  | 'Discipline'
-  | 'Stages & formation'
-  | 'Documents internes RH';
+import { DocumentCategory } from '../enum/document-category.enum';
 
 export interface DocumentTemplate {
   code: string;

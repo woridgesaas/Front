@@ -1,118 +1,55 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-
+import { AnnualLeaveModalComponent } from './components/annual-leave-modal/annual-leave-modal.component';
+import { ExceptionalLeavesModalComponent } from './components/exceptional-leaves-modal/exceptional-leaves-modal.component';
 import { ExceptionalLeave } from '../../../../shared/models/leaves.model';
+import { SwitchButtonComponent } from '../../../common/switch-button/switch-button.component';
+import { LeaveType } from '../../../../shared/enum/leave-type.enum';
+import { SettingsHeaderComponent } from '../components/settings-header/settings-header.component';
 
 @Component({
   selector: 'app-leave-settings',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [
+    AnnualLeaveModalComponent,
+    ExceptionalLeavesModalComponent,
+    SwitchButtonComponent,
+    SettingsHeaderComponent,
+  ],
   templateUrl: './leave-settings.component.html',
   styleUrls: ['./leave-settings.component.scss'],
 })
 export class LeaveSettingsComponent {
-  exceptionalLeaves: ExceptionalLeave[] = [
-    //* Événements familiaux
-    {
-      code: 'MARRIAGE_EMPLOYEE',
-      name: 'Mariage du salarié',
-      legalDays: 4,
-      grantedDays: 4,
-    },
+  LeaveType = LeaveType;
 
-    {
-      code: 'MARRIAGE_CHILD',
-      name: "Mariage d'un enfant",
-      legalDays: 2,
-      grantedDays: 2,
-    },
+  //* Active switch
+  activeLeaveType: LeaveType = LeaveType.ANNUAL;
 
-    {
-      code: 'BIRTH_CHILD',
-      name: "Naissance d'un enfant",
-      legalDays: 3,
-      grantedDays: 3,
-    },
+  //* Modals
+  annualModalOpen = false;
+  exceptionalModalOpen = false;
 
-    {
-      code: 'DEATH_CLOSE_FAMILY',
-      name: 'Décès proche (conjoint, parent, enfant)',
-      legalDays: 3,
-      grantedDays: 3,
-    },
-
-    {
-      code: 'DEATH_EXTENDED_FAMILY',
-      name: 'Décès famille élargie',
-      legalDays: 2,
-      grantedDays: 2,
-    },
-
-    {
-      code: 'CIRCUMCISION_CHILD',
-      name: "Circoncision d'un enfant",
-      legalDays: 2,
-      grantedDays: 2,
-    },
-
-    {
-      code: 'SURGERY_FAMILY',
-      name: 'Opération chirurgicale proche',
-      legalDays: 2,
-      grantedDays: 2,
-    },
-
-    //* Obligations personnelles / professionnelles
-    {
-      code: 'OFFICIAL_EXAM',
-      name: 'Examen officiel',
-      legalDays: 0,
-      grantedDays: 0,
-    },
-
-    {
-      code: 'SPORT_EVENT',
-      name: 'Événement sportif officiel',
-      legalDays: 0,
-      grantedDays: 0,
-    },
-
-    //* Obligations civiques
-    {
-      code: 'CIVIC_DUTY',
-      name: 'Obligation civique',
-      legalDays: 0,
-      grantedDays: 0,
-    },
-  ];
-
-  isInvalid(leave: ExceptionalLeave): boolean {
-    return leave.grantedDays < leave.legalDays;
+  //* Open annual leave modal
+  openAnnualModal(): void {
+    this.activeLeaveType = LeaveType.ANNUAL;
+    this.annualModalOpen = true;
+    this.exceptionalModalOpen = false;
   }
 
-  // Toggle exceptional leaves section
-  showExceptionalLeaves = false;
-
-  toggleExceptionalLeaves(): void {
-    this.showExceptionalLeaves = !this.showExceptionalLeaves;
+  //* Open exceptional leave modal
+  openExceptionalModal(): void {
+    this.activeLeaveType = LeaveType.EXCEPTIONAL;
+    this.exceptionalModalOpen = true;
+    this.annualModalOpen = false;
   }
 
-  saveSettings(): void {
-    const invalid = this.exceptionalLeaves.some(
-      (leave) => leave.grantedDays < leave.legalDays
-    );
+  //* Save annual leave
+  saveAnnualLeave(days: number): void {
+    console.log('Annual leave saved:', days);
+  }
 
-    if (invalid) {
-      alert('Granted days cannot be lower than the legal minimum.');
-      return;
-    }
-
-    const payload = this.exceptionalLeaves.map((leave) => ({
-      code: leave.code,
-      grantedDays: leave.grantedDays,
-    }));
-
-    console.log('Payload sent to backend:', payload);
+  //* Save exceptional leave
+  saveExceptionalLeaves(leaves: ExceptionalLeave[]): void {
+    console.log('Exceptional leaves saved:', leaves);
+    //todo Call the backend
   }
 }

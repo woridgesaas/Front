@@ -1,17 +1,21 @@
 import { Component } from '@angular/core';
-import { routes } from '../../../shared/routes/routes';
-import { CommonModule } from '@angular/common';
+import { ChangePasswordModalComponent } from './components/change-password-modal/change-password-modal.component';
 
 @Component({
   selector: 'app-change-password',
+  standalone: true,
+  imports: [ChangePasswordModalComponent],
   templateUrl: './change-password.component.html',
   styleUrl: './change-password.component.scss',
-  imports: [CommonModule],
 })
 export class ChangePasswordComponent {
-  routes = routes;
-  password: boolean[] = [false];
-  togglePassword(i: number): void {
-    this.password[i] = !this.password[i];
+  isModalOpen = false;
+
+  openModal(): void {
+    this.isModalOpen = true;
+  }
+
+  closeModal(): void {
+    this.isModalOpen = false;
   }
 }

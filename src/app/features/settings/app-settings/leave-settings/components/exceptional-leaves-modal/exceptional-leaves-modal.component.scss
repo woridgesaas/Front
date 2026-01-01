@@ -1,0 +1,14 @@
+@media (max-width: 576px) {
+  .form-label {
+    margin-bottom: 0.25rem;
+  }
+
+  .card {
+    border-radius: 1rem;
+  }
+}
+@media (min-width: 768px) {
+  .card-body {
+    padding: 1rem 1.25rem;
+  }
+}

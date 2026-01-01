@@ -1,0 +1,5 @@
+export enum AttendanceSettingTab {
+  SCHEDULE = 'SCHEDULE',
+  JUSTIFICATION = 'JUSTIFICATION',
+  THRESHOLDS = 'THRESHOLDS',
+}

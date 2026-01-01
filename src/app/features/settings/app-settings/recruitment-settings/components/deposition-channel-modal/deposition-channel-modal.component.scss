@@ -1,0 +1,11 @@
+@use "../../../../../../../assets/scss/utils/variables" as vars;
+
+.form-control {
+  min-height: 44px;
+  border-radius: 12px;
+}
+
+.bg-primary-transparent {
+  background-color: vars.$primary-transparent;
+  color: vars.$secondary;
+}

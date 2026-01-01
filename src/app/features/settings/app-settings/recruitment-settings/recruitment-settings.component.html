@@ -1,101 +1,26 @@
 <div class="container py-4 recruitment-settings">
-  <div class="card shadow-sm border-0 mb-4">
+  <div class="card shadow-sm border-0">
     <div class="card-body">
 
-      <!--* Header -->
-      <div class="mb-4">
-        <h3 class="fw-bold mb-2"> Paramétrage de recrutement </h3>
-        <p class="text-muted"> Votre site vitrine constitue un canal officiel pour présenter votre entreprise et vos activités, tout en diffusant vos offres d'emploi et en centralisant la réception des candidatures de manière sécurisée et structurée. Il renforce votre visibilité et facilite l'attraction des talents adaptés à vos besoins. </p>
-      </div>
+      <!--* Settings header (Title + description + icon) -->
+      <app-settings-header title="Paramétrage de recrutement" description="Configurez votre site vitrine et les canaux de dépôt afin de centraliser les candidatures de manière sécurisée et structurée." icon="fa-solid fa-user-gear"></app-settings-header>
 
-      <!--* Main form -->
-      <form>
+      <!--* Switch button (showcase website + deposition chanels) -->
+        <div class="d-flex gap-2 flex-shrink-0 mt-3">
+          <!--* Showcase website switch button -->
+          <app-switch-button label="Site vitrine" icon="fa-solid fa-globe" [active]="activeRecruitmentType === RecruitmentType.SHOWCASE" (select)="openShowcaseModal()"></app-switch-button>
 
-        <!--* Site vitrine -->
-        <div class="card shadow-sm border-0 mb-4">
-          <div class="card-body">
-            <h4 class="mb-3">
-              <i class="fa-solid fa-globe me-2"></i> Site vitrine 
-            </h4>
+          <!--* Deposition channels switch button -->
+          <app-switch-button label="Canal de dépôt" icon="fa-solid fa-envelope-open-text" [active]="activeRecruitmentType === RecruitmentType.CHANNELS" (select)="openChannelsModal()"></app-switch-button>
 
-            <div class="alert bg-primary-transparent rounded-4 border-0">
-              <p class="mb-0">
-                <strong> Information : </strong> Le site vitrine est uniforme, seules certaines sections peuvent être personnalisées.
-              </p>
-            </div>
-
-            <div class="row g-4 mt-2">
-
-              <!--* Logo -->
-              <div class="col-md-4">
-                <label class="form-label fw-medium">
-                  <i class="fa-solid fa-building me-2"></i> Logo de l'entreprise 
-                </label>
-                <label class="upload-box">
-                  <i class="fa-solid fa-cloud-arrow-up"></i>
-                  <span> Importer votre logo </span>
-                  <small> PNG, JPG ou SVG </small>
-                  <input type="file" hidden accept="image/*" />
-                </label>
-              </div>
-
-              <!--* Description -->
-              <div class="col-md-8">
-                <label class="form-label fw-medium"> 
-                  <i class="fa-solid fa-circle-info me-2"></i> Présentation de l'entreprise
-                 </label>
-                <textarea class="form-control rounded-4" rows="4" placeholder="Décrivez brièvement votre entreprise, sa mission et ses valeurs…"></textarea>
-              </div>
-
-              <!--* Colors -->
-              <div class="col-md-3">
-                <label class="form-label fw-medium"> 
-                  <i class="fa-solid fa-palette me-2"></i> Couleur principale
-                </label>
-                <input type="color" class="form-control form-control-color rounded-4"/>
-              </div>
-
-              <div class="col-md-3">
-                <label class="form-label fw-medium">
-                  <i class="fa-solid fa-palette me-2"></i> Couleur secondaire 
-                </label>
-                <input type="color" class="form-control form-control-color rounded-4"/>
-              </div>
-            </div>
-          </div>
         </div>
 
-        <!--* Canaux de dépôt -->
-        <div class="card shadow-sm border-0 mb-4">
-          <div class="card-body">
-            <h4 class="mb-3">
-              <i class="fa-solid fa-envelope-open-text me-2"></i> Canaux de dépôt des candidatures
-            </h4>
-
-            <div class="alert bg-primary-transparent rounded-4 border-0">
-              <p class="mb-0">
-                <strong> Information : </strong> Les candidatures reçues via ces canaux seront automatiquement centralisées.
-              </p>
-            </div>
-
-            <!--* Email input -->
-            <div class="row g-4">
-              <div class="col-md-6">
-                <input type="email" class="form-control rounded-4 mb-1"placeholder="Adresse email de recrutement"/>
-                <p class="text-muted mt-2"> Adresse officielle utilisée pour la réception des candidatures. </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!--* Save button -->
-        <div class="d-flex justify-content-center justify-content-md-end mt-4">
-          <button type="submit" class="btn btn-primary px-4 py-2 rounded-4">
-            <i class="ti ti-device-floppy me-1"></i> Enregistrer les modifications
-          </button>
-        </div>
-
-      </form>
     </div>
   </div>
 </div>
+
+<!--* Showcase Website Modal -->
+<app-showcase-website-modal [open]="showcaseModalOpen" (close)="showcaseModalOpen = false"></app-showcase-website-modal>
+
+<!--* Deposition Channels Modal -->
+<app-deposition-channel-modal [open]="channelsModalOpen" (close)="channelsModalOpen = false"></app-deposition-channel-modal>

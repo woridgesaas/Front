@@ -1,5 +1,6 @@
 <div class="page-wrapper">
   <div class="content">
+
     <!--* Breadcrumb -->
     <div class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
       <app-breadcrumbs></app-breadcrumbs>
@@ -10,18 +11,17 @@
       <!--* Change password Link -->
       <li class="nav-item">
         <a class="nav-link rounded-4 d-flex align-items-center" [routerLink]="routes.changePassword" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-          <i class="fa-solid fa-key me-2"></i> Changer mot de passe
+           <i class="fas fa-user-shield me-2"></i> Sécurité du compte
         </a>
       </li>
 
       <!--* App parameter Link -->
-      <li class="nav-item">
-        <a
-          class="nav-link rounded-4 d-flex align-items-center" [routerLink]="routes.leaveSettings" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link rounded-4 d-flex align-items-center" [routerLink]="routes.leaveSettings" [class.active]="isAppSettingsActive()">
           <i class="fa-solid fa-screwdriver-wrench me-2"></i> Paramètres d'application
         </a>
-
       </li>
+
     </ul>
 
     <router-outlet></router-outlet>

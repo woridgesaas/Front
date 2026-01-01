@@ -235,11 +235,11 @@ export const routes: Routes = [
                 },
               },
               {
-                path: 'presence-absence-settings',
+                path: 'attendance-settings',
                 loadComponent: () =>
                   import(
-                    './features/settings/app-settings/presence-absence-settings/presence-absence-settings.component'
-                  ).then((m) => m.PresenceAbsenceSettingsComponent),
+                    './features/settings/app-settings/attendance-settings/attendance-settings.component'
+                  ).then((m) => m.AttendanceSettingsComponent),
                 data: {
                   breadcrumb: 'Paramétrage de présence et absence',
                   title: 'Paramétrage de présence et absence',
@@ -333,18 +333,18 @@ export const routes: Routes = [
               title: 'Documents administratifs',
             },
           },
-                //* Holidays routes
-      {
-        path: 'holidays',
-        loadComponent: () =>
-          import('./features/hrm/holidays/holidays.component').then(
-            (m) => m.HolidaysComponent
-          ),
-        data: {
-          breadcrumb: 'Jours fériés',
-          title: 'Jours fériés',
-        },
-      },
+          //* Holidays routes
+          {
+            path: 'holidays',
+            loadComponent: () =>
+              import('./features/hrm/holidays/holidays.component').then(
+                (m) => m.HolidaysComponent
+              ),
+            data: {
+              breadcrumb: 'Jours fériés',
+              title: 'Jours fériés',
+            },
+          },
         ],
       },
 
@@ -386,8 +386,6 @@ export const routes: Routes = [
           },
         ],
       },
-
-
 
       //* Attendance routes
       {

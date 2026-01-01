@@ -1,6 +1,6 @@
 export interface ExceptionalLeave {
   code: string;   
-  name: string; 
-  legalDays: number; 
-  grantedDays: number; 
+  name: string;
+  legalDays: number;
+  grantedDays: number;
 }

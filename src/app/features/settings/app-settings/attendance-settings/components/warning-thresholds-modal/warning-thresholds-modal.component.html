@@ -1,0 +1,49 @@
+<div class="modal-backdrop fade show" *ngIf="open"></div>
+
+<div class="modal fade show d-block" *ngIf="open">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content rounded-4">
+
+      <!--* Modal header (title  + close button)-->
+      <app-modal-header title="Seuils d'alerte" (close)="close.emit()" icon="fa fa-triangle-exclamation"></app-modal-header>
+
+      <!--* Form -->
+      <form (ngSubmit)="submit()">
+        <div class="modal-body">
+
+          <!--* Alert information -->
+          <app-alert-information description="Configure le seuil de notification en cas d'absence ou de dépassement des règles."></app-alert-information>
+
+          <div class="row g-3">
+
+            <!--* Notification threshold -->
+            <div class="col-12">
+              <label class="form-label fw-medium"> Seuil de notification </label>
+
+              <input type="number" class="form-control" name="warningThreshold" [(ngModel)]="warningThreshold" (ngModelChange)="touched = true"/>
+
+              <small class="text-muted"> Notification du manager et RH </small>
+            </div>
+
+            <!--* Critical threshold -->
+            <div class="col-12">
+              <label class="form-label fw-medium"> Seuil critique </label>
+
+              <input type="number" class="form-control" name="criticalThreshold" [(ngModel)]="criticalThreshold" (ngModelChange)="touched = true"/>
+
+              <small class="text-muted"> Notification direction générale </small>
+            </div>
+
+            <!--* Error message -->
+            <app-form-error-message [show]="touched && isInvalid" [message]="getErrorMessage()"></app-form-error-message>
+
+          </div>
+        </div>
+
+        <!--* Modal footer (submit + cancel button) -->
+        <app-modal-footer (cancel)="close.emit()" [disabled]="isInvalid" submitText="Configurer" submitIcon="fa-solid fa-gear"></app-modal-footer>
+
+      </form>
+    </div>
+  </div>
+</div>

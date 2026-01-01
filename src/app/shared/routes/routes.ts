@@ -86,7 +86,7 @@ export const routes = {
   //* Settings routes
   changePassword: '/settings/change-password',
   leaveSettings: '/settings/app-settings/leave-settings',
-  presenceAbsenceSettings: '/settings/app-settings/presence-absence-settings',
+  attendanceSettings: '/settings/app-settings/attendance-settings',
   documentsTemplateSettings:
     '/settings/app-settings/documents-template-settings',
   recruitmentSettings: '/settings/app-settings/recruitment-settings',
