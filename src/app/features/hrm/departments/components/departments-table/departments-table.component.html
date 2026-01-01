@@ -1,51 +1,63 @@
-<table class="table datanew table-center mb-0">
-  <thead class="thead-light">
-    <tr>
-      <th class="col-department text-center">Département</th>
-      <th class="col-employees text-center">Nombre d'employés</th>
-      <th class="col-status text-center">Statut</th>
-      <th class="col-action text-center">Action</th>
-    </tr>
-  </thead>
+<div class="table-responsive">
+  <table
+    matSort
+    (matSortChange)="sort.emit($event)"
+    class="mat-sort table datanew table-center datatable dataTable mb-0"
+  >
+    <thead class="thead-light">
+      <tr>
+        <th mat-sort-header="Department">Département</th>
+        <th mat-sort-header="NoOfEmployees " >
+          Nombre d'employés
+        </th>
+        <th mat-sort-header="Status" class="text-center">Statut</th>
+        <th class="text-center">Actions</th>
+      </tr>
+    </thead>
 
-  <tbody>
-    <tr *ngFor="let d of departments">
-      <td class="text-center fw-medium">
-        {{ d.Department }}
-      </td>
+    <tbody>
+      <tr *ngFor="let d of departments">
+        <td class="fw-medium text-center">
+          {{ d.Department }}
+        </td>
 
-      <td class="col-employees text-center">
-        {{ d.NoOfEmployees }}
-      </td>
+        <td class="text-center">{{ d.NoOfEmployees }}</td>
 
-      <td class="col-status text-center">
-        <span
-          class="badge"
-          [ngClass]="d.Status === 'Actif' ? 'badge-success' : 'badge-danger'"
-        >
-          {{ d.Status }}
-        </span>
-      </td>
-
-      <td class="col-action text-center">
-        <div class="d-inline-flex gap-2">
-          <a
-            data-bs-toggle="modal"
-            data-bs-target="#edit_department"
-            (click)="edit.emit(d)"
+        <!-- STATUS COMME CONGÉS -->
+        <td class="col-status text-center">
+          <span
+            class="badge"
+            [ngClass]="d.Status === 'Actif' ? 'badge-success' : 'badge-danger'"
           >
-            <i class="ti ti-edit"></i>
-          </a>
-          <a
-            class="text-danger"
-            data-bs-toggle="modal"
-            data-bs-target="#deleteModal"
-            (click)="delete.emit(d)"
+            {{ d.Status }}
+          </span>
+        </td>
+
+        <!-- ACTIONS -->
+        <td class="text-center">
+          <div
+            class="action-icon d-inline-flex align-items-center justify-content-center"
           >
-            <i class="ti ti-trash"></i>
-          </a>
-        </div>
-      </td>
-    </tr>
-  </tbody>
-</table>
+            <a class="me-2" (click)="edit.emit(d)">
+              <i class="ti ti-edit"></i>
+            </a>
+            <a
+              class="text-danger"
+              data-bs-toggle="modal"
+              data-bs-target="#deleteModal"
+              (click)="delete.emit(d)"
+            >
+              <i class="ti ti-trash"></i>
+            </a>
+          </div>
+        </td>
+      </tr>
+
+      <tr *ngIf="departments.length === 0">
+        <td colspan="4" class="text-center py-3">
+          Aucun enregistrement trouvé
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

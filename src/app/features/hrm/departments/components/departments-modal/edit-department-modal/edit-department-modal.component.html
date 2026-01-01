@@ -1,18 +1,17 @@
-<div class="modal fade" id="edit_department" tabindex="-1">
+<!-- Backdrop -->
+<div class="modal-backdrop fade show" *ngIf="open"></div>
+
+<!-- Modal -->
+<div class="modal fade show d-block" *ngIf="open">
   <div class="modal-dialog modal-dialog-centered modal-md">
     <div class="modal-content">
 
-      <div class="modal-header">
-        <h4 class="modal-title">Modifier Département</h4>
-        <button
-          type="button"
-          class="btn-close custom-btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        >
-          <i class="ti ti-x"></i>
-        </button>
-      </div>
+      <!-- HEADER COMMUN -->
+      <app-modal-header
+        title="Modifier département"
+        icon="ti ti-edit"
+        (close)="onCancel()">
+      </app-modal-header>
 
       <form (ngSubmit)="submit()">
         <div class="modal-body pb-0">
@@ -47,23 +46,12 @@
           </div>
         </div>
 
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-light me-2"
-            data-bs-dismiss="modal"
-          >
-            Annuler
-          </button>
-
-          <button
-            type="submit"
-            class="btn btn-primary"
-            data-bs-dismiss="modal"
-          >
-            Enregistrer Département
-          </button>
-        </div>
+        <!-- FOOTER COMMUN -->
+        <app-modal-footer
+          submitText="Enregistrer département"
+          submitIcon="ti ti-device-floppy"
+          (cancel)="onCancel()">
+        </app-modal-footer>
       </form>
 
     </div>

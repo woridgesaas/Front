@@ -1,11 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { department } from '../../../../../shared/models/models';
+import { KpisComponent } from "../../../../common/kpis/kpis.component";
 
 @Component({
   selector: 'app-departments-stats',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, KpisComponent],
   templateUrl: './departments-stats.component.html',
 })
 export class DepartmentsStatsComponent {
