@@ -632,14 +632,15 @@ export class DataService {
       separateRoute: false,
       menu: [
         {
-          menuValue: 'Changer mot de passe',
+          menuValue: 'Sécurité du compte',
           route: routes.changePassword,
           hasSubRoute: false,
           showSubRoute: false,
-          base: 'change-password',
-          icon: 'key',
+          base: 'Sécurité du compte',
+          icon: 'fas fa-user-shield',
           subMenus: [],
         },
+
         {
           menuValue: "Paramètres d'applications",
           hasSubRoute: true,
@@ -654,8 +655,8 @@ export class DataService {
             },
             {
               menuValue: 'Présence et absence',
-              route: routes.presenceAbsenceSettings,
-              base: 'presence-absence-settings',
+              route: routes.attendanceSettings,
+              base: 'attendance-settings',
             },
             {
               menuValue: 'Documents administratifs',
@@ -971,9 +972,9 @@ export class DataService {
           base: 'settings',
           subMenus: [
             {
-              menuValue: 'Changer mot de passe',
+              menuValue: 'Sécurité du compte',
               route: routes.changePassword,
-              base: 'change-password',
+              base: 'Sécurité du compte',
               customSubmenuTwo: false,
             },
             {
@@ -988,8 +989,8 @@ export class DataService {
                 },
                 {
                   menuValue: 'Présence et absence',
-                  route: routes.presenceAbsenceSettings,
-                  base: 'presence-absence-settings',
+                  route: routes.attendanceSettings,
+                  base: 'attendance-settings',
                 },
                 {
                   menuValue: 'Documents administratifs',

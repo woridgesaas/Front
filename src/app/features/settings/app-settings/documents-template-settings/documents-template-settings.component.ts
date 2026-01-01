@@ -1,37 +1,57 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { SelectCategoryModalComponent } from './components/select-category-modal/select-category-modal.component';
+import { ManageCategoryTemplatesModalComponent } from './components/manage-category-templates-modal/manage-category-templates-modal.component';
+import { DocumentCategory } from '../../../../shared/enum/document-category.enum';
 import { DocumentTemplate } from '../../../../shared/models/document-template.model';
 import { DocumentTemplateService } from '../../../../shared/services/document-template.service';
+import { SwitchButtonComponent } from '../../../common/switch-button/switch-button.component';
+import { SettingsHeaderComponent } from '../components/settings-header/settings-header.component';
 
 @Component({
   selector: 'app-documents-template-settings',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    SelectCategoryModalComponent,
+    ManageCategoryTemplatesModalComponent,
+    SwitchButtonComponent,
+    SettingsHeaderComponent
+  ],
   templateUrl: './documents-template-settings.component.html',
-  styleUrls: ['./documents-template-settings.component.scss'],
 })
 export class DocumentsTemplateSettingsComponent {
-  documentTypes: DocumentTemplate[] = [];
+  categories = Object.values(DocumentCategory);
+  templates: DocumentTemplate[] = [];
 
-  constructor(private documentTemplateService: DocumentTemplateService) {
-    this.documentTypes = this.documentTemplateService.getDocumentTemplates();
+  selectModalOpen = false;
+  manageModalOpen = false;
+  selectedCategory!: DocumentCategory;
+
+  constructor(private service: DocumentTemplateService) {
+    this.templates = this.service.getDocumentTemplates();
   }
 
-  onFileSelected(event: any, doc: DocumentTemplate): void {
-    const file = event.target.files[0];
-    if (file) {
-      this.documentTemplateService.updateTemplateFile(doc.code, file);
-    }
+  open(): void {
+    this.selectModalOpen = true;
   }
 
-  showCategories: Record<string, boolean> = {};
-
-  toggleCategory(category: string): void {
-    this.showCategories[category] = !this.showCategories[category];
+  onCategorySelected(category: DocumentCategory): void {
+    this.selectedCategory = category;
+    this.selectModalOpen = false;
+    this.manageModalOpen = true;
   }
 
-  saveTemplates(): void {
-    this.documentTemplateService.saveTemplates();
-    alert('Modèles de documents sauvegardés avec succès');
+  get filteredTemplates(): DocumentTemplate[] {
+    return this.templates.filter((t) => t.category === this.selectedCategory);
+  }
+
+  onFileSelected(e: { code: string; file: File }) {
+    this.service.updateTemplateFile(e.code, e.file);
+  }
+
+  save(): void {
+    this.service.saveTemplates();
+    this.manageModalOpen = false;
   }
 }

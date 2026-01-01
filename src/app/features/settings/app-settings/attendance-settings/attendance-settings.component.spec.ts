@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PresenceAbsenceSettingsComponent } from './presence-absence-settings.component';
+import { AttendanceSettingsComponent } from './attendance-settings.component';
 
 describe('PresenceAbsenceSettingsComponent', () => {
-  let component: PresenceAbsenceSettingsComponent;
-  let fixture: ComponentFixture<PresenceAbsenceSettingsComponent>;
+  let component: AttendanceSettingsComponent;
+  let fixture: ComponentFixture<AttendanceSettingsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PresenceAbsenceSettingsComponent],
+      imports: [AttendanceSettingsComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(PresenceAbsenceSettingsComponent);
+    fixture = TestBed.createComponent(AttendanceSettingsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

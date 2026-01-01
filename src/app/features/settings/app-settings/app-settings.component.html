@@ -3,34 +3,16 @@
     <div class="card">
       <div class="card-body">
         <div class="d-flex flex-column list-group settings-list">
-          <!--* Leave settings link -->
-          <a class="d-flex align-items-center rounded py-2 px-3" [routerLink]="routes.leaveSettings" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-            <i class="fa fa-person-walking me-2"></i>
-            <span> Congés </span>
-          </a>
 
-          <!--* Presence and absence settings link -->
-          <a class="d-flex align-items-center rounded py-2 px-3" [routerLink]="routes.presenceAbsenceSettings" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-            <i class="fa fa-clock me-2"></i>
-            <span> Présence et absence </span>
-          </a>
+          <!--* Sidebar settings item -->
+          <app-settings-sidebar-item *ngFor="let item of settingsMenu; trackBy: trackByRoute" [icon]="item.icon" [label]="item.label" [route]="item.route"></app-settings-sidebar-item>
 
-          <!--* Presence and absence settings link -->
-          <a class="d-flex align-items-center rounded py-2 px-3" [routerLink]="routes.documentsTemplateSettings" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-            <i class="fa-solid fa-file-alt me-2"></i>
-            <span> Documents administratifs </span>
-          </a>
-
-          <!--* Presence and absence settings link -->
-          <a class="d-flex align-items-center rounded py-2 px-3" [routerLink]="routes.recruitmentSettings" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-            <i class="fa-solid fa-user-plus me-2"></i>
-            <span> Recrutement </span>
-          </a>
-          
         </div>
       </div>
     </div>
   </div>
+
+  <!--* Content -->
   <div class="col-xl-9">
     <router-outlet></router-outlet>
   </div>

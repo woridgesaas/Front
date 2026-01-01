@@ -1,0 +1,59 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+//* Base (Desktop)
+.settings-header {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.settings-title {
+  display: block;
+  line-height: 1.35;
+}
+
+.settings-title i {
+  font-size: 1.25rem;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+
+.settings-header-desc {
+  max-width: 600px;
+}
+
+//* Tablet
+@media (max-width: 992px) {
+  .settings-title {
+    font-size: 1.35rem;
+  }
+
+  .settings-header-desc {
+    font-size: 0.95rem;
+    max-width: 100%;
+  }
+}
+
+//* Mobile
+@media (max-width: 576px) {
+  .settings-header {
+    text-align: center;
+  }
+
+  .settings-title {
+    font-size: 1.15rem;
+  }
+
+  .settings-title i {
+    font-size: 1.15rem;
+  }
+
+  .settings-header-desc {
+    font-size: 0.9rem;
+    line-height: 1.45;
+    margin: 0.25rem auto 0;
+    text-align: center;
+  }
+}

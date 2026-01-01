@@ -1,0 +1,63 @@
+<div class="modal-backdrop fade show" *ngIf="open"></div>
+
+<div class="modal fade show d-block" *ngIf="open">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content rounded-4">
+
+      <!--* Modal header (title  + close button)-->
+      <app-modal-header [title]="'Paramétrage - ' + category" icon="fa fa-layer-group" (close)="close.emit()"></app-modal-header>
+
+      <!--* Form -->
+      <form (ngSubmit)="save.emit()">
+        <div class="modal-body">
+          <ng-container *ngFor="let document of templates; trackBy: trackByCode">
+            <div class="card shadow-sm border-0 mb-3">
+              <div class="card-body d-flex align-items-center justify-content-between gap-3">
+                <div class="d-flex align-items-start flex-grow-1">
+
+                  <!--* Icon -->
+                  <div class="me-3">
+                    <i class="fa fa-file-text"></i>
+                  </div>
+
+                  <!--* Content -->
+                  <div>
+
+                    <!--* Name -->
+                    <h6 class="mb-1 fw-semibold"> {{ document.name }} </h6>
+
+                    <!--* Description -->
+                    <p class="text-muted small mb-2 document-description"> {{ document.description }}</p>
+
+                    <div *ngIf="document.file; else noFile" class="d-flex align-items-center text-success small">
+                      <i class="fa fa-check me-1"></i> Modèle uploadé
+                    </div>
+
+                    <ng-template #noFile>
+                      <div class="d-flex align-items-center text-warning small">
+                        <i class="ti ti-alert-circle me-1"></i> Aucun modèle uploadé
+                      </div>
+                    </ng-template>
+                  </div>
+                </div>
+
+                <!--* Add model input -->
+                <div class="document-action">
+                  <label class="btn btn-outline-primary rounded-pill w-100 mb-0">
+                    <i class="ti ti-upload me-1"></i> Ajouter un modèle
+                    <input type="file" hidden accept=".pdf,.doc,.docx" (change)="onFileSelected($event, document)"/>
+                  </label>
+                </div>
+
+              </div>
+            </div>
+          </ng-container>
+        </div>
+
+        <!--* Modal footer (submit + cancel button) -->
+        <app-modal-footer (cancel)="close.emit()" submitText="Configurer" submitIcon="fa-solid fa-gear"></app-modal-footer>
+
+      </form>
+    </div>
+  </div>
+</div>

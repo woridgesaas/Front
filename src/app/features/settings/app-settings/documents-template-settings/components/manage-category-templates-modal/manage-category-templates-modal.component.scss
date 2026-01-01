@@ -1,0 +1,58 @@
+@use "../../../../../../../assets/scss/utils/variables" as vars;
+
+.document-action {
+  width: 200px;
+  flex-shrink: 0;
+}
+
+.document-description {
+  max-width: 520px;
+}
+
+//* Tablet
+@media (max-width: 992px) {
+  .document-description {
+    max-width: 100%;
+  }
+
+  .card-body {
+    padding: 1rem;
+  }
+}
+
+//* Mobile
+@media (max-width: 576px) {
+  .card-body {
+    flex-direction: column;
+    align-items: stretch !important;
+    gap: 1rem;
+  }
+
+  .card-body > .d-flex {
+    align-items: flex-start;
+  }
+
+  .document-action {
+    width: 100%;
+  }
+
+  .document-action .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .document-icon {
+    width: 36px;
+    height: 36px;
+    font-size: vars.$font-size-16;
+  }
+
+  h6 {
+    font-size: 0.95rem;
+  }
+
+  .document-description {
+    font-size: 0.85rem;
+    max-width: 100%;
+  }
+}

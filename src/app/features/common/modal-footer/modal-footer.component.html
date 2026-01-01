@@ -1,0 +1,16 @@
+<!--* Modal footer -->
+<div class="modal-footer d-flex justify-content-end gap-2">
+  <!--* Cancel button -->
+  <button type="button" class="btn btn-light" (click)="cancel.emit()"> Annuler </button>
+
+  <!--* Submit button -->
+  <button type="submit" class="btn btn-primary" [disabled]="disabled">
+
+    <!--* Icon (Optinoal) -->
+    <i *ngIf="submitIcon" [class]="submitIcon" class="me-1"></i>
+
+    <!--* Text content -->
+    <span> {{ submitText }} </span>
+  </button>
+
+</div>
