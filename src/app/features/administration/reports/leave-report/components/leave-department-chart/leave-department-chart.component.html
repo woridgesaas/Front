@@ -1,0 +1,20 @@
+
+      <div class="card h-100">
+        <div class="card-header">
+          <h5 class="mb-0">
+            <i class="ti ti-building me-2 text-warning"></i>
+            Congés par département
+          </h5>
+        </div>
+        <div class="card-body">
+          <apx-chart
+            [series]="leaveByDepartmentChart.series"
+            [chart]="leaveByDepartmentChart.chart"
+            [plotOptions]="leaveByDepartmentChart.plotOptions"
+            [xaxis]="leaveByDepartmentChart.xaxis"
+            [tooltip]="leaveByDepartmentChart.tooltip"
+            [colors]="leaveByDepartmentChart.colors"
+          >
+          </apx-chart>
+        </div>
+      </div>

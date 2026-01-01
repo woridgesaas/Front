@@ -1,0 +1,19 @@
+  <div class="card mb-4">
+    <div class="card-header">
+      <h5 class="mb-0">
+        <i class="ti ti-chart-bar me-2 text-primary"></i>
+        Évolution des congés par type
+      </h5>
+    </div>
+    <div class="card-body">
+      <apx-chart
+        [series]="leaveEvolutionChart.series"
+        [chart]="leaveEvolutionChart.chart"
+        [plotOptions]="leaveEvolutionChart.plotOptions"
+        [xaxis]="leaveEvolutionChart.xaxis"
+        [legend]="leaveEvolutionChart.legend"
+        [colors]="leaveEvolutionChart.colors"
+      >
+      </apx-chart>
+    </div>
+  </div>

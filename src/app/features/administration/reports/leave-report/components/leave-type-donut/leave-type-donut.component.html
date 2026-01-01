@@ -1,0 +1,19 @@
+
+      <div class="card h-100">
+        <div class="card-header">
+          <h5 class="mb-0">
+            <i class="ti ti-chart-pie me-2 text-success"></i>
+            Répartition par type de congé
+          </h5>
+        </div>
+        <div class="card-body">
+          <apx-chart
+            [series]="leaveTypeDonutChart.series"
+            [chart]="leaveTypeDonutChart.chart"
+            [labels]="leaveTypeDonutChart.labels"
+            [colors]="leaveTypeDonutChart.colors"
+            [legend]="leaveTypeDonutChart.legend"
+          >
+          </apx-chart>
+        </div>
+      </div>
