@@ -41,22 +41,27 @@
 
 <!-- MODAL -->
 <ng-container *ngIf="selectedHoliday">
-  <div class="modal fade" id="editHolidayModal" tabindex="-1">
+  <div class="modal fade show d-block" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Modifier la fête religieuse</h5>
-        
-        </div>
 
+        <!-- HEADER COMMUN -->
+        <app-modal-header
+          title="Modifier la fête religieuse"
+          icon="ti ti-edit"
+          (close)="closeModal()">
+        </app-modal-header>
+
+        <!-- BODY -->
         <div class="modal-body">
           <form class="row g-3">
+
             <div class="col-md-6">
               <label class="form-label">Fête religieuse</label>
               <input
                 class="form-control"
-                [value]="selectedHoliday.nameFr"
-                disabled
+                [(ngModel)]="selectedHoliday.nameFr"
+                name="nameFr"
               />
             </div>
 
@@ -65,8 +70,8 @@
               <input
                 class="form-control text-end"
                 dir="rtl"
-                [value]="selectedHoliday.nameAr"
-                disabled
+                [(ngModel)]="selectedHoliday.nameAr"
+                name="nameAr"
               />
             </div>
 
@@ -75,7 +80,8 @@
               <input
                 type="date"
                 class="form-control"
-                [value]="selectedHoliday.date | date : 'yyyy-MM-dd'"
+                [(ngModel)]="selectedHoliday.date"
+                name="date"
               />
             </div>
 
@@ -84,22 +90,21 @@
               <input
                 type="number"
                 class="form-control"
-                [value]="selectedHoliday.days"
+                [(ngModel)]="selectedHoliday.days"
+                name="days"
               />
             </div>
+
           </form>
         </div>
 
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-white border me-2"
-            data-bs-dismiss="modal"
-          >
-            Annuler
-          </button>
-          <button type="submit" class="btn btn-primary">Enregistrer</button>
-        </div>
+        <!--  FOOTER COMMUN -->
+        <app-modal-footer
+          submitText="Enregistrer"
+          submitIcon="ti ti-check"
+          (cancel)="closeModal()">
+        </app-modal-footer>
+
       </div>
     </div>
   </div>

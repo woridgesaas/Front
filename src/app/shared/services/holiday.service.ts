@@ -10,10 +10,10 @@ export class HolidayService {
 
   getHolidays(): Observable<Holiday[]> {
     return this.http
-      .get<any[]>('assets/json/holidays.json')
+      .get<Holiday[]>('assets/json/holidays.json')
       .pipe(
-        map(data =>
-          data.map(h => ({
+        map((data: Holiday[]) =>
+          data.map((h: Holiday) => ({
             ...h,
             date: new Date(h.date)
           }))
