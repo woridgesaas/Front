@@ -5,7 +5,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
 import { TagInputModule } from 'ngx-chips';
 import { NewTicketForm } from '../../../../../shared/models/models';
-import { TechnicienService } from '../../../../../shared/data/technicien-service';
+import { TechnicienService } from '../../../../../shared/services/technicien-service';
 @Component({
   selector: 'app-ticket-create',
   imports: [MatSelectModule , CommonModule , RouterModule , TagInputModule,FormsModule],

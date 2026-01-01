@@ -68,7 +68,7 @@ export class TicketChartsComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    // Charge des donéne reel depuis un service future avec le backend
+    // Charge reel depuis un service future avec le backend
     // this.loadChartData();
   }
 }

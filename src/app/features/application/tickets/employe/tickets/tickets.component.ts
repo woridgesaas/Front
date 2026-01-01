@@ -5,7 +5,7 @@ import { BreadcrumbsComponent } from '../../../../common/breadcrumbs/breadcrumbs
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { FormsModule } from '@angular/forms';
 import { CustomPaginationComponent } from '../../../../../shared/custom-pagination/custom-pagination.component';
-import { TicketService } from '../../../../../shared/data/ticket-service';
+import { TicketService } from '../../../../../shared/services/ticket-service';
 import { CommonModule } from '@angular/common';
 import { MatSortModule, MatSort, Sort } from '@angular/material/sort';
 import { TicketCreateComponent } from '../../components/ticket-create/ticket-create.component';

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { routes } from '../../../../../shared/routes/routes';
 import { TicketAdmin } from '../../../../../shared/models/models';
-import { TicketService } from '../../../../../shared/data/ticket-service';
+import { TicketService } from '../../../../../shared/services/ticket-service';
 @Component({
   selector: 'app-ticket-list',
   imports: [CommonModule, RouterModule],
