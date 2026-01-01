@@ -32,119 +32,22 @@
   </div>
 
   <!-- ================= KPI ================= -->
-  <div class="row g-3 mb-4">
-    <div class="col-xl-3 col-md-6" *ngFor="let kpi of kpis">
-      <div class="card kpi-card h-100">
-        <div class="card-body">
-          <div class="d-flex justify-content-between align-items-center mb-2">
-            <div>
-              <p class="text-muted fs-13 mb-1">{{ kpi.label }}</p>
-              <h3 class="fw-bold mb-0">{{ kpi.value }}</h3>
-            </div>
-            <div class="icon-circle" [ngClass]="kpi.color">
-              <i [class]="kpi.icon"></i>
-            </div>
-          </div>
-
-          <p class="fs-12 mb-0">
-            <span
-              [ngClass]="kpi.evolution >= 0 ? 'text-success' : 'text-danger'"
-            >
-              {{ kpi.evolution }}%
-            </span>
-            vs mois dernier
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
+  <app-attendance-kpis [kpiData]="kpis"></app-attendance-kpis>
 
   <!-- ================= CHART 1 ================= -->
-  <div class="card mb-4">
-    <div class="card-header">
-      <h5 class="mb-0">
-        <i class="ti ti-chart-line me-2 text-primary"></i>
-        Évolution de la présence
-      </h5>
-    </div>
-    <div class="card-body">
-      <apx-chart
-        [series]="presenceEvolutionChart.series"
-        [chart]="presenceEvolutionChart.chart"
-        [stroke]="presenceEvolutionChart.stroke"
-        [xaxis]="presenceEvolutionChart.xaxis"
-        [tooltip]="presenceEvolutionChart.tooltip"
-        [legend]="presenceEvolutionChart.legend"
-        [colors]="presenceEvolutionChart.colors"
-      >
-      </apx-chart>
-    </div>
-  </div>
+  <app-attendance-evolution-chart [presenceEvolutionChart]="presenceEvolutionChart"></app-attendance-evolution-chart>
 
   <!-- ================= CHART 2 & 3 ================= -->
   <div class="row mb-4">
     <div class="col-xl-6">
-      <div class="card h-100">
-        <div class="card-header">
-          <h5 class="mb-0">
-            <i class="ti ti-chart-pie me-2 text-success"></i>
-            Répartition globale
-          </h5>
-        </div>
-        <div class="card-body">
-          <apx-chart
-            [series]="presenceDonutChart.series"
-            [chart]="presenceDonutChart.chart"
-            [labels]="presenceDonutChart.labels"
-            [colors]="presenceDonutChart.colors"
-            [legend]="presenceDonutChart.legend"
-          >
-          </apx-chart>
-        </div>
-      </div>
+      <app-attendance-distribution-donut [presenceDonutChart]="presenceDonutChart"></app-attendance-distribution-donut>
     </div>
 
     <div class="col-xl-6">
-      <div class="card h-100">
-        <div class="card-header">
-          <h5 class="mb-0">
-            <i class="ti ti-building me-2 text-warning"></i>
-            Présence par département
-          </h5>
-        </div>
-        <div class="card-body">
-          <apx-chart
-            [series]="presenceByDepartmentChart.series"
-            [chart]="presenceByDepartmentChart.chart"
-            [plotOptions]="presenceByDepartmentChart.plotOptions"
-            [xaxis]="presenceByDepartmentChart.xaxis"
-            [tooltip]="presenceByDepartmentChart.tooltip"
-            [colors]="presenceByDepartmentChart.colors"
-          >
-          </apx-chart>
-        </div>
-      </div>
+      <app-attendance-department-chart [presenceByDepartmentChart]="presenceByDepartmentChart"></app-attendance-department-chart>
     </div>
   </div>
 
   <!-- ================= CHART 4 ================= -->
-  <div class="card">
-    <div class="card-header">
-      <h5 class="mb-0">
-        <i class="ti ti-chart-area me-2 text-info"></i>
-        Taux de présence mensuel (%)
-      </h5>
-    </div>
-    <div class="card-body">
-      <apx-chart
-        [series]="presenceRateChart.series"
-        [chart]="presenceRateChart.chart"
-        [stroke]="presenceRateChart.stroke"
-        [fill]="presenceRateChart.fill"
-        [xaxis]="presenceRateChart.xaxis"
-        [colors]="presenceRateChart.colors"
-      >
-      </apx-chart>
-    </div>
-  </div>
+  <app-attendance-rate-chart [presenceRateChart]="presenceRateChart"></app-attendance-rate-chart>
 </div>

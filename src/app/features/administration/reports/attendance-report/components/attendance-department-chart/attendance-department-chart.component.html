@@ -1,0 +1,19 @@
+<div class="card h-100">
+        <div class="card-header">
+          <h5 class="mb-0">
+            <i class="ti ti-building me-2 text-warning"></i>
+            Présence par département
+          </h5>
+        </div>
+        <div class="card-body">
+          <apx-chart
+            [series]="presenceByDepartmentChart.series"
+            [chart]="presenceByDepartmentChart.chart"
+            [plotOptions]="presenceByDepartmentChart.plotOptions"
+            [xaxis]="presenceByDepartmentChart.xaxis"
+            [tooltip]="presenceByDepartmentChart.tooltip"
+            [colors]="presenceByDepartmentChart.colors"
+          >
+          </apx-chart>
+        </div>
+      </div>
