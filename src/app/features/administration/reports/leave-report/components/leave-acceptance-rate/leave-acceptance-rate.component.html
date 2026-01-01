@@ -1,0 +1,19 @@
+  <div class="card">
+    <div class="card-header">
+      <h5 class="mb-0">
+        <i class="ti ti-chart-area me-2 text-info"></i>
+        Taux d’acceptation des congés (%)
+      </h5>
+    </div>
+    <div class="card-body">
+      <apx-chart
+        [series]="leaveApprovalRateChart.series"
+        [chart]="leaveApprovalRateChart.chart"
+        [stroke]="leaveApprovalRateChart.stroke"
+        [fill]="leaveApprovalRateChart.fill"
+        [xaxis]="leaveApprovalRateChart.xaxis"
+        [colors]="leaveApprovalRateChart.colors"
+      >
+      </apx-chart>
+    </div>
+  </div>
