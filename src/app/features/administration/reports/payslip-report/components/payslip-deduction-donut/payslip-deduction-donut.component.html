@@ -1,0 +1,21 @@
+
+            <div class="card flex-fill">
+                <div class="card-header border-0 pb-0">
+                    <div class="d-flex align-items-center">
+                        <span class="me-2"><i class="ti ti-chart-donut text-danger"></i></span>
+                        <h5 class="mb-0">Répartition des Déductions</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <apx-chart
+                        [series]="repartitionDeductionsChart.series"
+                        [chart]="repartitionDeductionsChart.chart"
+                        [labels]="repartitionDeductionsChart.labels"
+                        [colors]="repartitionDeductionsChart.colors"
+                        [dataLabels]="repartitionDeductionsChart.dataLabels"
+                        [legend]="repartitionDeductionsChart.legend"
+                        [plotOptions]="repartitionDeductionsChart.plotOptions"
+                        [tooltip]="repartitionDeductionsChart.tooltip">
+                    </apx-chart>
+                </div>
+            </div>

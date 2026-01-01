@@ -27,295 +27,33 @@
     </div>
     <!-- /Breadcrumb -->
 
-    <!-- Statistiques Principales -->
+    <!-- ===== KPIS ========== -->
+    <app-payslip-kpis [kpiData]="kpis"></app-payslip-kpis>
+    <!-- ============ /KPIS ==============-->
+
+    <!-- ========================= CHART 1 & 2 =============================== -->
     <div class="row">
-        <div class="col-xl-3 col-lg-6 d-flex">
-            <div class="card flex-fill">
-                <div class="card-body">
-                    <div class="d-flex align-items-center justify-content-between bg-light border rounded p-3 mb-3">
-                        <div>
-                            <span class="fs-14 fw-normal text-truncate mb-1 d-block">Masse Salariale Totale</span>
-                            <h4 class="mb-0">{{ formaterMontant(statistiques.masseSalarialeTotale) }} DH</h4>
-                        </div>
-                        <div class="avatar avatar-lg avatar-rounded bg-primary bg-opacity-10">
-                            <span class="text-primary fs-24">
-                                <i class="ti ti-wallet"></i>
-                            </span>
-                        </div>
-                    </div>
-                    <p class="fs-12 fw-normal d-flex align-items-center mb-0">
-                        <span [class]="obtenirClasseEvolution(statistiques.evolutionMensuelle) + ' fs-12 d-flex align-items-center me-1'">
-                            <i [class]="'ti ' + obtenirIconeEvolution(statistiques.evolutionMensuelle) + ' me-1'"></i>
-                            {{ statistiques.evolutionMensuelle > 0 ? '+' : '' }}{{ statistiques.evolutionMensuelle }}%
-                        </span>
-                        par rapport au mois dernier
-                    </p>
-                </div>
-            </div>
-        </div>
+        <!-- =======CHART 1 evolution====== -->
+        <div class="col-xl-8">
+            <app-payslip-evolution-chart [masseSalarialeChart]="masseSalarialeChart"></app-payslip-evolution-chart>
+       </div>
 
-        <div class="col-xl-3 col-lg-6 d-flex">
-            <div class="card flex-fill">
-                <div class="card-body">
-                    <div class="d-flex align-items-center justify-content-between bg-light border rounded p-3 mb-3">
-                        <div>
-                            <span class="fs-14 fw-normal text-truncate mb-1 d-block">Déductions Totales</span>
-                            <h4 class="mb-0">{{ formaterMontant(statistiques.deductionsTotales) }} DH</h4>
-                        </div>
-                        <div class="avatar avatar-lg avatar-rounded bg-danger bg-opacity-10">
-                            <span class="text-danger fs-24">
-                                <i class="ti ti-receipt-tax"></i>
-                            </span>
-                        </div>
-                    </div>
-                    <p class="fs-12 fw-normal d-flex align-items-center mb-0">
-                        <span [class]="obtenirClasseEvolution(statistiques.evolutionDeductions) + ' fs-12 d-flex align-items-center me-1'">
-                            <i [class]="'ti ' + obtenirIconeEvolution(statistiques.evolutionDeductions) + ' me-1'"></i>
-                            {{ statistiques.evolutionDeductions > 0 ? '+' : '' }}{{ statistiques.evolutionDeductions }}%
-                        </span>
-                        par rapport au mois dernier
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xl-3 col-lg-6 d-flex">
-            <div class="card flex-fill">
-                <div class="card-body">
-                    <div class="d-flex align-items-center justify-content-between bg-light border rounded p-3 mb-3">
-                        <div>
-                            <span class="fs-14 fw-normal text-truncate mb-1 d-block">Net à Payer</span>
-                            <h4 class="mb-0">{{ formaterMontant(statistiques.netAPayer) }} DH</h4>
-                        </div>
-                        <div class="avatar avatar-lg avatar-rounded bg-success bg-opacity-10">
-                            <span class="text-success fs-24">
-                                <i class="ti ti-cash"></i>
-                            </span>
-                        </div>
-                    </div>
-                    <p class="fs-12 fw-normal d-flex align-items-center mb-0">
-                        <span [class]="obtenirClasseEvolution(statistiques.evolutionNet) + ' fs-12 d-flex align-items-center me-1'">
-                            <i [class]="'ti ' + obtenirIconeEvolution(statistiques.evolutionNet) + ' me-1'"></i>
-                            {{ statistiques.evolutionNet > 0 ? '+' : '' }}{{ statistiques.evolutionNet }}%
-                        </span>
-                        par rapport au mois dernier
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xl-3 col-lg-6 d-flex">
-            <div class="card flex-fill">
-                <div class="card-body">
-                    <div class="d-flex align-items-center justify-content-between bg-light border rounded p-3 mb-3">
-                        <div>
-                            <span class="fs-14 fw-normal text-truncate mb-1 d-block">Primes Totales</span>
-                            <h4 class="mb-0">{{ formaterMontant(statistiques.primesTotales) }} DH</h4>
-                        </div>
-                        <div class="avatar avatar-lg avatar-rounded bg-warning bg-opacity-10">
-                            <span class="text-warning fs-24">
-                                <i class="ti ti-gift"></i>
-                            </span>
-                        </div>
-                    </div>
-                    <p class="fs-12 fw-normal d-flex align-items-center mb-0">
-                        <span [class]="obtenirClasseEvolution(statistiques.evolutionPrimes) + ' fs-12 d-flex align-items-center me-1'">
-                            <i [class]="'ti ' + obtenirIconeEvolution(statistiques.evolutionPrimes) + ' me-1'"></i>
-                            {{ statistiques.evolutionPrimes > 0 ? '+' : '' }}{{ statistiques.evolutionPrimes }}%
-                        </span>
-                        par rapport au mois dernier
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /Statistiques Principales -->
-
-    <!-- Graphiques Section 1 -->
-    <div class="row">
-        <!-- Évolution de la Masse Salariale -->
-        <div class="col-xl-8 d-flex">
-            <div class="card flex-fill">
-                <div class="card-header border-0 pb-0">
-                    <div class="d-flex flex-wrap justify-content-between align-items-center">
-                        <div class="d-flex align-items-center">
-                            <span class="me-2"><i class="ti ti-chart-area-line text-primary"></i></span>
-                            <h5 class="mb-0">Évolution de la Masse Salariale</h5>
-                        </div>
-                        <div class="dropdown">
-                            <a href="javascript:void(0);" class="dropdown-toggle btn btn-sm fs-12 btn-white d-inline-flex align-items-center" data-bs-toggle="dropdown">
-                                Cette Année
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end p-2">
-                                <li><a href="javascript:void(0);" class="dropdown-item rounded-1">2024</a></li>
-                                <li><a href="javascript:void(0);" class="dropdown-item rounded-1">2023</a></li>
-                                <li><a href="javascript:void(0);" class="dropdown-item rounded-1">2022</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <apx-chart
-                        [series]="masseSalarialeChart.series"
-                        [chart]="masseSalarialeChart.chart"
-                        [dataLabels]="masseSalarialeChart.dataLabels"
-                        [stroke]="masseSalarialeChart.stroke"
-                        [xaxis]="masseSalarialeChart.xaxis"
-                        [yaxis]="masseSalarialeChart.yaxis"
-                        [colors]="masseSalarialeChart.colors"
-                        [legend]="masseSalarialeChart.legend"
-                        [tooltip]="masseSalarialeChart.tooltip"
-                        [fill]="masseSalarialeChart.fill">
-                    </apx-chart>
-                </div>
-            </div>
-        </div>
-
-        <!-- Répartition des Déductions -->
-        <div class="col-xl-4 d-flex">
-            <div class="card flex-fill">
-                <div class="card-header border-0 pb-0">
-                    <div class="d-flex align-items-center">
-                        <span class="me-2"><i class="ti ti-chart-donut text-danger"></i></span>
-                        <h5 class="mb-0">Répartition des Déductions</h5>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <apx-chart
-                        [series]="repartitionDeductionsChart.series"
-                        [chart]="repartitionDeductionsChart.chart"
-                        [labels]="repartitionDeductionsChart.labels"
-                        [colors]="repartitionDeductionsChart.colors"
-                        [dataLabels]="repartitionDeductionsChart.dataLabels"
-                        [legend]="repartitionDeductionsChart.legend"
-                        [plotOptions]="repartitionDeductionsChart.plotOptions"
-                        [tooltip]="repartitionDeductionsChart.tooltip">
-                    </apx-chart>
-                </div>
-            </div>
-        </div>
+        <!-- =======CHART 2 deduction======== -->
+        <div class="col-xl-4">
+            <app-payslip-deduction-donut [repartitionDeductionsChart]="repartitionDeductionsChart"></app-payslip-deduction-donut>
+       </div>
     </div>
 
     <!-- Graphiques Section 2 -->
     <div class="row">
-        <!-- Comparaison par Département -->
-        <div class="col-xl-6 d-flex">
-            <div class="card flex-fill">
-                <div class="card-header border-0 pb-0">
-                    <div class="d-flex align-items-center">
-                        <span class="me-2"><i class="ti ti-chart-bar text-success"></i></span>
-                        <h5 class="mb-0">Comparaison par Département</h5>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <apx-chart
-                        [series]="comparaisonDepartementsChart.series"
-                        [chart]="comparaisonDepartementsChart.chart"
-                        [plotOptions]="comparaisonDepartementsChart.plotOptions"
-                        [dataLabels]="comparaisonDepartementsChart.dataLabels"
-                        [stroke]="comparaisonDepartementsChart.stroke"
-                        [xaxis]="comparaisonDepartementsChart.xaxis"
-                        [yaxis]="comparaisonDepartementsChart.yaxis"
-                        [fill]="comparaisonDepartementsChart.fill"
-                        [colors]="comparaisonDepartementsChart.colors"
-                        [tooltip]="comparaisonDepartementsChart.tooltip"
-                        [legend]="comparaisonDepartementsChart.legend">
-                    </apx-chart>
-                </div>
-            </div>
+        <!-- ======= CHART 3 department ============ -->
+        <div class="col-xl-6">
+            <app-payslip-department-chart [comparaisonDepartementsChart]="comparaisonDepartementsChart"></app-payslip-department-chart>
         </div>
 
-        <!-- Répartition par Catégorie -->
-        <div class="col-xl-6 d-flex">
-            <div class="card flex-fill">
-                <div class="card-header border-0 pb-0">
-                    <div class="d-flex align-items-center">
-                        <span class="me-2"><i class="ti ti-chart-radar text-info"></i></span>
-                        <h5 class="mb-0">Répartition par Catégorie Professionnelle</h5>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <apx-chart
-                        [series]="repartitionCategoriesChart.series"
-                        [chart]="repartitionCategoriesChart.chart"
-                        [labels]="repartitionCategoriesChart.labels"
-                        [colors]="repartitionCategoriesChart.colors"
-                        [stroke]="repartitionCategoriesChart.stroke"
-                        [fill]="repartitionCategoriesChart.fill"
-                        [legend]="repartitionCategoriesChart.legend"
-                        [tooltip]="repartitionCategoriesChart.tooltip">
-                    </apx-chart>
-                </div>
-            </div>
+        <!-- ========== CHART 4 categories=============== -->
+        <div class="col-xl-6">
+            <app-payslip-category-chart [evolutionMensuelleChart]="evolutionMensuelleChart"></app-payslip-category-chart>
         </div>
     </div>
-
-    <!-- Graphiques Section 3 -->
-    <div class="row">
-        <!-- Évolution Mensuelle Détaillée -->
-        <div class="col-xl-6 d-flex">
-            <div class="card flex-fill">
-                <div class="card-header border-0 pb-0">
-                    <div class="d-flex flex-wrap justify-content-between align-items-center">
-                        <div class="d-flex align-items-center">
-                            <span class="me-2"><i class="ti ti-chart-histogram text-warning"></i></span>
-                            <h5 class="mb-0">Composition de la Rémunération</h5>
-                        </div>
-                        <div class="dropdown">
-                            <a href="javascript:void(0);" class="dropdown-toggle btn btn-sm fs-12 btn-white d-inline-flex align-items-center" data-bs-toggle="dropdown">
-                                6 Derniers Mois
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end p-2">
-                                <li><a href="javascript:void(0);" class="dropdown-item rounded-1">3 Mois</a></li>
-                                <li><a href="javascript:void(0);" class="dropdown-item rounded-1">6 Mois</a></li>
-                                <li><a href="javascript:void(0);" class="dropdown-item rounded-1">12 Mois</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <apx-chart
-                        [series]="evolutionMensuelleChart.series"
-                        [chart]="evolutionMensuelleChart.chart"
-                        [plotOptions]="evolutionMensuelleChart.plotOptions"
-                        [dataLabels]="evolutionMensuelleChart.dataLabels"
-                        [xaxis]="evolutionMensuelleChart.xaxis"
-                        [yaxis]="evolutionMensuelleChart.yaxis"
-                        [colors]="evolutionMensuelleChart.colors"
-                        [legend]="evolutionMensuelleChart.legend"
-                        [tooltip]="evolutionMensuelleChart.tooltip">
-                    </apx-chart>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tendance des Charges -->
-        <div class="col-xl-6 d-flex">
-            <div class="card flex-fill">
-                <div class="card-header border-0 pb-0">
-                    <div class="d-flex align-items-center">
-                        <span class="me-2"><i class="ti ti-chart-line text-danger"></i></span>
-                        <h5 class="mb-0">Évolution des Charges Sociales</h5>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <apx-chart
-                        [series]="tendanceAnnuelleChart.series"
-                        [chart]="tendanceAnnuelleChart.chart"
-                        [stroke]="tendanceAnnuelleChart.stroke"
-                        [markers]="tendanceAnnuelleChart.markers"
-                        [xaxis]="tendanceAnnuelleChart.xaxis"
-                        [yaxis]="tendanceAnnuelleChart.yaxis"
-                        [colors]="tendanceAnnuelleChart.colors"
-                        [legend]="tendanceAnnuelleChart.legend"
-                        [tooltip]="tendanceAnnuelleChart.tooltip">
-                    </apx-chart>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Filtres et Période -->
-
-
 </div>

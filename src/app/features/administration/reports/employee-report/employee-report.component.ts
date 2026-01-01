@@ -21,7 +21,6 @@ Chart.register(...registerables);
 @Component({
   selector: 'app-employee-report',
   templateUrl: './employee-report.component.html',
-  styleUrl: './employee-report.component.scss',
   imports: [
     CommonModule,
     FormsModule,
