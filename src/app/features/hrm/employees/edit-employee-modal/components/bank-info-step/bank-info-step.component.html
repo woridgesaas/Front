@@ -1,0 +1,112 @@
+<div class="tab-content" [formGroup]="bankInfoGroup">
+    <div class="modal-body pb-0">
+      <h5 class="mb-3 text-primary">
+        <i class="ti ti-building-bank me-2"></i>Informations Bancaires
+      </h5>
+      <div class="alert alert-info d-flex align-items-center" role="alert">
+        <i class="ti ti-info-circle me-2"></i>
+        <small>Ces informations sont confidentielles et utilisées uniquement pour le traitement de la paie.</small>
+      </div>
+      <div class="row">
+        <!-- Nom de la Banque -->
+        <div class="col-md-12">
+          <div class="mb-3">
+            <label class="form-label">Nom de la Banque <span class="text-danger">*</span></label>
+            <mat-select
+              formControlName="bankName"
+              placeholder="Sélectionner une banque"
+              class="select custom-mat-select"
+              [class.is-invalid]="isFieldInvalid('bankName')"
+            >
+              <mat-option value="attijariwafa">Attijariwafa Bank</mat-option>
+              <mat-option value="bmce">BMCE Bank of Africa</mat-option>
+              <mat-option value="bmci">BMCI</mat-option>
+              <mat-option value="cih">CIH Bank</mat-option>
+              <mat-option value="bp">Banque Populaire</mat-option>
+              <mat-option value="cdm">Crédit du Maroc</mat-option>
+              <mat-option value="cam">Crédit Agricole du Maroc</mat-option>
+              <mat-option value="sgm">Société Générale Maroc</mat-option>
+              <mat-option value="cfg">CFG Bank</mat-option>
+              <mat-option value="autre">Autre</mat-option>
+            </mat-select>
+            <div class="invalid-feedback d-block" *ngIf="isFieldInvalid('bankName')">
+              Le nom de la banque est requis
+            </div>
+          </div>
+        </div>
+  
+        <!-- RIB -->
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label class="form-label">RIB (24 chiffres) <span class="text-danger">*</span></label>
+            <input 
+              type="text" 
+              class="form-control" 
+              formControlName="rib"
+              placeholder="123456789012345678901234"
+              maxlength="24"
+              [class.is-invalid]="isFieldInvalid('rib')"
+            />
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('rib')">
+              Le RIB doit contenir exactement 24 chiffres
+            </div>
+          </div>
+        </div>
+  
+        <!-- IBAN -->
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label class="form-label">IBAN</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              formControlName="iban"
+              placeholder="MA64011519000001205000534921"
+              maxlength="28"
+            />
+            <small class="text-muted">Format: MA + 26 caractères</small>
+          </div>
+        </div>
+  
+        <!-- Agence Bancaire -->
+        <div class="col-md-12">
+          <div class="mb-3">
+            <label class="form-label">Agence Bancaire</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              formControlName="branch"
+              placeholder="Nom et adresse de l'agence"
+            />
+          </div>
+        </div>
+  
+        <!-- Code Agence -->
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label class="form-label">Code Agence</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              formControlName="branchCode"
+              placeholder="Ex: 1234"
+              maxlength="6"
+            />
+          </div>
+        </div>
+  
+        <!-- Ville de l'Agence -->
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label class="form-label">Ville de l'Agence</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              formControlName="branchCity"
+              placeholder="Ex: Casablanca, Rabat..."
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

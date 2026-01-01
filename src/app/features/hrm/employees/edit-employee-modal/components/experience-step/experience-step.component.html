@@ -1,0 +1,148 @@
+<div class="tab-content">
+    <div class="modal-body pb-0">
+      <h5 class="mb-3 text-primary d-flex justify-content-between align-items-center">
+        <span><i class="ti ti-briefcase me-2"></i>Expérience Professionnelle</span>
+        <button type="button" class="btn btn-sm btn-primary" (click)="addExperience()">
+          <i class="ti ti-plus me-1"></i>Ajouter
+        </button>
+      </h5>
+      
+      <div>
+        <!-- CHANGEMENT ICI: utiliser experienceControls au lieu de experienceArray.controls -->
+        <div *ngFor="let exp of experienceControls; let i = index" [formGroup]="exp" class="experience-item border rounded p-3 mb-3 position-relative">
+          <button 
+            type="button" 
+            class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2"
+            (click)="removeExperience(i)"
+            *ngIf="experienceArray.length > 1"
+          >
+            <i class="ti ti-trash"></i>
+          </button>
+          
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Intitulé du Poste <span class="text-danger">*</span></label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  formControlName="jobTitle"
+                  placeholder="Ex: Développeur Web, Chef de Projet..."
+                />
+              </div>
+            </div>
+  
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Entreprise <span class="text-danger">*</span></label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  formControlName="company"
+                  placeholder="Nom de l'entreprise"
+                />
+              </div>
+            </div>
+  
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Secteur d'Activité</label>
+                <mat-select
+                  formControlName="industry"
+                  placeholder="Sélectionner le secteur"
+                  class="select custom-mat-select"
+                >
+                  <mat-option value="it">Technologies de l'Information</mat-option>
+                  <mat-option value="finance">Banque et Finance</mat-option>
+                  <mat-option value="telecom">Télécommunications</mat-option>
+                  <mat-option value="industrie">Industrie</mat-option>
+                  <mat-option value="construction">BTP et Construction</mat-option>
+                  <mat-option value="commerce">Commerce et Distribution</mat-option>
+                  <mat-option value="tourisme">Tourisme et Hôtellerie</mat-option>
+                  <mat-option value="transport">Transport et Logistique</mat-option>
+                  <mat-option value="agriculture">Agriculture</mat-option>
+                  <mat-option value="education">Éducation</mat-option>
+                  <mat-option value="sante">Santé</mat-option>
+                  <mat-option value="autre">Autre</mat-option>
+                </mat-select>
+              </div>
+            </div>
+  
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Ville</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  formControlName="location"
+                  placeholder="Ville de l'entreprise"
+                />
+              </div>
+            </div>
+  
+            <div class="col-md-6">
+              <div class="mb-3 ngx-date-exp-start-{{i}}">
+                <label class="form-label">Date de Début <span class="text-danger">*</span></label>
+                <div class="input-icon-end position-relative">
+                  <input
+                    type="text"
+                    class="form-control datetimepicker"
+                    bsDatepicker
+                    formControlName="startDate"
+                    [attr.container]="'.ngx-date-exp-start-' + i"
+                    [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD/MM/YYYY' }"
+                    placeholder="JJ/MM/AAAA"
+                  />
+                  <span class="input-icon-addon">
+                    <i class="ti ti-calendar text-gray-7"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+  
+            <div class="col-md-6">
+              <div class="mb-3 ngx-date-exp-end-{{i}}">
+                <label class="form-label">Date de Fin</label>
+                <div class="input-icon-end position-relative">
+                  <input
+                    type="text"
+                    class="form-control datetimepicker"
+                    bsDatepicker
+                    formControlName="endDate"
+                    [attr.container]="'.ngx-date-exp-end-' + i"
+                    [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD/MM/YYYY' }"
+                    placeholder="JJ/MM/AAAA"
+                    [disabled]="exp.get('isCurrent')?.value"
+                  />
+                  <span class="input-icon-addon">
+                    <i class="ti ti-calendar text-gray-7"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+  
+            <div class="col-md-12">
+              <div class="mb-3">
+                <div class="form-check">
+                  <input 
+                    class="form-check-input" 
+                    type="checkbox" 
+                    formControlName="isCurrent"
+                    [id]="'currentJob' + i"
+                  />
+                  <label class="form-check-label" [for]="'currentJob' + i">
+                    Je travaille actuellement dans cette entreprise
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <div class="alert alert-warning" *ngIf="experienceArray.length === 0">
+        <i class="ti ti-alert-triangle me-2"></i>
+        Aucune expérience ajoutée. Cliquez sur "Ajouter" pour renseigner votre parcours professionnel.
+      </div>
+    </div>
+  </div>

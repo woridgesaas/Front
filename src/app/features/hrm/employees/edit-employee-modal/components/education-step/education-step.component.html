@@ -1,0 +1,147 @@
+<div class="tab-content">
+    <div class="modal-body pb-0">
+      <h5 class="mb-3 text-primary d-flex justify-content-between align-items-center">
+        <span><i class="ti ti-school me-2"></i>Parcours de Formation</span>
+        <button type="button" class="btn btn-sm btn-primary" (click)="addEducation()">
+          <i class="ti ti-plus me-1"></i>Ajouter
+        </button>
+      </h5>
+      
+      <div>
+        <!-- CHANGEMENT ICI: utiliser educationControls au lieu de educationArray.controls -->
+        <div *ngFor="let edu of educationControls; let i = index" [formGroup]="edu" class="education-item border rounded p-3 mb-3 position-relative">
+          <button 
+            type="button" 
+            class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2"
+            (click)="removeEducation(i)"
+            *ngIf="educationArray.length > 1"
+          >
+            <i class="ti ti-trash"></i>
+          </button>
+          
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Diplôme <span class="text-danger">*</span></label>
+                <mat-select
+                  formControlName="degree"
+                  placeholder="Sélectionner le diplôme"
+                  class="select custom-mat-select"
+                >
+                  <mat-option value="bac">Baccalauréat</mat-option>
+                  <mat-option value="deust">DEUST</mat-option>
+                  <mat-option value="dut">DUT</mat-option>
+                  <mat-option value="licence">Licence</mat-option>
+                  <mat-option value="licence_pro">Licence Professionnelle</mat-option>
+                  <mat-option value="master">Master</mat-option>
+                  <mat-option value="master_spe">Master Spécialisé</mat-option>
+                  <mat-option value="doctorat">Doctorat</mat-option>
+                  <mat-option value="ingenieur">Diplôme d'Ingénieur</mat-option>
+                  <mat-option value="autre">Autre</mat-option>
+                </mat-select>
+              </div>
+            </div>
+  
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Spécialité <span class="text-danger">*</span></label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  formControlName="fieldOfStudy"
+                  placeholder="Ex: Informatique, Finance..."
+                />
+              </div>
+            </div>
+  
+            <div class="col-md-12">
+              <div class="mb-3">
+                <label class="form-label">Établissement <span class="text-danger">*</span></label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  formControlName="institution"
+                  placeholder="Nom de l'université ou école"
+                />
+              </div>
+            </div>
+  
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Ville</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  formControlName="city"
+                  placeholder="Ville de l'établissement"
+                />
+              </div>
+            </div>
+  
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Pays</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  formControlName="country"
+                  placeholder="Maroc"
+                />
+              </div>
+            </div>
+  
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Année de Début <span class="text-danger">*</span></label>
+                <input 
+                  type="number" 
+                  class="form-control" 
+                  formControlName="startYear"
+                  placeholder="Ex: 2018"
+                  min="1970"
+                  [max]="currentYear"
+                />
+              </div>
+            </div>
+  
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Année de Fin <span class="text-danger">*</span></label>
+                <input 
+                  type="number" 
+                  class="form-control" 
+                  formControlName="endYear"
+                  placeholder="Ex: 2021"
+                  min="1970"
+                  [max]="currentYear + 10"
+                />
+              </div>
+            </div>
+  
+            <div class="col-md-12">
+              <div class="mb-3">
+                <label class="form-label">Mention</label>
+                <mat-select
+                  formControlName="grade"
+                  placeholder="Sélectionner la mention"
+                  class="select custom-mat-select"
+                >
+                  <mat-option value="">Aucune</mat-option>
+                  <mat-option value="passable">Passable</mat-option>
+                  <mat-option value="assez_bien">Assez Bien</mat-option>
+                  <mat-option value="bien">Bien</mat-option>
+                  <mat-option value="tres_bien">Très Bien</mat-option>
+                  <mat-option value="excellent">Excellent</mat-option>
+                </mat-select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <div class="alert alert-warning" *ngIf="educationArray.length === 0">
+        <i class="ti ti-alert-triangle me-2"></i>
+        Aucune formation ajoutée. Cliquez sur "Ajouter" pour renseigner votre parcours.
+      </div>
+    </div>
+  </div>
