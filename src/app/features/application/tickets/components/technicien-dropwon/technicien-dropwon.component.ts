@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component ,OnInit} from '@angular/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { TechnicienService } from '../../../../../shared/data/technicien-service';
+import { TechnicienService } from '../../../../../shared/services/technicien-service';
 
 @Component({
   selector: 'app-technicien-dropwon',

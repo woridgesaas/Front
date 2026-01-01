@@ -10,7 +10,7 @@ import { BreadcrumbsComponent } from '../../../common/breadcrumbs/breadcrumbs.co
 import { TicketCategoriesComponent } from '../components/ticket-categories/ticket-categories.component';
 import { TicketChartsComponent } from '../components/ticket-charts/ticket-charts.component';
 import { TicketListComponent } from '../components/ticket-list/ticket-list.component';
-import { TechnicienService } from '../../../../shared/data/technicien-service';
+import { TechnicienService } from '../../../../shared/services/technicien-service';
 import { TicketCreateComponent } from '../components/ticket-create/ticket-create.component';
 import { TechnicienListComponent } from '../components/technicien-list/technicien-list.component';
 @Component({

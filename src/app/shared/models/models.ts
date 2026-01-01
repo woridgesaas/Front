@@ -164,6 +164,22 @@ export interface ChatGroup {
   lastActivity?: Date;
   isSelected?:boolean
 }
+export interface ChartOptions {
+  series: ApexAxisChartSeries | ApexNonAxisChartSeries;
+  chart: ApexChart;
+  xaxis?: ApexXAxis;
+  yaxis?: ApexYAxis;
+  dataLabels?: ApexDataLabels;
+  grid?: ApexGrid;
+  stroke?: ApexStroke;
+  title?: ApexTitleSubtitle;
+  labels?: string[];
+  colors?: string[];
+  plotOptions?: ApexPlotOptions;
+  legend?: ApexLegend;
+  tooltip?: ApexTooltip;
+  fill?: ApexFill;
+}
 export interface apiResultFormat {
   data: [];
   totalData: number;

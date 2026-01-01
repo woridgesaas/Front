@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { GroupService } from '../../../../../shared/data/group-service';
+import { GroupService } from '../../../../../shared/services/group-service';
 import { ChatGroup } from '../../../../../shared/models/models';
 
 @Component({

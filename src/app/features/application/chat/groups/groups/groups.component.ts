@@ -3,7 +3,7 @@ import { BreadcrumbsComponent } from '../../../../common/breadcrumbs/breadcrumbs
 import { ChatGroup } from '../../../../../shared/models/models';
 import { FormsModule } from '@angular/forms';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-import { GroupService } from '../../../../../shared/data/group-service';
+import { GroupService } from '../../../../../shared/services/group-service';
 import { CustomPaginationComponent } from '../../../../../shared/custom-pagination/custom-pagination.component';
 import { CommonModule } from '@angular/common';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
