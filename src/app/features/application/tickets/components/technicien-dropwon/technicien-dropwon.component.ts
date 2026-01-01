@@ -19,7 +19,7 @@ export class TechnicienDropwonComponent implements  OnInit {
    constructor(private technicienService: TechnicienService) {}
 
    ngOnInit(): void {
-    // Récupère les données du SERVICE
+    // get techs depuis service :)
     this.techniciens = this.technicienService.getTechniciens();
   }
 }

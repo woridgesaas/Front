@@ -10,6 +10,9 @@ import { CommonModule } from '@angular/common';
 import { MatSortModule, MatSort, Sort } from '@angular/material/sort';
 import { TicketCreateComponent } from '../../components/ticket-create/ticket-create.component';
 import { TicketDetailsModalComponent } from '../../components/ticket-details-modal/ticket-details-modal.component';
+import { TicketListEmployeComponent } from '../../components/ticket-list-employe/ticket-list-employe.component';
+import { Tick } from 'chart.js';
+import { ConfirmDeleteComponent } from '../../../../common/delete-modal/delete-modal.component';
 @Component({
   selector: 'app-tickets',
   imports: [
@@ -22,6 +25,8 @@ import { TicketDetailsModalComponent } from '../../components/ticket-details-mod
     BsDatepickerModule,
     TicketCreateComponent,
     TicketDetailsModalComponent,
+    TicketListEmployeComponent,
+    ConfirmDeleteComponent
   ],
   templateUrl: './tickets.component.html',
 })
@@ -29,7 +34,10 @@ export class TicketsComponent {
   bsRangeValue: Date[] = [];
   tickets: TicketBase[] = [];
   filteredTickets: TicketBase[] = [];
-
+  //Handling selected ticket sent by child app-ticket-list-employe :)
+  selectedTicket:TicketBase | null =null;
+  //To pass to the delete modal
+  ticketToDelete:TicketBase | null =null;
   // Pagination
   currentPage: number = 1;
   pageSize: number = 10;
@@ -38,23 +46,15 @@ export class TicketsComponent {
   // Filtre
   searchDataValue: string = '';
   initChecked: boolean = false;
-  @ViewChild(MatSort) sort!: MatSort;
   constructor(private ticketService: TicketService) {}
 
   ngOnInit(): void {
     this.loadTickets();
   }
   loadTickets(): void {
-    this.tickets = this.ticketService?.getTicketsByEmployeId(1);
+    this.tickets = this.ticketService.getTicketsByEmployeId(1);
     this.filteredTickets = [...this.tickets];
     this.totalTickets = this.tickets.length;
-  }
-  formatDate(dateString: string): string {
-    return new Date(dateString).toLocaleDateString('fr-FR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-    });
   }
   //-----Pagination----------
 
@@ -83,7 +83,18 @@ export class TicketsComponent {
   }
 
   //delete just fermer ou resolu
-  public deleteTicket(ticket: TicketBase): void {}
+  public deleteTicket(ticket: TicketBase): void {
+    this.ticketToDelete = ticket;
+    const modalElement = document.getElementById('confirmDeleteModal');
+    if (modalElement && (window as any).bootstrap) {
+      const modal = new (window as any).bootstrap.Modal(modalElement);
+      modal.show();
+    }
+  }
+  //call api to delete ..
+  public confirmedDelete(event:any){
+    alert("deleting ...");
+  }
   // selection 3lalisr des id
   selectAll(initChecked: boolean) {
     if (!initChecked) {
@@ -99,60 +110,20 @@ export class TicketsComponent {
   getSelectedItems(): TicketBase[] {
     return this.filteredTickets.filter((item) => item.isSelected);
   }
-  //-----------Filtrage-----------------
-  private compare(
-    a: number | string,
-    b: number | string,
-    isAsc: boolean
-  ): number {
-    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  //-----------Filtrage is in the child .ts just emit the sortedTickets list to parrent-----------------
+
+  onTicketSelected(ticket: TicketBase): void {
+    this.selectedTicket = ticket;
+    console.log(ticket);
+    
+    this.openDetailModal();
   }
-  private compareDates(dateA: string, dateB: string, isAsc: boolean): number {
-    const [dayA, monthA, yearA] = dateA.split('/').map(Number);
-    const [dayB, monthB, yearB] = dateB.split('/').map(Number);
 
-    const dateObjA = new Date(yearA, monthA - 1, dayA);
-    const dateObjB = new Date(yearB, monthB - 1, dayB);
-
-    return this.compare(dateObjA.getTime(), dateObjB.getTime(), isAsc);
-  }
-  sortData(sort: Sort): void {
-    const data = this.filteredTickets.slice();
-
-    if (!sort.active || sort.direction === '') {
-      this.filteredTickets = data;
-      return;
-    }
-    this.filteredTickets = data.sort((a, b) => {
-      const isAsc = sort.direction === 'asc';
-
-      switch (sort.active) {
-        case 'id':
-          return this.compare(a.id!, b.id!, isAsc);
-        case 'titre':
-          return this.compare(a.titre!, b.titre!, isAsc);
-        /* * case 'auteur':
-          return this.compare(a.numeroTicket!, b.numeroTicket!, isAsc);
-        case 'departement':
-          return this.compare(a.description!, b.description!, isAsc);
-        case 'dateCreation':
-          return this.compareDates(a.createdAt!, b.createdAt!, isAsc);
-        case 'participants':
-          return this.compare(a.priorite!, b.priorite!, isAsc);
-        case 'statut':
-          return this.compare(a.statut!, b.statut!, isAsc);
-        case 'expiration':
-          return this.compare(a.categorie!, b.categorie!, isAsc);*/
-        default:
-          return 0;
+  private openDetailModal(): void {
+      const modalElement = document.getElementById('ticketDetailModal');
+      if (modalElement) {
+        const modal = new (window as any).bootstrap.Modal(modalElement);
+        modal.show();
       }
-    });
-  }
-  ngAfterViewInit(): void {
-    if (this.sort) {
-      this.sort.sortChange.subscribe(() => {
-        this.sortData(this.sort);
-      });
-    }
   }
 }

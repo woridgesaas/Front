@@ -40,9 +40,7 @@ export class TicketDetailsModalComponent implements OnInit{
     // Si pas de donne passés en input, utiliser les dylna mockedd statiques
     if (!this.ticketData) {
       this.ticketData = { ...this.staticTicketData };
-    }
-    
-    console.log('Modal détail ouvert pour le ticket:', this.ticketData.numeroTicket);
+    } 
   }
 
   /**
