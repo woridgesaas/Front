@@ -1,0 +1,40 @@
+  <div class="row g-3 mt-3">
+    <!-- Histogramme : Absences par type -->
+    <div class="col-xl-12">
+      <div class="card h-100">
+        <div
+          class="card-header border-0 pb-0 d-flex align-items-center justify-content-between"
+        >
+          <h6 class="mb-0 d-flex align-items-center">
+            <i class="ti ti-alert-triangle me-2 text-danger"></i>
+            Absences par type
+            <span
+              class="ms-2 text-muted"
+              data-bs-toggle="tooltip"
+              title="Répartition des absences selon leur type (maladie, congé, exceptionnel, etc.)"
+            >
+              <i class="ti ti-info-circle fs-14"></i>
+            </span>
+          </h6>
+        </div>
+
+        <div class="card-body">
+          <small class="text-muted">
+            Répartition des absences selon leur nature sur la journée
+          </small>
+
+          <apx-chart
+            [series]="absenceType.series"
+            [chart]="absenceType.chart"
+            [xaxis]="absenceType.xaxis"
+            [yaxis]="absenceType.yaxis"
+            [colors]="absenceType.colors"
+            [plotOptions]="absenceType.plotOptions"
+            [dataLabels]="absenceType.dataLabels"
+            [grid]="absenceType.grid"
+          >
+          </apx-chart>
+        </div>
+      </div>
+    </div>
+  </div>
