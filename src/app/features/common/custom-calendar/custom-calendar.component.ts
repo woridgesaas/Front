@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CalendarEvent,CalendarView } from 'angular-calendar';
-import { CalendarWrapperModule } from '../../../shared/calendar/calendar-wrapper.module'; // adjust path if needed
-import {  startOfDay,
+import { CalendarWrapperModule } from '../../../shared/calendar/calendar-wrapper.module'; 
+import { 
   addDays,
   subDays,
   addWeeks,
@@ -18,23 +18,30 @@ import {  startOfDay,
   styleUrls: ['./custom-calendar.component.scss'],
 })
 export class CustomCalendarComponent {
-  viewDate: Date = new Date();
-  view: CalendarView = CalendarView.Month;
-  CalendarView = CalendarView;
-  events: CalendarEvent[] = [
-    {
-      start: startOfDay(new Date()),
-      title: 'Meeting with Team',
-      color: { primary: '#1e90ff', secondary: '#D1E8FF' },
-    },
-  ];
-  prevMonth() {
-  this.viewDate = subMonths(this.viewDate, 1);
-}
+  @Input() events: CalendarEvent[] = [];
 
-nextMonth() {
-  this.viewDate = addMonths(this.viewDate, 1);
-}
+  @Output() eventClicked = new EventEmitter<CalendarEvent>();
+  @Output() dayClicked = new EventEmitter<any>();
+  viewDate: Date = new Date(); 
+  view: CalendarView = CalendarView.Month; 
+  CalendarView = CalendarView;
+  prevMonth(): void {
+    this.viewDate = subMonths(this.viewDate, 1);
+  }
+  
+  nextMonth(): void {
+    this.viewDate = addMonths(this.viewDate, 1);
+  }
+  
+  onEventClick(event: CalendarEvent): void {
+    alert("event" + event);
+    this.eventClicked.emit(event); 
+  }
+  
+  onDayClick(event: any): void {
+    console.log('Jour cliqué dans le calendrier:', event);
+    this.dayClicked.emit(event);
+  }
 
 
  setView(view: CalendarView) {
