@@ -1,35 +1,6 @@
-import { Component, ViewChild, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { routes } from '../../../../shared/routes/routes';
-import {
-  apiResultFormat,
-  breadCrumbItems,
-  dailyReport,
-} from '../../../../shared/models/models';
-import {
-  pageSelection,
-  PaginationService,
-  tablePageSize,
-} from '../../../../shared/custom-pagination/pagination.service';
-import { MatTableDataSource } from '@angular/material/table';
-import { DataService } from '../../../../shared/data/data.service';
-import { ChartComponent } from 'ng-apexcharts';
-import { Router } from '@angular/router';
 import { MatSortModule, Sort } from '@angular/material/sort';
-import {
-  ApexAxisChartSeries,
-  ApexNonAxisChartSeries,
-  ApexChart,
-  ApexLegend,
-  ApexXAxis,
-  ApexYAxis,
-  ApexDataLabels,
-  ApexGrid,
-  ApexStroke,
-  ApexPlotOptions,
-  ApexTooltip,
-  ApexResponsive,
-  ApexFill,
-} from 'ng-apexcharts';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
@@ -43,35 +14,6 @@ import { DailyPresenceDonutComponent } from './components/daily-presence-donut/d
 import { DailyPresenceDepartmentChartComponent } from './components/daily-presence-department-chart/daily-presence-department-chart.component';
 import { DailyAbsenceTypeChartComponent } from './components/daily-absence-type-chart/daily-absence-type-chart.component';
 
-
-// Complete daily chart options
-export interface DailyChartOptions {
-  series: ApexAxisChartSeries;
-  chart: ApexChart;
-  xaxis: ApexXAxis;
-  yaxis: ApexYAxis;
-  dataLabels: ApexDataLabels;
-  grid: ApexGrid;
-  stroke: ApexStroke;
-  legend: ApexLegend;
-  colors: string[];
-  tooltip?: ApexTooltip;
-  responsive?: ApexResponsive[];
-  plotOptions?: ApexPlotOptions;
-  fill?: ApexFill;
-}
-export interface ChartOptions {
-  series?: ApexAxisChartSeries | number[];
-  chart?: ApexChart;
-  xaxis?: ApexXAxis;
-  dataLabels?: ApexDataLabels;
-  grid?: ApexGrid;
-  stroke?: ApexStroke;
-  title?: ApexTitleSubtitle;
-  legend?: ApexLegend;
-  colors?: string[];
-  labels?: string[];
-}
 @Component({
   selector: 'app-daily-report',
   templateUrl: './daily-report.component.html',
@@ -100,8 +42,6 @@ export class DailyReportComponent implements OnInit{
   public serialNumberArray: number[] = [];
   public daily_chart:any;
   public absenceType:any;
-
-  @ViewChild('chart') chart!: ChartComponent;
   constructor(
     private dailyService: DailyStatisticsService
   ) {
@@ -159,40 +99,5 @@ export class DailyReportComponent implements OnInit{
     this.loaddPresenceDonut();
     this.loadPresenceByDepartsChart();
     this.loadAbsenceTypeChart();
-    /**this.absenceType = {
-      series: [
-        {
-          name: 'Nombre d’absences',
-          data: [8, 3, 2, 1, 1],
-        },
-      ],
-      chart: {
-        type: 'bar',
-        height: 300,
-        toolbar: { show: false },
-      },
-      xaxis: {
-        categories: [
-          'Maladie',
-          'Exceptionnel',
-          'Annuel',
-          'Autorisation',
-          'Sans justification',
-        ],
-      },
-      colors: ['#f97316'],
-      plotOptions: {
-        bar: {
-          borderRadius: 8,
-          columnWidth: '45%',
-        },
-      },
-      dataLabels: {
-        enabled: true,
-      },
-    };*/
-
-
-
   }
 }
