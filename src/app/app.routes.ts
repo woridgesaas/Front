@@ -270,7 +270,7 @@ export const routes: Routes = [
             path: 'employee-list',
             loadComponent: () =>
               import(
-                './features/hrm/employees/employee-list/employee-list.component'
+                './features/hrm/employees/employees-list/employee-list/employee-list.component'
               ).then((m) => m.EmployeeListComponent),
             data: {
               breadcrumb: 'Liste des employés',
