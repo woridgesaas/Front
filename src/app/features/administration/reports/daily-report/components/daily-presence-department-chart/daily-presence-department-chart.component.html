@@ -1,0 +1,28 @@
+<div class="card h-100">
+        <div
+          class="card-header border-0 pb-0 d-flex align-items-center justify-content-between"
+        >
+          <h6 class="mb-0 d-flex align-items-center">
+            <i class="ti ti-building-community me-2 text-success"></i>
+            Présence par département
+            <span
+              class="ms-2 text-muted"
+              data-bs-toggle="tooltip"
+              title="Comparaison du nombre d’employés présents par département"
+            >
+              <i class="ti ti-info-circle fs-14"></i>
+            </span>
+          </h6>
+        </div>
+
+        <div class="card-body">
+          <apx-chart
+            [series]="deptPresence.series"
+            [chart]="deptPresence.chart"
+            [xaxis]="deptPresence.xaxis"
+            [colors]="deptPresence.colors"
+            [plotOptions]="deptPresence.plotOptions"
+          >
+          </apx-chart>
+        </div>
+      </div>
