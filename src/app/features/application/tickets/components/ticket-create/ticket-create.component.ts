@@ -54,14 +54,14 @@ export class TicketCreateComponent {
   }
   creerTicket(form: NgForm): void {
     console.log('=== CREATION DE TICKET ===');
-    console.log('Rôle utilisateur:', this.userRole);
+    console.log('role utilisateur:', this.userRole);
     console.log('Données du formulaire:', this.newTicket);
     console.log('Formulaire valide:', form.valid);
     
     if (form.valid) {
       
       if (this.userRole === '') {
-        console.log('Ticket créé par un employé');
+        console.log('Ticket créé par un employe');
        
       } else {
         console.log('Ticket créé par admin/technicien');
