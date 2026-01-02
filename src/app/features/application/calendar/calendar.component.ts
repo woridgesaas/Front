@@ -111,14 +111,12 @@ export class CalendarComponent implements OnInit {
   }
   //============ Emited events ====================
   onEventClick(event: CalendarEvent): void {
-    alert(event);
     this.eventDetails.title = event.title || '';
     this.showEventDetailsModal = true;
-    console.log('Événement cliqué dans le parent:', event);
   }
 
   onDayClick(event: any): void {
-    alert(event);
+    
     console.log('Jour cliqué dans le parent:', event);
 
     

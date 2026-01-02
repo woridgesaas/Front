@@ -2,3 +2,50 @@
   display: block;
   padding: 1rem;
 }
+
+.mini-calendar {
+  max-width: 300px;
+  font-size: 0.85rem;
+
+  .mini-header {
+    padding: 0.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .mini-title {
+    font-size: 0.9rem;
+    margin: 0;
+  }
+.mini-month-view {
+    ::ng-deep {
+      .cal-month-view {
+        .cal-header {
+          padding: 5px 0;
+          b {
+            font-size: 0.8rem;
+          }
+        }
+
+        .cal-cell-row {
+          min-height: 30px;
+        }
+
+        .cal-day-cell {
+          min-height: 25px;
+          font-size: 0.8rem;
+        }
+
+        .cal-day-number {
+          font-size: 0.75rem;
+          opacity: 0.8;
+        }
+
+        .cal-event {
+          font-size: 0.7rem;
+          margin: 1px;
+          padding: 1px 3px;
+        }
+      }
+    }
+  }
+}

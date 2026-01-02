@@ -23,7 +23,9 @@ import { LayoutMode } from '../shared/models/layout.model';
 import { HorizontalSidebarComponent } from './common/horizontal-sidebar/horizontal-sidebar.component';
 import { DefaultSidebarComponent } from './common/default-sidebar/default-sidebar.component';
 import { DefaultHeaderComponent } from './common/default-header/default-header.component';
-
+import { CustomCalendarComponent } from './common/custom-calendar/custom-calendar.component';
+import { MiniCalendarComponent } from './common/mini-calendar/mini-calendar.component';
+import { routes } from '../shared/routes/routes';
 @Component({
   selector: 'app-features',
   standalone: true,
@@ -36,6 +38,7 @@ import { DefaultHeaderComponent } from './common/default-header/default-header.c
     HorizontalSidebarComponent,
     DefaultSidebarComponent,
     DefaultHeaderComponent,
+    MiniCalendarComponent
   ],
 })
 export class FeaturesComponent implements OnInit, OnDestroy {
@@ -53,7 +56,8 @@ export class FeaturesComponent implements OnInit, OnDestroy {
   showPreloaderState = '';
 
   private subs = new Subscription();
-
+    hiddenPages :string[]=[routes.calendar,routes.dailyreport,routes.employeereport,routes.payslipreport,routes.leavereport,routes.attendancereport];
+  shouldBeVisible:boolean = true;
   private readonly withoutWrapperPagesArray = [
     'login',
     'forgot-password',
@@ -69,7 +73,11 @@ export class FeaturesComponent implements OnInit, OnDestroy {
   ];
 
   withoutWrapperPages = false;
-
+  private updateVisibility():void{
+    this.shouldBeVisible = !this.hiddenPages.some((url: string)=>
+      this.router.url.includes(url)
+    )
+  }
   constructor(
     private common: CommonService,
     public settings: SettingService,
@@ -78,7 +86,12 @@ export class FeaturesComponent implements OnInit, OnDestroy {
     private router: Router,
     @Inject(DOCUMENT) private document: Document,
     private renderer: Renderer2
-  ) {}
+  ) {
+    this.router.events.subscribe((event)=>{
+      if(event instanceof NavigationEnd)
+        this.updateVisibility();
+    });
+  }
 
   ngOnInit(): void {
     this.settings.initLayout();

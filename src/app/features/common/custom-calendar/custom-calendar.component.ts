@@ -19,6 +19,7 @@ import {
 })
 export class CustomCalendarComponent {
   @Input() events: CalendarEvent[] = [];
+  @Input() isMini:boolean =false;
 
   @Output() eventClicked = new EventEmitter<CalendarEvent>();
   @Output() dayClicked = new EventEmitter<any>();
@@ -39,7 +40,7 @@ export class CustomCalendarComponent {
   }
   
   onDayClick(event: any): void {
-    console.log('Jour cliqué dans le calendrier:', event);
+    alert('Jour cliqué dans le calendrier:'+ event);
     this.dayClicked.emit(event);
   }
 

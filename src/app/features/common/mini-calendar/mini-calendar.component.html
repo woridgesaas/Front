@@ -1,0 +1,51 @@
+<!-- Widget -->
+@if (isVisible) {
+  <div class="mini-calendar-widget" >
+    <!-- Header-->
+    <div class="widget-header d-flex justify-content-between align-items-center">
+      <div class="widget-title">
+        <i class="ti ti-calendar me-2"></i>
+        <span>Calendrier</span>
+      </div>
+      
+      <div class="widget-actions">
+        <button (click)="toggleVisibility()" 
+                class="btn btn-sm btn-link text-white p-1"
+                title="Masquer le calendrier">
+          <i class="ti ti-x"></i>
+        </button>
+      </div>
+    </div>
+
+    
+    <div class="widget-content">
+      <app-custom-calendar 
+        [events]="miniEvents"
+        [isMini]="true">
+      </app-custom-calendar>
+    </div>
+
+    
+    <div class="widget-footer">
+      <div class="d-flex justify-content-between align-items-center">
+        <small class="text-muted">
+          <i class="ti ti-calendar-check me-1"></i>
+          {{ currentDate | date:'dd MMM yyyy' }}
+        </small>
+        <a routerLink='/intranet/calendar' class="btn btn-sm btn-link p-0" title="Calendrier complet">
+          <i class="ti ti-external-link"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- Button -->
+@if (!isVisible) {
+  <button (click)="toggleVisibility()" 
+          class="mini-calendar-toggle-btn" 
+          title="Afficher le calendrier">
+    <i class="ti ti-calendar"></i>
+  
+  </button>
+}
