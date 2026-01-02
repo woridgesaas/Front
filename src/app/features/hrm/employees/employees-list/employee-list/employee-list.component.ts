@@ -16,10 +16,10 @@ import { CommonModule } from '@angular/common';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { CustomPaginationComponent } from '../../../../../shared/custom-pagination/custom-pagination.component';
 import { MatSortModule } from '@angular/material/sort';
-import { EditEmployeeModalComponent } from '../edit-employee-modal/edit-employee-modal.component';
+import { EditEmployeeModalComponent } from '../modals/edit-employee-modal/edit-employee-modal.component';
 import { KpisComponent } from '../../../../common/kpis/kpis.component';
 import { ConfirmDeleteComponent } from '../../../../common/delete-modal/delete-modal.component';
-import { AddEmployeeComponent } from '../add-employee/add-employee.component';
+import { AddEmployeeComponent } from '../modals/add-employee/add-employee.component';
 
 // Déclaration de Bootstrap
 declare const bootstrap: any;
