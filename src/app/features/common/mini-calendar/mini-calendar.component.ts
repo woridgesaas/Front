@@ -4,16 +4,20 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CalendarService } from '../../../shared/services/calendar-service';
 import { RouterModule } from '@angular/router';
+import { EventDetailsComponent } from '../../application/calendar/components/event-details/event-details.component';
+import { CalendarEvent } from 'angular-calendar';
 @Component({
   selector: 'app-mini-calendar',
-  imports: [CustomCalendarComponent,CommonModule,FormsModule,RouterModule],
+  imports: [CustomCalendarComponent,CommonModule,FormsModule,RouterModule,EventDetailsComponent],
   templateUrl: './mini-calendar.component.html',
   styleUrl: './mini-calendar.component.scss',
 })
 export class MiniCalendarComponent {
   miniEvents:any=[];
+  showEventDetailsModal:boolean=false;
   isVisible = false;
   currentDate = new Date();
+  eventDetails = { title: '' ,startDate: '' , startTime:''};
   constructor(private eventsService :CalendarService) {
     
     this.loadMiniEvents();
@@ -36,6 +40,16 @@ export class MiniCalendarComponent {
       }))
     }
 
+  handleEventDetailsClose(): void {
+    this.showEventDetailsModal = false;
+  }
+    onEventClick(event: CalendarEvent): void {
+      const dateIso = event.start;
+      this.eventDetails.title = event.title;
+      this.eventDetails.startDate = dateIso.toLocaleDateString('fr-FR');
+      this.eventDetails.startTime = dateIso.toLocaleTimeString('fr-FR');
+      this.showEventDetailsModal = true;
+    }
   private getColor(type: string): { primary: string; secondary: string } { 
     const colors: Record<string, { primary: string; secondary: string }> = 
     { 'reunion': { primary: '#0d6efd', secondary: '#cfe2ff' },

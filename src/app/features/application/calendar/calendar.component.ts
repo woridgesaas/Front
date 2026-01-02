@@ -14,6 +14,7 @@ import { MyEventsComponent } from './components/my-events/my-events.component';
 import { PublicEventsComponent } from './components/public-events/public-events.component';
 import { CalendarService } from '../../../shared/services/calendar-service';
 import { EventDetailsComponent } from './components/event-details/event-details.component';
+import { AddEventModalComponent } from './components/add-event-modal/add-event-modal.component';
 
 @Component({
   selector: 'app-calendar',
@@ -29,7 +30,8 @@ import { EventDetailsComponent } from './components/event-details/event-details.
     BreadcrumbsComponent,
     MyEventsComponent,
     PublicEventsComponent,
-    EventDetailsComponent
+    EventDetailsComponent,
+    AddEventModalComponent
   ],
 })
 export class CalendarComponent implements OnInit {
@@ -121,9 +123,11 @@ export class CalendarComponent implements OnInit {
   }
 
   onDayClick(event: any): void {
-    
-    console.log('Jour cliqué dans le parent:', event);
-
+    console.log('Jour clicked dans le parent:', event);    
+  }
+  public AddEvent(event :any):void{
+    alert("event emited :) chof console")
+    console.log(event);
     
   }
   private getColorHex(colorName: string, light: boolean = false): string {
