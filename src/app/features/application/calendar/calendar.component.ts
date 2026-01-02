@@ -13,6 +13,7 @@ import { CalendarEvent } from 'angular-calendar';
 import { MyEventsComponent } from './components/my-events/my-events.component';
 import { PublicEventsComponent } from './components/public-events/public-events.component';
 import { CalendarService } from '../../../shared/services/calendar-service';
+import { EventDetailsComponent } from './components/event-details/event-details.component';
 
 @Component({
   selector: 'app-calendar',
@@ -27,13 +28,14 @@ import { CalendarService } from '../../../shared/services/calendar-service';
     BsDatepickerModule,
     BreadcrumbsComponent,
     MyEventsComponent,
-    PublicEventsComponent
+    PublicEventsComponent,
+    EventDetailsComponent
   ],
 })
 export class CalendarComponent implements OnInit {
 
   showEventDetailsModal = false;
-  eventDetails = { title: '' };
+  eventDetails = { title: '' ,startDate: '' , startTime:''};
   date: Date[] | undefined;
   dropdownOpen = false;
   selectedTime: Date = new Date();
@@ -111,7 +113,10 @@ export class CalendarComponent implements OnInit {
   }
   //============ Emited events ====================
   onEventClick(event: CalendarEvent): void {
-    this.eventDetails.title = event.title || '';
+    const dateIso = event.start;
+    this.eventDetails.title = event.title;
+    this.eventDetails.startDate = dateIso.toLocaleDateString('fr-FR');
+    this.eventDetails.startTime = dateIso.toLocaleTimeString('fr-FR');
     this.showEventDetailsModal = true;
   }
 

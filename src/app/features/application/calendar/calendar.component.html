@@ -166,26 +166,11 @@
 </div>
 <!-- /Add New Event -->
 
-<!-- Event -->
-<div class="modal fade" id="event_modal" [ngClass]="{'show': showEventDetailsModal}" [ngStyle]="{'display': showEventDetailsModal ? 'block' : 'none'}">
-	<div class="modal-dialog modal-dialog-centered">
-		<div class="modal-content">
-			<div class="modal-header bg-dark modal-bg">
-				<div class="modal-title text-white"><span id="eventTitle">{{eventDetails.title}}</span></div>
-				<button type="button" class="btn-close custom-btn-close" data-bs-dismiss="modal" (click)="handleEventDetailsClose()" aria-label="Close">
-					<i class="ti ti-x"></i>
-				</button>
-			</div>
-			<div class="modal-body">
-				<p class="d-flex align-items-center fw-medium text-black mb-3"><i class="ti ti-calendar-check text-default me-2"></i>26 Jul,2024 to 31 Jul,2024</p>
-				<p class="d-flex align-items-center fw-medium text-black mb-3"><i class="ti ti-calendar-check text-default me-2"></i>11:00 AM to 12:15 PM</p>
-				<p class="d-flex align-items-center fw-medium text-black mb-3"><i class="ti ti-map-pin-bolt text-default me-2"></i>Las Vegas, US</p>
-				<p class="d-flex align-items-center fw-medium text-black mb-0"><i class="ti ti-calendar-check text-default me-2"></i>A recurring or repeating event is simply any event that you will occur more than once on your calendar.</p>
-			</div>
-		</div>
-	</div>
-</div>
-<!-- /Event -->
+<!-- Event Details Modal-->
+<app-event-details [eventDetails]="eventDetails" [showEventDetailsModal]="showEventDetailsModal" (modalClosed)="handleEventDetailsClose()"></app-event-details>
+<!-- /Event Details Modal-->
+
+<!-- Backdrop effect si true we add this div to dom -->
  <ng-container *ngIf="showEventDetailsModal">
    <div (click)="handleEventDetailsClose()" (keypress)="handleEventDetailsClose()" tabindex="1" class="modal-backdrop fade show"></div>
  </ng-container>

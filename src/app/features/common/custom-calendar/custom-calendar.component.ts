@@ -35,7 +35,6 @@ export class CustomCalendarComponent {
   }
   
   onEventClick(event: CalendarEvent): void {
-    alert("event" + event);
     this.eventClicked.emit(event); 
   }
   
