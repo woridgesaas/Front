@@ -23,7 +23,8 @@ import { Sort } from '@angular/material/sort';
     DepartmentsTableComponent,
     ConfirmDeleteComponent,
     AddDepartmentModalComponent,
-    EditDepartmentModalComponent
+    EditDepartmentModalComponent,
+    
 ],
 })
 export class DepartmentsComponent {

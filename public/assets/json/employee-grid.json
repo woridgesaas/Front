@@ -7,7 +7,7 @@
       "Email": "anthony@example.com",
       "Phone": "(123) 4567 890",
       "Designation": "Finance",
-      "Status": "En attente"
+      "Status": "Accepter"
     },
     {
       "EmpId": "Emp-002",
@@ -43,7 +43,7 @@
       "Email": "martniwr@example.com",
       "Phone": "(183) 9302 890",
       "Designation": "Développement commercial",
-      "Status": "En attente"
+      "Status": "Accepter"
     },
     {
       "EmpId": "Emp-006",
@@ -52,8 +52,7 @@
       "Email": "ray456@example.com",
       "Phone": "(120) 3728 039",
       "Designation": "Finance",
-     
-      "Status": "En attente"
+      "Status": "Refuser"
     },
     {
       "EmpId": "Emp-007",
@@ -62,7 +61,7 @@
       "Email": "murray@example.com",
       "Phone": "(102) 8480 832",
       "Designation": "Ventes",
-      "Status": "En attente"
+      "Status": "Accepter"
     },
     {
       "EmpId": "Emp-008",
@@ -80,7 +79,7 @@
       "Email": "connie@example.com",
       "Phone": "(189) 0920 723",
       "Designation": "Administration",
-      "Status": "En attente"
+      "Status": "Refuser"
     },
     {
       "EmpId": "Emp-010",

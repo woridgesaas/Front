@@ -1,0 +1,27 @@
+/* ====== Status ====== */
+.status-badge {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* 🟡 En attente */
+.status-warning {
+  background: rgba(255, 193, 7, 0.18);
+  color: #ffc107;
+}
+
+/* 🟢 Acceptée */
+.status-success {
+  background: rgba(40, 167, 69, 0.18);
+  color: #28a745;
+}
+
+/* 🔴 Refusée */
+.status-danger {
+  background: rgba(220, 53, 69, 0.18);
+  color: #dc3545;
+}

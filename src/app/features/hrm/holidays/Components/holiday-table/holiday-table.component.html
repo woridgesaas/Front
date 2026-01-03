@@ -6,7 +6,6 @@
       <th class="text-center">الأعياد</th>
       <th class="text-center">Date</th>
       <th class="text-center">Jours</th>
-      <th class="text-center">Type</th>
       <th class="text-center">Action</th>
     </tr>
   </thead>
@@ -17,7 +16,6 @@
       <td class="text-center" dir="rtl">{{ h.nameAr }}</td>
       <td class="text-center">{{ h.date | date:'dd MMM yyyy' }}</td>
       <td class="text-center">{{ h.days }}</td>
-      <td class="text-center">{{ h.type }}</td>
 
       <td class="text-center">
         <ng-container *ngIf="h.type === 'religious'; else dash">
