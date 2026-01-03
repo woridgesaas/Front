@@ -589,6 +589,15 @@ export class DataService {
       separateRoute: false,
       menu: [
         {
+          menuValue: 'Traçabilité',
+          base: 'Administration',
+          hasSubRoute: false,
+          showSubRoute: false,
+          icon: 'ti ti-history',
+          subMenus:[],
+          route:routes.auditsUser
+        },
+        {
           menuValue: 'Rapports',
           base: 'reports',
           hasSubRoute: true,
@@ -935,6 +944,12 @@ export class DataService {
           icon: 'user-star',
           base: 'administration',
           subMenus: [
+            {
+              menuValue: 'Traçabilité',
+              hasSubRoute: false,
+              showSubRoute: false,
+              route:routes.auditsUser
+            },
             {
               menuValue: 'Rapport des employés',
               route: routes.employeereport,

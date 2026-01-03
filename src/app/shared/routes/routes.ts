@@ -65,6 +65,8 @@ export const routes = {
   leavereport: '/reports/leave-report',
   dailyreport: '/reports/daily-report',
 
+  //* Audit route
+  auditsUser:'/audits',
   //* Promotion route
   promotion: '/promotion',
 

@@ -1,0 +1,271 @@
+<!-- audit-detail-modal.component.html -->
+<div class="modal fade" id="auditDetailModal" tabindex="-1"[ngClass]="{'show': showAuditDetailsModal}" [ngStyle]="{'display': showAuditDetailsModal ? 'block' : 'none'}">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content border-0">
+      <!-- Header -->
+       <app-modal-header (close)="onCloseModal.emit()" [icon]="'ti ti-clipboard-text'" [title]="'Journal d\'activité #'+data?.id"></app-modal-header>
+    
+        <div class="d-flex justify-content-center align-items-center w-100 mt-1">
+           <div class="d-flex align-items-center gap-3">
+              <span class="badge" [ngClass]="getStatusBadgeClass()">
+                <i class="ti ti-circle-filled me-1 fs-10"></i>
+                {{ getStatusLabel() }}
+              </span>
+              <span class="text-muted">
+                <i class="ti ti-calendar me-1"></i>
+                {{ data?.timestamp | date:'dd/MM/yyyy' }}
+              </span>
+              <span class="text-muted">
+                <i class="ti ti-clock me-1"></i>
+                {{ data?.timestamp | date:'HH:mm:ss' }}
+              </span>
+            </div>
+      </div>
+
+      <div class="modal-body">
+        <!-- Section 1: Resume for the actiont ype-->
+        <div class="row mb-4">
+          <div class="col-12">
+            <div class="card border">
+              <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                  <div class="avatar avatar-lg avatar-rounded me-3" [ngClass]="getActionBgClass()">
+                    <i class="ti {{ getActionIcon() }} fs-24 text-white"></i>
+                  </div>
+                  <div>
+                    <h6 class="mb-1">{{ data?.user.name }} a effectué une action</h6>
+                    <p class="text-muted mb-0">
+                      {{ getActionLabel() }} dans le module {{ getModuleLabel() }}
+                    </p>
+                  </div>
+                </div>
+                
+                <div class="alert alert-light border mb-0">
+                  <div class="d-flex align-items-center">
+                    <i class="ti ti-file-text me-3 fs-5"></i>
+                    <div>
+                      <strong class="d-block">Objet : {{ data?.objectName }}</strong>
+                      <small class="text-muted">{{ data?.objectType || 'Document système' }}</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: Infos -->
+        <div class="row">
+          <!-- Colonne 1: User info -->
+          <div class="col-md-6 mb-4">
+            <h6 class="section-title mb-3">
+              <i class="ti ti-user-circle me-2"></i>
+              Informations utilisateur
+            </h6>
+            <div class="card border">
+              <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                  <div class="avatar avatar-xl avatar-rounded me-3">
+                    <img [src]="data?.user.avatar" 
+                         [alt]="data?.user.name"
+                         class="rounded-circle border"
+                         >
+                  </div>
+                  <div>
+                    <h6 class="mb-1">{{ data?.user.name }}</h6>
+                    <div class="d-flex flex-wrap gap-2">
+                      <span class="badge bg-primary">
+                        <i class="ti ti-badge me-1"></i>
+                        {{ getRoleLabel(data?.user.role) }}
+                      </span>
+                      <span class="badge bg-light text-dark border">
+                        <i class="ti ti-building me-1"></i>
+                        {{ data?.user.department || 'Non spécifié' }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Metrics -->
+                <div class="row g-2">
+                  <div class="col-6">
+                    <div class="metric-card">
+                      <small class="text-muted d-block">ID Utilisateur</small>
+                      <div class="fw-medium">#{{ data?.user.id }}</div>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="metric-card">
+                      <small class="text-muted d-block">Rôle</small>
+                      <div class="fw-medium">{{ getRoleLabel(data?.user.role) }}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Colonne 2: Technical metrics -->
+          <div class="col-md-6 mb-4">
+            <h6 class="section-title mb-3">
+              <i class="ti ti-device-analytics me-2"></i>
+              Métriques techniques
+            </h6>
+            <div class="card border">
+              <div class="card-body">
+                <div class="row g-3">
+                  <div class="col-6">
+                    <div class="metric-card">
+                      <div class="d-flex align-items-center mb-2">
+                        <div class="avatar avatar-xs avatar-rounded bg-light-primary me-2">
+                          <i class="ti ti-device-desktop text-primary"></i>
+                        </div>
+                        <small class="text-muted">Adresse IP</small>
+                      </div>
+                      <div class="fw-medium font-monospace">
+                        {{ data?.ipAddress || 'Non disponible' }}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col-6">
+                    <div class="metric-card">
+                      <div class="d-flex align-items-center mb-2">
+                        <div class="avatar avatar-xs avatar-rounded bg-light-success me-2">
+                          <i class="ti ti-clock text-success"></i>
+                        </div>
+                        <small class="text-muted">Durée</small>
+                      </div>
+                      <div class="fw-medium">
+                        {{ data?.duration || '0' }} ms
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col-6">
+                    <div class="metric-card">
+                      <div class="d-flex align-items-center mb-2">
+                        <div class="avatar avatar-xs avatar-rounded bg-light-info me-2">
+                          <i class="ti ti-category text-info"></i>
+                        </div>
+                        <small class="text-muted">Module</small>
+                      </div>
+                      <div class="fw-medium d-flex align-items-center">
+                        <i class="ti {{ getModuleIcon() }} me-2"></i>
+                        {{ getModuleLabel() }}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col-6">
+                    <div class="metric-card">
+                      <div class="d-flex align-items-center mb-2">
+                        <div class="avatar avatar-xs avatar-rounded bg-light-warning me-2">
+                          <i class="ti ti-activity text-warning"></i>
+                        </div>
+                        <small class="text-muted">Type d'action</small>
+                      </div>
+                      <div class="fw-medium">
+                        <span class="badge" [ngClass]="getActionBadgeClass()">
+                          {{ getActionLabel() }}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 3: Details -->
+        <div class="row">
+          <div class="col-12">
+            <h6 class="section-title mb-3">
+              <i class="ti ti-info-circle me-2"></i>
+              Contexte et détails
+            </h6>
+            <div class="card border">
+              <div class="card-body">
+                @if (data?.details) {
+                  <div class="table-responsive">
+                    <table class="table table-sm table-borderless mb-0">
+                      <tbody>
+                        @for (item of getFormattedDetails(); track $index) {
+                          <tr>
+                            <td class="text-muted" style="width: 200px;">
+                              <i class="ti ti-chevron-right me-2 text-primary"></i>
+                              {{ item.key }}
+                            </td>
+                            <td>
+                              <span class="fw-medium">
+                                @if (item.isObject) {
+                                  <span class="badge bg-light text-dark">
+                                    <i class="ti ti-braces me-1"></i>
+                                    Objet (voir console)
+                                  </span>
+                                } @else {
+                                  {{ item.value }}
+                                }
+                              </span>
+                            </td>
+                          </tr>
+                        }
+                      </tbody>
+                    </table>
+                  </div>
+                } @else {
+                  <div class="text-center py-4">
+                    <i class="ti ti-info-circle fs-48 text-muted mb-3"></i>
+                    <p class="text-muted mb-0">Aucun détail supplémentaire disponible</p>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 4: TimpeLine -->
+        <div class="row mt-4">
+          <div class="col-12">
+            <h6 class="section-title mb-3">
+              <i class="ti ti-timeline me-2"></i>
+              Séquence d'événements
+            </h6>
+            <div class="steps">
+              <div class="step-item">
+                <div class="step-indicator" [ngClass]="getStatusBgClass()">
+                  <i class="ti ti-{{ getActionIcon() }} text-white"></i>
+                </div>
+                <div class="step-content">
+                  <h6 class="mb-1">Action initiée</h6>
+                  <p class="text-muted mb-0">
+                    {{ data?.user.name }} a exécuté "{{ getActionLabel() }}"
+                  </p>
+                </div>
+              </div>
+              
+              <div class="step-item">
+                <div class="step-indicator bg-light">
+                  <i class="ti ti-check text-success"></i>
+                </div>
+                <div class="step-content">
+                  <h6 class="mb-1">Traitement complété</h6>
+                  <p class="text-muted mb-0">
+                    Statut : {{ getStatusLabel() }}
+                    @if (data?.duration) {
+                      • Durée : {{ data.duration }} ms
+                    }
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal footer -->
+       <app-modal-footer (cancel)="onCloseModal.emit()" [submitIcon]="'ti ti-user'" [submitText]="'Voir le profil utilisateur'"></app-modal-footer>
+    </div>
+  </div>
+</div>
