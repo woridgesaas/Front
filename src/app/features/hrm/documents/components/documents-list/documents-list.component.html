@@ -1,0 +1,135 @@
+<table
+  matSort
+  (matSortChange)="sortData($event)"
+  class="mat-sort table datanew table-center datatable dataTable mb-0"
+>
+  <thead class="thead-light">
+    <tr>
+      <th class="no-sort">
+        <div class="form-check form-check-md">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            [(ngModel)]="initChecked"
+            (change)="selectAll()"
+          />
+        </div>
+      </th>
+      <th mat-sort-header="documentName">Document</th>
+      <th mat-sort-header="category">Catégorie</th>
+      <th mat-sort-header="requestDate">Date demande</th>
+      <th mat-sort-header="status">Statut</th>
+      <th mat-sort-header="processedDate">Date traitement</th>
+      <th class="no-sort">Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    @for (item of data; track item.id) {
+      <tr>
+        <td>
+          <div class="form-check form-check-md">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              [(ngModel)]="item.isSelected"
+            />
+          </div>
+        </td>
+
+        <td>
+          <a
+            href="javascript:void(0);"
+            class="fw-medium"
+            (click)="onViewDetails(item)"
+          >
+            {{ item.documentName }}
+          </a>
+          <div class="text-muted small mt-1">
+            {{ item.description }}
+          </div>
+        </td>
+
+        <td>{{ item.category }}</td>
+
+        <td>
+          {{ item.requestDate | date : "dd/MM/yyyy" }}
+        </td>
+
+        <td>
+          <span
+            class="badge d-inline-flex align-items-center badge-xs"
+            [ngClass]="getStatusBadgeClass(item.status)"
+          >
+            <i class="ti ti-point-filled me-1"></i>
+            {{ getStatusText(item.status) }}
+          </span>
+        </td>
+
+        <td>
+          @if (item.processedDate) {
+            {{ item.processedDate | date : "dd/MM/yyyy" }}
+          } @else {
+            <span class="text-muted">-</span>
+          }
+        </td>
+
+        <td>
+            <div class="btn-group btn-group-sm" role="group">
+                <!-- Télécharger -->
+                @if (item.status === 'ready') {
+                <button
+                    type="button"
+                    (click)="onDownload(item)"
+                    class="btn btn-light border text-success"
+                    title="Télécharger"
+                >
+                    <i class="ti ti-download"></i>
+                </button>
+                }
+
+                <!-- Voir détails -->
+                <button
+                type="button"
+                (click)="onViewDetails(item)"
+                class="btn btn-light border text-primary"
+                title="Détails"
+                >
+                <i class="ti ti-eye"></i>
+                </button>
+
+                <!-- Annuler -->
+                @if (item.status === 'pending' || item.status === 'in_progress') {
+                <button
+                    type="button"
+                    (click)="onCancel(item)"
+                    class="btn btn-light border text-warning"
+                    title="Annuler"
+                >
+                    <i class="ti ti-x"></i>
+                </button>
+                }
+
+                <!-- Supprimer -->
+                <button
+                type="button"
+                (click)="onDelete(item)"
+                class="btn btn-light border text-danger"
+                title="Supprimer"
+                >
+                <i class="ti ti-trash"></i>
+                </button>
+            </div>
+            </td>
+      </tr>
+    }
+    
+    @if (data.length === 0) {
+      <tr>
+        <td colspan="7">
+          <h5 class="no-record">Aucune demande trouvée</h5>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>

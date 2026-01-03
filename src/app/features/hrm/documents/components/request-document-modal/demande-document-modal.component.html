@@ -1,15 +1,7 @@
-<!-- Modal de nouvelle demande -->
 <div class="modal fade" id="newDocumentDemand" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">
-          <i class="ti ti-file-plus me-2 text-primary"></i>
-          Nouvelle demande de document
-        </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      
+      <app-modal-header (close)="close.emit()" [icon]="'ti ti-file-plus'" [title]="'Nouvelle demande de document'"></app-modal-header>      
       <form #demandForm="ngForm" (ngSubmit)="submitDemand(demandForm)">
         <div class="modal-body">
           

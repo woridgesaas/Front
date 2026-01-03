@@ -4,17 +4,19 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
 import { DocumentCategory } from '../../../../../shared/enum/document-category.enum';
+import { ModalHeaderComponent } from '../../../../common/modal-header/modal-header.component';
 
 @Component({
   selector: 'app-demande-document-modal',
-  imports: [MatSelectModule , CommonModule ,FormsModule],
+  imports: [MatSelectModule , CommonModule ,FormsModule,ModalHeaderComponent],
   templateUrl: './demande-document-modal.component.html',
   styleUrl: './demande-document-modal.component.scss',
 })
 export class DemandeDocumentModalComponent implements OnInit{
   // Input: Liste des documents disponibles depuis le parent
   @Input() documentTemplates: DocumentTemplate[] = [];
-   @Output() demandCreated = new EventEmitter<{
+  @Output() close = new EventEmitter<void>();
+  @Output() demandCreated = new EventEmitter<{
     documentCode: string;
     notes?: string;
     urgent: boolean;
