@@ -1,0 +1,102 @@
+      <table
+                matSort
+                (matSortChange)="sortData($event)"
+                class="mat-sort table datanew table-center datatable dataTable mb-0"
+              >
+                <thead class="thead-light">
+                  <tr>
+                    <th class="no-sort">
+                      <div class="form-check form-check-md">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          [(ngModel)]="selectAll"
+                          (change)="toggleSelectAll()"
+                        />
+                      </div>
+                    </th>
+                    <th mat-sort-header="timestamp">Date/Time</th>
+                    <th mat-sort-header="user">User</th>
+                    <th mat-sort-header="action">Action</th>
+                    <th mat-sort-header="module">Module</th>
+                    <th mat-sort-header="object">Object</th>
+                    <th mat-sort-header="status">Status</th>
+                    <th class="no-sort">Details</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    
+@for (item of tableData; track item.id) {
+                    <tr>
+                      <td>
+                        <div class="form-check form-check-md">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            [(ngModel)]="item.isSelected"
+                          />
+                        </div>
+                      </td>
+                      
+                      <td>
+                        <div class="d-flex flex-column">
+                          <span class="fw-medium">{{ item.timestamp | date:'dd/MM/yyyy' }}</span>
+                          <small class="text-muted">{{ item.timestamp | date:'HH:mm:ss' }}</small>
+                        </div>
+                      </td>
+                      
+                      <td>
+                        <div class="d-flex align-items-center">
+                          <div class="avatar avatar-xs avatar-rounded me-2">
+                            <img [src]="item.user.avatar" [alt]="item.user.name" class="rounded-circle">
+                          </div>
+                          <div>
+                            <span class="d-block fw-medium">{{ item.user.name }}</span>
+                            <small class="text-muted">{{ item.user.role }}</small>
+                          </div>
+                        </div>
+                      </td>
+                      
+                      <td>
+                        <span class="badge" [ngClass]="getActionBadge(item.action)">
+                          <i class="ti {{ getActionIcon(item.action) }} me-1"></i>
+                          {{ getActionLabel(item.action) }}
+                        </span>
+                      </td>
+                      
+                      <td>
+                        <span class="badge bg-light text-dark border">
+                          {{ getModuleLabel(item.module) }}
+                        </span>
+                      </td>
+                      
+                      <td>{{ item.objectName }}</td>
+                      
+                      <td>
+                        <span class="badge" [ngClass]="getStatusBadge(item.status)">
+                          {{ getStatusLabel(item.status) }}
+                        </span>
+                      </td>
+                      
+                      <td>
+                        <button (click)="onViewDetails(item)" class="btn btn-sm btn-light">
+                          <i class="ti ti-eye"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  }
+                  
+                  @if (tableData.length === 0) {
+                    <tr>
+                      <td colspan="8" class="text-center py-5">
+                        <div class="empty-state">
+                          <i class="ti ti-clipboard-text fs-48 text-muted mb-3"></i>
+                          <h5 class="no-record">No activities found</h5>
+                        </div>
+                      </td>
+                    </tr>
+                  }
+
+                </tbody>
+                
+              </table>

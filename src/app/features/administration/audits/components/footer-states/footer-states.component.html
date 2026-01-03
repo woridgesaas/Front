@@ -1,0 +1,37 @@
+<div class="card-footer">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="d-flex align-items-center">
+              <div class="avatar avatar-sm avatar-rounded bg-light-primary me-2">
+                <i class="ti ti-checklist text-primary"></i>
+              </div>
+              <div>
+                <small class="text-muted">Total Activities</small>
+                <h6 class="mb-0">{{ auditStates['totalItems'] }}</h6>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="d-flex align-items-center">
+              <div class="avatar avatar-sm avatar-rounded bg-light-success me-2">
+                <i class="ti ti-check text-success"></i>
+              </div>
+              <div>
+                <small class="text-muted">Success</small>
+                <h6 class="mb-0">{{ auditStates['success'] }}</h6>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="d-flex align-items-center">
+              <div class="avatar avatar-sm avatar-rounded bg-light-danger me-2">
+                <i class="ti ti-x text-danger"></i>
+              </div>
+              <div>
+                <small class="text-muted">Errors</small>
+                <h6 class="mb-0">{{ auditStates['errors'] }}</h6>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>

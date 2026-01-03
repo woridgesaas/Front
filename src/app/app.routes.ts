@@ -603,8 +603,17 @@ export const routes: Routes = [
               title: 'Rapport des fiches de paie',
             },
           },
+          
         ],
       },
+      {
+        path: 'audits',
+        loadComponent: () =>
+          import('./features/administration/audits/audits.component').then(
+            (m) => m.AuditsComponent
+          ),
+        data: { breadcrumb: 'Journal des événements', title: 'Journal des événements' },
+      }
     ],
   },
 

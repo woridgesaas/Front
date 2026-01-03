@@ -180,6 +180,29 @@ export interface ChartOptions {
   tooltip?: ApexTooltip;
   fill?: ApexFill;
 }
+export interface AuditLog {
+  id: number;
+  timestamp: Date;
+  user: {
+    id: number;
+    name: string;
+    avatar: string;
+    role: string;
+    department: string;
+  };
+  action: string;
+  module: string;
+  objectName: string;
+  objectType?: string;
+  objectLink?: string;
+  details?: any;
+  ipAddress?: string;
+  status: string;
+  duration?: number;
+  isSelected?: boolean;
+}
+
+
 export interface apiResultFormat {
   data: [];
   totalData: number;
