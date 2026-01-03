@@ -201,7 +201,19 @@ export interface AuditLog {
   duration?: number;
   isSelected?: boolean;
 }
-
+export interface DocumentDemande {
+  id: number;
+  documentCode: string;
+  documentName: string;
+  description: string;
+  category: string;
+  requestDate: Date;
+  processedDate?: Date;
+  status: 'completed' | 'in_progress' | 'pending' | 'rejected' | 'ready';
+  notes?: string;
+  isSelected?: boolean;
+  sNo?: number;
+}
 
 export interface apiResultFormat {
   data: [];
