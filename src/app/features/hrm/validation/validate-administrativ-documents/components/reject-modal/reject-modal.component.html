@@ -1,0 +1,168 @@
+<div class="modal fade" id="refuseDemandModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <form #form="ngForm" (ngSubmit)="confirmRefusal(form)">
+    <div class="modal-content border-danger">
+      <!-- Header avec bordure rouge -->
+      <div class="modal-header border-0 pb-0 border-bottom border-danger">
+        <div class="d-flex align-items-center w-100">
+          <div class="me-3">
+            <div class="avatar avatar-lg avatar-rounded bg-danger-subtle">
+              <i class="ti ti-x fs-24 text-danger"></i>
+            </div>
+          </div>
+          <div class="flex-grow-1">
+            <h5 class="modal-title mb-1 text-danger">Refuser la demande</h5>
+            <div class="d-flex align-items-center gap-2">
+              <span class="badge bg-danger-subtle text-danger border-danger">
+              </span>
+              <small class="text-muted">
+                <i class="ti ti-clock me-1"></i>
+                {{ currentDate | date:'dd/MM/yyyy HH:mm' }}
+              </small>
+            </div>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <!-- Avertissement -->
+        <div class="alert alert-danger border mb-4">
+          <div class="d-flex align-items-center">
+            <i class="ti ti-alert-triangle fs-4 me-3"></i>
+            <div>
+              <h6 class="mb-1">Action irréversible</h6>
+              <p class="mb-0">
+                Vous êtes sur le point de refuser la demande de document de 
+                <strong>{{ data?.employeeName }}</strong>. Cette action sera notifiée à l'employé.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <!-- Colonne gauche: Informations employé -->
+          <div class="col-md-6">
+            <div class="card border mb-3">
+              <div class="card-header bg-light py-2">
+                <h6 class="mb-0">
+                  <i class="ti ti-user me-2"></i>Employé concerné
+                </h6>
+              </div>
+              <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                  <div class="avatar avatar-xl avatar-rounded me-3">
+                    <img [src]="data?.employeeAvatar || 'assets/images/default-avatar.png'" 
+                         [alt]="data?.employeeName"
+                         class="rounded-circle border">
+                  </div>
+                  <div>
+                    <h6 class="mb-1">{{ data?.employeeName }}</h6>
+                    <div class="d-flex flex-wrap gap-2">
+                      <span class="badge bg-primary">{{ data?.employeeRole }}</span>
+                      <span class="badge bg-light text-dark border">{{ data?.employeeDepartment }}</span>
+                    </div>
+                    <small class="text-muted d-block mt-1">{{ data?.employeeEmail }}</small>
+                  </div>
+                </div>
+
+                <div class="row g-2">
+                  <div class="col-12">
+                    <div class="d-flex align-items-center">
+                      <i class="ti ti-calendar text-muted me-2"></i>
+                      <div>
+                        <small class="text-muted">Demande effectuée</small>
+                        <div class="fw-medium">{{ data?.requestDate | date:'dd/MM/yyyy à HH:mm' }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Colonne droite: Détails de la demande -->
+          <div class="col-md-6">
+            <div class="card border mb-3">
+              <div class="card-header bg-light py-2">
+                <h6 class="mb-0">
+                  <i class="ti ti-file-text me-2"></i>Demande à refuser
+                </h6>
+              </div>
+              <div class="card-body">
+                <div class="mb-3">
+                  <small class="text-muted d-block">Document demandé</small>
+                  <h5 class="mb-1">{{ data?.documentName }}</h5>
+                  <p class="text-muted mb-0 small">{{ data?.description }}</p>
+                </div>
+
+                <div class="row g-3">
+                  <div class="col-6">
+                    <small class="text-muted d-block">Type</small>
+                    <div class="fw-medium">{{ data?.documentType || data?.category }}</div>
+                  </div>
+                  
+                  @if (data?.justification) {
+                    <div class="col-12">
+                      <small class="text-muted d-block">Justification employé</small>
+                      <div class="bg-light p-2 rounded small">
+                        "{{ data.justification }}"
+                      </div>
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section: Motif du refus -->
+        <div class="card border border-danger">
+          <div class="card-header bg-danger-subtle text-danger py-2">
+            <h6 class="mb-0">
+              <i class="ti ti-notes me-2"></i>Motif du refus
+            </h6>
+          </div>
+          
+          <div class="card-body">
+            
+            <!-- Raison détaillée -->
+            <div class="mb-3">
+              <label class="form-label fw-medium">
+                Explication détaillée <span class="text-danger">*</span>
+             
+              </label>
+              <textarea 
+                [(ngModel)]="refuseForm.motif.raison" 
+               name="refusalReason"
+                class="form-control" 
+                rows="4" 
+                placeholder="Expliquez clairement les raisons du refus..."
+                required>
+              </textarea>
+              @if (!form.valid) {
+                <div class="invalid-feedback">
+                  Veuillez indiquer le motif du refus.
+                </div>
+              }
+            </div>
+             
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer border-0 border-top">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          <i class="ti ti-arrow-back me-1"></i>Revenir
+        </button>
+        <button type="submit" [disabled]="!form.valid" class="btn btn-danger">
+          <i class="ti ti-x me-1"></i>Confirmer le refus
+        </button>
+        
+      </div>
+      
+    </div>
+    </form>
+  </div>
+</div>

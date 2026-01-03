@@ -1,0 +1,60 @@
+// accept-demand-modal.component.scss
+.avatar-rounded {
+  border-radius: 12px;
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  &.avatar-lg {
+    width: 60px;
+    height: 60px;
+    
+    i {
+      font-size: 24px;
+    }
+  }
+  
+  &.avatar-xl {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+// Alert personnalisé
+.alert {
+  border-left-width: 4px;
+  
+  &.alert-success {
+    border-left-color: var(--bs-success);
+  }
+  
+  &.alert-warning {
+    border-left-color: var(--bs-warning);
+  }
+}
+
+// Input group ajusté
+.input-group {
+  .form-control {
+    border-right: 0;
+  }
+  
+  .input-group-text {
+    background-color: var(--bs-light);
+    border-left: 0;
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .modal-dialog {
+    margin: 0.5rem;
+  }
+  
+  .row > [class*="col-"] {
+    margin-bottom: 1rem;
+  }
+}

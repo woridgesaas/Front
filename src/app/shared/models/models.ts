@@ -214,7 +214,37 @@ export interface DocumentDemande {
   isSelected?: boolean;
   sNo?: number;
 }
+export interface RhDocumentDemande {
 
+  id: number;
+  documentName: string;
+  description: string;
+  category: string;
+  requestDate: Date;
+  status: 'pending' | 'in_progress' | 'ready' | 'accepted' | 'rejected' | 'cancelled';
+  processedDate?: Date;
+
+  employeeId: number;
+  employeeName: string;
+  employeeAvatar?: string;
+  employeeRole: string;
+  employeeDepartment: string;
+  employeeEmail: string;
+  
+  // Gestion RH
+  justification?: string;
+  urgency?: 'low' | 'medium' | 'high';
+  processedBy?: string;
+  processingNotes?: string;
+  
+
+  documentType?: string; 
+  requiredFormat?: string;
+  deliveryMethod?: 'email' | 'download' | 'print';
+  
+  estimatedProcessingDays: number;
+  actualProcessingDays?: number;
+}
 export interface apiResultFormat {
   data: [];
   totalData: number;

@@ -486,6 +486,11 @@ export const routes: Routes = [
               title: 'Validation des informations personnelles',
             },
           },
+          {
+            path: 'validate-documents',
+            loadComponent: ()=>import('./features/hrm/validation/validate-administrativ-documents/validate-administrativ-documents.component').then(m=>m.ValidateAdministrativDocumentsComponent),
+            data:{breadcrumb : 'Documents Administratifs', title :'Documents Administratifs'}
+          }
         ],
       },
 
