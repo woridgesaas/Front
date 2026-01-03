@@ -5,7 +5,11 @@ import { FormsModule } from '@angular/forms';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { BreadcrumbsComponent } from '../../../common/breadcrumbs/breadcrumbs.component';
 import { FooterComponent } from '../../../common/footer/footer.component';
-import { routes } from '../../../../shared/routes/routes';
+import { Justification } from '../../../../shared/models/models';
+import { JustificationStatsComponent } from './components/justification-stats/justification-stats.component';
+import { JustificationFiltersComponent } from './components/justification-filters/justification-filters.component';
+import { JustificationTableComponent } from './components/justification-table/justification-table.component';
+import { Router } from '@angular/router';
 
 @Component({
   standalone: true,
@@ -18,39 +22,72 @@ import { routes } from '../../../../shared/routes/routes';
     BsDatepickerModule,
     BreadcrumbsComponent,
     FooterComponent,
+    JustificationStatsComponent,
+    JustificationFiltersComponent,
+    JustificationTableComponent,
   ],
 })
 export class ValidateJustificationComponent implements OnInit {
+  employees: Justification[] = [];
+  departments: { Department: string }[] = [];
   bsRangeValue?: Date[];
+  allEmployees: Justification[] = [];
+  searchTerm = '';
+  selectedDepartment?: string;
+  constructor(private http: HttpClient, private router: Router) {}
 
-  employees: any[] = [];
-  departments: any[] = [];
-  public routes = routes;
+  goToProfile(emp: Justification) {
+    this.router.navigate(['/employees/employee-details'], {
+      queryParams: { id: emp.EmpId },
+    });
+  }
+  applyFilters() {
+    let data = [...this.allEmployees];
 
-  constructor(private http: HttpClient) {}
+    if (this.searchTerm) {
+      const t = this.searchTerm.toLowerCase();
+      data = data.filter(
+        (emp) =>
+          emp.Name.toLowerCase().includes(t) ||
+          emp.Designation.toLowerCase().includes(t) ||
+          emp.Status.toLowerCase().includes(t)
+      );
+    }
 
+    this.employees = data;
+  }
+
+  onSearch(value: string) {
+    this.searchTerm = value;
+    this.applyFilters();
+  }
   ngOnInit(): void {
     this.loadEmployees();
     this.loadDepartments();
   }
-
   // ======================
   // Chargement employés
   // ======================
   loadEmployees() {
-    this.http.get<any>('assets/json/employee-grid.json').subscribe({
-      next: (res) => {
-        this.employees = res.data;
-      },
-      error: (err) => {
-        console.error('Erreur chargement employés', err);
-      },
+    this.http.get<any>('assets/json/employee-grid.json').subscribe((res) => {
+      this.allEmployees = res.data;
+      this.employees = [...this.allEmployees];
     });
   }
 
-  // ======================
-  // Chargement départements
-  // ======================
+  filterByDepartment(dept: string) {
+    this.selectedDepartment = dept;
+
+    //  Tous les départements
+    if (dept === 'ALL') {
+      this.employees = [...this.allEmployees];
+      return;
+    }
+
+    // Filtre normal
+    this.employees = this.allEmployees.filter((e) => e.Designation === dept);
+  }
+
   loadDepartments() {
     this.departments = [
       { Department: 'Finance' },
@@ -66,46 +103,13 @@ export class ValidateJustificationComponent implements OnInit {
     ];
   }
 
-  // ======================
-  // Actions
-  // ======================
-  downloadDocument(emp: any) {
-    if (!emp.Document) {
-      alert('Aucun document disponible');
-      return;
-    }
-
-    const fileUrl = `assets/docs/${emp.Document}`;
-    const link = document.createElement('a');
-    link.href = fileUrl;
-    link.download = emp.Document.split('/').pop();
-    link.click();
+  validate(j: Justification) {
+    j.Status = 'Accepter';
   }
 
-  validate(emp: any) {
-    emp.Status = 'Validée';
+  refuse(j: Justification) {
+    j.Status = 'Refuser';
   }
 
-  refuse(emp: any) {
-    emp.Status = 'Refusée';
-  }
-  selectedEmployee: any = null;
-
-  openRefuseModal(emp: any) {
-    this.selectedEmployee = emp;
-    const modal = new (window as any).bootstrap.Modal(
-      document.getElementById('confirmRefuseModal')
-    );
-    modal.show();
-  }
-
-  confirmRefuse() {
-    if (this.selectedEmployee) {
-      this.selectedEmployee.Status = 'Refusée';
-    }
-
-    const modalEl = document.getElementById('confirmRefuseModal');
-    const modal = (window as any).bootstrap.Modal.getInstance(modalEl);
-    modal.hide();
-  }
+  downloadDocument(j: Justification) {}
 }

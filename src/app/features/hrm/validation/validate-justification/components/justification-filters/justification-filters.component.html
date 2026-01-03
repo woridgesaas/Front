@@ -1,0 +1,64 @@
+<div class="d-flex align-items-center gap-3 ms-auto">
+  <!-- Département -->
+  <div class="dropdown">
+    <button
+      class="btn btn-outline-secondary dropdown-toggle"
+      type="button"
+      data-bs-toggle="dropdown"
+    >
+      Département
+    </button>
+
+    <ul class="dropdown-menu dropdown-menu-end">
+      <!-- TOUS -->
+      <li>
+        <button
+          class="dropdown-item fw-medium"
+          type="button"
+          (click)="departmentChange.emit('ALL')"
+        >
+          Tous les départements
+        </button>
+      </li>
+
+      <li><hr class="dropdown-divider" /></li>
+
+      <!-- Départements -->
+      <li *ngFor="let dept of departments">
+        <button
+          class="dropdown-item"
+          type="button"
+          (click)="departmentChange.emit(dept.Department)"
+        >
+          {{ dept.Department }}
+        </button>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Date range -->
+  <div class="input-icon position-relative">
+    <span class="input-icon-addon">
+      <i class="ti ti-calendar"></i>
+    </span>
+
+    <input
+      type="text"
+      class="form-control"
+      bsDaterangepicker
+      [ngModel]="dateRange"
+      (ngModelChange)="dateRangeChange.emit($event)"
+      placeholder="dd/mm/yyyy - dd/mm/yyyy"
+    />
+  </div>
+  <!-- SEARCH RIGHT -->
+  <div class="filters-right">
+    <input
+      type="search"
+      class="form-control form-control-sm"
+      placeholder="Search..."
+      [ngModel]="searchTerm"
+      (ngModelChange)="onSearchChange($event)"
+    />
+  </div>
+</div>

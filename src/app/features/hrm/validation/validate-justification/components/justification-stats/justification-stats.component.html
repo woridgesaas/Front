@@ -1,0 +1,39 @@
+<div class="row mb-4 g-3">
+
+  <div class="col-lg-3 col-md-6">
+    <app-kpi-card
+      title="Total justifications"
+      [value]="total"
+      icon="ti ti-files"
+      color="primary">
+    </app-kpi-card>
+  </div>
+
+  <div class="col-lg-3 col-md-6">
+    <app-kpi-card
+      title="En attente"
+      [value]="pending"
+      icon="ti ti-clock"
+      color="warning">
+    </app-kpi-card>
+  </div>
+
+  <div class="col-lg-3 col-md-6">
+    <app-kpi-card
+      title="Validées"
+      [value]="approved"
+      icon="ti ti-check"
+      color="success">
+    </app-kpi-card>
+  </div>
+
+  <div class="col-lg-3 col-md-6">
+    <app-kpi-card
+      title="Refusées"
+      [value]="refused"
+      icon="ti ti-x"
+      color="danger">
+    </app-kpi-card>
+  </div>
+
+</div>

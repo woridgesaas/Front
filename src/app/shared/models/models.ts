@@ -6,7 +6,7 @@ export interface Sondage {
   departement: string;
   dateCreation: string;
   dateExpiration: string;
-  statut: 'Actif' | 'Expiré' ;
+  statut: 'Actif' | 'Expiré';
 
   // Options du sondage
   options: SondageOption[];
@@ -32,31 +32,31 @@ export interface SondageOption {
   texte: string;
   votes: number;
   pourcentage?: number;
-  couleur?: string;          // Pour les charts
+  couleur?: string; // Pour les charts
 }
-export interface SondageForm{
-    titre: string;
-    description?: string;
-    options: string[];
+export interface SondageForm {
+  titre: string;
+  description?: string;
+  options: string[];
 }
-  export interface sondageEmployes{
-     id: number;
-    titre: string;
-    creeIlYa: string;
-    expireDans: number;
-    options: string[];
-    selectedOption?: number;
-    voted: boolean;
-    totalVotes: number;
-  }
-  export interface AnnonceForm{
-    titre: string;
-    contenu: string;
-    visibilite:'public' | 'departement';
-    departementId?: number; //pour visibilite = departement
-    hashtags?: string[];
-  }
-  export interface pageSelection {
+export interface sondageEmployes {
+  id: number;
+  titre: string;
+  creeIlYa: string;
+  expireDans: number;
+  options: string[];
+  selectedOption?: number;
+  voted: boolean;
+  totalVotes: number;
+}
+export interface AnnonceForm {
+  titre: string;
+  contenu: string;
+  visibilite: 'public' | 'departement';
+  departementId?: number; //pour visibilite = departement
+  hashtags?: string[];
+}
+export interface pageSelection {
   skip: number;
   limit: number;
 }
@@ -69,9 +69,8 @@ export interface TicketBase {
   priorite: 'Basse' | 'Moyenne' | 'Haute' | 'Urgente' | 'Par default';
   statut: 'Ouvert' | 'En Cours' | 'Résolu' | 'Fermé';
   createdAt: string;
-  isSelected?:boolean;
+  isSelected?: boolean;
 }
-
 
 export interface TicketAdmin extends TicketBase {
   assignedTo: {
@@ -81,7 +80,6 @@ export interface TicketAdmin extends TicketBase {
   } | null;
   departement: string;
   updated: string;
-
 }
 export interface NewTicketForm {
   titre: string;
@@ -92,7 +90,7 @@ export interface NewTicketForm {
   assignedTo?: number; // role = canAssigneTicket just
   departement?: string; // role = canAssigneTicket just
 }
-export interface TicketDetailData extends TicketBase{
+export interface TicketDetailData extends TicketBase {
   // Historique des statuts
   historiqueStatuts: Array<{
     date: string;
@@ -162,8 +160,21 @@ export interface ChatGroup {
   members: number[];
   type: 'department' | 'announcement' | '';
   lastActivity?: Date;
-  isSelected?:boolean
+  isSelected?: boolean;
 }
+export interface Justification {
+  EmpId: string;
+  Name: string;
+  Image: string;
+  Email: string;
+  Phone: string;
+  Designation: string;      // Département
+  RequestDate?: string;     // Date de demande
+  Document?: string;        // justificatif
+  Status: 'En attente' | 'Accepter' | 'Refuser';
+}
+
+
 export interface ChartOptions {
   series: ApexAxisChartSeries | ApexNonAxisChartSeries;
   chart: ApexChart;
@@ -281,7 +292,6 @@ export class passwordResponce {
   passwordResponceKey?: string;
 }
 
-
 export interface language {
   isSelected?: boolean;
   id: number;
@@ -374,7 +384,6 @@ export interface chatSidebar {
   class?: string;
 }
 
-
 export interface PackageList {
   sNo?: number;
   isSelected: boolean;
@@ -401,7 +410,6 @@ export interface Star {
   half?: boolean;
 }
 
-
 export interface SideBarMenu {
   showMyTab?: boolean;
   menuValue: string;
@@ -410,14 +418,14 @@ export interface SideBarMenu {
   showSubRoute: boolean;
   icon: string;
   base?: string;
-  base2?:string;
-  base3?:string;
-  base4?:string;
-  base5?:string;
-  base7?:string;
-  base8?:string;
-  base9?:string;
-  base10?:string;
+  base2?: string;
+  base3?: string;
+  base4?: string;
+  base5?: string;
+  base7?: string;
+  base8?: string;
+  base9?: string;
+  base10?: string;
   last1?: string;
   last?: string;
   page?: string;
@@ -447,7 +455,7 @@ export interface SubMenu {
   base6?: string;
   base7?: string;
   base8?: string;
-  dot?:boolean;
+  dot?: boolean;
   currentActive?: boolean;
   hasSubRoute?: boolean;
   showSubRoute?: boolean;
@@ -477,8 +485,8 @@ export interface SideBar {
   tittle: string;
   icon?: string;
   showAsTab: boolean;
-  base?:string;
-  base2?:string;
+  base?: string;
+  base2?: string;
   separateRoute: boolean;
   materialicons?: string;
   menu: SideBarMenu[];
@@ -507,7 +515,7 @@ export interface SubMenu2 {
   showSubRoute?: boolean;
   customSubmenuTwo?: boolean;
   subMenusTwo?: SubMenuTwo[];
-  action?: string;  // ✅ Cette ligne existe déjà dans votre code
+  action?: string; // ✅ Cette ligne existe déjà dans votre code
 }
 
 export interface Menu {
@@ -530,10 +538,9 @@ export interface Menu {
   subMenus?: SubMenu2[];
   customSubmenuTwo?: boolean;
   subMenusTwo?: SubMenuTwo[];
-  action?: string;  // ✅ AJOUTEZ CETTE LIGNE
-  route?: string | null;  // ✅ AJOUTEZ AUSSI CELLE-CI si elle n'existe pas
+  action?: string; // ✅ AJOUTEZ CETTE LIGNE
+  route?: string | null; // ✅ AJOUTEZ AUSSI CELLE-CI si elle n'existe pas
 }
-
 
 export interface MainMenu {
   title: string;
@@ -542,7 +549,6 @@ export interface MainMenu {
   base?: string;
   menu: Menu[];
 }
-
 
 export interface activities {
   sNo?: number;
@@ -553,7 +559,6 @@ export interface activities {
   owner: string;
   createdAt: string;
 }
-
 
 export interface Activity {
   sNo?: number;
@@ -587,7 +592,6 @@ export interface department {
   isSelected: boolean;
 }
 
-
 export interface designation {
   sNo?: number;
   isSelected: boolean;
@@ -605,7 +609,6 @@ export interface Holiday {
   date: Date;
   days: number;
 }
-
 
 export interface attendanceadmin {
   Date: string | number | Date;
@@ -671,7 +674,6 @@ export interface pageSizeCal {
   serialNumberArray?: number[]; // ✅ optionnel
 }
 
-
 export interface resignation {
   sNo?: number;
   isSelected: boolean;
@@ -682,7 +684,6 @@ export interface resignation {
   NoticeDate: string;
   ResignationDate: string;
 }
-
 
 export interface Activity {
   sNo?: number;
@@ -746,7 +747,6 @@ export interface leaveEmployee {
   justificatif?: File;
 }
 
-
 export interface InvoiceList {
   sNo?: number;
   isSelected: boolean;
@@ -774,15 +774,10 @@ export interface InvoicePaymentDetails {
   Paid_Amount: string;
 }
 
-
-
-
-
-
 export interface employeeSalary {
   sNo?: number;
   isSelected: boolean;
-  Image:string;
+  Image: string;
   EmpID: string;
   Name: string;
   Department: string;
@@ -792,11 +787,7 @@ export interface employeeSalary {
   JoiningDate: string;
   Salary: string;
   PaySlip: string;
-};
-
-
-
-
+}
 
 export interface payslipReport {
   sNo?: number;
@@ -808,7 +799,6 @@ export interface payslipReport {
   PaidMonth: string;
   PaidYear: string;
 }
-
 
 export interface leaveReport {
   sNo?: number;
@@ -824,8 +814,6 @@ export interface leaveReport {
   Status: string;
 }
 
-
-
 export interface employeeReport {
   sNo?: number;
   isSelected: boolean;
@@ -839,7 +827,6 @@ export interface employeeReport {
   JoiningDate: string;
   Status: string;
 }
-
 
 export interface dailyReport {
   sNo?: number;
@@ -865,7 +852,7 @@ export interface attendanceReport {
   Break: string;
   Late: string;
   Overtime: string;
-  Progress:number;
+  Progress: number;
   ProductionHours: string;
 }
 export interface ApiData {
