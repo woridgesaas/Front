@@ -15,18 +15,18 @@
                         />
                       </div>
                     </th>
-                    <th mat-sort-header="timestamp">Date/Time</th>
+                    <th mat-sort-header="timestamp">Date/Heure</th>
                     <th mat-sort-header="user">User</th>
-                    <th mat-sort-header="action">Action</th>
+                    <th mat-sort-header="action">Utilisateur</th>
                     <th mat-sort-header="module">Module</th>
-                    <th mat-sort-header="object">Object</th>
-                    <th mat-sort-header="status">Status</th>
-                    <th class="no-sort">Details</th>
+                    <th mat-sort-header="object">Objet</th>
+                    <th mat-sort-header="status">Statut</th>
+                    <th class="no-sort">Détails</th>
                   </tr>
                 </thead>
                 <tbody>
                     
-@for (item of tableData; track item.id) {
+                @for (item of tableData; track item.id) {
                     <tr>
                       <td>
                         <div class="form-check form-check-md">
