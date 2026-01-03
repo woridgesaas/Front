@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
 @Component({
   standalone: true,
   selector: 'app-validate-justification',
-  templateUrl: './validate-justification.component.html',
+  templateUrl: './validate-Justification.component.html',
   styleUrls: ['./validate-justification.component.scss'],
   imports: [
     CommonModule,
