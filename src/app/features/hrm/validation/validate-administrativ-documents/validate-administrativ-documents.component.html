@@ -111,10 +111,13 @@
   </div>
   <!-- ============ MODALS ===================-->
     <!-- Modal acceptation request -->
-    @if(selectedDemande !=null && showAcceptModal){
+    @if(showAcceptModal){
         <app-accept-modal [data]="selectedDemande"></app-accept-modal>
     }
-    @if(selectedDemande != null && showRejectModal){
+    @if(showRejectModal){
         <app-reject-modal (cancelled)="handlleRejectModalClosed()" (refused)="rejectRequest($event)" [data]="selectedDemande"></app-reject-modal>
+    }
+    @if(showDetailsModal){
+        <app-details-modal (close)="handlleDetailsModalClosed()" [data]="selectedDemande"></app-details-modal>
     }
 </div>

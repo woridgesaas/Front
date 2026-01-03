@@ -10,10 +10,11 @@ import { CustomPaginationComponent } from '../../../../shared/custom-pagination/
 import { DocumentsListComponent } from './components/documents-list/documents-list.component';
 import { AcceptModalComponent } from './components/accept-modal/accept-modal.component';
 import { RejectModalComponent } from './components/reject-modal/reject-modal.component';
+import { DetailsModalComponent } from './components/details-modal/details-modal.component';
 
 @Component({
   selector: 'app-validate-administrativ-documents',
-  imports: [AcceptModalComponent, RejectModalComponent,BreadcrumbsComponent,DocumentsKpisComponent,BsDatepickerModule,CommonModule,FormsModule,DocumentsListComponent,CustomPaginationComponent],
+  imports: [DetailsModalComponent,AcceptModalComponent, RejectModalComponent,BreadcrumbsComponent,DocumentsKpisComponent,BsDatepickerModule,CommonModule,FormsModule,DocumentsListComponent,CustomPaginationComponent],
   templateUrl: './validate-administrativ-documents.component.html',
   styleUrl: './validate-administrativ-documents.component.scss',
 })
@@ -41,7 +42,7 @@ export class ValidateAdministrativDocumentsComponent {
   selectedDemande: RhDocumentDemande | null = null;
   showAcceptModal:boolean=false;
   showRejectModal:boolean=false;
-  refusalReason:string ='';
+  showDetailsModal:boolean=false;
   constructor(private documentsService: DocumentsService) {}
 
   ngOnInit(): void {
@@ -152,11 +153,20 @@ export class ValidateAdministrativDocumentsComponent {
   handlleRejectModalClosed():void{
     this.selectedDemande =null;
   }
+  //open details model go
   onViewJustification(demande: RhDocumentDemande): void {
     this.selectedDemande = demande;
-    
+    this.showDetailsModal=true;
+     const modalEl = document.getElementById("demandDetailsModal");
+    if(modalEl){
+      const modal = new(window as any).bootstrap.Modal(modalEl);
+      modal.show();
+    }
   }
-
+  //reset selectedRequest after closed modal
+  public handlleDetailsModalClosed():void{
+    this.selectedDemande=null;
+  }
   // Helpers pour l'affichage
   getStatusText(status: string): string {
     const map: Record<string, string> = {
