@@ -1,0 +1,63 @@
+<div class="dropdown profile-dropdown">
+  <a
+    href="javascript:void(0);"
+    class="dropdown-toggle d-flex align-items-center"
+    data-bs-toggle="dropdown"
+  >
+    <span class="avatar avatar-sm online">
+      <img
+        [src]="user.avatar"
+        alt="Img"
+        class="img-fluid rounded-circle"
+      />
+    </span>
+  </a>
+
+  <div class="dropdown-menu shadow-none">
+    <div class="card mb-0">
+      <!-- Header -->
+      <div class="card-header">
+        <div class="d-flex align-items-center">
+          <span class="avatar avatar-lg me-2 avatar-rounded">
+            <img [src]="user.avatar" alt="img" />
+          </span>
+          <div>
+            <h5 class="mb-0">{{ user.name }}</h5>
+            <p class="fs-12 fw-medium mb-0">{{ user.email }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Body -->
+      <div class="card-body">
+        <a
+          class="dropdown-item d-inline-flex align-items-center p-0 py-2"
+          [routerLink]="routes.employeeDetails"
+        >
+          <i class="ti ti-circle-arrow-up me-1"></i>
+          Profil
+        </a>
+
+        <a
+          class="dropdown-item d-inline-flex align-items-center p-0 py-2"
+          [routerLink]="routes.changePassword"
+        >
+          <i class="ti ti-settings me-1"></i>
+          Paramètres
+        </a>
+      </div>
+
+      <!-- Footer -->
+      <div class="card-footer">
+        <a
+          class="dropdown-item d-inline-flex align-items-center p-0 py-2"
+          [routerLink]="routes.login"
+        >
+          <i class="ti ti-login me-2"></i>
+          Déconnexion
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
