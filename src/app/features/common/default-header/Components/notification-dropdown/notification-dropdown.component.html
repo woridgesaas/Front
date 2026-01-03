@@ -1,0 +1,70 @@
+<div class="me-1 notification_item dropdown">
+  <a
+    href="javascript:void(0);"
+    class="btn btn-menubar position-relative"
+    data-bs-toggle="dropdown"
+    id="notification_popup"
+  >
+    <i class="ti ti-bell"></i>
+    <span class="notification-status-dot"></span>
+  </a>
+
+  <div class="dropdown-menu dropdown-menu-end notification-dropdown p-4">
+    <!-- Header -->
+    <div
+      class="d-flex align-items-center justify-content-between border-bottom p-0 pb-3 mb-3"
+    >
+      <h4 class="notification-title">
+        Notifications ({{ notificationsCount }})
+      </h4>
+
+      <a href="javascript:void(0);" class="text-primary fs-15">
+        Mark all as read
+      </a>
+    </div>
+
+    <!-- Content -->
+    <div class="noti-content">
+      <div class="d-flex flex-column">
+        @for (noti of notifications; track noti) {
+          <div class="border-bottom mb-3 pb-3">
+            <div class="d-flex">
+              <span class="avatar avatar-lg me-2 flex-shrink-0">
+                <img [src]="noti.avatar" alt="Profile" />
+              </span>
+
+              <div class="flex-grow-1">
+                <p class="mb-1">
+                  <span class="text-dark fw-semibold">
+                    {{ noti.user }}
+                  </span>
+                  {{ noti.message }}
+                </p>
+
+                <span>{{ noti.time }}</span>
+
+                @if (noti.actions) {
+                  <div
+                    class="d-flex justify-content-start align-items-center mt-1"
+                  >
+                    <span class="btn btn-light btn-sm me-2">Deny</span>
+                    <span class="btn btn-primary btn-sm">Approve</span>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="d-flex p-0">
+      <a href="javascript:void(0);" class="btn btn-light w-100 me-2">
+        Cancel
+      </a>
+      <a class="btn btn-primary w-100">View All</a>
+    </div>
+  </div>
+</div>
+
