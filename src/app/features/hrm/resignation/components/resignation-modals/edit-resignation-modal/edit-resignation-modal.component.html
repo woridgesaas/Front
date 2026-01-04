@@ -1,0 +1,112 @@
+<div class="modal fade show d-block" *ngIf="open">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content">
+      <!-- HEADER -->
+      <app-modal-header
+        title="Modifier la démission"
+        icon="ti ti-edit"
+        (close)="cancel.emit()"
+      >
+      </app-modal-header>
+
+      <form (ngSubmit)="submit()">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Employé</label>
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="form.ResigningEmployee"
+              name="employee"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Département</label>
+
+            <div class="dropdown">
+              <button
+                type="button"
+                class="btn btn-outline-secondary w-50 d-flex justify-content-between align-items-center"
+                (click)="isDeptOpen = !isDeptOpen"
+              >
+                {{ form.Department || "Sélectionner un département" }}
+
+                <i class="ti ti-chevron-down"></i>
+              </button>
+
+              <ul class="dropdown-menu show w-50" *ngIf="isDeptOpen">
+                <li *ngFor="let dept of departments">
+                  <button
+                    type="button"
+                    class="dropdown-item"
+                    (click)="selectDepartment(dept.Department)"
+                  >
+                    {{ dept.Department }}
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Date de préavis</label>
+
+            <div class="input-icon position-relative">
+              <span class="input-icon-addon">
+                <i class="ti ti-calendar text-gray-9"></i>
+              </span>
+
+              <input
+                type="text"
+                class="form-control"
+                bsDatepicker
+                [(ngModel)]="form.NoticeDate"
+                name="noticeDate"
+                placeholder="jj/mm/aaaa"
+              />
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Date de démission</label>
+
+            <div class="input-icon position-relative">
+              <span class="input-icon-addon">
+                <i class="ti ti-calendar text-gray-9"></i>
+              </span>
+
+              <input
+                type="text"
+                class="form-control"
+                bsDatepicker
+                [(ngModel)]="form.ResignationDate"
+                name="resignationDate"
+                placeholder="jj/mm/aaaa"
+              />
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Motif</label>
+            <textarea
+              class="form-control"
+              rows="3"
+              [(ngModel)]="form.Reason"
+              name="reason"
+            >
+            </textarea>
+          </div>
+        </div>
+
+        <!-- FOOTER -->
+        <app-modal-footer
+          submitText="Enregistrer"
+          submitIcon="ti ti-device-floppy"
+          (cancel)="cancel.emit()"
+        >
+        </app-modal-footer>
+      </form>
+    </div>
+  </div>
+</div>

@@ -29,14 +29,13 @@
 
     <div class="card-body p-0">
       <!-- TABLE -->
-<app-departments-table
-  [departments]="filteredDepartments"
-  (edit)="openEdit($event)"
-  (delete)="openDelete($event)"
-  (sort)="sortData($event)"
->
-</app-departments-table>
-
+      <app-departments-table
+        [departments]="filteredDepartments"
+        (edit)="openEdit($event)"
+        (delete)="openDelete($event)"
+        (sort)="sortData($event)"
+      >
+      </app-departments-table>
 
       <!-- MODALS -->
       <app-add-department-modal

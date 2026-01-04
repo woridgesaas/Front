@@ -705,14 +705,15 @@ export interface pageSizeCal {
 }
 
 export interface resignation {
+resignation: any;
   sNo?: number;
   isSelected: boolean;
   Image: string;
   ResigningEmployee: string;
   Department: string;
   Reason: string;
-  NoticeDate: string;
-  ResignationDate: string;
+  NoticeDate: Date | null;
+  ResignationDate: Date | null;
 }
 
 export interface Activity {
