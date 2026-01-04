@@ -1,0 +1,33 @@
+<div class="row mb-4 g-3">
+
+  <!-- TOTAL PROMOTIONS -->
+  <div class="col-lg-4 col-md-6">
+    <app-kpi-card
+      title="Total promotions"
+      [value]="total"
+      icon="ti ti-trending-up"
+      color="primary">
+    </app-kpi-card>
+  </div>
+
+  <!-- PROMOTIONS IMPORTANTES -->
+  <div class="col-lg-4 col-md-6">
+    <app-kpi-card
+      title="Promotions ≥ 3000 MAD"
+      [value]="highIncreaseCount"
+      icon="ti ti-arrow-up"
+      color="success">
+    </app-kpi-card>
+  </div>
+
+  <!-- DEPARTEMENT LE PLUS IMPACTÉ -->
+  <div class="col-lg-4 col-md-6">
+    <app-kpi-card
+      title="Département le plus impacté"
+      [value]="mostImpactedDepartment"
+      icon="ti ti-building"
+      color="warning">
+    </app-kpi-card>
+  </div>
+
+</div>

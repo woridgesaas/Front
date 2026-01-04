@@ -433,7 +433,7 @@ export const routes: Routes = [
         path: 'promotion',
         loadComponent: () =>
           import('./features/hrm/promotion/promotion.component').then(
-            (m) => m.PromotionComponent
+            (m) => m.PromotionsComponent
           ),
         data: { breadcrumb: 'Promotion', title: 'Promotion' },
       },

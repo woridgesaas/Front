@@ -62,12 +62,10 @@ export class ResignationComponent implements OnInit {
   }
 
   loadResignationsFromJson(): void {
-    // ✅ CHEMIN CORRECT - utiliser 'assets/' au lieu de '../../../../../public/assets/'
     this.http
       .get<{ data: any[] }>('assets/json/resignation.json')
       .subscribe({
         next: (response) => {
-          console.log('✅ JSON chargé:', response.data);
           
           this.resignations = response.data.map((r: any, index: number) => ({
             sNo: r.sNo || index + 1,
@@ -82,7 +80,7 @@ export class ResignationComponent implements OnInit {
           }));
         },
         error: (err) => {
-          console.error('❌ Erreur chargement JSON:', err);
+          console.error(' Erreur chargement JSON:', err);
           // Charger les données de fallback si le JSON échoue
           this.loadResignations();
         }
