@@ -6,13 +6,8 @@
     </div>
 
     <!-- ============ KPIS ===================-->  
-    <div class="row mb-4 g-3">
-      <div class="col-lg-3 col-md-6">
-        <app-documents-kpis></app-documents-kpis>
-      </div>
-    </div>
+    <app-documents-kpis [kpiData]="kpiData"></app-documents-kpis>
 
-    
 
     <!-- ============ TABLEAU ===================-->
     <div class="card">
@@ -111,13 +106,10 @@
   </div>
   <!-- ============ MODALS ===================-->
     <!-- Modal acceptation request -->
-    @if(showAcceptModal){
         <app-accept-modal [data]="selectedDemande"></app-accept-modal>
-    }
-    @if(showRejectModal){
-        <app-reject-modal (cancelled)="handlleRejectModalClosed()" (refused)="rejectRequest($event)" [data]="selectedDemande"></app-reject-modal>
-    }
-    @if(showDetailsModal){
-        <app-details-modal (close)="handlleDetailsModalClosed()" [data]="selectedDemande"></app-details-modal>
-    }
+    <!-- Modal reject request -->
+        <app-reject-modal  (cancelled)="handlleRejectModalClosed()" (refused)="rejectRequest($event)" [data]="selectedDemande"></app-reject-modal>
+    <!-- Modal details request -->
+        <app-details-modal  (close)="handlleDetailsModalClosed()" [data]="selectedDemande"></app-details-modal>
+    
 </div>

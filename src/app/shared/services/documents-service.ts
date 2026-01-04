@@ -96,7 +96,6 @@ export class DocumentsService {
   ];
 
 
-  // NOUVELLE méthode pour RH
   public getAllDocumentsForRH(): any[] {
     return this.mockedData.map((demande, index) => {
       const employee = this.employeesData[index % this.employeesData.length];
@@ -117,9 +116,7 @@ export class DocumentsService {
         justification: this.justifications[index % this.justifications.length],
         urgency: ['low', 'medium', 'high'][index % 3] as 'low' | 'medium' | 'high',
         documentType: demande.category,
-        requiredFormat: 'PDF',
-        deliveryMethod: ['email', 'download', 'print'][index % 3] as 'email' | 'download' | 'print',
-        
+
         // Suivi 
         estimatedProcessingDays: [2, 3, 5][index % 3],
         actualProcessingDays: demande.processedDate ? 
@@ -132,5 +129,47 @@ export class DocumentsService {
       };
     });
   }
-
+  public getAllStatistics():any{
+    const pendingCount = this.mockedData.filter((doc:any)=>doc.status === 'pending').length;
+    const acceptedCount = this.mockedData.filter((doc:any)=>doc.status === 'ready').length;
+    const rejectedCount = this.mockedData.filter((doc:any)=>doc.status === 'rejected').length;
+    return [
+        {
+        title: 'Total Demandes',
+        value: this.mockedData.length,
+        icon: 'ti ti-list-details',
+        color: 'primary',
+        description: 'Toutes les demandes',
+        change: 12,
+        trend: 'up'
+      },
+      {
+        title: 'En attente',
+        value: pendingCount,
+        icon: 'ti ti-hourglass',
+        color: 'warning',
+        description: 'Demandes non traitées',
+        change: -5,
+        trend: 'down'
+      },
+      {
+        title: 'Acceptées',
+        value: acceptedCount,
+        icon: 'ti ti-check',
+        color: 'success',
+        description: 'Demandes validées',
+        change: 8,
+        trend: 'up'
+      },
+      {
+        title: 'Refusées',
+        value: rejectedCount,
+        icon: 'ti ti-x',
+        color: 'danger',
+        description: 'Demandes rejetées',
+        change: 3,
+        trend: 'stable'
+      },
+    ]
+  }
 }

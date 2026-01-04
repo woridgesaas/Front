@@ -19,10 +19,10 @@ import { DetailsModalComponent } from './components/details-modal/details-modal.
   styleUrl: './validate-administrativ-documents.component.scss',
 })
 export class ValidateAdministrativDocumentsComponent {
-   // Données
+   // Data
   allDemandes: RhDocumentDemande[] = [];
   filteredDemandes: RhDocumentDemande[] = [];
-  
+  kpiData:any=[];
   // Filtres
   searchText: string = '';
   dateRange: Date[] = [];
@@ -47,15 +47,19 @@ export class ValidateAdministrativDocumentsComponent {
 
   ngOnInit(): void {
     this.loadData();
+    this.loadKpisFromService();
   }
 
-  // Charger les données
+  // data render
   loadData(): void {
     this.allDemandes = this.documentsService.getAllDocumentsForRH();
     this.documentTypes = this.getUniqueDocumentTypes();
     this.applyFilters();
   }
-
+  //kpis render
+  loadKpisFromService():any{
+    this.kpiData = this.documentsService.getAllStatistics();
+  }
   
   private getUniqueDocumentTypes(): string[] {
     const types = new Set(this.allDemandes.map(d => d.documentType || d.category));

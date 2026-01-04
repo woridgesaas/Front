@@ -1,1 +1,13 @@
-<p>documents-kpis works!</p>
+<div class="row">
+  @for (kpi of kpiData; track kpi.title) {
+    <div class="col-xl-3 col-lg-6 d-flex mb-3">
+
+      <app-kpi-card
+        [title]="kpi.title"
+        [value]="kpi.value"
+        [icon]="kpi.icon"
+        [color]="kpi.color">
+      </app-kpi-card>
+    </div>
+  }
+</div>

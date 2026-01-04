@@ -518,6 +518,13 @@ export class DataService {
               showSubRoute: false,
               base: 'validate-personal-info',
             },
+             {
+              menuValue: 'Valider doc administratif',
+              route: routes.validateAdministrativDocuments,
+              hasSubRoute: false,
+              showSubRoute: false,
+              base: 'validation',
+            },
           ],
         },
 
@@ -892,6 +899,13 @@ export class DataService {
                   menuValue: 'Valider info personnel',
                   route: routes.validatePersonalInfo,
                   base: 'validate-personal-info',
+                  hasSubRoute: false,
+                  showSubRoute: false,
+                },
+                 {
+                  menuValue: 'Valider doc administratif',
+                  route: routes.validateAdministrativDocuments,
+                  base: 'validation',
                   hasSubRoute: false,
                   showSubRoute: false,
                 },
