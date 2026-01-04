@@ -1,417 +1,78 @@
 <div class="page-wrapper">
   <div class="content">
-    <!-- Fil d'ariane -->
+    <!-- HEADER -->
     <div
-      class="d-md-flex d-block align-items-center justify-content-between mb-3"
+      class="d-md-flex align-items-center justify-content-between page-breadcrumb mb-3"
     >
       <app-breadcrumbs></app-breadcrumbs>
-      <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
-        <div class="mb-2">
-          <a
-            href="javascript:void(0);"
-            class="btn btn-primary d-flex align-items-center"
-            data-bs-toggle="modal"
-            data-bs-target="#new_resignation"
-            ><i class="ti ti-circle-plus me-2"></i>Ajouter Démission</a
-          >
-        </div>
-      </div>
-    </div>
-    <!-- /Fil d'ariane -->
 
-    <!-- Liste des Démissions -->
-    <div class="row">
-      <div class="col-sm-12">
-        <div class="card">
-          <div
-            class="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3"
-          >
-            <h5 class="d-flex align-items-center">Liste des Démissions</h5>
-            <div class="d-flex align-items-center flex-wrap row-gap-3">
-              <div class="me-3">
-                <div class="input-icon position-relative">
-                  <span class="input-icon-addon">
-                    <i class="ti ti-calendar text-gray-9"></i>
-                  </span>
-                  <input
-                    type="text"
-                    class="form-control date-range bookingrange"
-                    bsDaterangepicker
-                    [(ngModel)]="bsRangeValue"
-                    [bsConfig]="{ adaptivePosition: true }"
-                    placeholder="jj/mm/aaaa - jj/mm/aaaa"
-                  />
-                </div>
-              </div>
-              <div class="dropdown">
-                <a
-                  href="javascript:void(0);"
-                  class="dropdown-toggle btn btn-white d-inline-flex align-items-center fs-12"
-                  data-bs-toggle="dropdown"
-                >
-                  <p class="fs-12 d-inline-flex me-1">Trier par :</p>
-                  7 derniers jours
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end p-3">
-                  <li>
-                    <a
-                      href="javascript:void(0);"
-                      class="dropdown-item rounded-1"
-                      >7 derniers jours</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      href="javascript:void(0);"
-                      class="dropdown-item rounded-1"
-                      >Date de création</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      href="javascript:void(0);"
-                      class="dropdown-item rounded-1"
-                      >Date limite</a
-                    >
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="card-body p-0">
-            <div class="custom-datatable-filter">
-              <div class="dataTables_wrapper dt-bootstrap5 no-footer">
-                <div class="row">
-                  <div class="col-sm-12 col-md-6">
-                    <div class="dataTables_length">
-                      <label>
-                        Lignes par page @if(tableData.length > 0) {
-                        <select
-                          [(ngModel)]="pageSize"
-                          (ngModelChange)="changePageSize(pageSize)"
-                          class="form-select form-select-sm"
-                        >
-                          <option value="10">10</option>
-                          <option value="25">25</option>
-                          <option value="50">50</option>
-                          <option value="100">100</option>
-                        </select>
-                        } entrées
-                      </label>
-                    </div>
-                  </div>
-                  <div class="col-sm-12 col-md-6">
-                    <div
-                      id="DataTables_Table_0_filter"
-                      class="dataTables_filter"
-                    >
-                      <label>
-                        <input
-                          [(ngModel)]="searchDataValue"
-                          [ngModelOptions]="{ standalone: true }"
-                          (ngModelChange)="searchData(searchDataValue)"
-                          type="search"
-                          class="form-control form-control-sm"
-                          placeholder="Rechercher..."
-                        />
-                      </label>
-                    </div>
-                  </div>
-                </div>
-                <div class="table-responsive">
-                  <table
-                    matSort
-                    (matSortChange)="sortData($event)"
-                    class="mat-sort table datanew table-center datatable dataTable mb-0"
-                  >
-                    <thead class="thead-light">
-                      <tr>
-                        <th class="no-sort">
-                          <div
-                            class="form-check form-check-md"
-                            (click)="selectAll(initChecked)"
-                            (keydown.enter)="selectAll(initChecked)"
-                            tabindex="0"
-                          >
-                            <input
-                              class="form-check-input"
-                              type="checkbox"
-                              id="select-all"
-                              [(ngModel)]="initChecked"
-                            />
-                          </div>
-                        </th>
-                        <th mat-sort-header="ResigningEmployee">
-                          Employé démissionnaire
-                        </th>
-                        <th mat-sort-header="Department">Département</th>
-                        <th mat-sort-header="Reason">Motif</th>
-                        <th mat-sort-header="NoticeDate">Date de préavis</th>
-                        <th mat-sort-header="ResignationDate">
-                          Date de démission
-                        </th>
-                        <th></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      @for (data of tableData; track data) {
-                      <tr>
-                        <td>
-                          <div class="form-check form-check-md">
-                            <input
-                              class="form-check-input"
-                              type="checkbox"
-                              [(ngModel)]="data.isSelected"
-                            />
-                          </div>
-                        </td>
-                        <td>
-                          <div class="d-flex align-items-center file-name-icon">
-                            <a
-                              href="javascript:void(0);"
-                              class="avatar avatar-md border avatar-rounded"
-                            >
-                              <img
-                                src="assets/img/users/{{ data?.Image }}"
-                                class="img-fluid"
-                                alt="img"
-                              />
-                            </a>
-                            <div class="ms-2">
-                              <h6 class="fw-medium">
-                                <a href="javascript:void(0);">{{
-                                  data?.ResigningEmployee
-                                }}</a>
-                              </h6>
-                            </div>
-                          </div>
-                        </td>
-                        <td>{{ data.Department }}</td>
-                        <td>{{ data.Reason }}</td>
-                        <td>{{ data.NoticeDate }}</td>
-                        <td>{{ data.ResignationDate }}</td>
-                        <td>
-                          <div class="action-icon d-inline-flex">
-                            <a
-                              href="javascript:void(0);"
-                              class="me-2"
-                              data-bs-toggle="modal"
-                              data-bs-target="#edit_resignation"
-                              ><i class="ti ti-edit"></i
-                            ></a>
-                            <a
-                              href="javascript:void(0);"
-                              data-bs-toggle="modal"
-                              data-bs-target="#delete_modal"
-                              ><i class="ti ti-trash"></i
-                            ></a>
-                          </div>
-                        </td>
-                      </tr>
-                      } @if (tableData.length === 0) {
-                      <tr>
-                        <td colspan="8">
-                          <h5 class="no-record">Aucun enregistrement trouvé</h5>
-                        </td>
-                      </tr>
-                      }
-                    </tbody>
-                  </table>
-                </div>
-                <app-custom-pagination></app-custom-pagination>
-              </div>
-            </div>
-          </div>
-        </div>
+      <button class="btn btn-primary" (click)="openAddModal = true">
+        <i class="ti ti-circle-plus me-2"></i>
+        Ajouter Démission
+      </button>
+    </div>
+
+    <!-- STATS -->
+    <app-resignation-stats
+      [resignations]="filteredResignations"
+    ></app-resignation-stats>
+
+    <!-- CARD -->
+    <div class="card mb-0">
+      <div
+        class="card-header d-flex justify-content-between align-items-center flex-wrap gap-3"
+      >
+        <h5 class="mb-0">Liste des démissions</h5>
+
+        <!--  FILTRES AU BON ENDROIT -->
+        <app-resignation-filters
+          [(searchValue)]="searchValue"
+          [(dateRange)]="dateRange"
+        >
+        </app-resignation-filters>
+      </div>
+
+      <div class="card-body p-0">
+        <app-resignation-table
+          [tableData]="filteredResignations"
+          (edit)="openEdit($event)"
+          (delete)="openDelete($event)"
+        >
+        </app-resignation-table>
       </div>
     </div>
-    <!-- /Liste des Démissions -->
+
+    <!-- MODALS -->
+    <app-add-resignation-modal
+      [open]="openAddModal"
+      [departments]="departments ?? []"
+      (cancel)="openAddModal = false"
+      (add)="add($event)"
+    >
+    </app-add-resignation-modal>
+
+    <app-edit-resignation-modal
+      [open]="openEditModal"
+      [resignation]="selectedResignation!"
+      [departments]="departments ?? []"
+      (cancel)="openEditModal = false"
+      (update)="update($event)"
+    >
+    </app-edit-resignation-modal>
+
+    <app-confirm-delete
+      modalId="deleteModal"
+      title="Supprimer la démission"
+      [message]="
+        selectedResignation
+          ? 'Êtes-vous sûr de vouloir supprimer la démission de ' +
+            selectedResignation.ResigningEmployee +
+            ' ?'
+          : ''
+      "
+      (confirm)="delete()"
+    >
+    </app-confirm-delete>
   </div>
   <app-footer></app-footer>
 </div>
-
-<!-- Ajouter Démission -->
-<div class="modal fade" id="new_resignation">
-  <div class="modal-dialog modal-dialog-centered modal-md">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Ajouter Démission</h4>
-        <button
-          type="button"
-          class="btn-close custom-btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        >
-          <i class="ti ti-x"></i>
-        </button>
-      </div>
-      <form>
-        <div class="modal-body pb-0">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="mb-3">
-                <label class="form-label">Employé démissionnaire</label>
-                <mat-select
-                  placeholder="Sélectionner"
-                  class="select custom-mat-select"
-                >
-                  <mat-option value="1">Sélectionner</mat-option>
-                  <mat-option value="1">Anthony Lewis</mat-option>
-                  <mat-option value="1">Brian Villalobos</mat-option>
-                  <mat-option value="1">Doglas Martini</mat-option>
-                </mat-select>
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="mb-3 ngx-date3">
-                <label class="form-label">Date de préavis</label>
-                <div class="input-icon-end position-relative">
-                  <input
-                    type="text"
-                    class="form-control datetimepicker"
-                    bsDatepicker
-                    container=".ngx-date3"
-                    [bsConfig]="{ adaptivePosition: true }"
-                    placeholder="jj/mm/aaaa"
-                    value="02-05-2024"
-                  />
-                  <span class="input-icon-addon">
-                    <i class="ti ti-calendar text-gray-7"></i>
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="mb-3 ngx-date4">
-                <label class="form-label">Date de démission</label>
-                <div class="input-icon-end position-relative">
-                  <input
-                    type="text"
-                    class="form-control datetimepicker"
-                    bsDatepicker
-                    container=".ngx-date4"
-                    [bsConfig]="{ adaptivePosition: true }"
-                    placeholder="jj/mm/aaaa"
-                    value="02-05-2024"
-                  />
-                  <span class="input-icon-addon">
-                    <i class="ti ti-calendar text-gray-7"></i>
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="mb-3">
-                <label class="form-label">Motif</label>
-                <textarea class="form-control" rows="3"></textarea>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-white border me-2"
-            data-bs-dismiss="modal"
-          >
-            Annuler
-          </button>
-          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">
-            Ajouter Démission
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-<!-- /Ajouter Démission -->
-
-<!-- Modifier Démission -->
-<div class="modal fade" id="edit_resignation">
-  <div class="modal-dialog modal-dialog-centered modal-md">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Modifier Démission</h4>
-        <button
-          type="button"
-          class="btn-close custom-btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        >
-          <i class="ti ti-x"></i>
-        </button>
-      </div>
-      <form>
-        <div class="modal-body pb-0">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="mb-3">
-                <label class="form-label">Employé démissionnaire</label>
-                <input type="text" class="form-control" />
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="mb-3 ngx-date5">
-                <label class="form-label">Date de préavis</label>
-                <div class="input-icon-end position-relative">
-                  <input
-                    type="text"
-                    class="form-control datetimepicker"
-                    bsDatepicker
-                    container=".ngx-date5"
-                    [bsConfig]="{ adaptivePosition: true }"
-                    placeholder="jj/mm/aaaa"
-                    value="02-05-2024"
-                  />
-                  <span class="input-icon-addon">
-                    <i class="ti ti-calendar text-gray-7"></i>
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="mb-3 ngx-date6">
-                <label class="form-label">Date de démission</label>
-                <div class="input-icon-end position-relative">
-                  <input
-                    type="text"
-                    class="form-control datetimepicker"
-                    bsDatepicker
-                    container=".ngx-date6"
-                    [bsConfig]="{ adaptivePosition: true }"
-                    placeholder="jj/mm/aaaa"
-                    value="02-05-2024"
-                  />
-                  <span class="input-icon-addon">
-                    <i class="ti ti-calendar text-gray-7"></i>
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="mb-3">
-                <label class="form-label">Motif</label>
-                <textarea class="form-control" rows="3">
-Changement de carrière</textarea
-                >
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-white border me-2"
-            data-bs-dismiss="modal"
-          >
-            Annuler
-          </button>
-          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">
-            Enregistrer Modifications
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-<!-- /Modifier Démission -->
