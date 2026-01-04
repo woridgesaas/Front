@@ -1,0 +1,119 @@
+<div class="modal fade show d-block" *ngIf="open">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content">
+
+      <!-- HEADER -->
+      <app-modal-header
+        title="Modifier la promotion"
+        icon="ti ti-edit"
+        (close)="onCancel()">
+      </app-modal-header>
+
+      <!-- FORM -->
+      <form (ngSubmit)="submit()">
+        <div class="modal-body pb-0">
+          <div class="row">
+
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Employé</label>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="form.PromotedEmployee"
+                name="employee"
+                disabled />
+            </div>
+
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Département</label>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="form.Department"
+                name="department"
+                disabled />
+            </div>
+
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Ancien poste</label>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="form.DesignationFrom"
+                name="from"
+                disabled />
+            </div>
+
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Nouveau poste</label>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="form.DesignationTo"
+                name="to"
+                required />
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Ancien salaire (MAD)</label>
+              <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="form.OldSalary"
+                name="oldSalary"
+                disabled />
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Prime / Augmentation (MAD)</label>
+              <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="form.Bonus"
+                name="bonus"
+                (ngModelChange)="calculateNewSalary()" />
+            </div>
+
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Nouveau salaire (MAD)</label>
+              <input
+                type="number"
+                class="form-control"
+                [value]="form.NewSalary"
+                disabled />
+            </div>
+
+            <!-- ✅ DATE PICKER -->
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Date de promotion</label>
+
+              <div class="input-icon position-relative">
+                <span class="input-icon-addon">
+                  <i class="ti ti-calendar text-gray-9"></i>
+                </span>
+
+                <input
+                  type="text"
+                  class="form-control"
+                  bsDatepicker
+                  [(ngModel)]="form.PromotionDate"
+                  name="date"
+                  placeholder="jj/mm/aaaa" />
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- FOOTER -->
+        <app-modal-footer
+          submitText="Enregistrer"
+          submitIcon="ti ti-check"
+          (cancel)="onCancel()">
+        </app-modal-footer>
+
+      </form>
+
+    </div>
+  </div>
+</div>

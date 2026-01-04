@@ -1,0 +1,48 @@
+<div class="d-flex align-items-center gap-2">
+
+  <!-- DATE RANGE -->
+  <div class="input-icon position-relative" style="min-width: 260px;">
+    <span class="input-icon-addon">
+      <i class="ti ti-calendar text-gray-9"></i>
+    </span>
+
+    <input
+      type="text"
+      class="form-control form-control-sm"
+      bsDaterangepicker
+      [(ngModel)]="dateRange"
+      (ngModelChange)="dateRangeChange.emit($event)"
+      [bsConfig]="{ adaptivePosition: true }"
+      placeholder="jj/mm/aaaa - jj/mm/aaaa"
+    />
+  </div>
+
+  <!-- PRESETS -->
+  <div class="dropdown">
+    <button
+      class="btn btn-sm btn-outline-secondary dropdown-toggle"
+      type="button"
+      data-bs-toggle="dropdown">
+      <i class="ti ti-calendar me-1"></i>
+      Période
+    </button>
+
+    <ul class="dropdown-menu">
+      <li><button class="dropdown-item" (click)="setLastDays(0)">Aujourd’hui</button></li>
+      <li><button class="dropdown-item" (click)="setLastDays(7)">7 derniers jours</button></li>
+      <li><button class="dropdown-item" (click)="setLastDays(30)">30 derniers jours</button></li>
+      <li><button class="dropdown-item text-danger" (click)="resetDates()">Toutes</button></li>
+    </ul>
+  </div>
+
+  <!-- SEARCH -->
+  <input
+    type="search"
+    class="form-control form-control-sm"
+    style="min-width: 180px;"
+    placeholder="Rechercher..."
+    [(ngModel)]="searchValue"
+    (ngModelChange)="searchValueChange.emit($event)"
+  />
+
+</div>
