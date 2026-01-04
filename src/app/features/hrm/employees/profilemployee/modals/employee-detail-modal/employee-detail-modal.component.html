@@ -3,7 +3,7 @@
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Modifier Vos Informations Personnels</h4>
+        <h4 class="modal-title">Modifier Vos Informations Personnelles</h4>
         <button
           type="button"
           class="btn-close custom-btn-close"
@@ -15,8 +15,45 @@
 
       <form (ngSubmit)="onSubmit()">
         <div class="modal-body pb-0">
-          <div class="row">
+          
+          <!-- ✅ Alerte: Demande en attente -->
+          <div 
+            *ngIf="hasPendingRequest" 
+            class="alert alert-warning d-flex align-items-center mb-3"
+          >
+            <i class="ti ti-alert-circle me-2 fs-5"></i>
+            <div>
+              <strong>Demande en attente</strong><br>
+              <small>
+                Vous avez une demande de modification en cours de validation par le service RH. 
+                Vous ne pouvez pas soumettre de nouvelles modifications pour le moment.
+              </small>
+            </div>
+          </div>
 
+          <!-- ✅ Alerte: Succès -->
+          <div 
+            *ngIf="showSuccessAlert" 
+            class="alert alert-success d-flex align-items-center mb-3"
+          >
+            <i class="ti ti-circle-check me-2 fs-5"></i>
+            <div>
+              <strong>Demande envoyée !</strong><br>
+              <small>Votre demande de modification a été envoyée au service RH pour validation.</small>
+            </div>
+          </div>
+
+          <!-- ✅ Info: Validation requise -->
+          <div class="alert alert-info d-flex align-items-center mb-3">
+            <i class="ti ti-info-circle me-2 fs-5"></i>
+            <div>
+              <small>
+                Les modifications seront soumises au service RH pour validation avant d'être appliquées.
+              </small>
+            </div>
+          </div>
+
+          <div class="row">
             <!-- Image -->
             <div class="col-md-12">
               <div class="d-flex align-items-center bg-light rounded p-3 mb-4">
@@ -37,9 +74,14 @@
                         type="file"
                         hidden
                         (change)="onImageSelected($event)"
+                        [disabled]="hasPendingRequest"
                       />
                     </label>
-                    <button type="button" class="btn btn-light btn-sm">
+                    <button 
+                      type="button" 
+                      class="btn btn-light btn-sm"
+                      [disabled]="hasPendingRequest"
+                    >
                       Annuler
                     </button>
                   </div>
@@ -55,6 +97,7 @@
                 class="form-control"
                 [(ngModel)]="employee.firstName"
                 name="firstName"
+                [disabled]="hasPendingRequest"
               />
             </div>
 
@@ -66,6 +109,7 @@
                 class="form-control"
                 [(ngModel)]="employee.lastName"
                 name="lastName"
+                [disabled]="hasPendingRequest"
               />
             </div>
 
@@ -79,6 +123,7 @@
                 [(ngModel)]="employee.endDate"
                 name="endDate"
                 placeholder="dd/mm/yyyy"
+                [disabled]="hasPendingRequest"
               />
             </div>
 
@@ -90,6 +135,7 @@
                 class="form-control"
                 [(ngModel)]="employee.cin"
                 name="cin"
+                [disabled]="hasPendingRequest"
               />
             </div>
 
@@ -101,6 +147,7 @@
                 class="form-control"
                 [(ngModel)]="employee.email"
                 name="email"
+                [disabled]="hasPendingRequest"
               />
             </div>
 
@@ -112,9 +159,9 @@
                 class="form-control"
                 [(ngModel)]="employee.phone"
                 name="phone"
+                [disabled]="hasPendingRequest"
               />
             </div>
-
           </div>
         </div>
 
@@ -127,8 +174,19 @@
           >
             Annuler
           </button>
-          <button type="submit" class="btn btn-primary">
-            Enregistrer
+          <button 
+            type="submit" 
+            class="btn btn-primary"
+            [disabled]="hasPendingRequest || isSubmitting"
+          >
+            <span *ngIf="!isSubmitting">
+              <i class="ti ti-send me-1"></i>
+              Soumettre pour validation
+            </span>
+            <span *ngIf="isSubmitting">
+              <span class="spinner-border spinner-border-sm me-1"></span>
+              Envoi en cours...
+            </span>
           </button>
         </div>
       </form>
