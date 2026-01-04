@@ -1,0 +1,131 @@
+<!-- accept-demand-modal.component.html -->
+<div class="modal fade" id="acceptDemandModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <!-- Header -->
+      <div class="modal-header border-0 pb-0">
+        <div class="d-flex align-items-center w-100">
+          <div class="me-3">
+            <div class="avatar avatar-lg avatar-rounded bg-success-subtle">
+              <i class="ti ti-check fs-24 text-success"></i>
+            </div>
+          </div>
+          <div class="flex-grow-1">
+            <h5 class="modal-title mb-1">Accepter la demande</h5>
+            <div class="d-flex align-items-center gap-2">
+              <span class="badge bg-success-subtle text-success border-success">
+                <i class="ti ti-check me-1"></i>Validation RH
+              </span>
+              <small class="text-muted">
+                <i class="ti ti-clock me-1"></i>
+                {{ currentDate | date:'dd/MM/yyyy HH:mm' }}
+              </small>
+            </div>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <!-- Section: Récapitulatif -->
+        <div class="alert alert-success border mb-4">
+          <div class="d-flex align-items-center">
+            <i class="ti ti-info-circle fs-4 me-3"></i>
+            <div>
+              <h6 class="mb-1">Demande à valider</h6>
+              <p class="mb-0">
+                Vous êtes sur le point d'accepter la demande de document de 
+                <strong>{{ data?.employeeName }}</strong>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <!-- Colonne gauche: Informations employé -->
+          <div class="col-md-6">
+            <div class="card border mb-3">
+              <div class="card-header bg-light py-2">
+                <h6 class="mb-0">
+                  <i class="ti ti-user me-2"></i>Informations employé
+                </h6>
+              </div>
+              <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                  <div class="avatar avatar-xl avatar-rounded me-3">
+                    <img [src]="data?.employeeAvatar || 'assets/images/default-avatar.png'" 
+                         [alt]="data?.employeeName"
+                         class="rounded-circle border">
+                  </div>
+                  <div>
+                    <h6 class="mb-1">{{ data?.employeeName }}</h6>
+                    <div class="d-flex flex-wrap gap-2">
+                      <span class="badge bg-primary">{{ data?.employeeRole }}</span>
+                      <span class="badge bg-light text-dark border">{{ data?.employeeDepartment }}</span>
+                    </div>
+                    <small class="text-muted d-block mt-1">{{ data?.employeeEmail }}</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right column details employe -->
+          <div class="col-md-6">
+            <div class="card border mb-3">
+              <div class="card-header bg-light py-2">
+                <h6 class="mb-0">
+                  <i class="ti ti-file-text me-2"></i>Détails du document
+                </h6>
+              </div>
+              <div class="card-body">
+                <div class="mb-3">
+                  <small class="text-muted d-block">Document demandé</small>
+                  <h5 class="mb-1">{{ data?.documentName }}</h5>
+                  <p class="text-muted mb-0 small">{{ data?.description }}</p>
+                </div>
+
+                <div class="row g-3">
+                  <div class="col-6">
+                    <small class="text-muted d-block">Type</small>
+                    <div class="fw-medium">{{ data?.documentType || data?.category }}</div>
+                  </div>
+                  
+                  <div class="col-6">
+                    <small class="text-muted d-block">Demandé le</small>
+                    <div class="fw-medium">{{ data?.requestDate | date:'dd/MM/yyyy' }}</div>
+                  </div>
+                  
+                  <div class="col-12">
+                    <small class="text-muted d-block">Justification</small>
+                    <div class="bg-light p-2 rounded">
+                      {{ data?.justification || 'Aucune justification fournie' }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Confirmation finale -->
+        <div class="alert alert-warning border mt-4">
+          <div class="d-flex align-items-center">
+            <i class="ti ti-alert-triangle fs-4 me-3"></i>
+            <div>
+              <h6 class="mb-1">Confirmation requise</h6>
+              <p class="mb-0">
+                En acceptant, vous confirmez que toutes les informations sont correctes 
+                et que vous prenez la responsabilité de traiter cette demande.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+       <app-modal-footer (cancel)="closeModal()" [submitIcon]="'ti ti-check'" [submitText]="'accepter la demande'"></app-modal-footer>
+    </div>
+  </div>
+</div>

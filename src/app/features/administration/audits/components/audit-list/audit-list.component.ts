@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AuditLog } from '../../../../../shared/models/models';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';

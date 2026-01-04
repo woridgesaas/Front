@@ -1,0 +1,177 @@
+.modal-xl {
+  max-width: 1200px;
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  &.avatar-xxl {
+    width: 100px;
+    height: 100px;
+  }
+  
+  &.avatar-lg {
+    width: 60px;
+    height: 60px;
+  }
+  
+  &.avatar-rounded {
+    border-radius: 12px;
+  }
+}
+
+// Cartes d'information
+.info-card {
+  padding: 1rem;
+  background: var(--bs-light);
+  border-radius: 8px;
+  border: 1px solid var(--bs-border-color);
+  
+  .avatar-xs {
+    width: 24px;
+    height: 24px;
+    
+    i {
+      font-size: 12px;
+    }
+  }
+}
+
+// Métriques
+.metric-card {
+  .metric-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    
+    &.text-success {
+      color: var(--bs-success);
+    }
+    
+    &.text-warning {
+      color: var(--bs-warning);
+    }
+    
+    &.text-danger {
+      color: var(--bs-danger);
+    }
+  }
+}
+
+// Timeline
+.timeline {
+  position: relative;
+  padding-left: 2.5rem;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    left: 1.25rem;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, 
+      var(--bs-primary) 0%, 
+      var(--bs-success) 100%);
+  }
+}
+
+.timeline-item {
+  position: relative;
+  padding-bottom: 1.5rem;
+  
+  &:last-child {
+    padding-bottom: 0;
+  }
+}
+
+.timeline-indicator {
+  position: absolute;
+  left: -2.5rem;
+  top: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  
+  i {
+    font-size: 1rem;
+  }
+}
+
+.timeline-content {
+  h6 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+  
+  p {
+    font-size: 0.8125rem;
+  }
+  
+  small {
+    font-size: 0.75rem;
+  }
+}
+
+
+.sticky-top {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+}
+
+
+.badge {
+  &.bg-warning.text-dark {
+    color: #000 !important;
+  }
+}
+
+// Progress bar
+.progress {
+  border-radius: 4px;
+  
+  .progress-bar {
+    border-radius: 4px;
+  }
+}
+
+// Responsive
+@media (max-width: 992px) {
+  .modal-xl {
+    margin: 0.5rem;
+  }
+  
+  .timeline {
+    padding-left: 2rem;
+    
+    &::before {
+      left: 1rem;
+    }
+  }
+  
+  .timeline-indicator {
+    left: -2rem;
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
+@media print {
+  .modal-content {
+    border: none;
+    box-shadow: none;
+  }
+  
+  .modal-header,
+  .modal-footer,
+  .sticky-top {
+    display: none !important;
+  }
+}
