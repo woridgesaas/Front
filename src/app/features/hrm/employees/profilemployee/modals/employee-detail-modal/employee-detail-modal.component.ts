@@ -1,45 +1,208 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { 
+  PersonalInfoRequestService, 
+  PersonalInfoChange,
+  PersonalInfoRequest 
+} from '../../../services/personal-info-request.service';
+
+// Déclaration TypeScript pour Bootstrap
+declare const bootstrap: any;
+
+interface Employee {
+  id: number;
+  firstName: string;
+  lastName: string;
+  endDate: Date | null;
+  cin: string;
+  email: string;
+  phone: string;
+  role: string;
+  image?: string;
+}
 
 @Component({
   selector: 'app-employee-detail-modal',
   standalone: true,
-  imports: [CommonModule, FormsModule, BsDatepickerModule],
   templateUrl: './employee-detail-modal.component.html',
-  styleUrls: ['./employee-detail-modal.component.scss'],
+  imports: [CommonModule, FormsModule, BsDatepickerModule]
 })
-export class EmployeeDetailModalComponent {
-  employee = {
-    firstName: '',
-    lastName: '',
-    cin: '',
-    email: '',
-    phone: '',
-    endDate: null as Date | null,
-    image: null as File | null,
+export class EmployeeDetailModalComponent implements OnInit {
+  // Données originales (actuelles dans la DB)
+  originalEmployee: Employee = {
+    id: 1,
+    firstName: 'Stephan',
+    lastName: 'Peralt',
+    endDate: null,
+    cin: 'AB123456',
+    email: 'perralt12@example.com',
+    phone: '(163) 2459 315',
+    role: 'Développeur Logiciel',
+    image: 'assets/img/users/user-13.jpg'
   };
 
-  // upload image
+  // Copie pour modification
+  employee: Employee = { ...this.originalEmployee };
+
+  // État de soumission
+  isSubmitting = false;
+  hasPendingRequest = false;
+  showSuccessAlert = false;
+
+  constructor(private requestService: PersonalInfoRequestService) {}
+
+  ngOnInit(): void {
+    this.checkPendingRequests();
+  }
+
+  /**
+   * Vérifier s'il existe déjà une demande en attente
+   */
+  checkPendingRequests(): void {
+    const pending = this.requestService.getPendingRequestsByEmployeeId(
+      this.originalEmployee.id
+    );
+    this.hasPendingRequest = pending.length > 0;
+  }
+
+  /**
+   * Gestion de la sélection d'image
+   */
   onImageSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.employee.image = input.files[0];
+    const target = event.target as HTMLInputElement;
+    const file = target.files?.[0];
+    if (file) {
+      console.log('Image sélectionnée:', file);
+      // TODO: Implémenter l'upload d'image
     }
   }
 
-  // submit form
-  onSubmit(): void {
-    console.log('Employee updated:', this.employee);
+  /**
+   * Détecter les changements entre original et modifié
+   */
+  private detectChanges(): PersonalInfoChange[] {
+    const changes: PersonalInfoChange[] = [];
 
-    // TODO:
-    // appeler service API
-    // fermer modal
+    const fieldMappings: { [key: string]: string } = {
+      firstName: 'Prénom',
+      lastName: 'Nom',
+      cin: 'CIN',
+      email: 'Email',
+      phone: 'Téléphone',
+      endDate: 'Date de fin'
+    };
+
+    // Comparer chaque champ
+    (Object.keys(fieldMappings) as Array<keyof Employee>).forEach(field => {
+      const oldValue = this.formatValue(this.originalEmployee[field]);
+      const newValue = this.formatValue(this.employee[field]);
+
+      if (oldValue !== newValue) {
+        changes.push({
+          field: field as string,
+          label: fieldMappings[field],
+          oldValue,
+          newValue
+        });
+      }
+    });
+
+    return changes;
   }
 
-  // reset / cancel
+  /**
+   * Formater une valeur pour l'affichage
+   */
+  private formatValue(value: any): string {
+    if (value === null || value === undefined) return '';
+    if (value instanceof Date) {
+      return value.toLocaleDateString('fr-FR');
+    }
+    return String(value);
+  }
+
+  /**
+   * Soumission du formulaire
+   */
+  onSubmit(): void {
+    // Vérifier s'il y a une demande en attente
+    if (this.hasPendingRequest) {
+      alert('Vous avez déjà une demande de modification en attente de validation.');
+      return;
+    }
+
+    // Détecter les changements
+    const changes = this.detectChanges();
+
+    if (changes.length === 0) {
+      alert('Aucune modification détectée.');
+      return;
+    }
+
+    // Confirmer la soumission
+    const confirmMsg = `Vous allez soumettre ${changes.length} modification(s) à la validation RH. Continuer ?`;
+    if (!confirm(confirmMsg)) {
+      return;
+    }
+
+    this.isSubmitting = true;
+
+    // Soumettre la demande
+    this.requestService.submitRequest(
+      this.originalEmployee.id,
+      `${this.employee.firstName} ${this.employee.lastName}`,
+      this.originalEmployee.role,
+      this.originalEmployee.image,
+      changes,
+      'Employé' // TODO: récupérer l'utilisateur connecté
+    ).subscribe({
+      next: (request: PersonalInfoRequest) => {
+        console.log('Demande soumise:', request);
+        
+        // Afficher message de succès
+        this.showSuccessAlert = true;
+        this.hasPendingRequest = true;
+        
+        // Fermer le modal après 2 secondes
+        setTimeout(() => {
+          this.closeModal();
+          this.showSuccessAlert = false;
+        }, 2000);
+      },
+      error: (error: any) => {
+        console.error('Erreur lors de la soumission:', error);
+        alert('Erreur lors de la soumission de la demande.');
+        this.isSubmitting = false;
+      },
+      complete: () => {
+        this.isSubmitting = false;
+      }
+    });
+  }
+
+  /**
+   * Annuler les modifications
+   */
   onCancel(): void {
-    // reset logic si besoin
+    // Réinitialiser avec les données originales
+    this.employee = { ...this.originalEmployee };
+  }
+
+  /**
+   * Fermer le modal
+   */
+  closeModal(): void {
+    const modalElement = document.getElementById('edit_employee_detail');
+    if (modalElement) {
+      const modal = bootstrap.Modal.getInstance(modalElement);
+      if (modal) {
+        modal.hide();
+      }
+    }
+    
+    // Réinitialiser le formulaire
+    this.onCancel();
   }
 }
