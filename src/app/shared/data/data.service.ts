@@ -518,7 +518,7 @@ export class DataService {
               showSubRoute: false,
               base: 'validate-personal-info',
             },
-             {
+            {
               menuValue: 'Valider doc administratif',
               route: routes.validateAdministrativDocuments,
               hasSubRoute: false,
@@ -601,8 +601,8 @@ export class DataService {
           hasSubRoute: false,
           showSubRoute: false,
           icon: 'ti ti-history',
-          subMenus:[],
-          route:routes.auditsUser
+          subMenus: [],
+          route: routes.auditsUser,
         },
         {
           menuValue: 'Rapports',
@@ -902,7 +902,7 @@ export class DataService {
                   hasSubRoute: false,
                   showSubRoute: false,
                 },
-                 {
+                {
                   menuValue: 'Valider doc administratif',
                   route: routes.validateAdministrativDocuments,
                   base: 'validation',
@@ -962,7 +962,7 @@ export class DataService {
               menuValue: 'Traçabilité',
               hasSubRoute: false,
               showSubRoute: false,
-              route:routes.auditsUser
+              route: routes.auditsUser,
             },
             {
               menuValue: 'Rapport des employés',

@@ -296,7 +296,7 @@ export const routes: Routes = [
             data: { breadcrumb: 'Départements', title: 'Départements' },
           },
           {
-            path: 'geenrate/contract',
+            path: 'generate/contract',
             loadComponent: () =>
               import('./features/hrm/contract/contract.component').then(
                 (m) => m.ContractComponent
@@ -306,6 +306,7 @@ export const routes: Routes = [
               title: 'Générer un contrat',
             },
           },
+
           {
             path: 'documents',
             loadComponent: () =>
@@ -488,9 +489,15 @@ export const routes: Routes = [
           },
           {
             path: 'validate-documents',
-            loadComponent: ()=>import('./features/hrm/validation/validate-administrativ-documents/validate-administrativ-documents.component').then(m=>m.ValidateAdministrativDocumentsComponent),
-            data:{breadcrumb : 'Documents Administratifs', title :'Documents Administratifs'}
-          }
+            loadComponent: () =>
+              import(
+                './features/hrm/validation/validate-administrativ-documents/validate-administrativ-documents.component'
+              ).then((m) => m.ValidateAdministrativDocumentsComponent),
+            data: {
+              breadcrumb: 'Documents Administratifs',
+              title: 'Documents Administratifs',
+            },
+          },
         ],
       },
 
@@ -608,7 +615,6 @@ export const routes: Routes = [
               title: 'Rapport des fiches de paie',
             },
           },
-          
         ],
       },
       {
@@ -617,8 +623,11 @@ export const routes: Routes = [
           import('./features/administration/audits/audits.component').then(
             (m) => m.AuditsComponent
           ),
-        data: { breadcrumb: 'Journal des événements', title: 'Journal des événements' },
-      }
+        data: {
+          breadcrumb: 'Journal des événements',
+          title: 'Journal des événements',
+        },
+      },
     ],
   },
 
