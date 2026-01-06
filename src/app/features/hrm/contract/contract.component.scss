@@ -1,78 +1,15 @@
+/* =====================================================
+   GÉNÉRAL UI
+===================================================== */
+
 .sticky-top {
   z-index: 1020;
 }
+
 .btn-group .btn {
   flex: 1;
 }
 
-.search-results {
-  max-height: 250px;
-  overflow-y: auto;
-  background: white;
-}
-
-.result-item {
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.result-item:hover {
-  background-color: #f8f9fa;
-}
-
-.hover-bg:hover {
-  background-color: #e9ecef;
-}
-
-/* Bénéficiaire sélectionné */
-.selected-beneficiaire {
-  border-left: 3px solid #4361ee;
-}
-
-
-.editor-container {
-  min-height: 600px;
-  display: flex;
-  flex-direction: column;
-}
-
-.ckeditor-wrapper {
-  flex: 1;
-  min-height: 500px;
-  border: 1px solid #dee2e6;
-  border-radius: 4px;
-}
-
-.editor-placeholder {
-  height: 500px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.variables-panel {
-  border-bottom: 1px solid #dee2e6;
-}
-
-.spin {
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-
-@media (max-width: 991.98px) {
-  .sticky-top {
-    position: static;
-  }
-  
-  .editor-container {
-    min-height: 400px;
-  }
-}
 .icon-placeholder {
   opacity: 0.5;
 }
@@ -84,12 +21,128 @@
 
 .btn.active {
   background-color: #4361ee;
-  color: white;
+  color: #fff;
   border-color: #4361ee;
 }
-.bg-lavandar{
+
+/* =====================================================
+   COULEURS / BOUTONS
+===================================================== */
+
+.bg-lavandar {
   background-color: #A631D8;
 }
-.text-light{
-  color:#f8f9fa
+
+.text-light {
+  color: #f8f9fa;
+}
+
+.card-header.bg-purple {
+  background-color: #bc75db;
+}
+
+.card-header.bg-purple h5 {
+  color: #ffffff !important;
+}
+
+.btn-purple {
+  background-color: #b659dd;
+  color: #fff;
+  border: none;
+}
+
+.btn-purple:hover {
+  background-color: #9f4fc2;
+}
+
+/* =====================================================
+   SECTIONS FORMULAIRE
+===================================================== */
+
+.section-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 6px;
+}
+
+/* =====================================================
+   APERÇU CONTRAT (ÉCRAN)
+===================================================== */
+
+.contract-preview {
+  background: #fafafa;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 20px;
+
+  /* Scroll uniquement à l’écran */
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+/* Texte du contrat */
+.contract-text {
+  white-space: pre-line; /* 🔑 respecte les sauts sans casser pages */
+  font-family: "Times New Roman", serif;
+  font-size: 14px;
+  line-height: 1.7;
+  font-weight: normal;
+  color: #000;
+}
+
+/* Évite coupure après titres */
+.contract-text h3,
+.contract-text h4 {
+  page-break-after: avoid;
+}
+
+/* =====================================================
+   IMPRESSION (CDI / CDD)
+===================================================== */
+
+@media print {
+
+  /* Cache toute l’application */
+  body * {
+    display: none !important;
+  }
+
+  /* Cache explicitement les éléments non imprimables */
+  .no-print {
+    display: none !important;
+  }
+
+  /* Affiche uniquement le contrat */
+  .contract-preview,
+  .contract-preview * {
+    display: block !important;
+  }
+
+  .contract-preview {
+    position: static;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: none;
+
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  /* Évite coupures moches */
+  .contract-text p {
+    page-break-inside: avoid;
+  }
+}
+
+
+/* =====================================================
+   FORMAT PAGE A4
+===================================================== */
+
+@page {
+  size: A4;
+  margin: 2.5cm;
 }

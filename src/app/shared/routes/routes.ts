@@ -40,7 +40,7 @@ export const routes = {
   employeeList: '/employees/employee-list',
   employeeDetails: '/employees/employee-details',
   departments: '/employees/departments',
-  contract: 'employees/geenrate/contract',
+  contract: '/employees/generate/contract',
   documentsEmployee: 'employees/documents',
 
   //* Validation routes
