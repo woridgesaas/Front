@@ -1,0 +1,42 @@
+<!--* Onboarding card (Logo + title + description + custom content)-->
+<app-onboarding-card title="Paramétrage de l'application" description="Cette étape est facultative. Vous pouvez configurer l'application maintenant ou plus tard depuis les paramètres.">
+
+  <!--* Settings list -->
+  <div class="list-group mb-4" [class.settings-collapsed]="activeSetting">
+    <button *ngFor="let item of settings; trackBy: trackBySettingKey" type="button" class="list-group-item list-group-item-action d-flex align-items-center justify-content-between" [class.active-setting]="activeSetting === item.key" (click)="openSetting(item.key)">
+      <div class="d-flex align-items-center">
+        <i [class]="item.icon + ' me-3 text-primary'"></i>
+        <div>
+          <h6 class="mb-0"> {{ item.label }} </h6>
+          <small class="text-muted"> {{ item.description }} </small>
+        </div>
+      </div>
+
+      <i class="fa-solid fa-chevron-right text-muted"></i>
+    </button>
+  </div>
+
+  <!--* Action button -->
+  <div class="text-center mt-4">
+    <button class="btn btn-primary" (click)="action()">
+      <i class="fa-solid fa-arrow-right me-1"></i> {{ actionLabel }}
+     </button>
+  </div>
+
+</app-onboarding-card>
+
+<div class="settings-section">
+
+<!--* Leave settings -->
+<app-leave-settings *ngIf="activeSetting === AppSettingKey.LEAVE" (save)="onSettingConfigured(AppSettingKey.LEAVE)" (close)="closeSettings()"></app-leave-settings>
+
+<!--* Attendance settings -->
+<app-attendance-settings *ngIf="activeSetting === AppSettingKey.ATTENDANCE" (save)="onSettingConfigured(AppSettingKey.ATTENDANCE)" (close)="closeSettings()"></app-attendance-settings>
+
+<!--* Documents template settings -->
+<app-documents-template-settings *ngIf="activeSetting === AppSettingKey.DOCUMENTS" (save)="onSettingConfigured(AppSettingKey.DOCUMENTS)" (close)="closeSettings()"></app-documents-template-settings>
+
+<!--* Recruitment settings -->
+<app-recruitment-settings *ngIf="activeSetting === AppSettingKey.RECRUITMENT" (save)="onSettingConfigured(AppSettingKey.RECRUITMENT)" (close)="closeSettings()"></app-recruitment-settings>
+
+</div>

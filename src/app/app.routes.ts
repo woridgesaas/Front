@@ -290,9 +290,9 @@ export const routes: Routes = [
           {
             path: 'departments',
             loadComponent: () =>
-              import(
-                './features/hrm/departments/departments.component'
-              ).then((m) => m.DepartmentsComponent),
+              import('./features/hrm/departments/departments.component').then(
+                (m) => m.DepartmentsComponent
+              ),
             data: { breadcrumb: 'Départements', title: 'Départements' },
           },
           {
@@ -344,9 +344,9 @@ export const routes: Routes = [
           {
             path: 'ticket-list',
             loadComponent: () =>
-              import('./features/application/tickets/ticket/ticket.component').then(
-                (m) => m.TicketComponent
-              ),
+              import(
+                './features/application/tickets/ticket/ticket.component'
+              ).then((m) => m.TicketComponent),
             data: {
               breadcrumb: 'Liste des tickets',
               title: 'Liste des tickets',
@@ -402,31 +402,31 @@ export const routes: Routes = [
               title: 'Mes présence/absence',
             },
           },
-
         ],
       },
-//* Leave routes
-           {
-            path: 'leaves',
+
+      //* Leave routes
+      {
+        path: 'leaves',
+        loadComponent: () =>
+          import('./features/hrm/leaves/leaves.component').then(
+            (m) => m.LeavesComponent
+          ),
+        data: { breadcrumb: 'Congés', title: 'Congés' },
+        children: [
+          {
+            path: 'leave-employee',
             loadComponent: () =>
-              import('./features/hrm/leaves/leaves.component').then(
-                (m) => m.LeavesComponent
-              ),
-            data: { breadcrumb: 'Congés', title: 'Congés' },
-            children: [
-              {
-                path: 'leave-employee',
-                loadComponent: () =>
-                  import(
-                    './features/hrm//leaves/leave-employee/leave-employee.component'
-                  ).then((m) => m.LeaveEmployeeComponent),
-                data: {
-                  breadcrumb: 'Mes congés',
-                  title: 'Mes congés',
-                },
-              },
-            ],
+              import(
+                './features/hrm//leaves/leave-employee/leave-employee.component'
+              ).then((m) => m.LeaveEmployeeComponent),
+            data: {
+              breadcrumb: 'Mes congés',
+              title: 'Mes congés',
+            },
           },
+        ],
+      },
 
       //* Promotion route
       {
@@ -495,12 +495,13 @@ export const routes: Routes = [
       },
 
       //* Candidates routes
-     
+
       {
         path: 'candidates',
         loadComponent: () =>
-          import('./features/rhextern/candidates/components/candidates-list/candidates-list.component')
-            .then((m) => m.CandidatesListComponent),
+          import(
+            './features/rhextern/candidates/components/candidates-list/candidates-list.component'
+          ).then((m) => m.CandidatesListComponent),
         data: {
           breadcrumb: 'Candidats',
           title: 'Liste des candidats',
@@ -514,11 +515,11 @@ export const routes: Routes = [
           import(
             './features/rhextern/jobs/components/jobs-list/jobs-list.component'
           ).then((m) => m.JobsListComponent),
-        data: { breadcrumb: 'Offres d\'emploi', title: 'Offres d\'emploi' },
+        data: { breadcrumb: "Offres d'emploi", title: "Offres d'emploi" },
       },
 
       //* Filter route
-      
+
       {
         path: 'filtrage',
         loadComponent: () =>
@@ -529,10 +530,9 @@ export const routes: Routes = [
         data: { breadcrumb: 'Filtrage', title: 'Filtrage' },
       },
 
-
       //* Interview route
       {
-        path: 'entretiens',  
+        path: 'entretiens',
         loadComponent: () =>
           import(
             './features/rhextern/interviews/pages/interviews-planning/interviews-planning.component'
@@ -541,7 +541,7 @@ export const routes: Routes = [
         data: {
           breadcrumb: 'Planification des entretiens',
           title: 'Planification des Entretiens',
-        }
+        },
       },
 
       //* Reports routes
@@ -622,6 +622,16 @@ export const routes: Routes = [
     ],
   },
 
+  //* Onboarding routes
+  {
+    path: 'onboarding',
+    loadComponent: () =>
+      import('./onboarding/onboarding.component').then(
+        (m) => m.OnboardingComponent
+      ),
+    data: { title: 'Onboarding' },
+  },
+
   //* Pages routes
   {
     path: 'under-maintenance',
@@ -639,22 +649,22 @@ export const routes: Routes = [
       ).then((m) => m.UnderConstructionComponent),
     data: { title: 'Page en construction' },
   },
-   {
-        path: 'error-404',
-        loadComponent: () =>
-          import('./features/pages/error-404/error-404.component').then(
-            (m) => m.Error404Component
-          ),
-        data: { title: 'Page non trouvée' },
-      },
-      {
-        path: 'error-500',
-        loadComponent: () =>
-          import('./features/pages/error-500/error-500.component').then(
-            (m) => m.Error500Component
-          ),
-        data: { title: 'Erreur serveur' },
-      },
+  {
+    path: 'error-404',
+    loadComponent: () =>
+      import('./features/pages/error-404/error-404.component').then(
+        (m) => m.Error404Component
+      ),
+    data: { title: 'Page non trouvée' },
+  },
+  {
+    path: 'error-500',
+    loadComponent: () =>
+      import('./features/pages/error-500/error-500.component').then(
+        (m) => m.Error500Component
+      ),
+    data: { title: 'Erreur serveur' },
+  },
 
   //* Fallback route
   {

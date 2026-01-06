@@ -1,0 +1,20 @@
+.vh-75 {
+  min-height: 75vh;
+}
+
+.onboarding-logo {
+  max-width: 140px;
+  height: auto;
+}
+
+/* When a setting is active, reduce visual dominance */
+.settings-collapsed {
+  opacity: 0.6;
+  transform: scale(0.97);
+  transition: all 0.25s ease;
+}
+
+/* Optional hover polish */
+.list-group-item {
+  transition: all 0.2s ease;
+}

@@ -1,0 +1,6 @@
+export enum AppSettingKey {
+  LEAVE = 'LEAVE',
+  ATTENDANCE = 'ATTENDANCE',
+  DOCUMENTS = 'DOCUMENTS',
+  RECRUITMENT = 'RECRUITMENT',
+}

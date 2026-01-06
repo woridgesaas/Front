@@ -14,7 +14,7 @@
         <app-select-category-modal [open]="selectModalOpen" [categories]="categories" (select)="onCategorySelected($event)" (close)="selectModalOpen = false"/>
 
         <!--* Manage category template -->
-        <app-manage-category-templates-modal [open]="manageModalOpen" [category]="selectedCategory" [templates]="filteredTemplates" (fileSelected)="onFileSelected($event)" (save)="save()" (close)="manageModalOpen = false"/>
+        <app-manage-category-templates-modal [open]="manageModalOpen" [category]="selectedCategory" [templates]="filteredTemplates" (fileSelected)="onFileSelected($event)" (save)="saveTemplates()" (close)="manageModalOpen = false"/>
 
       </div>
 
