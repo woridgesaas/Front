@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { WorkScheduleModalComponent } from './components/work-schedule-modal/work-schedule-modal.component';
 import { AbsenceJustificationModalComponent } from './components/absence-justification-modal/absence-justification-modal.component';
@@ -22,6 +22,8 @@ import { SettingsHeaderComponent } from '../components/settings-header/settings-
   styleUrl: './attendance-settings.component.scss',
 })
 export class AttendanceSettingsComponent {
+  @Output() save = new EventEmitter<void>();
+  @Output() close = new EventEmitter<void>();
   AttendanceSettingTab = AttendanceSettingTab;
 
   //* Active button
@@ -31,6 +33,9 @@ export class AttendanceSettingsComponent {
   scheduleModalOpen = false;
   justificationModalOpen = false;
   thresholdsModalOpen = false;
+
+  //*  Track if at least one config is done
+  private configured = false;
 
   //* Open schedule modal
   openScheduleModal(): void {
@@ -55,19 +60,31 @@ export class AttendanceSettingsComponent {
     this.scheduleModalOpen = false;
     this.justificationModalOpen = false;
   }
-
   saveSchedule(data: any): void {
     console.log('Schedule saved', data);
+    this.markConfigured();
+
     //todo Call the backend
   }
 
   saveJustification(delay: number): void {
     console.log('Justification delay', delay);
+    this.markConfigured();
+
     //todo Call the backend
   }
 
   saveThresholds(data: any): void {
     console.log('Thresholds saved', data);
+    this.markConfigured();
+
     //todo Call the backend
+  }
+
+  private markConfigured(): void {
+    if (!this.configured) {
+      this.configured = true;
+      this.save.emit(); //* notify onboarding
+    }
   }
 }

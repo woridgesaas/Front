@@ -405,6 +405,7 @@ export const routes: Routes = [
           },
         ],
       },
+
       //* Leave routes
       {
         path: 'leaves',
@@ -628,6 +629,16 @@ export const routes: Routes = [
         },
       },
     ],
+  },
+
+  //* Onboarding routes
+  {
+    path: 'onboarding',
+    loadComponent: () =>
+      import('./onboarding/onboarding.component').then(
+        (m) => m.OnboardingComponent
+      ),
+    data: { title: 'Onboarding' },
   },
 
   //* Pages routes
