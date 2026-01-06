@@ -1,0 +1,23 @@
+<div class="container vh-75 d-flex align-items-center justify-content-center">
+  <div class="row w-100 justify-content-center">
+    <div class="col-xl-6 col-lg-8 col-md-10">
+      <div class="card shadow-lg border-0 rounded-4 p-4 p-md-5">
+
+        <!--* Logo -->
+        <div class="text-center mb-4">
+          <img src="assets/favicon_io/logo.svg" alt="Logo" class="onboarding-logo"/>
+        </div>
+
+        <!--* Title -->
+        <h3 class="fw-bold text-center mb-2"> {{ title }} </h3>
+
+        <!--* Description -->
+        <p class="text-muted text-center mb-4"> {{ description }} </p>
+
+        <!--* Slot for custom content -->
+        <ng-content></ng-content>
+
+      </div>
+    </div>
+  </div>
+</div>
