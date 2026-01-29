@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BreadcrumbsComponent } from '../../common/breadcrumbs/breadcrumbs.component';
 import { MatSelectModule } from '@angular/material/select';
-
+import { EditorComponent ,TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 interface Beneficiaire {
   id: string;
   nom: string;
@@ -30,13 +30,32 @@ interface Variable {
 }
 @Component({
   selector: 'app-contract',
-  imports: [BreadcrumbsComponent,FormsModule , CommonModule, MatSelectModule],
+  standalone:true,
+  imports: [BreadcrumbsComponent,FormsModule , CommonModule, MatSelectModule ,EditorComponent],
   templateUrl: './contract.component.html',
   styleUrl: './contract.component.scss',
+  providers: [
+    { provide: TINYMCE_SCRIPT_SRC, useValue: '/tinymce/tinymce.min.js' }
+  ]
 })
+
 
 export class ContractComponent implements OnInit{
 
+    editorConfig = {
+    apiKey: 'o1ivhdhr9742t648u5d5fnzwvy3p0g01wqei573eparkdchn',
+    height: 600,
+    menubar: false,
+    plugins: 'lists link image table code help wordcount',
+    toolbar: 'undo redo | formatselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | table | removeformat | code',
+    content_style: `
+      body { font-family: Arial, sans-serif; font-size: 14px; line-height: 1.6; }
+      h1, h2, h3 { color: #333; margin-top: 1em; }
+      table { border-collapse: collapse; width: 100%; }
+      table, th, td { border: 1px solid #ddd; padding: 8px; }
+    `
+  };
+  contratContent = 'Écrivez votre contrat ici...';
   contratTypes: ContratType[] = [
     { id: 'cdi', nom: 'CDI', description: 'Contrat à durée indéterminée', lastUpdate: new Date('2024-01-15'), category: 'standard' },
     { id: 'cdd', nom: 'CDD', description: 'Contrat à durée déterminée', lastUpdate: new Date('2024-01-10'), category: 'standard' },

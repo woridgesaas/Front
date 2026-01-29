@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "template": {
+    "woridge": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -39,6 +39,11 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/tinymce",
+                "output": "/tinymce/"
               }
             ],
             "styles": [
@@ -109,10 +114,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": { 
-              "buildTarget": "template:build:production"
+              "buildTarget": "woridge:build:production"
             },
             "development": {
-              "buildTarget": "template:build:development"
+              "buildTarget": "woridge:build:development"
             }
           },
           "defaultConfiguration": "development"
