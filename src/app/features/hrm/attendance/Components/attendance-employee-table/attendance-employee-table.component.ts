@@ -32,7 +32,6 @@ export class AttendanceEmployeeTableComponent {
   @Input({ required: true }) tableData: AttendanceRow[] = [];
 
   @Input() deadTimeHours = 8;
-  @Input() warningMinHours = 5;
   @Input() enableSelection = false;
   @Input() searchable = false;
 
@@ -134,13 +133,13 @@ private computeUiStatus(row: AttendanceRow): UiStatus {
       ? row.OvertimeDecision
       : 'PENDING';
 
-  // 🔴 ABSENT
-  if (hours === null || hours < this.warningMinHours) {
+  // 🔴 ABSENT(===0)
+  if (hours === null || hours === 0) {
     return 'ABSENT';
   }
 
-  // 🟡 PRÉSENT WARNING (5h → <8h)
-  if (hours >= this.warningMinHours && hours < this.deadTimeHours) {
+  // 🟡 PRÉSENT WARNING (<8h)
+  if (hours < this.deadTimeHours) {
     return 'WARNING_PRESENT';
   }
 
