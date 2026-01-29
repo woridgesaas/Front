@@ -52,7 +52,7 @@ getUiStatus(row: any): UiStatus {
   const h = this.parseHours(row.ProductionHours);
 
   // On suit tes règles cahier de charge
-  if (h < 5) return 'ABSENT';
+  if (h === 0) return 'ABSENT';
   if (h < 8) return 'WARNING';
   if (h === 8) return 'PRESENT';
   return 'OVERTIME';

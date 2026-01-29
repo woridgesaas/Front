@@ -31,7 +31,7 @@
             "Late": "-",
             "Overtime": "33 Min",
             "Production":1,
-            "ProductionHours": "7.45 Hrs"
+            "ProductionHours": "3.45 Hrs"
         },
         {
             "Date": "15 Mar 2024",
@@ -42,7 +42,7 @@
             "Late": "-",
             "Overtime": "50 Min",
             "Production":1,
-            "ProductionHours": "8.35 Hrs"
+            "ProductionHours": "7.35 Hrs"
         },
         {
             "Date": "12 Apr 2024",
@@ -53,7 +53,7 @@
             "Late": "-",
             "Overtime": "10 Min",
             "Production":1,
-            "ProductionHours": "8.22 Hrs"
+            "ProductionHours": "8.00 Hrs"
         },
         {
             "Date": "20 May 2024",
