@@ -1,13 +1,13 @@
 <div class="page-wrapper">
     <router-outlet></router-outlet>
-  
+
     <div class="content">
-  
+
       <!-- Breadcrumb -->
       <div class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
         <app-breadcrumbs></app-breadcrumbs>
         <div class="d-flex my-xl-auto right-content align-items-center flex-wrap ">
-  
+
           <div class="me-2 mb-2">
             <div class="dropdown">
               <a href="javascript:void(0);" class="dropdown-toggle btn btn-white d-inline-flex align-items-center" data-bs-toggle="dropdown">
@@ -30,10 +30,10 @@
               <i class="ti ti-circle-plus me-2"></i>Créer une Offre
             </a>
           </div>
-  
+
         </div>
       </div>
-  
+
       <div class="card">
         <div class="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3">
           <h5>Liste des Offres d'Emploi</h5>
@@ -133,7 +133,7 @@
                       <td>
                         <div class="d-flex align-items-center file-name-icon">
                           <a href="javascript:void(0);" class="avatar avatar-md bg-light rounded">
-                            <img src="assets/img/icons/{{data.Image}}" class="img-fluid rounded-circle" alt="img">
+                            <img src="assets/img/users/user-01.jpg" class="img-fluid rounded-circle" alt="img">
                           </a>
                           <div class="ms-2">
                             <h6 class="fw-medium"><a href="javascript:void(0);">{{data.Job_Title}}</a></h6>
@@ -184,13 +184,13 @@
           </div>
         </div>
       </div>
-  
+
     </div>
-  
+
     <app-footer></app-footer>
-  
+
   </div>
-  
+
   <!--  Modal de Suppression  -->
   <app-confirm-delete
     *ngIf="selectedItem"
@@ -199,26 +199,26 @@
     [message]="getDeleteMessage()"
     [item]="selectedItem"
     (confirm)="confirmDelete($event)"></app-confirm-delete>
-  
+
   <!-- Modal Création -->
-  <app-create-job-modal 
-    [isVisible]="showCreateModal" 
-    [job]="currentJob" 
-    (closed)="closeCreateModal()" 
+  <app-create-job-modal
+    [isVisible]="showCreateModal"
+    [job]="currentJob"
+    (closed)="closeCreateModal()"
     (saved)="onJobCreated($event)"></app-create-job-modal>
-  
+
   <!-- Modal Modification -->
-  <app-edit-job-modal 
-    [isVisible]="showEditModal" 
-    [job]="currentJob" 
-    (closed)="closeEditModal()" 
+  <app-edit-job-modal
+    [isVisible]="showEditModal"
+    [job]="currentJob"
+    (closed)="closeEditModal()"
     (saved)="onJobUpdated($event)"></app-edit-job-modal>
-  
+
   <!-- Modal Publication -->
-  <app-publish-job-modal 
-    [isVisible]="showPublishModal" 
-    [job]="currentJob" 
-    [plateformes]="plateformes" 
-    (closed)="closePublishModal()" 
+  <app-publish-job-modal
+    [isVisible]="showPublishModal"
+    [job]="currentJob"
+    [plateformes]="plateformes"
+    (closed)="closePublishModal()"
     (published)="onJobPublished($event)"
     (platformToggled)="togglePlateforme($event)"></app-publish-job-modal>
