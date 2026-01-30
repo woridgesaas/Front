@@ -9,6 +9,7 @@ import { HolidayFiltersComponent } from './Components/holiday-filters/holiday-fi
 import { HolidayTableComponent } from './Components/holiday-table/holiday-table.component';
 import { Holiday } from '../../../shared/models/models';
 import {HolidayService } from '../../../shared/services/holiday.service'
+import { HolidayAddModalComponent } from './Components/holidays-model/holidays-modal.component';
 
 @Component({
   selector: 'app-holidays',
@@ -17,7 +18,7 @@ import {HolidayService } from '../../../shared/services/holiday.service'
     CommonModule,
     FormsModule,
     BreadcrumbsComponent,
-   
+   HolidayAddModalComponent,
     HolidayStatsComponent,
     HolidayFiltersComponent,
     HolidayTableComponent,
@@ -25,6 +26,7 @@ import {HolidayService } from '../../../shared/services/holiday.service'
   templateUrl: './holidays.component.html',
 })
 export class HolidaysComponent {
+openHoliday = false;
 
   holidays: Holiday[] = [];
   selectedMonth: number | '' = '';
@@ -34,12 +36,18 @@ export class HolidaysComponent {
   constructor(private holidayService: HolidayService) {
     this.loadHolidays();
   }
+openHolidayModal() {
+  this.openHoliday = true;
+}
 
   loadHolidays() {
     this.holidayService.getHolidays().subscribe(data => {
       this.holidays = data;
     });
   }
+addHoliday(h: Holiday) {
+  this.holidays = [...this.holidays, h];
+}
 
   get filteredHolidays(): Holiday[] {
     return this.holidays.filter(h => {

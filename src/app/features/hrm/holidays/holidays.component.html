@@ -5,6 +5,19 @@
     class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3"
   >
     <app-breadcrumbs></app-breadcrumbs>
+   <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
+  <div class="mb-2">
+    <button
+      type="button"
+      class="btn btn-primary d-flex align-items-center"
+      (click)="openHolidayModal()"
+    >
+      <i class="ti ti-circle-plus me-2"></i>
+      Ajouter jours fériés
+    </button>
+  </div>
+</div>
+
   </div>
 
   <!-- ===== STATS (cards) ===== -->
@@ -34,5 +47,11 @@
     </div>
 
   </div>
+<app-holiday-add-modal
+  [open]="openHoliday"
+  (add)="addHoliday($event)"
+  (cancel)="openHoliday = false"
+></app-holiday-add-modal>
+
 
 </div>
