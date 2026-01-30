@@ -1,16 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  ApexAxisChartSeries,
-  ApexChart,
-  ApexStroke,
-  ApexXAxis,
-  ApexLegend,
-  ApexTooltip,
-  ApexFill,
-  ApexPlotOptions,
-  ChartType,
-} from 'ng-apexcharts';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { BreadcrumbsComponent } from '../../../common/breadcrumbs/breadcrumbs.component';
 import { LeaveStatisticsService } from '../../../../shared/services/reports/leave-statistics-service';
