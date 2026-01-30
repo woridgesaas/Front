@@ -53,7 +53,7 @@
           </div>
         </div>
 
-        <!-- Sélection de l'employé -->
+        <!-- Select employe -->
         <div class="mb-4">
           <h6 class="border-bottom pb-2 mb-3">
             <i class="ti ti-user me-2 text-success"></i>
@@ -212,7 +212,10 @@
       <div class="card-header bg-primary border-0">
         <h5 class="mb-0 text-light">
           <i class="ti ti-edit me-2"></i>
-          Éditeur de contrat
+          Éditeur de contrats
+           <small class="float-end" style="font-size: 0.8rem;">
+            <i data-bs-toggle="modal" data-bs-target="#variables_modal" class="ti ti-info-circle cursor-pointer"></i> Clic droit pour insérer des variables
+          </small>
         </h5>
       </div>
       
@@ -236,3 +239,4 @@
   </div>
 </div>
 </div>
+<app-variables-modal [predefinedVariables]="predefinedVariables"></app-variables-modal>

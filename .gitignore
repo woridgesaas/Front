@@ -44,5 +44,6 @@ Thumbs.db
 src/environments/*.local.ts
 src/environments/*.dev.ts
 src/environments/*.prod.ts
+.env
 #Cache de ang
 .angular/cache/

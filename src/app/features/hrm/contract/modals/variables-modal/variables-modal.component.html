@@ -1,0 +1,90 @@
+<div class="modal fade" id="variables_modal"tabindex="-1" aria-labelledby="variablesModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      
+      <!-- Header -->
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="variablesModalLabel">
+          <i class="ti ti-code me-2"></i>
+          Variables disponibles
+        </h5>
+        <button type="button" (click)="closeModal()" class="btn-close btn-close-white" data-bs-dismiss="modal"  aria-label="Close"></button>
+      </div>
+      
+      <!-- Body  carousel -->
+      <div class="modal-body p-0">
+        
+        <!-- Carousel -->
+        <div class="category-carousel" #carousel>
+            @for (category of predefinedVariables; track $index) {
+
+            
+          <div class="category-page"[class.active]="currentCategoryIndex === $index">
+            
+            <!-- Header Caroussel-->
+            <div class="category-header p-4 bg-light border-bottom">
+              <div class="d-flex align-items-center">
+                <div class="category-icon me-3" [innerHTML]="getCategoryIcon(category.label)"></div>
+                <div>
+                  <h5 class="mb-1">{{category.label}}</h5>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Variables -->
+            <div class="category-variables p-4">
+              <div class="row g-3">
+                @for (variable of category.variables; track $index) {
+                <div class="col-md-6">
+                  <div class="card variable-card h-100" >
+                    <div class="card-body">
+                      <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                          <h6 class="variable-code mb-2 text-primary">{{variable.code}}</h6>
+                          <p class="variable-description text-muted small mb-0">
+                            {{variable.description}}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                 }
+              </div>
+            </div>
+            
+          </div>
+          }
+        </div>
+        
+      </div>
+      
+     
+      <div class="modal-footer border-top">
+        <div class="d-flex justify-content-between align-items-center w-100">
+          
+          <button class="btn btn-outline-secondary" 
+                  [disabled]="currentCategoryIndex === 0"
+                  (click)="previousCategory()">
+            <i class="ti ti-chevron-left me-1"></i> Précédent
+          </button>
+          
+          <!-- Indicateur de progression -->
+          <div class="text-center">
+            <span class="text-muted">
+              Catégorie {{currentCategoryIndex + 1}} sur {{predefinedVariables.length}}
+            </span>
+          </div>
+          
+          <!-- Next-->
+          <button class="btn btn-outline-secondary" 
+                  [disabled]="currentCategoryIndex === predefinedVariables.length - 1"
+                  (click)="nextCategory()">
+            Suivant <i class="ti ti-chevron-right ms-1"></i>
+          </button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>

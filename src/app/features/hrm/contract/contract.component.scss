@@ -93,3 +93,19 @@
 .text-light{
   color:#f8f9fa
 }
+:host ::ng-deep {
+  .variable {
+    background-color: #e8f4fd !important;
+    color: #0066cc !important;
+    padding: 2px 4px !important;
+    border-radius: 3px !important;
+    border: 1px solid #b3d9ff !important;
+    font-weight: 500 !important;
+  }
+}
+
+
+.variable-menu {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
