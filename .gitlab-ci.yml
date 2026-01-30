@@ -15,6 +15,7 @@ build-job:
   stage: build
   script:
     - echo "Running Angular build... in branch $CI_COMMIT_BRANCH"
+    - echo "NG_APP_TINYMCE_API_KEY=$NG_APP_TINYMCE_API_KEY" > .env #inject the variable in build stage
     - npm run build 
   artifacts:
     paths:
