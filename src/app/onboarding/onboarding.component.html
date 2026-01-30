@@ -1,0 +1,29 @@
+<div class="container py-5">
+  <app-user-setup
+    *ngIf="currentStep === 1"
+    [role]="UserRole.CEO"
+    title="Création du compte administrateur (CEO)"
+    description="Cette étape permet de créer le compte administrateur principal (CEO). Ce compte dispose de tous les droits pour configurer la plateforme, gérer les paramètres globaux et administrer les utilisateurs."
+    buttonText="Créer le compte CEO"
+    buttonIcon="fa-solid fa-user-gear"
+    (completed)="onCeoCompleted()"
+  ></app-user-setup>
+
+  <!--* STEP 02 : HR -->
+  <app-user-setup
+    *ngIf="currentStep === 2 && onboarding.progress.ceoCreated"
+    [role]="UserRole.HR"
+    title="Création du compte ressources humaines (RH)"
+    description="Cette étape permet de créer le compte Ressources Humaines (RH). Ce compte sera chargé de la gestion des collaborateurs, du suivi des congés, des absences et de l'administration des processus RH au sein de la plateforme."
+    buttonText="Créer le compte RH"
+    buttonIcon="fa-solid fa-users"
+    (completed)="onHrCompleted()"
+  ></app-user-setup>
+
+  <!--* STEP 03 : App settings -->
+  <app-app-settings-setup
+    *ngIf="currentStep === 3 && onboarding.progress.hrCreated"
+    (completed)="nextStep()"
+    (skipped)="nextStep()"
+  ></app-app-settings-setup>
+</div>

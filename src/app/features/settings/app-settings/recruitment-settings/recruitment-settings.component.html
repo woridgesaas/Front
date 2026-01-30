@@ -20,7 +20,8 @@
 </div>
 
 <!--* Showcase Website Modal -->
-<app-showcase-website-modal [open]="showcaseModalOpen" (close)="showcaseModalOpen = false"></app-showcase-website-modal>
+<app-showcase-website-modal [open]="showcaseModalOpen" (close)="showcaseModalOpen = false" (save)="markConfigured()"></app-showcase-website-modal>
 
 <!--* Deposition Channels Modal -->
-<app-deposition-channel-modal [open]="channelsModalOpen" (close)="channelsModalOpen = false"></app-deposition-channel-modal>
+<app-deposition-channel-modal [open]="channelsModalOpen" (close)="channelsModalOpen = false" (save)="markConfigured()"></app-deposition-channel-modal>
+

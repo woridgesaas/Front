@@ -82,7 +82,7 @@ private mapRow(row: attendanceadmin): attendanceadmin {
   const hours = this.getHours(row.ProductionHours);
 
   // 🔴 ABSENT
-  if (hours < 5) {
+  if (hours === 0) {
     row.Status = 'Absent';
     row.isOvertime = false;
     row.overtimeDecision = undefined;

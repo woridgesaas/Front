@@ -5,29 +5,38 @@
       class="d-md-flex d-block align-items-center justify-content-between mb-3"
     >
       <app-breadcrumbs></app-breadcrumbs>
+      
+      <!-- Bouton pour supprimer toutes les demandes traitées -->
+      <button 
+        class="btn btn-outline-danger btn-sm"
+        (click)="deleteAllProcessed()"
+        *ngIf="(accepted + refused) > 0"
+      >
+        <i class="ti ti-trash me-1"></i>
+        Nettoyer les demandes traitées ({{ accepted + refused }})
+      </button>
     </div>
 
     <!-- ================= STATS CARDS ================= -->
+    <div class="row mb-4 g-3">
+      <div
+        class="col-lg-3 col-md-6"
+        *ngFor="let kpi of kpis"
+      >
+        <app-kpi-card
+          [title]="kpi.title"
+          [value]="kpi.value"
+          [icon]="kpi.icon"
+          [color]="kpi.color"
+        >
+        </app-kpi-card>
+      </div>
+    </div>
 
-    <!-- Cards statistiques (COMMON KPI) -->
-<div class="row mb-4 g-3">
-  <div
-    class="col-lg-3 col-md-6"
-    *ngFor="let kpi of kpis"
-  >
-    <app-kpi-card
-      [title]="kpi.title"
-      [value]="kpi.value"
-      [icon]="kpi.icon"
-      [color]="kpi.color"
-    >
-    </app-kpi-card>
-  </div>
-</div>
     <!-- ================= TABLE ================= -->
     <div class="card">
       <div class="card-body">
-        <h5 class="mb-3">Liste des demandes</h5>
+        <h5 class="mb-3">Liste des demandes de modification</h5>
 
         <!-- FILTERS BAR -->
         <div class="filters-bar">
@@ -89,8 +98,8 @@
             <thead>
               <tr>
                 <th>Employé</th>
-                <th>Date de modification</th>
-                <th>Informations modifiées</th>
+                <th>Date de demande</th>
+                <th>Nb. modifications</th>
                 <th>Statut</th>
                 <th class="text-end">Actions</th>
               </tr>
@@ -118,16 +127,17 @@
                   </div>
                 </td>
 
-                <td>{{ req.modifiedDate | date : "dd/MM/yyyy" }}</td>
+                <td>
+                  <div>{{ req.modifiedDate | date : "dd/MM/yyyy" }}</div>
+                  <small class="text-muted" *ngIf="req.processedDate">
+                    Traitée le {{ req.processedDate | date : "dd/MM/yyyy" }}
+                  </small>
+                </td>
 
                 <td>
-                  <button
-                    type="button"
-                    class="btn btn-link p-0 view-link"
-                    (click)="viewChanges(req)"
-                  >
-                    Voir les modifications
-                  </button>
+                  <span class="badge bg-info">
+                    {{ req.changes.length }} champ(s)
+                  </span>
                 </td>
 
                 <td>
@@ -140,24 +150,50 @@
                 </td>
 
                 <td class="text-end">
-                  <ng-container *ngIf="req.status === 'En attente'; else done">
+                  <!-- Bouton voir détails -->
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-light me-2"
+                    (click)="viewChanges(req)"
+                    title="Voir les modifications"
+                  >
+                    <i class="ti ti-eye"></i>
+                  </button>
+
+                  <!-- Actions selon statut -->
+                  <ng-container *ngIf="req.status === 'En attente'">
                     <button
                       class="btn btn-success btn-sm me-2"
                       (click)="accept(req)"
+                      title="Accepter"
                     >
-                      Accepter
+                      <i class="ti ti-check"></i>
                     </button>
-                    <button class="btn btn-danger btn-sm" (click)="refuse(req)">
-                      Refuser
+                    <button 
+                      class="btn btn-danger btn-sm" 
+                      (click)="refuse(req)"
+                      title="Refuser"
+                    >
+                      <i class="ti ti-x"></i>
                     </button>
                   </ng-container>
-                  <ng-template #done>—</ng-template>
+
+                  <!-- Bouton supprimer (seulement si Acceptée ou Refusée) -->
+                  <ng-container *ngIf="req.status !== 'En attente'">
+                    <button
+                      class="btn btn-outline-danger btn-sm"
+                      (click)="deleteRequest(req)"
+                      title="Supprimer"
+                    >
+                      <i class="ti ti-trash"></i>
+                    </button>
+                  </ng-container>
                 </td>
               </tr>
 
               <tr *ngIf="filteredRequests.length === 0">
                 <td colspan="5" class="text-center py-4 text-muted">
-                  Aucun résultat n’existe
+                  Aucune demande n'existe
                 </td>
               </tr>
             </tbody>
@@ -167,4 +203,175 @@
     </div>
   </div>
   <app-footer></app-footer>
+</div>
+
+<!-- Modal: Voir les modifications -->
+<div 
+  class="modal fade" 
+  id="viewChangesModal" 
+  tabindex="-1"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="ti ti-file-diff me-2"></i>
+          Détails des modifications
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+
+      <div class="modal-body" *ngIf="selectedRequest">
+        <!-- Informations employé -->
+        <div class="card bg-light mb-3">
+          <div class="card-body">
+            <div class="d-flex align-items-center">
+              <div class="me-3">
+                <img
+                  *ngIf="selectedRequest.employeeImage; else avatarPlaceholder"
+                  [src]="selectedRequest.employeeImage"
+                  class="rounded-circle"
+                  width="60"
+                  height="60"
+                />
+                <ng-template #avatarPlaceholder>
+                  <div 
+                    class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
+                    style="width: 60px; height: 60px; font-size: 24px;"
+                  >
+                    {{ selectedRequest.employeeName.charAt(0) }}
+                  </div>
+                </ng-template>
+              </div>
+              
+              <div class="flex-grow-1">
+                <h6 class="mb-1">{{ selectedRequest.employeeName }}</h6>
+                <small class="text-muted">{{ selectedRequest.employeeRole }}</small>
+                <br>
+                <small class="text-muted">
+                  <i class="ti ti-calendar me-1"></i>
+                  Soumis le {{ selectedRequest.modifiedDate | date: 'dd/MM/yyyy' }}
+                </small>
+                <br *ngIf="selectedRequest.processedDate">
+                <small class="text-muted" *ngIf="selectedRequest.processedDate">
+                  <i class="ti ti-user-check me-1"></i>
+                  Traitée le {{ selectedRequest.processedDate | date: 'dd/MM/yyyy' }}
+                  <span *ngIf="selectedRequest.processedBy">par {{ selectedRequest.processedBy }}</span>
+                </small>
+              </div>
+
+              <span 
+                class="badge fs-6"
+                [ngClass]="{
+                  'bg-warning': selectedRequest.status === 'En attente',
+                  'bg-success': selectedRequest.status === 'Acceptée',
+                  'bg-danger': selectedRequest.status === 'Refusée'
+                }"
+              >
+                {{ selectedRequest.status }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Liste des changements -->
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead class="table-light">
+              <tr>
+                <th style="width: 30%">Champ</th>
+                <th style="width: 35%">Ancienne valeur</th>
+                <th style="width: 35%">Nouvelle valeur</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let change of selectedRequest.changes">
+                <td>
+                  <strong>{{ change.label }}</strong>
+                </td>
+                <td class="text-muted">
+                  <del>{{ change.oldValue || '—' }}</del>
+                </td>
+                <td class="text-success fw-medium">
+                  {{ change.newValue || '—' }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Actions si en attente -->
+        <div 
+          *ngIf="selectedRequest.status === 'En attente'" 
+          class="alert alert-info mb-0"
+        >
+          <i class="ti ti-info-circle me-2"></i>
+          Cette demande nécessite votre validation pour appliquer les modifications.
+        </div>
+
+        <!-- Info si demande traitée -->
+        <div 
+          *ngIf="selectedRequest.status !== 'En attente'" 
+          class="alert mb-0"
+          [ngClass]="{
+            'alert-success': selectedRequest.status === 'Acceptée',
+            'alert-danger': selectedRequest.status === 'Refusée'
+          }"
+        >
+          <i class="ti ti-info-circle me-2"></i>
+          Cette demande a été {{ selectedRequest.status.toLowerCase() }}.
+          Vous pouvez la supprimer pour nettoyer l'historique.
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          data-bs-dismiss="modal"
+        >
+          Fermer
+        </button>
+
+        <!-- Actions pour demandes en attente -->
+        <ng-container *ngIf="selectedRequest && selectedRequest.status === 'En attente'">
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="refuse(selectedRequest)"
+            data-bs-dismiss="modal"
+          >
+            <i class="ti ti-x me-1"></i>
+            Refuser
+          </button>
+          <button
+            type="button"
+            class="btn btn-success"
+            (click)="accept(selectedRequest)"
+            data-bs-dismiss="modal"
+          >
+            <i class="ti ti-check me-1"></i>
+            Accepter
+          </button>
+        </ng-container>
+
+        <!-- Bouton supprimer pour demandes traitées -->
+        <ng-container *ngIf="selectedRequest && selectedRequest.status !== 'En attente'">
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="deleteRequest(selectedRequest)"
+            data-bs-dismiss="modal"
+          >
+            <i class="ti ti-trash me-1"></i>
+            Supprimer
+          </button>
+        </ng-container>
+      </div>
+    </div>
+  </div>
 </div>

@@ -4,9 +4,14 @@
   >
     <app-breadcrumbs></app-breadcrumbs>
     <!-- ADD -->
-    <button class="btn btn-primary" (click)="openAddModal = true">
-      Ajouter Département
-    </button>
+    <button
+  class="btn btn-primary"
+  (click)="openAddModal = true"
+>
+  <i class="ti ti-circle-plus me-1"></i>
+  Ajouter Département
+</button>
+
   </div>
 
   <!-- STATS -->
@@ -29,14 +34,13 @@
 
     <div class="card-body p-0">
       <!-- TABLE -->
-<app-departments-table
-  [departments]="filteredDepartments"
-  (edit)="openEdit($event)"
-  (delete)="openDelete($event)"
-  (sort)="sortData($event)"
->
-</app-departments-table>
-
+      <app-departments-table
+        [departments]="filteredDepartments"
+        (edit)="openEdit($event)"
+        (delete)="openDelete($event)"
+        (sort)="sortData($event)"
+      >
+      </app-departments-table>
 
       <!-- MODALS -->
       <app-add-department-modal

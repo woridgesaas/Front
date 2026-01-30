@@ -681,22 +681,20 @@ export interface AttendanceRow {
   ProductionHours: string | number;
   OvertimeDecision?: OvertimeDecision; // ⚠️ optionnel (API)
 }
-
-export interface promotion {
+export interface Promotion {
   sNo?: number;
   Image?: string;
   PromotedEmployee?: string;
   Department?: string;
   DesignationFrom?: string;
   DesignationTo?: string;
-
   OldSalary?: number;
   Bonus?: number;
   NewSalary?: number;
-
   PromotionDate?: string;
   isSelected?: boolean;
 }
+
 export interface pageSizeCal {
   totalData: number;
   pageSize: number;
@@ -705,14 +703,15 @@ export interface pageSizeCal {
 }
 
 export interface resignation {
+resignation: any;
   sNo?: number;
   isSelected: boolean;
   Image: string;
   ResigningEmployee: string;
   Department: string;
   Reason: string;
-  NoticeDate: string;
-  ResignationDate: string;
+  NoticeDate: Date | null;
+  ResignationDate: Date | null;
 }
 
 export interface Activity {

@@ -1,0 +1,135 @@
+<div class="modal fade show d-block" *ngIf="open">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content">
+
+      <!-- Header -->
+      <app-modal-header
+        title="Ajouter un jour férié"
+        icon="ti ti-calendar-event"
+        (close)="close()"
+      ></app-modal-header>
+
+      <!-- Body -->
+      <form (ngSubmit)="submit()">
+        <div class="modal-body">
+
+          <!-- Fête searchable -->
+         <div class="mb-3 position-relative">
+  <label class="form-label">Fête</label>
+
+  <div class="input-group">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Sélectionner ou saisir une fête"
+      [(ngModel)]="holiday.nameFr"
+      name="nameFr"
+      (focus)="onFocus()"
+      (input)="filterHolidays(holiday.nameFr)"
+      (blur)="onBlur()"
+      autocomplete="off"
+    />
+    <span class="input-group-text bg-white">
+      <i class="ti ti-chevron-down"></i>
+    </span>
+  </div>
+
+  <!-- Dropdown -->
+  <ul
+    *ngIf="showDropdown"
+    class="list-group autocomplete-list"
+  >
+    <li
+      *ngFor="let h of filteredHolidays"
+      class="list-group-item list-group-item-action"
+      (mousedown)="selectHoliday(h)"
+    >
+      <div class="fw-semibold">{{ h.nameFr }}</div>
+      <small class="text-muted d-block text-end" dir="rtl">
+        {{ h.nameAr }}
+      </small>
+    </li>
+
+    <li
+      *ngIf="filteredHolidays.length === 0"
+      class="list-group-item text-muted fst-italic"
+    >
+      Aucune fête trouvée — sera ajoutée manuellement
+    </li>
+  </ul>
+</div>
+
+
+
+          <!-- AR -->
+          <div class="mb-3">
+            <label class="form-label">العيد</label>
+           <input
+  type="text"
+  class="form-control"
+  dir="rtl"
+  [(ngModel)]="holiday.nameAr"
+  name="nameAr"
+  autocomplete="off"
+/>
+
+          </div>
+
+          <!-- Date -->
+<div class="mb-3">
+  <label class="form-label">Date</label>
+
+  <div class="input-icon position-relative">
+    <span class="input-icon-addon">
+      <i class="ti ti-calendar text-gray-9"></i>
+    </span>
+
+    <input
+      type="text"
+      class="form-control"
+      bsDatepicker
+      [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', adaptivePosition: true }"
+      placeholder="jj/mm/aaaa"
+      [(ngModel)]="holiday.date"
+      name="date"
+    />
+  </div>
+</div>
+
+
+          <!-- Jours -->
+          <div class="mb-3">
+            <label class="form-label">Nombre de jours</label>
+            <input
+              type="number"
+              class="form-control"
+              [(ngModel)]="holiday.days"
+              name="days"
+            />
+          </div>
+
+          <!-- Type -->
+          <div class="mb-3">
+            <label class="form-label">Type</label>
+            <select
+              class="form-select"
+              [(ngModel)]="holiday.type"
+              name="type"
+            >
+              <option value="national">National</option>
+              <option value="religious">Religieux</option>
+            </select>
+          </div>
+
+        </div>
+
+        <!-- Footer -->
+        <app-modal-footer
+          submitText="Ajouter"
+          submitIcon="ti ti-check"
+          (cancel)="close()"
+        ></app-modal-footer>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,5 +1,4 @@
 export enum DocumentCategory {
-  CONTRACTS = 'Contrats',
   ATTESTATIONS = 'Attestations',
   END_OF_CONTRACT = 'Fin de contrat',
   DISCIPLINE = 'Discipline',

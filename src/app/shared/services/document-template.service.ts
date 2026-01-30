@@ -7,40 +7,7 @@ import { DocumentCategory } from '../enum/document-category.enum';
 })
 export class DocumentTemplateService {
   private documentsTemplate: DocumentTemplate[] = [
-    //* Work contracts
-    {
-      code: 'CONTRAT_CDI',
-      name: 'Contrat de travail - CDI',
-      description:
-        "Contrat à durée indéterminée définissant les droits et obligations du salarié et de l'employeur.",
-      category: DocumentCategory.CONTRACTS,
-      file: null,
-    },
-    {
-      code: 'CONTRAT_CDD',
-      name: 'Contrat de travail - CDD',
-      description:
-        'Contrat à durée déterminée conclu pour une période limitée.',
-      category: DocumentCategory.CONTRACTS,
-      file: null,
-    },
-    {
-      code: 'AVENANT_CONTRAT',
-      name: 'Avenant au contrat de travail',
-      description:
-        'Document modifiant certaines clauses du contrat initial (poste, salaire, durée ou conditions de travail).',
-      category: DocumentCategory.CONTRACTS,
-      file: null,
-    },
-    {
-      code: 'CONTRAT_TEMPS_PARTIEL',
-      name: 'Contrat de travail à temps partiel',
-      description:
-        'Contrat précisant une durée de travail inférieure à la durée légale, avec répartition des horaires clairement définie.',
-      category: DocumentCategory.CONTRACTS,
-      file: null,
-    },
-
+    
     //* Certifications
     {
       code: 'ATTESTATION_TRAVAIL',

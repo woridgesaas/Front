@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SelectCategoryModalComponent } from './components/select-category-modal/select-category-modal.component';
 import { ManageCategoryTemplatesModalComponent } from './components/manage-category-templates-modal/manage-category-templates-modal.component';
@@ -16,11 +16,13 @@ import { SettingsHeaderComponent } from '../components/settings-header/settings-
     SelectCategoryModalComponent,
     ManageCategoryTemplatesModalComponent,
     SwitchButtonComponent,
-    SettingsHeaderComponent
+    SettingsHeaderComponent,
   ],
   templateUrl: './documents-template-settings.component.html',
 })
 export class DocumentsTemplateSettingsComponent {
+  @Output() save = new EventEmitter<void>();
+  @Output() close = new EventEmitter<void>();
   categories = Object.values(DocumentCategory);
   templates: DocumentTemplate[] = [];
 
@@ -50,8 +52,13 @@ export class DocumentsTemplateSettingsComponent {
     this.service.updateTemplateFile(e.code, e.file);
   }
 
-  save(): void {
+  saveTemplates(): void {
     this.service.saveTemplates();
-    this.manageModalOpen = false;
+
+    //* Notify onboarding that document is configured
+    this.save.emit();
+
+    //* Close settings view
+    this.close.emit();
   }
 }

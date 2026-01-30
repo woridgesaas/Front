@@ -11,8 +11,7 @@ import { ModalFooterComponent } from '../../../../common/modal-footer/modal-foot
   imports: [
     CommonModule,
     FormsModule,
-    ModalHeaderComponent,
-    ModalFooterComponent,
+    
   ],
   templateUrl: './holiday-table.component.html',
   styleUrl: './holiday-table.component.scss',

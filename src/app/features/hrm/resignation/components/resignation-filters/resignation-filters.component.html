@@ -1,0 +1,32 @@
+<div class="d-flex align-items-center gap-2 flex-wrap">
+
+<!-- Date range -->
+   <div class="me-3">
+          <div class="input-icon position-relative">
+            <span class="input-icon-addon">
+              <i class="ti ti-calendar text-gray-9"></i>
+            </span>
+            <input
+              type="text"
+              class="form-control date-range bookingrange"
+              bsDaterangepicker
+              [(ngModel)]="bsRangeValue"
+              [bsConfig]="{ adaptivePosition: true }"
+              placeholder="dd/mm/yyyy - dd/mm/yyyy"
+            />
+          </div>
+        </div>
+
+  <!-- Search -->
+  <div >
+    <input
+      type="search"
+      class="form-control "
+          style="width: 220px"
+
+      placeholder="Rechercher..."
+      [(ngModel)]="searchValue"
+      (ngModelChange)="searchValueChange.emit($event)"
+    />
+  </div>
+</div>

@@ -333,13 +333,12 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     this.attendanceChart = new Chart(canvas, {
       type: 'doughnut',
       data: {
-        labels: ['Présente', 'Autorisation', 'Absent(e)'],
+        labels: ['Présente', 'Absent(e)'],
         datasets: [
           {
             data: [59, 2, 15],
             backgroundColor: [
               '#a782d280', // vert - Présente
-              '#bd28efff', // jaune - Autorisation
               '#6cb7e6ff', // rouge - Absent(e)
             ],
             borderWidth: 6,

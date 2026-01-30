@@ -1,4 +1,4 @@
-import { Component ,OnInit} from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BreadcrumbsComponent } from '../../common/breadcrumbs/breadcrumbs.component';
@@ -32,6 +32,8 @@ interface ContratType {
     { provide: TINYMCE_SCRIPT_SRC, useValue: '/tinymce/tinymce.min.js' }
   ]
 })
+export class ContractComponent {
+// ===== ACTIONS =====
 
 
 export class ContractComponent implements OnInit{
@@ -114,6 +116,7 @@ export class ContractComponent implements OnInit{
   }
 
   generateContrat(): void {
+    if (!this.selectedBeneficiaire || !this.selectedContratType) return;
 
     console.log(this.contratContent);
     console.log(this.service.cleanContent(this.contratContent));

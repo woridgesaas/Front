@@ -26,6 +26,12 @@ import { NgxEditorModule } from 'ngx-editor';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { FooterComponent } from '../../common/footer/footer.component';
 import { BreadcrumbsComponent } from '../../common/breadcrumbs/breadcrumbs.component';
+import { RouterLink } from '@angular/router';
+import { EmployeeSummaryComponent } from "../../common/employee-summary/employee-summary.component";
+import { EmployeeKpisComponent } from "../../common/employee-kpis/employee-kpis.component";
+import { AttendanceHistoryHeaderComponent } from "../../hrm/attendance/Components/attendance-history-header/attendance-history-header.component";
+import { FilterComponent } from "../../common/filter/filter.component";
+import { AttendanceEmployeeTableComponent } from "../../hrm/attendance/Components/attendance-employee-table/attendance-employee-table.component";
 
 export interface ChartOptions {
   series: ApexAxisChartSeries;
@@ -44,12 +50,16 @@ export interface ChartOptions {
     CommonModule,
     MatSelectModule,
     FormsModule,
+    RouterLink,
     NgxEditorModule,
     BsDatepickerModule,
     FooterComponent,
     NgApexchartsModule,
     BreadcrumbsComponent,
-  ],
+    EmployeeSummaryComponent,
+    EmployeeKpisComponent,
+   
+],
 })
 export class EmployeeDashboardComponent implements AfterViewInit, OnInit {
   now: Date = new Date();
@@ -62,9 +72,15 @@ export class EmployeeDashboardComponent implements AfterViewInit, OnInit {
   circleProgressElements!: QueryList<ElementRef>;
   today!: Date;
   routes = routes;
-  ngAfterViewInit() {
+  onStatusFilter(status: string): void {
+    // futur
+  }  ngAfterViewInit() {
     this.updateProgress();
+  }  bsRangeValue: Date[] = [];
+ onSortFilter(sort: string): void {
+    // futur
   }
+
   updateProgress() {
     this.circleProgressElements.forEach((elementRef) => {
       const element = elementRef.nativeElement;
@@ -110,8 +126,8 @@ export class EmployeeDashboardComponent implements AfterViewInit, OnInit {
         enabled: false,
       },
 
-      series: [15, 10, 5, 10, 60],
-      colors: ['#F26522', '#FFC107', '#E70D0D', '#03C95A', '#0C4B5E'],
+      series: [ 5, 10, 60],
+      colors: ['#ab8be9ff', '#039bc9d3', '#3259659d'],
       responsive: [
         {
           breakpoint: 480,
@@ -143,7 +159,7 @@ export class EmployeeDashboardComponent implements AfterViewInit, OnInit {
           enabled: false,
         },
       },
-      colors: ['#03C95A'],
+      colors: ['rgba(158, 94, 225, 0.74)'],
       dataLabels: {
         enabled: false,
       },

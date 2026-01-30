@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { AnnualLeaveModalComponent } from './components/annual-leave-modal/annual-leave-modal.component';
 import { ExceptionalLeavesModalComponent } from './components/exceptional-leaves-modal/exceptional-leaves-modal.component';
 import { ExceptionalLeave } from '../../../../shared/models/leaves.model';
@@ -19,6 +19,8 @@ import { SettingsHeaderComponent } from '../components/settings-header/settings-
   styleUrls: ['./leave-settings.component.scss'],
 })
 export class LeaveSettingsComponent {
+  @Output() save = new EventEmitter<void>();
+  @Output() close = new EventEmitter<void>();
   LeaveType = LeaveType;
 
   //* Active switch
@@ -45,11 +47,22 @@ export class LeaveSettingsComponent {
   //* Save annual leave
   saveAnnualLeave(days: number): void {
     console.log('Annual leave saved:', days);
+
+    // TODO: backend call
+
+    //* Notify parent (onboarding)
+    this.save.emit();
+    this.close.emit();
   }
 
   //* Save exceptional leave
   saveExceptionalLeaves(leaves: ExceptionalLeave[]): void {
     console.log('Exceptional leaves saved:', leaves);
-    //todo Call the backend
+
+    // TODO: backend call
+
+    //* Notify parent (onboarding)
+    this.save.emit();
+    this.close.emit();
   }
 }
