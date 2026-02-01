@@ -1,0 +1,28 @@
+  <div class="card h-100">
+          <div class="card-header">
+            <h5 class="mb-0">Performance</h5>
+          </div>
+
+          <div class="card-body">
+            <div class="bg-light d-flex align-items-center rounded p-2 mb-3">
+              <h3 class="me-2 mb-0">98%</h3>
+              <span
+                class="badge badge-outline-success bg-success-transparent rounded-pill me-2"
+              >
+                12%
+              </span>
+              <span class="text-muted">
+                par rapport aux années précédentes
+              </span>
+            </div>
+
+            <apx-chart
+      [series]="series"
+      [chart]="chart"
+      [colors]="colors"
+      [xaxis]="xaxis"
+      [stroke]="stroke"
+      [dataLabels]="dataLabels"
+    ></apx-chart>
+  </div>
+</div>

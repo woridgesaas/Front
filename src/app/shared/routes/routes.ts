@@ -15,7 +15,7 @@ export const routes = {
   errors: '/error-500',
 
   //* Dashboard routes
-  index: '/dashboard/index',
+  index: '/dashboard/admin',
   employee: '/dashboard/employee',
 
   //* Layouts routes
