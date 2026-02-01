@@ -1,0 +1,56 @@
+<div class="card flex-fill">
+<div             class="card-header pb-2 d-flex align-items-center justify-content-between"
+>
+<h5 class="card-title mb-0">Aperçu des présences</h5>
+  </div>
+
+  <div class="card-body">
+    <!-- Chart -->
+    <div class="chartjs-wrapper-demo mb-4">
+      <apx-chart
+       [series]="attendanceChart.series"
+        [chart]="attendanceChart.chart"
+        [labels]="attendanceChart.labels"
+        [colors]="attendanceChart.colors"
+        [plotOptions]="attendanceChart.plotOptions"
+        [dataLabels]="attendanceChart.dataLabels"
+        [legend]="attendanceChart.legend"
+        style="width: 100%"
+      ></apx-chart>
+
+      <!-- Texte centré -->
+      <div class="attendance-canvas">
+        <p class="fs-13 mb-1">Participation totale</p>
+        <h1>120</h1>
+      </div>
+    </div>
+
+    <h6 class="fw-bold mb-3">Statut</h6>
+
+    <div class="d-flex align-items-center justify-content-between">
+      <p class="f-13 mb-2">
+        <i class="ti ti-circle-filled status-present me-1"></i>Présente
+      </p>
+      <p class="f-13 fw-medium mb-2">59%</p>
+    </div>
+
+    <div class="d-flex align-items-center justify-content-between mb-2">
+      <p class="f-13 mb-2">
+        <i class="ti ti-circle-filled status-absent me-1"></i>Absent(e)
+      </p>
+      <p class="f-13 fw-medium mb-2">15%</p>
+    </div>
+
+    <div
+      class="bg-light br-5 p-2 d-flex align-items-center justify-content-between"
+    >
+      <p class="mb-2 me-2">Absences totales : 90</p>
+      <a
+        [routerLink]="routes.attendanceadmin"
+        class="fs-13 link-primary text-decoration-underline"
+      >
+        Afficher les détails
+      </a>
+    </div>
+  </div>
+</div>

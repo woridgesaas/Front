@@ -1,0 +1,29 @@
+<div class="card h-auto">
+          <div class="card-header">
+            <h5>Détails de présence</h5>
+          </div>
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-md-6">
+               <ul class="presence-legend">
+  <li class="on-time">1254 À l’heure</li>
+  <li class="absence">14 Absences</li>
+  <li class="maladie">68 Congés maladie</li>
+</ul>
+
+              </div>
+              <div class="col-md-6 d-flex justify-content-md-end">
+                <apx-chart
+                  [series]="leaves_chart.series"
+                  [chart]="leaves_chart.chart"
+                  [colors]="leaves_chart.colors"
+                  [dataLabels]="leaves_chart.dataLabels"
+                  [plotOptions]="leaves_chart.plotOptions"
+                  [legend]="leaves_chart.legend"
+                  [responsive]="leaves_chart.responsive"
+                >
+                </apx-chart>
+              </div>
+            </div>
+          </div>
+        </div>

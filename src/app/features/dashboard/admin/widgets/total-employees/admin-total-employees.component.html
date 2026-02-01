@@ -1,0 +1,65 @@
+<div class="card h-auto">
+
+          <div
+            class="card-header pb-2 d-flex align-items-center justify-content-between flex-wrap"
+          >
+            <h5 class="mb-2">Employés totaux</h5>
+          </div>
+
+          <div class="card-body">
+            <!-- Total -->
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <p class="fs-13 mb-0">Nombre total d'employés</p>
+              <h3 class="mb-0">154</h3>
+            </div>
+
+            <!-- Progress bar -->
+            <div class="progress emp-progress mb-4">
+              <div
+                class="progress-bar bg-fulltime"
+                role="progressbar"
+                style="width: 73%"
+              ></div>
+              <div
+                class="progress-bar bg-contractor"
+                role="progressbar"
+                style="width: 25%"
+              ></div>
+              <div
+                class="progress-bar bg-remote"
+                role="progressbar"
+                style="width: 2%"
+              ></div>
+            </div>
+
+            <!-- Stats -->
+            <div class="employee-stats mb-4">
+              <div class="row gx-0">
+                <!-- Full time -->
+                <div class="col-6">
+                  <div class="p-3 border-end text-start">
+                    <span class="stat-badge bg-fulltime">
+                      À temps plein (73%)
+                    </span>
+                    <h2 class="stat-number color-fulltime">112</h2>
+                  </div>
+                </div>
+
+                <!-- Contractor -->
+                <div class="col-6">
+                  <div class="p-3 text-end">
+                    <span class="stat-badge bg-contractor">
+                      Contracter (25%)
+                    </span>
+                    <h2 class="stat-number color-contractor">38</h2>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Button -->
+            <a [routerLink]="['/employees/employee-list']" class="btn btn-light btn-md w-100">
+              Afficher tous les employés
+            </a>
+          </div>
+        </div>

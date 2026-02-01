@@ -3,7 +3,6 @@
     {
       "Job_ID": "Job-001",
       "Experience":"2",
-      "Image": "apple.svg",
       "Job_Title": "Senior IOS Developer",
       "Roll": "25 Applicants",
       "Category": "Software",
@@ -14,7 +13,6 @@
     {
       "Job_ID": "Job-002",
       "Experience":"4",
-      "Image": "php.svg",
       "Job_Title": "Junior PHP Developer",
       "Roll": "20 Applicants",
       "Category": "Software",
@@ -36,7 +34,6 @@
     {
       "Job_ID": "Job-004",
       "Experience":"3",
-      "Image": "react.svg",
       "Job_Title": "Junior React Developer",
       "Roll": "35 Applicants",
       "Category": "Software",

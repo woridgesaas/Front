@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard/index',
+    redirectTo: 'dashboard/admin',
     pathMatch: 'full',
   },
 
@@ -69,38 +69,41 @@ export const routes: Routes = [
       import('./features/features.component').then((m) => m.FeaturesComponent),
     children: [
       //* Dashboard routes
-      {
-        path: 'dashboard',
-        loadComponent: () =>
-          import('./features/dashboard/dashboard.component').then(
-            (m) => m.DashboardComponent
-          ),
-        data: { breadcrumb: 'Tableau de bord', title: 'Tableau de bord' },
-        children: [
-          {
-            path: 'index',
-            loadComponent: () =>
-              import(
-                './features/dashboard/admin-dashboard/admin-dashboard.component'
-              ).then((m) => m.AdminDashboardComponent),
-            data: {
-              breadcrumb: 'Tableau de bord administrateur',
-              title: 'Tableau de bord administrateur',
-            },
-          },
-          {
-            path: 'employee',
-            loadComponent: () =>
-              import(
-                './features/dashboard/employee-dashboard/employee-dashboard.component'
-              ).then((m) => m.EmployeeDashboardComponent),
-            data: {
-              breadcrumb: 'Tableau de bord employé',
-              title: 'Tableau de bord employé',
-            },
-          },
-        ],
+    {
+  path: 'dashboard',
+  loadComponent: () =>
+    import('./features/dashboard/dashboard.component').then(
+      (m) => m.DashboardComponent
+    ),
+  data: { breadcrumb: 'Dashboard', title: 'Dashboard' },
+  children: [
+    { path: '', pathMatch: 'full', redirectTo: 'admin' },
+
+    {
+      path: 'admin',
+      loadComponent: () =>
+        import('./features/dashboard/admin/pages/admin-dashboard/admin-dashboard.component')
+          .then((m) => m.AdminDashboardComponent),
+      data: {
+        breadcrumb: 'Dashboard administrateur',
+        title: 'dashboard administrateur',
+        role: 'ADMIN', // utile pour guard
       },
+    },
+    {
+      path: 'employee',
+      loadComponent: () =>
+        import('./features/dashboard/employee/pages/employee-dashboard/employee-dashboard.component')
+          .then((m) => m.EmployeeDashboardComponent),
+      data: {
+        breadcrumb: 'Dashboard employé',
+        title: 'Dashboard employé',
+        role: 'EMPLOYEE',
+      },
+    },
+  ],
+},
+
 
       //* Intranet routes
       {

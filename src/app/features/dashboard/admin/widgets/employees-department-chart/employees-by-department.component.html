@@ -1,0 +1,25 @@
+<div class="card flex-fill">
+ <div
+            class="card-header pb-2 d-flex align-items-center justify-content-between flex-wrap"
+          >    <h5 class="mb-2">Employés par département</h5>
+  </div>
+
+  <div class="card-body">
+    <apx-chart
+      [series]="EmpDepartment.series"
+      [chart]="EmpDepartment.chart"
+      [colors]="EmpDepartment.colors"
+      [xaxis]="EmpDepartment.xaxis"
+      [plotOptions]="EmpDepartment.plotOptions"
+      [grid]="EmpDepartment.grid"
+      [dataLabels]="EmpDepartment.dataLabels"
+    ></apx-chart>
+
+    <p class="fs-13 mt-2">
+      <i class="ti ti-circle-filled me-2 fs-8 text-primary"></i>
+      Le nombre d'employés a augmenté de
+      <span class="text-success fw-bold">+20%</span>
+      de la semaine dernière
+    </p>
+  </div>
+</div>
