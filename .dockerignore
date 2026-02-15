@@ -1,0 +1,24 @@
+# VCS
+.git
+.gitignore
+
+# Node.js
+node_modules
+npm-debug.log
+yarn.lock
+pnpm-lock.yaml
+
+# Angular build output
+dist
+tmp
+out-tsc
+
+# IDE / OS
+.vscode
+.idea
+*.swp
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose.override.yml
