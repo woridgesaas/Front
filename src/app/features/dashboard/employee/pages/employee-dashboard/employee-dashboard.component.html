@@ -1,0 +1,65 @@
+<div class="page-wrapper">
+  <div class="content">
+
+    <!-- Breadcrumb -->
+    <div
+      class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3"
+    >
+      <app-breadcrumbs></app-breadcrumbs>
+    </div>
+
+    <!-- Welcome -->
+    <app-employee-welcome></app-employee-welcome>
+
+    <!-- Performance + Leave summary -->
+    <div class="row mb-4">
+      <div class="col-xl-5 col-lg-12 mb-4">
+        <app-employee-performance></app-employee-performance>
+      </div>
+
+      <div class="col-xxl-4 col-xl-5 mb-4">
+        <app-employee-leave-summary></app-employee-leave-summary>
+      </div>
+    </div>
+
+    <!-- Summary + KPIs -->
+    <div class="row my-4">
+      <!-- Employee summary -->
+      <div class="col-xl-3 col-lg-4 d-flex mb-4">
+        <div class="card flex-fill">
+          <app-employee-summary
+            [employeeName]="'Douae Doudi'"
+            [currentTime]="'08:35 AM, 11 Mar 2025'"
+            [productionHours]="3.45"
+            [checkInTime]="'10:00 AM'"
+            [avatarUrl]="'assets/img/profiles/avatar-27.jpg'"
+            [progress]="65"
+          >
+          </app-employee-summary>
+        </div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="col-xl-9 col-lg-8 d-flex mb-4">
+        <app-employee-kpis></app-employee-kpis>
+      </div>
+    </div>
+
+    <!-- Presence + Other widgets -->
+    <div class="row mb-4">
+      <!-- Presence details -->
+      <div class="col-xxl-4 col-xl-6 mb-4">
+        <app-employee-presence-details></app-employee-presence-details>
+      </div>
+
+      <!-- Team members -->
+      <div class="col-xxl-4 col-xl-6 mb-4">
+        <app-team-members></app-team-members>
+      </div>
+
+     
+    </div>
+
+  </div>
+</div>
+

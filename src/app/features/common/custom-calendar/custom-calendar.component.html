@@ -1,38 +1,96 @@
-<div class="calendar-header d-flex mb-4 justify-content-between align-items-center">
-    <div>
-        <button (click)="today()" class="btn btn-primary me-3">Today</button>
-        <button (click)="prev()" class="btn btn-primary me-2"><i class="ti ti-chevron-left"></i></button>
-        <button (click)="next()" class="btn btn-primary"><i class="ti ti-chevron-right"></i></button>
+<!-- Dans custom-calendar.component.html -->
+<div class="calendar-wrapper" [class.mini-calendar]="isMini">
+  
+  <div class="calendar-header d-flex justify-content-between align-items-center mb-2" [class.mini-header]="isMini">
+    <!--Nvigation buttons hidden for mini-->
+    <div class="d-flex gap-1" *ngIf="!isMini">
+      <button (click)="today()" class="btn btn-xs btn-primary">
+        <i class="ti ti-calendar-month me-1"></i>Aujourd'hui
+      </button>
+      <button (click)="prev()" class="btn btn-xs btn-primary">
+        <i class="ti ti-chevron-left"></i>
+      </button>
+      <button (click)="next()" class="btn btn-xs btn-primary">
+        <i class="ti ti-chevron-right"></i>
+      </button>
     </div>
 
-  <h3>{{
-      viewDate | date:
+    <!-- Title for mini-->
+    <h5 class="mb-0 fw-semibold" [class.mini-title]="isMini">
+      {{ viewDate | date:
+        (isMini ? 'MMM yyyy' : 
         view === CalendarView.Month
           ? 'MMMM yyyy'
           : view === CalendarView.Week
-          ? "MMM d, y"
-          : 'EEE MMM dd, yyyy'
-    }}</h3>
-   <div class="view-selector">
-    <button (click)="setView(CalendarView.Month)" [class.active]="view === CalendarView.Month" class="btn btn-primary rounded-start rounded-0">Month</button>
-    <button (click)="setView(CalendarView.Week)" [class.active]="view === CalendarView.Week" class="btn btn-primary rounded-0">Week</button>
-    <button (click)="setView(CalendarView.Day)" [class.active]="view === CalendarView.Day" class="btn btn-primary rounded-end rounded-0">Day</button>
+          ? "'Semaine du' dd MMM"
+          : 'EEEE dd MMMM yyyy')
+      }}
+    </h5>
+
+    <!-- For mini mode  -->
+    <div class="btn-group btn-group-sm" role="group" *ngIf="!isMini">
+      <button 
+        (click)="setView(CalendarView.Month)" 
+        [class.active]="view === CalendarView.Month"
+        class="btn btn-primary">
+        Mois
+      </button>
+      <button 
+        (click)="setView(CalendarView.Week)" 
+        [class.active]="view === CalendarView.Week"
+        class="btn btn-primary">
+        Semaine
+      </button>
+      <button 
+        (click)="setView(CalendarView.Day)" 
+        [class.active]="view === CalendarView.Day"
+        class="btn btn-primary">
+        Jour
+      </button>
+    </div>
+
+    <!--For mini mod just buttons -->
+    <div class="d-flex gap-1" *ngIf="isMini">
+      <button (click)="prev()" class="btn btn-xs btn-primary p-1">
+        <i class="ti ti-chevron-left"></i>
+      </button>
+      <button (click)="today()" class="btn btn-xs btn-primary p-1">
+        <i class="ti ti-calendar-month"></i>
+      </button>
+      <button (click)="next()" class="btn btn-xs btn-primary p-1">
+        <i class="ti ti-chevron-right"></i>
+      </button>
+    </div>
   </div>
+
+
+  <mwl-calendar-month-view 
+    *ngIf="view === CalendarView.Month"
+    [viewDate]="viewDate"
+    [events]="events"
+    [activeDayIsOpen]="false"
+    [class.mini-month-view]="isMini"
+    (eventClicked)="onEventClick($event.event)"
+    (dayClicked)="onDayClick($event.day)">
+  </mwl-calendar-month-view>
+
+  <div *ngIf="isMini && view !== CalendarView.Month" class="alert alert-info p-2">
+    Vue non disponible en mode compact
+  </div>
+
+  <mwl-calendar-week-view 
+    *ngIf="view === CalendarView.Week && !isMini"
+    [viewDate]="viewDate"
+    [events]="events"
+    (eventClicked)="onEventClick($event.event)"
+    (dayClicked)="onDayClick($event)">
+  </mwl-calendar-week-view>
+
+  <mwl-calendar-day-view 
+    *ngIf="view === CalendarView.Day && !isMini"
+    [viewDate]="viewDate"
+    [events]="events"
+    (eventClicked)="onEventClick($event.event)"
+    (dayClicked)="onDayClick($event)">
+  </mwl-calendar-day-view>
 </div>
-
-<mwl-calendar-month-view [hidden]="view !== CalendarView.Month"
-  [viewDate]="viewDate"
-  [events]="events">
-</mwl-calendar-month-view>
-
-<mwl-calendar-week-view
-  *ngIf="view === CalendarView.Week"
-  [viewDate]="viewDate"
-  [events]="events">
-</mwl-calendar-week-view>
-
-<mwl-calendar-day-view
-  *ngIf="view === CalendarView.Day"
-  [viewDate]="viewDate"
-  [events]="events">
-</mwl-calendar-day-view>

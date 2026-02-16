@@ -1,0 +1,11 @@
+@use "../../../../assets/scss/utils/variables" as vars;
+
+.form-error {
+  color: vars.$danger;
+  font-size: vars.$font-size-sm;
+  margin-top: 0.5rem;
+
+  i {
+    font-size: 0.9rem;
+  }
+}

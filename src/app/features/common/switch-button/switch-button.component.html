@@ -1,0 +1,4 @@
+<!--* Switch button -->
+<button type="button" class="btn" [ngClass]="{'btn-primary': active, 'btn-outline-primary': !active, 'disabled': disabled}" (click)="onClick()">
+  <i *ngIf="icon" [class]="icon + ' me-2'"></i> {{ label }}
+</button>

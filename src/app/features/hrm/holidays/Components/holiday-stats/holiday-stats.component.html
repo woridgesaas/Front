@@ -1,0 +1,23 @@
+<div class="row mb-4 g-3">
+
+  <!-- Aujourd’hui -->
+  <div class="col-lg-6 col-md-12">
+    <app-kpi-card
+      title="Aujourd’hui"
+      [value]="todayFormatted"
+      icon="ti ti-calendar"
+      color="primary">
+    </app-kpi-card>
+  </div>
+
+  <!-- Prochain congé -->
+  <div class="col-lg-6 col-md-12" *ngIf="nextHoliday">
+    <app-kpi-card
+      title="Prochain congé"
+      [value]="nextHoliday.nameFr"
+      icon="ti ti-moon"
+      color="success">
+    </app-kpi-card>
+  </div>
+
+</div>

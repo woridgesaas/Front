@@ -1,0 +1,21 @@
+
+
+/* Centre le texte + la flèche de tri */
+::ng-deep th.mat-sort-header {
+  text-align: center;
+}
+
+::ng-deep .mat-sort-header-container {
+  justify-content: center;
+}
+
+
+.col-status {
+  width:25%;
+  text-align: center;
+}
+
+.col-action {
+  width: 25%;
+  text-align: center;
+}

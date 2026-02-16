@@ -1,0 +1,122 @@
+<div class="card">
+    <div class="card-body p-3">
+      <div class="d-flex align-items-center justify-content-between flex-wrap row-gap-3">
+        <h5 class="mb-0">
+          <i class="ti ti-calendar-event me-2"></i>Entretiens Planifiés
+          <span class="badge bg-primary-transparent ms-2">{{ totalCount }} entretiens</span>
+        </h5>
+  
+        <div class="d-flex align-items-center flex-wrap row-gap-3">
+          <!-- Date Début -->
+          <div class="me-2">
+            <input 
+              type="date" 
+              class="form-control form-control-sm" 
+              [(ngModel)]="filters.dateDebut" 
+              (change)="applyFilters()"
+              placeholder="Date début">
+          </div>
+  
+          <!-- Date Fin -->
+          <div class="me-2">
+            <input 
+              type="date" 
+              class="form-control form-control-sm" 
+              [(ngModel)]="filters.dateFin" 
+              (change)="applyFilters()"
+              placeholder="Date fin">
+          </div>
+  
+          <!-- Interviewer -->
+          <div class="dropdown me-2">
+            <a href="javascript:void(0);" 
+               class="dropdown-toggle btn btn-white btn-sm d-inline-flex align-items-center" 
+               data-bs-toggle="dropdown">
+              <i class="ti ti-user-check me-1"></i>Interviewer
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end p-3">
+              <li>
+                <a href="javascript:void(0);" 
+                   class="dropdown-item rounded-1" 
+                   (click)="selectInterviewer('')">
+                  Tous
+                </a>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              @for (int of interviewers; track int.id) {
+                <li>
+                  <a href="javascript:void(0);" 
+                     class="dropdown-item rounded-1" 
+                     (click)="selectInterviewer(int.nom)">
+                    {{ int.nom }}
+                  </a>
+                </li>
+              }
+            </ul>
+          </div>
+  
+          <!-- Candidat -->
+          <div class="me-2">
+            <input 
+              type="text" 
+              class="form-control form-control-sm" 
+              [(ngModel)]="filters.candidat" 
+              (input)="applyFilters()"
+              placeholder="🔍 Rechercher un candidat">
+          </div>
+  
+          <!-- Statut -->
+          <div class="dropdown me-2">
+            <a href="javascript:void(0);" 
+               class="dropdown-toggle btn btn-white btn-sm d-inline-flex align-items-center" 
+               data-bs-toggle="dropdown">
+              <i class="ti ti-status-change me-1"></i>Statut
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end p-3">
+              <li>
+                <a href="javascript:void(0);" 
+                   class="dropdown-item rounded-1" 
+                   (click)="selectStatut('')">
+                  Tous
+                </a>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a href="javascript:void(0);" 
+                   class="dropdown-item rounded-1" 
+                   (click)="selectStatut('Planifié')">
+                  Planifié
+                </a>
+              </li>
+              <li>
+                <a href="javascript:void(0);" 
+                   class="dropdown-item rounded-1" 
+                   (click)="selectStatut('Confirmé')">
+                  Confirmé
+                </a>
+              </li>
+              <li>
+                <a href="javascript:void(0);" 
+                   class="dropdown-item rounded-1" 
+                   (click)="selectStatut('Terminé')">
+                  Terminé
+                </a>
+              </li>
+              <li>
+                <a href="javascript:void(0);" 
+                   class="dropdown-item rounded-1" 
+                   (click)="selectStatut('Annulé')">
+                  Annulé
+                </a>
+              </li>
+            </ul>
+          </div>
+  
+          <!-- Réinitialiser -->
+          <button class="btn btn-light btn-sm" (click)="reset()">
+            <i class="ti ti-refresh"></i> Réinitialiser
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>

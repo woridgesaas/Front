@@ -1,0 +1,16 @@
+<div class="modal fade" id="event_modal" [ngClass]="{'show': showEventDetailsModal}" [ngStyle]="{'display': showEventDetailsModal ? 'block' : 'none'}">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header bg-dark modal-bg">
+				<div class="modal-title text-white"><span id="eventTitle">{{eventDetails.title}}</span></div>
+				<button type="button" class="btn-close custom-btn-close" data-bs-dismiss="modal" (click)="onHandlleClose()" aria-label="Close">
+					<i class="ti ti-x"></i>
+				</button>
+			</div>
+			<div class="modal-body">
+				<p class="d-flex align-items-center fw-medium text-black mb-3"><i class="ti ti-calendar-check text-default me-2"></i>Date : {{eventDetails.startDate}}</p>
+				<p class="d-flex align-items-center fw-medium text-black mb-3"><i class="ti ti-clock text-default me-2"></i>Heure : {{eventDetails.startTime }}</p>
+			</div>
+		</div>
+	</div>
+</div>

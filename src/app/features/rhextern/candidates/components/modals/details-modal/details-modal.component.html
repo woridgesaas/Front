@@ -1,0 +1,88 @@
+<div class="modal fade" id="details_modal" tabindex="-1" *ngIf="candidate">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header border-bottom">
+          <h4 class="modal-title">
+            <i class="ti ti-user me-2"></i>Détails du Candidat
+          </h4>
+          <button 
+            type="button" 
+            class="btn-close" 
+            data-bs-dismiss="modal"
+            (click)="onClose()">
+          </button>
+        </div>
+        
+        <div class="modal-body">
+          <div class="row">
+            <!-- En-tête avec photo -->
+            <div class="col-12 mb-4">
+              <div class="d-flex align-items-center">
+                <div class="avatar avatar-xl me-3">
+                  <img 
+                    [src]="'assets/img/users/' + candidate.Image" 
+                    alt="Photo" 
+                    class="rounded-circle">
+                </div>
+                <div>
+                  <h5 class="mb-1">{{ candidate.Candidate }}</h5>
+                  <p class="text-muted mb-1">{{ candidate.Email }}</p>
+                  <span [class]="'badge ' + statusConfig[candidate.Status].badge">
+                    <i class="ti ti-point-filled"></i>{{ statusConfig[candidate.Status].label }}
+                  </span>
+                </div>
+              </div>
+            </div>
+  
+            <!-- Informations détaillées -->
+            <div class="col-md-6 mb-3">
+              <label class="text-muted small">Poste Souhaité</label>
+              <p class="fw-semibold">{{ candidate.Applied_Role }}</p>
+            </div>
+  
+            <div class="col-md-6 mb-3">
+              <label class="text-muted small">Téléphone</label>
+              <p class="fw-semibold">{{ candidate.Phone }}</p>
+            </div>
+  
+            <div class="col-md-6 mb-3">
+              <label class="text-muted small">Date de Candidature</label>
+              <p class="fw-semibold">{{ candidate.Applied_Date }}</p>
+            </div>
+  
+            <div class="col-md-6 mb-3">
+              <label class="text-muted small">ID Candidat</label>
+              <p class="fw-semibold">{{ candidate.Cand_ID }}</p>
+            </div>
+  
+            <!-- Actions rapides -->
+            <div class="col-12">
+              <label class="text-muted small mb-2">Actions Rapides</label>
+              <div class="d-flex gap-2">
+                <button 
+                  class="btn btn-sm btn-outline-primary"
+                  (click)="onViewCV()">
+                  <i class="ti ti-file-text me-1"></i>Voir CV
+                </button>
+                <button 
+                  class="btn btn-sm btn-outline-success"
+                  (click)="onDownloadCV()">
+                  <i class="ti ti-download me-1"></i>Télécharger CV
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="modal-footer border-top">
+          <button 
+            type="button" 
+            class="btn btn-light" 
+            data-bs-dismiss="modal"
+            (click)="onClose()">
+            Fermer
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>

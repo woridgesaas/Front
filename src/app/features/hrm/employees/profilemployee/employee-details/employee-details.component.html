@@ -1,0 +1,399 @@
+<div class="content">
+  <!-- Fil d'ariane -->
+  <div class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-4">
+    <div class="my-auto">
+      <h6 class="fw-medium d-inline-flex align-items-center mb-0">
+        <a [routerLink]="routes.employeeList" class="text-decoration-none">
+          <i class="ti ti-arrow-left me-2"></i>Détail de l'employé
+        </a>
+      </h6>
+    </div>
+  </div>
+  <!-- /Fil d'ariane -->
+
+  <div class="row g-3">
+    <!-- Sidebar gauche -->
+    <div class="col-xl-4">
+      <!-- Carte profil principal -->
+      <div class="card shadow-sm mb-3">
+        <div class="card-body text-center p-4">
+          <!-- Photo de profil -->
+          <div class="mb-3">
+            <img
+              src="assets/img/users/user-13.jpg"
+              class="rounded-circle border border-3 border-white shadow-sm"
+              width="120"
+              height="120"
+              alt="Photo de profil"
+            />
+          </div>
+
+          <!-- Nom et titre -->
+          <h5 class="mb-2">safae zerouali</h5>
+          <div class="mb-3">
+            <span class="badge text-bg-light text-dark me-2">
+              <i class="ti ti-point-filled me-1"></i>Développeur Logiciel
+            </span>
+            <!-- <span class="badge bg-secondary">+10 ans d'expérience</span> -->
+          </div>
+
+          <!-- Informations rapides -->
+          <div class="border-top pt-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="text-muted">
+                <i class="ti ti-users me-1"></i>Équipe
+              </span>
+              <span class="fw-semibold">UI/UX Design</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="text-muted">
+                <i class="ti ti-calendar-check me-1"></i>Embauche
+              </span>
+              <span class="fw-semibold">1er Jan 2023</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="text-muted">
+                <i class="ti ti-user-check me-1"></i>Manager
+              </span>
+              <div class="d-flex align-items-center">
+                <img
+                  src="assets/img/profiles/avatar-12.jpg"
+                  class="rounded-circle me-2"
+                  width="24"
+                  height="24"
+                  alt="Manager"
+                />
+                <span class="fw-semibold small">Doglas Martini</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bouton modifier -->
+          <div class="mt-3">
+            <a
+              href="javascript:void(0);"
+              class="btn btn-primary w-100"
+              data-bs-toggle="modal"
+              data-bs-target="#edit_employee_detail"
+            >
+              <i class="ti ti-edit me-2"></i>Modifier les informations
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Informations de contact -->
+      <div class="card shadow-sm mb-3">
+        <div class="card-header bg-white">
+          <h6 class="mb-0">Informations de contact</h6>
+        </div>
+        <div class="card-body">
+          <div class="mb-3">
+            <small class="text-muted d-block mb-1">
+              <i class="ti ti-phone me-1"></i>Téléphone
+            </small>
+            <span class="fw-semibold">(163) 2459 315</span>
+          </div>
+          <div class="mb-3">
+            <small class="text-muted d-block mb-1">
+              <i class="ti ti-mail me-1"></i>Email
+            </small>
+            <a href="mailto:perralt12@example.com" class="text-primary text-decoration-none fw-semibold">
+              perralt12@example.com
+              <i class="ti ti-copy ms-2"></i>
+            </a>
+          </div>
+          <div class="mb-3">
+            <small class="text-muted d-block mb-1">
+              <i class="ti ti-cake me-1"></i>Date de naissance
+            </small>
+            <span class="fw-semibold">24 Juillet 2000</span>
+          </div>
+          <div>
+            <small class="text-muted d-block mb-1">
+              <i class="ti ti-map-pin me-1"></i>Adresse
+            </small>
+            <span class="fw-semibold">
+              1861 Bayonne Ave,<br />
+              Manchester, NJ, 08759
+            </span>
+          </div>
+        </div>
+      </div>
+
+   
+    </div>
+
+    <!-- Contenu principal -->
+    <div class="col-xl-8">
+      <!-- Accordion avec fermeture automatique -->
+      <div class="accordion" id="employeeDetailsAccordion">
+        
+        <!-- Informations Bancaires -->
+        <div class="card shadow-sm mb-3">
+          <div class="card-header bg-white" id="headingBank">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="d-flex align-items-center">
+                <div class="rounded-circle bg-success bg-opacity-10 d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                  <i class="ti ti-building-bank text-success"></i>
+                </div>
+                <h5 class="mb-0">Informations Bancaires</h5>
+              </div>
+              <button
+                class="btn btn-sm btn-light"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#bankDetails"
+                aria-expanded="true"
+                aria-controls="bankDetails"
+              >
+                <i class="ti ti-chevron-down"></i>
+              </button>
+            </div>
+          </div>
+          <div 
+            id="bankDetails" 
+            class="collapse show" 
+            aria-labelledby="headingBank" 
+            data-bs-parent="#employeeDetailsAccordion"
+          >
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <div class="border rounded p-3 h-100">
+                    <small class="text-muted d-block mb-2">
+                      <i class="ti ti-building me-1"></i>Nom de la banque
+                    </small>
+                    <h6 class="mb-0">Swiz International Bank</h6>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="border rounded p-3 h-100">
+                    <small class="text-muted d-block mb-2">
+                      <i class="ti ti-hash me-1"></i>Numéro de compte
+                    </small>
+                    <h6 class="mb-0">159843014641</h6>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="border rounded p-3 h-100">
+                    <small class="text-muted d-block mb-2">
+                      <i class="ti ti-code me-1"></i>Code IBAN
+                    </small>
+                    <h6 class="mb-0">ICI24504</h6>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="border rounded p-3 h-100">
+                    <small class="text-muted d-block mb-2">
+                      <i class="ti ti-map-pin me-1"></i>Agence
+                    </small>
+                    <h6 class="mb-0">Alabama USA</h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Détails de Formation -->
+        <div class="card shadow-sm mb-3">
+          <div class="card-header bg-white" id="headingEducation">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="d-flex align-items-center">
+                <div class="rounded-circle bg-info bg-opacity-10 d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                  <i class="ti ti-school text-info"></i>
+                </div>
+                <h5 class="mb-0">Détails de Formation</h5>
+              </div>
+              <button
+                class="btn btn-sm btn-light"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#educationDetails"
+                aria-expanded="false"
+                aria-controls="educationDetails"
+              >
+                <i class="ti ti-chevron-down"></i>
+              </button>
+            </div>
+          </div>
+          <div 
+            id="educationDetails" 
+            class="collapse" 
+            aria-labelledby="headingEducation" 
+            data-bs-parent="#employeeDetailsAccordion"
+          >
+            <div class="card-body">
+              <!-- Item 1 -->
+              <div class="d-flex mb-4 pb-3 border-bottom">
+                <div class="flex-shrink-0 me-3">
+                  <div class="rounded-circle bg-primary bg-opacity-10 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                    <i class="ti ti-book text-primary"></i>
+                  </div>
+                </div>
+                <div class="flex-grow-1">
+                  <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div>
+                      <h6 class="mb-1">Oxford University</h6>
+                      <span class="badge text-bg-light text-dark">
+                        Informatique
+                      </span>
+                    </div>
+                    <span class="badge text-bg-light text-dark">2020 - 2022</span>
+                  </div>
+                  <p class="text-muted small mb-0">Master en Sciences Informatiques</p>
+                </div>
+              </div>
+
+              <!-- Item 2 -->
+              <div class="d-flex mb-4 pb-3 border-bottom">
+                <div class="flex-shrink-0 me-3">
+                  <div class="rounded-circle bg-success bg-opacity-10 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                    <i class="ti ti-certificate text-success"></i>
+                  </div>
+                </div>
+                <div class="flex-grow-1">
+                  <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div>
+                      <h6 class="mb-1">Cambridge University</h6>
+                      <span class="badge text-bg-light text-dark">
+                        Réseaux & Systèmes
+                      </span>
+                    </div>
+                    <span class="badge text-bg-light text-dark">2016 - 2019</span>
+                  </div>
+                  <p class="text-muted small mb-0">Licence en Réseaux Informatiques</p>
+                </div>
+              </div>
+
+              <!-- Item 3 -->
+              <div class="d-flex">
+                <div class="flex-shrink-0 me-3">
+                  <div class="rounded-circle bg-warning bg-opacity-10 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                    <i class="ti ti-school-bell text-warning"></i>
+                  </div>
+                </div>
+                <div class="flex-grow-1">
+                  <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div>
+                      <h6 class="mb-1">Oxford School</h6>
+                      <span class="badge text-bg-light text-dark">
+                        Lycée
+                      </span>
+                    </div>
+                    <span class="badge text-bg-light text-dark">2012 - 2016</span>
+                  </div>
+                  <p class="text-muted small mb-0">Baccalauréat Scientifique</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Expérience Professionnelle -->
+        <div class="card shadow-sm">
+          <div class="card-header bg-white" id="headingExperience">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="d-flex align-items-center">
+                <div class="rounded-circle bg-warning bg-opacity-10 d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                  <i class="ti ti-briefcase text-warning"></i>
+                </div>
+                <h5 class="mb-0">Expérience Professionnelle</h5>
+              </div>
+              <button
+                class="btn btn-sm btn-light"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#experienceDetails"
+                aria-expanded="false"
+                aria-controls="experienceDetails"
+              >
+                <i class="ti ti-chevron-down"></i>
+              </button>
+            </div>
+          </div>
+          <div 
+            id="experienceDetails" 
+            class="collapse" 
+            aria-labelledby="headingExperience" 
+            data-bs-parent="#employeeDetailsAccordion"
+          >
+            <div class="card-body">
+              <!-- Item 1 -->
+              <div class="d-flex mb-4 pb-3 border-bottom">
+                <div class="flex-shrink-0 me-3">
+                  <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                    <i class="ti ti-brand-google text-white "></i>
+                  </div>
+                </div>
+                <div class="flex-grow-1">
+                  <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div>
+                      <h6 class="mb-1">Google</h6>
+                      <span class="badge text-bg-light text-dark mb-2">
+                        <i class="ti ti-point-filled me-1"></i>Développeur UI/UX
+                      </span>
+                      <p class="text-secondary small mb-0">
+                        <i class="ti ti-calendar me-1"></i>Jan 2013 - Présent (11 ans)
+                      </p>
+                    </div>
+                    <span class="badge bg-success">En cours</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Item 2 -->
+              <div class="d-flex mb-4 pb-3 border-bottom">
+                <div class="flex-shrink-0 me-3">
+                  <div class="rounded-circle bg-info bg-opacity-10 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                    <i class="ti ti-cloud text-info "></i>
+                  </div>
+                </div>
+                <div class="flex-grow-1">
+                  <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div>
+                      <h6 class="mb-1">Salesforce</h6>
+                      <span class="badge text-bg-light text-dark mb-2">
+                        <i class="ti ti-point-filled me-1"></i>Développeur Web
+                      </span>
+                      <p class="text-secondary small mb-0">
+                        <i class="ti ti-calendar me-1"></i>Déc 2012 - Jan 2015 (2 ans)
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Item 3 -->
+              <div class="d-flex">
+                <div class="flex-shrink-0 me-3">
+                  <div class="rounded-circle bg-warning bg-opacity-10 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                    <i class="ti ti-brand-producthunt text-warning -4"></i>
+                  </div>
+                </div>
+                <div class="flex-grow-1">
+                  <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div>
+                      <h6 class="mb-1">HubSpot</h6>
+                      <span class="badge text-bg-light text-dark mb-2">
+                        <i class="ti ti-point-filled me-1"></i>Développeur Logiciel
+                      </span>
+                      <p class="text-secondary small mb-0">
+                        <i class="ti ti-calendar me-1"></i>Déc 2011 - Jan 2012 (1 an)
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- Fin Accordion -->
+    </div>
+  </div>
+</div>
+
+<app-employee-detail-modal></app-employee-detail-modal>

@@ -1,0 +1,9 @@
+.page-breadcrumb {
+  position: relative; // Pas fixed ou sticky
+  z-index: 10;
+  flex-wrap: wrap;
+}
+
+.content {
+  overflow: visible; // Pas hidden
+}

@@ -1,0 +1,35 @@
+<div class="row">
+  <!-- Page size -->
+  <div class="col-sm-12 col-md-6">
+    <div class="dataTables_length">
+      <label>
+        Lignes par page
+        <select
+          class="form-select form-select-sm"
+          [(ngModel)]="pageSize"
+          (ngModelChange)="onPageSizeChange(+pageSize)"
+        >
+          <option *ngFor="let size of pageSizes" [value]="size">
+            {{ size }}
+          </option>
+        </select>
+        entrées
+      </label>
+    </div>
+  </div>
+
+  <!-- Search -->
+  <div class="col-sm-12 col-md-6">
+    <div class="dataTables_filter text-end">
+      <label>
+        <input
+          type="search"
+          class="form-control form-control-sm"
+          placeholder="Search..."
+          [(ngModel)]="searchValue"
+          (ngModelChange)="onSearchChange(searchValue)"
+        />
+      </label>
+    </div>
+  </div>
+</div>

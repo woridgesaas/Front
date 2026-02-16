@@ -1,0 +1,19 @@
+  <div class="card">
+    <div class="card-header">
+      <h5 class="mb-0">
+        <i class="ti ti-chart-area me-2 text-info"></i>
+        Taux de présence mensuel (%)
+      </h5>
+    </div>
+    <div class="card-body">
+      <apx-chart
+        [series]="presenceRateChart.series"
+        [chart]="presenceRateChart.chart"
+        [stroke]="presenceRateChart.stroke"
+        [fill]="presenceRateChart.fill"
+        [xaxis]="presenceRateChart.xaxis"
+        [colors]="presenceRateChart.colors"
+      >
+      </apx-chart>
+    </div>
+  </div>

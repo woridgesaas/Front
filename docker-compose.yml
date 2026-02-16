@@ -1,0 +1,16 @@
+services:
+  woridge.frontend:
+    build:
+      context: .
+      dockerfile: infra/Dockerfile
+    container_name: woridge-frontend
+    ports:
+      - "4200:80"
+    networks:
+      - woridge-external-network
+    restart: unless-stopped
+
+networks:
+  woridge-external-network:
+    external: true
+      

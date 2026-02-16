@@ -1,0 +1,56 @@
+<div class="table-responsive">
+  <table
+    matSort
+    (matSortChange)="sortChange.emit($event)"
+    class="table table-center datatable mb-0"
+  >
+    <thead class="thead-light">
+      <tr>
+        <th mat-sort-header="Date" >Date</th>
+        <th mat-sort-header="CheckIn">Entrée</th>
+        <th mat-sort-header="CheckOut">Sortie</th>
+        <th mat-sort-header="Status">Statut</th>
+        <th mat-sort-header="ProductionHours">Heures Production</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      @for (row of filteredData; track trackByFn($index, row)) {
+
+        <tr>
+          <td>{{ row.Date }}</td>
+          <td>{{ row.CheckIn }}</td>
+          <td>{{ row.CheckOut }}</td>
+
+          <td>
+            <span
+              class="badge badge-xs d-inline-flex align-items-center"
+              [ngClass]="getBadgeClass(row)"
+            >
+              <i class="ti ti-point-filled me-1"></i>
+              {{ getStatusLabel(row) }}
+            </span>
+          </td>
+
+          <td>
+            <span
+              class="badge badge-xs d-inline-flex align-items-center"
+              [ngClass]="getBadgeClass(row)"
+            >
+              <i class="ti ti-clock-hour-11 me-1"></i>
+              {{ row.ProductionHours }}
+            </span>
+          </td>
+        </tr>
+      }
+
+      @if (!filteredData.length) {
+        <tr>
+          <td colspan="5" class="text-center py-3">
+            Aucun enregistrement trouvé
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,29 @@
+<div class="table-responsive">
+  <table class="table table-sm datanew mb-0 equal-table">
+    
+    <colgroup>
+      <col style="width: 35%">
+      <col style="width: 35%">
+      <col style="width: 30%">
+      <col style="width: 25%">
+    </colgroup>
+
+    <thead class="thead-light">
+      <tr>
+        <th class="text-center">Fêtes</th>
+        <th class="text-center">الأعياد</th>
+        <th class="text-center">Date</th>
+        <th class="text-center">Jours</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let h of holidays">
+        <td class="text-center fw-medium">{{ h.nameFr }}</td>
+        <td class="text-center" dir="rtl">{{ h.nameAr }}</td>
+        <td class="text-center">{{ h.date | date:'dd MMM yyyy' }}</td>
+        <td class="text-center">{{ h.days }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

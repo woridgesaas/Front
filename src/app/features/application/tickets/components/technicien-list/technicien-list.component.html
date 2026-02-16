@@ -1,0 +1,14 @@
+<div class="card-body p-0">
+                    @for(technicien of techniciens; track technicien.id;) {
+                    <div class="d-flex flex-column">
+                        <div class="d-flex align-items-center justify-content-between p-3">
+                            <span class="d-flex align-items-center">
+                                <img src="assets/img/profiles/avatar-04.jpg" class="avatar avatar-xs rounded-circle me-2" alt="img">{{technicien.nom}}
+                            </span>
+                            <div class="d-flex align-items-center">
+                                <span class="badge badge-xs bg-dark rounded-circle">{{technicien.nbr}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                </div>

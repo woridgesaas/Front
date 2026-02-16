@@ -1,0 +1,179 @@
+<div class="modal fade" id="edit_employee_multistep">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="d-flex align-items-center">
+          <h4 class="modal-title me-2">Modifier les Informations de l'Employé</h4>
+        </div>
+        <button
+          type="button"
+          class="btn-close custom-btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+          (click)="resetForm()"
+        >
+          <i class="ti ti-x"></i>
+        </button>
+      </div>
+
+      <!-- Barre de navigation des sections -->
+      <div class="modal-body pt-3 pb-0">
+        <ul class="nav nav-pills nav-justified mb-4">
+          <li class="nav-item">
+            <a 
+              class="nav-link position-relative" 
+              [class.active]="currentStep === 1"
+              (click)="goToStep(1)"
+              style="cursor: pointer;"
+            >
+              <i class="ti ti-user me-2"></i>
+              <span class="d-none d-md-inline">Informations Personnelles</span>
+              <span class="d-inline d-md-none">Info</span>
+              
+              <!-- Badge de statut -->
+              <span 
+                class="position-absolute top-0 start-100 translate-middle badge rounded-pill"
+                [class.bg-warning]="getSectionStatus(1) === 'modified'"
+                [class.bg-success]="getSectionStatus(1) === 'saved'"
+                *ngIf="getSectionStatus(1) !== 'pristine'"
+              >
+                <i class="ti ti-pencil" *ngIf="getSectionStatus(1) === 'modified'"></i>
+                <i class="ti ti-check" *ngIf="getSectionStatus(1) === 'saved'"></i>
+              </span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a 
+              class="nav-link position-relative" 
+              [class.active]="currentStep === 2"
+              (click)="goToStep(2)"
+              style="cursor: pointer;"
+            >
+              <i class="ti ti-building-bank me-2"></i>
+              <span class="d-none d-md-inline">Informations Bancaires</span>
+              <span class="d-inline d-md-none">Banque</span>
+              
+              <!-- Badge de statut -->
+              <span 
+                class="position-absolute top-0 start-100 translate-middle badge rounded-pill"
+                [class.bg-warning]="getSectionStatus(2) === 'modified'"
+                [class.bg-success]="getSectionStatus(2) === 'saved'"
+                *ngIf="getSectionStatus(2) !== 'pristine'"
+              >
+                <i class="ti ti-pencil" *ngIf="getSectionStatus(2) === 'modified'"></i>
+                <i class="ti ti-check" *ngIf="getSectionStatus(2) === 'saved'"></i>
+              </span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a 
+              class="nav-link position-relative" 
+              [class.active]="currentStep === 3"
+              (click)="goToStep(3)"
+              style="cursor: pointer;"
+            >
+              <i class="ti ti-school me-2"></i>
+              <span class="d-none d-md-inline">Formation</span>
+              <span class="d-inline d-md-none">Formation</span>
+              
+              <!-- Badge de statut -->
+              <span 
+                class="position-absolute top-0 start-100 translate-middle badge rounded-pill"
+                [class.bg-warning]="getSectionStatus(3) === 'modified'"
+                [class.bg-success]="getSectionStatus(3) === 'saved'"
+                *ngIf="getSectionStatus(3) !== 'pristine'"
+              >
+                <i class="ti ti-pencil" *ngIf="getSectionStatus(3) === 'modified'"></i>
+                <i class="ti ti-check" *ngIf="getSectionStatus(3) === 'saved'"></i>
+              </span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a 
+              class="nav-link position-relative" 
+              [class.active]="currentStep === 4"
+              (click)="goToStep(4)"
+              style="cursor: pointer;"
+            >
+              <i class="ti ti-briefcase me-2"></i>
+              <span class="d-none d-md-inline">Expérience</span>
+              <span class="d-inline d-md-none">Expérience</span>
+              
+              <!-- Badge de statut -->
+              <span 
+                class="position-absolute top-0 start-100 translate-middle badge rounded-pill"
+                [class.bg-warning]="getSectionStatus(4) === 'modified'"
+                [class.bg-success]="getSectionStatus(4) === 'saved'"
+                *ngIf="getSectionStatus(4) !== 'pristine'"
+              >
+                <i class="ti ti-pencil" *ngIf="getSectionStatus(4) === 'modified'"></i>
+                <i class="ti ti-check" *ngIf="getSectionStatus(4) === 'saved'"></i>
+              </span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <form [formGroup]="editEmployeeForm">
+        <!-- Étape 1: Informations Personnelles -->
+        <app-personal-info-step
+          *ngIf="currentStep === 1"
+          [formGroup]="editEmployeeForm"
+        ></app-personal-info-step>
+
+        <!-- Étape 2: Informations Bancaires -->
+        <app-bank-info-step
+          *ngIf="currentStep === 2"
+          [bankInfoGroup]="editEmployeeForm.get('bankInfo')"
+        ></app-bank-info-step>
+
+        <!-- Étape 3: Formation -->
+        <app-education-step
+          *ngIf="currentStep === 3"
+          [educationArray]="educationArray"
+          [currentYear]="currentYear"
+        ></app-education-step>
+
+        <!-- Étape 4: Expérience -->
+        <app-experience-step
+          *ngIf="currentStep === 4"
+          [experienceArray]="experienceArray"
+        ></app-experience-step>
+
+        <!-- Footer simplifié - Seulement Fermer et Enregistrer -->
+        <div class="modal-footer d-flex justify-content-between align-items-center">
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            data-bs-dismiss="modal"
+            (click)="cancelAndClose()"
+          >
+            <i class="ti ti-x me-1"></i>Fermer
+          </button>
+          
+          <!-- Bouton Enregistrer (uniquement si modifiée) -->
+          <button
+            type="button"
+            class="btn"
+            [class.btn-success]="getSectionStatus(currentStep) === 'modified'"
+            [class.btn-outline-success]="getSectionStatus(currentStep) === 'saved'"
+            [disabled]="isSaving || getSectionStatus(currentStep) === 'pristine'"
+            (click)="saveCurrentSection()"
+            *ngIf="getSectionStatus(currentStep) !== 'pristine'"
+          >
+            <span class="spinner-border spinner-border-sm me-1" *ngIf="isSaving"></span>
+            <i class="ti ti-check me-1" *ngIf="!isSaving && getSectionStatus(currentStep) === 'modified'"></i>
+            <i class="ti ti-circle-check me-1" *ngIf="!isSaving && getSectionStatus(currentStep) === 'saved'"></i>
+            
+            <span *ngIf="getSectionStatus(currentStep) === 'modified'">
+              {{ isSaving ? 'Enregistrement...' : 'Enregistrer les modifications' }}
+            </span>
+            <span *ngIf="getSectionStatus(currentStep) === 'saved'">
+              Enregistré
+            </span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

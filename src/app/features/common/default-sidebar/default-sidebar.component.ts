@@ -1,5 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NavigationEnd, NavigationStart, Router, RouterLink } from '@angular/router';
+import {
+  Router,
+  NavigationStart,
+  RouterLink,
+  NavigationEnd,
+} from '@angular/router';
+import { Subscription } from 'rxjs';
 import { SideBar, SideBarMenu } from '../../../shared/models/models';
 import { DataService } from '../../../shared/data/data.service';
 import { SideBarService } from '../../../shared/side-bar/side-bar.service';
@@ -9,157 +15,116 @@ import { CommonModule } from '@angular/common';
 import { NgScrollbarModule } from 'ngx-scrollbar';
 import { SettingService } from '../../../shared/settings/settings.service';
 @Component({
-    selector: 'app-default-sidebar',
-    templateUrl: './default-sidebar.component.html',
-    styleUrl: './default-sidebar.component.scss',
-    imports: [CommonModule,RouterLink,NgScrollbarModule]
+  selector: 'app-default-sidebar',
+  standalone: true,
+  templateUrl: './default-sidebar.component.html',
+  styleUrl: './default-sidebar.component.scss',
+  imports: [CommonModule, RouterLink, NgScrollbarModule],
 })
-export class DefaultSidebarComponent implements OnDestroy , OnInit{
-  public routes = routes;
-  public multilevel: boolean[] = [false, false, false];
-  base = 'dashboard';
+export class DefaultSidebarComponent implements OnInit, OnDestroy {
+  routes = routes;
+
+  base = '';
   page = '';
   last = '';
-  page1='';
-  isOpen=false;
-  openMenuItem: any = null;
-  openSubmenuOneItem: any = null;
+
   side_bar_data: SideBar[] = [];
+  private subs = new Subscription();
+
   constructor(
-    public router: Router,
+    private router: Router,
     private data: DataService,
     private sideBar: SideBarService,
     private common: CommonService,
     private settings: SettingService
-  ) {
+  ) {}
 
-
-    // get sidebar data as observable because data is controlled for design to expand submenus
-    this.data.getSideBarData.subscribe((res: SideBar[]) => {
-      this.side_bar_data = res;
-    });
-    this.common.base.subscribe((res: string) => {
-      this.base = res;
-    });
-    this.common.page.subscribe((res: string) => {
-      this.page = res;
-    });
-    this.common.last.subscribe((res: string) => {
-      this.last = res;
-    });
-    this.common.page.subscribe((res: string) => {
-      this.page1 = res;
-    });
-
-  }
-
-
-  public miniSideBarMouseHover(position: string): void {
-    if (position === 'over') {
-      this.sideBar.expandSideBar.next(true);
-      this.settings.hoverState.next('over');
-    } else {
-      this.sideBar.expandSideBar.next(false);
-      this.settings.hoverState.next('out');
-    }
-  }
-  //Route personlisée pour changé le layout :)
-  public expandSubMenus(menu: SideBarMenu): void {  
-    this.isOpen= false
-    if(menu.action ==='layoutChange'){
-
-      this.settings.changeLayoutMode('3');
-  
-          window.location.reload();
-
-      return ;
-    }
-    sessionStorage.setItem('menuValue', menu.menuValue);
-    this.side_bar_data.map((mainMenus: SideBar) => {
-      mainMenus.menu.map((resMenu: SideBarMenu) => {
-        // collapse other submenus which are open
-        if (resMenu.menuValue === menu.menuValue) {
-          menu.showSubRoute = !menu.showSubRoute;
-
-        } else {
-          resMenu.showSubRoute = false;
-        }
-      });
-    });
-  }
-  public expandSubMenusActive(): void {
-    const activeMenu = sessionStorage.getItem('menuValue');
-    if(activeMenu === null) {
-      this.side_bar_data.map((mainMenus: SideBar) => {
-        mainMenus.menu.map((resMenu: SideBarMenu) => {
-          // collapse other submenus which are open
-          if (resMenu.menuValue === 'Dashboard') {
-            resMenu.showSubRoute = true;
-
-          } else {
-            resMenu.showSubRoute = false;
-          }
-        });
-      });
-      this.isOpen = true
-    }else {
-      this.isOpen= false
-    }
-    this.side_bar_data.map((mainMenus: SideBar) => {
-      mainMenus.menu.map((resMenu: SideBarMenu) => {
-        // collapse other submenus which are open
-        if (resMenu.menuValue === activeMenu) {
-          resMenu.showSubRoute = true;
-
-        } else {
-          resMenu.showSubRoute = false;
-        }
-      });
-    });
-  }
   ngOnInit(): void {
-    this.expandSubMenusActive();
-    this.router.events.subscribe((event: object) => {
-      if (event instanceof NavigationStart) {
-        const splitVal = event.url.split('/');
-        this.base = splitVal[1];
-        this.page = splitVal[2];
-        this.last = splitVal[3];
-        this.page1 = splitVal[4];
+    this.listenSidebarData();
+    this.listenRoute();
+    this.restoreActiveMenu();
+  }
 
-      }
+  //* Sidebar data
+  private listenSidebarData(): void {
+    this.subs.add(
+      this.data.getSideBarData.subscribe((res: SideBar[]) => {
+        this.side_bar_data = res;
+      })
+    );
+
+    this.subs.add(this.common.base.subscribe((res) => (this.base = res)));
+    this.subs.add(this.common.page.subscribe((res) => (this.page = res)));
+    this.subs.add(this.common.last.subscribe((res) => (this.last = res)));
+  }
+
+  //* Router
+  private listenRoute(): void {
+    this.subs.add(
+      this.router.events.subscribe((event) => {
+        if (event instanceof NavigationStart) {
+          const split = event.url.split('/');
+          this.base = split[1] || '';
+          this.page = split[2] || '';
+          this.last = split[3] || '';
+        }
+
+        if (event instanceof NavigationEnd) {
+          //* Close submenus
+          this.side_bar_data.forEach((main) =>
+            main.menu.forEach((m) => (m.showSubRoute = false))
+          );
+
+          sessionStorage.removeItem('menuValue');
+        }
+      })
+    );
+  }
+
+  //* Hover mini sidebar
+  miniSideBarMouseHover(state: 'over' | 'out'): void {
+    this.settings.hoverState.next(state);
+    this.sideBar.expandSideBar.next(state === 'over');
+  }
+
+  //* Menu click
+  expandSubMenus(menu: SideBarMenu): void {
+    //* Layout switch
+    if (menu.action === 'layoutChange') {
+      const newLayout =
+        this.settings.layoutMode.getValue() === 'aside'
+          ? 'horizontal'
+          : 'aside';
+
+      this.settings.switchLayout(newLayout);
+      return;
+    }
+
+    if (menu.hasSubRoute || menu.hasSubRouteTwo) {
+      this.side_bar_data.forEach((main) =>
+        main.menu.forEach((m) => {
+          m.showSubRoute =
+            m.menuValue === menu.menuValue ? !m.showSubRoute : false;
+        })
+      );
+
+      sessionStorage.setItem('menuValue', menu.menuValue);
+    }
+  }
+
+  //* Restore active menu
+  private restoreActiveMenu(): void {
+    const activeMenu = sessionStorage.getItem('menuValue');
+
+    this.side_bar_data.forEach((main) => {
+      main.menu.forEach((menu) => {
+        menu.showSubRoute = menu.menuValue === activeMenu;
+      });
     });
   }
-  ngOnDestroy(): void {
-    this.data.resetData();
-  }
-  miniSideBarBlur(position: string) {
-    if (position === 'over') {
-      this.settings.hoverState.next('over');
-    } else {
-      this.settings.hoverState.next('out');
-    }
-  }
 
-  miniSideBarFocus(position: string) {
-    if (position === 'over') {
-      this.settings.hoverState.next('over');
-    } else {
-      this.settings.hoverState.next('out');
-    }
-  }
-  openMenu(menu: any): void {
-    if (this.openMenuItem === menu) {
-      this.openMenuItem = null;
-    } else {
-      this.openMenuItem = menu;
-    }
-  }
-  openSubmenuOne(subMenus: any): void {
-    if (this.openSubmenuOneItem === subMenus) {
-      this.openSubmenuOneItem = null;
-    } else {
-      this.openSubmenuOneItem = subMenus;
-    }
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
+    this.data.resetData();
   }
 }

@@ -1,0 +1,51 @@
+.employee-avatar {
+  img, .avatar-placeholder {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+  }
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.empty-state {
+  i {
+    font-size: 3rem;
+    opacity: 0.5;
+  }
+  
+  .no-record {
+    color: var(--bs-secondary);
+    font-weight: 500;
+  }
+}
+
+// Style pour les badges d'urgence
+.badge.bg-danger {
+  background-color: #dc3545 !important;
+}
+
+.badge.bg-warning {
+  background-color: #ffc107 !important;
+  color: #000;
+}
+
+.badge.bg-info {
+  background-color: #0dcaf0 !important;
+}
+
+
+.btn-group-sm {
+  .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    
+    i {
+      font-size: 0.875rem;
+    }
+  }
+}

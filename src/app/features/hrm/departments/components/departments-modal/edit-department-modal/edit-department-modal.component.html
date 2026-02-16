@@ -1,0 +1,58 @@
+<!-- Backdrop -->
+
+<!-- Modal -->
+<div class="modal fade show d-block" *ngIf="open">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content">
+
+      <!-- HEADER COMMUN -->
+      <app-modal-header
+        title="Modifier département"
+        icon="ti ti-edit"
+        (close)="onCancel()">
+      </app-modal-header>
+
+      <form (ngSubmit)="submit()">
+        <div class="modal-body pb-0">
+          <div class="row">
+
+            <div class="col-md-12">
+              <div class="mb-3">
+                <label class="form-label">Nom du département</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="model.Department"
+                  name="department"
+                />
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="mb-3">
+                <label class="form-label">Statut</label>
+                <select
+                  class="form-select"
+                  [(ngModel)]="model.Status"
+                  name="status"
+                >
+                  <option value="Actif">Actif</option>
+                  <option value="Inactif">Inactif</option>
+                </select>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- FOOTER COMMUN -->
+        <app-modal-footer
+          submitText="Enregistrer département"
+          submitIcon="ti ti-device-floppy"
+          (cancel)="onCancel()">
+        </app-modal-footer>
+      </form>
+
+    </div>
+  </div>
+</div>

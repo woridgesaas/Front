@@ -1,0 +1,12 @@
+<!-- select technicien -->
+<mat-form-field appearance="outline" class="w-100">
+  <mat-label>Technicien</mat-label>
+  
+  <mat-select [(value)]="selectedTechnicienId">
+    @for (tech of techniciens; track tech.id) {
+      <mat-option [value]="tech.id">
+        {{ tech.nom }}
+      </mat-option>
+    }
+  </mat-select>
+</mat-form-field>

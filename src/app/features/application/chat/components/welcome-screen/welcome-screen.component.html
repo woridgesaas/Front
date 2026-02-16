@@ -1,0 +1,22 @@
+<div class="welcome-screen">
+        <div class="welcome-content">
+          <div class="avatar avatar-xl bg-light mb-3">
+            <i class="ti ti-message-chatbot text-primary"></i>
+          </div>
+          <h4>Messagerie interne</h4>
+          <p class="text-muted">
+            Sélectionnez une conversation ou recherchez
+            @if (activeTab === 'contacts') {
+              un collègue
+            } @else {
+              un groupe
+            }
+          </p>
+          <div >
+            <!-- Juste pour les admins -->
+            <button [routerLink]="[routes.groups]" class="btn bg-btn text-white mt-3 me-3">
+              <i class="ti ti-plus me-2"></i>Créer un groupe
+            </button>
+          </div>
+        </div>
+      </div>

@@ -1,0 +1,82 @@
+<div class="page-wrapper">
+    <div class="content container pt-5">
+  
+      <!-- Breadcrumb -->
+      <div class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
+        <app-breadcrumbs></app-breadcrumbs>
+  
+        <div class="d-flex align-items-center gap-2">
+          <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#create_interview_modal" (click)="openCreateModal()">
+            <i class="ti ti-calendar-plus me-2"></i>Planifier un Entretien
+          </button>
+        </div>
+      </div>
+  
+      <!-- Filtres -->
+      <app-interview-filters
+        [filters]="filters"
+        [interviewers]="interviewers"
+        [totalCount]="filteredInterviews.length"
+        (onFilterChange)="onFilterChange($event)"
+        (onReset)="resetFilters()">
+      </app-interview-filters>
+  
+      <!-- Tableau -->
+      <app-interview-table
+        [interviews]="filteredInterviews"
+        (onView)="openDetails($event)"
+        (onEdit)="openEditModal($event)"
+        (onDelete)="deleteInterview($event)"
+        (onCancel)="openCancelModal($event)"
+        (onStatusChange)="changeStatus($event)">
+      </app-interview-table>
+  
+    </div>
+  
+    <!-- ========== MODALS ========== -->
+  
+    <!-- Modal Créer -->
+    <app-create-interview-modal
+      [interviewers]="interviewers"
+      [interview]="newInterview"
+      (onCreate)="createInterview($event)"
+      (onCancel)="cancelCreate()">
+    </app-create-interview-modal>
+  
+    <!-- Modal Modifier -->
+    <app-edit-interview-modal
+      [interview]="interviewToEdit"
+      (onUpdate)="updateInterview($event)"
+      (onCancel)="cancelEdit()">
+    </app-edit-interview-modal>
+  
+    <!-- Modal Annuler -->
+    <app-cancel-interview-modal
+      [interview]="interviewToCancel"
+      (onConfirm)="cancelInterview($event)"
+      (onClose)="closeCancelModal()">
+    </app-cancel-interview-modal>
+  
+    <!-- Modal Supprimer -->
+    <!-- <app-delete-interview-modal
+      [interview]="interviewToDelete"
+      (onConfirm)="deleteInterview()"
+      (onCancel)="cancelDelete()">
+    </app-delete-interview-modal> -->
+  
+    <!-- Modal Détails -->
+    <app-detail-interview-modal
+      [interview]="interviewDetail"
+      (onClose)="closeDetails()">
+    </app-detail-interview-modal>
+  
+    <!-- Modal Succès -->
+    <app-success-modal
+      [show]="showSuccess"
+      [title]="successTitle"
+      [message]="successMessage"
+      (onClose)="closeSuccess()">
+    </app-success-modal>
+  
+    <app-footer></app-footer>
+  </div>

@@ -1,0 +1,30 @@
+<div class="row mb-4 g-3">
+
+  <div class="col-lg-4 col-md-6">
+    <app-kpi-card
+      title="Total départements"
+      [value]="total"
+      icon="ti ti-building"
+      color="primary">
+    </app-kpi-card>
+  </div>
+
+  <div class="col-lg-4 col-md-6">
+    <app-kpi-card
+      title="Départements actifs"
+      [value]="active"
+      icon="ti ti-check"
+      color="success">
+    </app-kpi-card>
+  </div>
+
+  <div class="col-lg-4 col-md-6">
+    <app-kpi-card
+      title="Départements inactifs"
+      [value]="inactive"
+      icon="ti ti-x"
+      color="danger">
+    </app-kpi-card>
+  </div>
+
+</div>

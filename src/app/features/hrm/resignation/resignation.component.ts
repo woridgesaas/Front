@@ -1,156 +1,150 @@
-import { Component } from '@angular/core';
-import { routes } from '../../../shared/routes/routes';
-import { apiResultFormat, breadCrumbItems, resignation } from '../../../shared/models/models';
-import { pageSelection, PaginationService, tablePageSize } from '../../../shared/custom-pagination/pagination.service';
-import { MatTableDataSource } from '@angular/material/table';
-import { DataService } from '../../../shared/data/data.service';
-import { Router } from '@angular/router';
-import { Sort } from '@angular/material/sort';
-import { BreadcrumbsComponent } from '../../common/breadcrumbs/breadcrumbs.component';
-import { CollapseHeaderComponent } from '../../common/collapse-header/collapse-header.component';
-import { CustomPaginationComponent } from '../../../shared/custom-pagination/custom-pagination.component';
-import { FooterComponent } from '../../common/footer/footer.component';
-import { MatSelectModule } from '@angular/material/select';
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-import { MatSortModule } from '@angular/material/sort';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+
+import { resignation } from '../../../shared/models/models';
+import { DataService } from '../../../shared/data/data.service';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+
+import { BreadcrumbsComponent } from '../../common/breadcrumbs/breadcrumbs.component';
+import { FooterComponent } from '../../common/footer/footer.component';
+import { ConfirmDeleteComponent } from '../../common/delete-modal/delete-modal.component';
+
+import { ResignationTableComponent } from './components/resignation-table/resignation-table.component';
+import { ResignationFiltersComponent } from './components/resignation-filters/resignation-filters.component';
+import { ResignationStatsComponent } from './components/resignation-stats/resignation-stats.component';
+import { AddResignationModalComponent } from './components/resignation-modals/add-resignation-modal/add-resignation-modal.component';
+import { EditResignationModalComponent } from './components/resignation-modals/edit-resignation-modal/edit-resignation-modal.component';
 
 @Component({
-    selector: 'app-resignation',
-    templateUrl: './resignation.component.html',
-    styleUrl: './resignation.component.scss',
-    imports : [BreadcrumbsComponent,CollapseHeaderComponent,CustomPaginationComponent,
-      FooterComponent,MatSelectModule,BsDatepickerModule,MatSortModule,FormsModule]
+  selector: 'app-resignation',
+  standalone: true,
+  templateUrl: './resignation.component.html',
+  styleUrl: './resignation.component.scss',
+  imports: [
+    CommonModule,
+    FormsModule,
+    BsDatepickerModule,
+    BreadcrumbsComponent,
+    FooterComponent,
+    HttpClientModule,
+    ConfirmDeleteComponent,
+    ResignationTableComponent,
+    ResignationFiltersComponent,
+    ResignationStatsComponent,
+    AddResignationModalComponent,
+    EditResignationModalComponent,
+  ],
 })
-export class ResignationComponent {
-  public routes = routes;
-  initChecked = false;
-  // pagination variables
-  public pageSize = 10;
-  public tableData:  resignation[] = [];
-  public tableDataCopy:  resignation[] = [];
-  public actualData:  resignation[] = [];
-  public currentPage = 1;
-  public skip = 0;
-  public limit: number = this.pageSize;
-  public serialNumberArray: number[] = [];
-  public totalData = 0;
-  showFilter = false;
-  public pageSelection: pageSelection[] = [];
-  dataSource!: MatTableDataSource< resignation>;
-  public searchDataValue = '';
-  breadCrumbItems: breadCrumbItems[] =[];
-  bsValue = new Date();
-  bsRangeValue: Date[];
-  maxDate = new Date();
-  constructor(
-    private data: DataService,
-    private router: Router,
-    private pagination: PaginationService
-  ) {
-    this.breadCrumbItems = [
-      { label: 'Performance' },
-      { label: 'Démission', active: true }
-  ];
-  this.data.getresignation().subscribe((apiRes: apiResultFormat) => {
-    this.actualData = apiRes.data;
-    this.pagination.tablePageSize.subscribe((res: tablePageSize) => {
-      if (this.router.url == this.routes.resignation) {
-        this.getTableData({ skip: res.skip, limit: res.limit });
-        this.pageSize = res.pageSize;
-      }
-    });
-    
-  });
-  this.maxDate.setDate(this.maxDate.getDate() + 7);
-  this.bsRangeValue = [this.bsValue, this.maxDate];
-}
-private getTableData(pageOption: pageSelection): void {
-  this.data.getresignation().subscribe((apiRes: apiResultFormat) => {
-    this.tableData = [];
-    this.tableDataCopy = [];
-    this.serialNumberArray = [];
-    this.totalData = apiRes.totalData;
-    apiRes.data.map((res:  resignation, index: number) => {
-      const serialNumber = index + 1;
-      if (index >= pageOption.skip && serialNumber <= pageOption.limit) {
-        res.sNo = serialNumber;
-        this.tableData.push(res);
-        this.tableDataCopy.push(res);
-        this.serialNumberArray.push(serialNumber);
-      }
-    });
-    this.dataSource = new MatTableDataSource< resignation>(this.actualData);
-    this.pagination.calculatePageSize.next({
-      totalData: this.totalData,
-      pageSize: this.pageSize,
-      tableData: this.tableData,
-      tableDataCopy: this.tableDataCopy,
-      serialNumberArray: this.serialNumberArray,
-    });
-  });
-}
+export class ResignationComponent implements OnInit {
+  resignations: resignation[] = [];
+  searchValue = '';
+  dateRange?: Date[];
+  openDeleteModal = false;
 
-public row=true;
-public searchData(value: string): void {
-    this.searchDataValue = value.trim().toLowerCase();
-    this.dataSource.filter = this.searchDataValue;
-    this.tableData = this.dataSource.filteredData;
-    this.row = this.tableData.length > 0;
-  
-    if (this.searchDataValue !== '') {
-      // Handle filtered data
-      this.pagination.calculatePageSize.next({
-        totalData: this.tableData.length,
-        pageSize: this.pageSize,
-        tableData: this.tableData,
-        serialNumberArray: this.tableData.map((_, i) => i + 1), // Generates serials like [1, 2, 3...]
+  openAddModal = false;
+  openEditModal = false;
+  selectedResignation?: resignation;
+  departments: { Department: string }[] | undefined;
+
+  constructor(private dataService: DataService, private http: HttpClient) {}
+
+  ngOnInit(): void {
+    this.loadResignationsFromJson();
+    this.loadDepartments();
+  }
+
+  private parseDate(dateStr: string): Date | null {
+    if (!dateStr) return null;
+    const d = new Date(dateStr);
+    return isNaN(d.getTime()) ? null : d;
+  }
+
+  loadResignationsFromJson(): void {
+    this.http
+      .get<{ data: any[] }>('assets/json/resignation.json')
+      .subscribe({
+        next: (response) => {
+          
+          this.resignations = response.data.map((r: any, index: number) => ({
+            sNo: r.sNo || index + 1,
+            resignation: null,
+            isSelected: false,
+            Image: r.Image || 'user-default.jpg',
+            ResigningEmployee: r.ResigningEmployee || '',
+            Department: r.Department || '',
+            Reason: r.Reason || '',
+            NoticeDate: this.parseDate(r.NoticeDate),
+            ResignationDate: this.parseDate(r.ResignationDate),
+          }));
+        },
+        error: (err) => {
+          console.error(' Erreur chargement JSON:', err);
+          // Charger les données de fallback si le JSON échoue
+          this.loadResignations();
+        }
       });
-    } else {
-      // Handle reset to full data
-      this.pagination.calculatePageSize.next({
-        totalData: this.totalData,
-        pageSize: this.pageSize,
-        tableData: this.tableData,
-        serialNumberArray: this.serialNumberArray,
-      });
-    }
   }
 
-public sortData(sort: Sort) {
-  const data = this.tableData.slice();
-
-  if (!sort.active || sort.direction === '') {
-    this.tableData = data;
-  } else {
-    this.tableData = data.sort((a, b) => {
-      const aValue = (a as never)[sort.active];
-
-      const bValue = (b as never)[sort.active];
-      return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
+  loadResignations(): void {
+    this.dataService.getresignation().subscribe((res) => {
+      this.resignations = res.data;
     });
   }
-}
-public changePageSize(pageSize: number): void {
-  this.pageSelection = [];
-  this.limit = pageSize;
-  this.skip = 0;
-  this.currentPage = 1;
-  this.pagination.tablePageSize.next({
-    skip: this.skip,
-    limit: this.limit,
-    pageSize: this.pageSize,
-  });
-}
-selectAll(initChecked: boolean) {
-  if (!initChecked) {
-    this.tableData.forEach((f) => {
-      f.isSelected = true;
-    });
-  } else {
-    this.tableData.forEach((f) => {
-      f.isSelected = false;
-    });
+
+  /** FILTRAGE CENTRALISÉ */
+  get filteredResignations(): resignation[] {
+    return this.resignations.filter((r) =>
+      r.ResigningEmployee.toLowerCase().includes(this.searchValue.toLowerCase())
+    );
   }
-}
+
+  /** CRUD */
+  add(item: resignation) {
+    this.resignations.unshift(item);
+  }
+
+  openEdit(item: resignation) {
+    this.selectedResignation = item;
+    this.openEditModal = true;
+  }
+
+  update(updated: resignation) {
+    const i = this.resignations.indexOf(this.selectedResignation!);
+    if (i !== -1) this.resignations[i] = updated;
+  }
+
+  openDelete(item: resignation) {
+    this.selectedResignation = item;
+    this.openDeleteModal = true;
+  }
+
+
+  loadDepartments() {
+    this.departments = [
+      { Department: 'Finance' },
+      { Department: 'Développement d’applications' },
+      { Department: 'Gestion informatique' },
+      { Department: 'Développement Web' },
+      { Department: 'Ventes' },
+      { Department: 'UI / UX' },
+      { Department: 'Gestion des comptes' },
+      { Department: 'Marketing' },
+      { Department: 'Administration' },
+      { Department: 'Développement commercial' },
+    ];
+  }
+
+
+  delete() {
+    if (!this.selectedResignation) return;
+
+    this.resignations = this.resignations.filter(
+      (r) => r.sNo !== this.selectedResignation!.sNo
+    );
+
+    this.selectedResignation = undefined;
+    this.openDeleteModal = false;
+  }
 }

@@ -2,23 +2,19 @@
   <div class="content">
 		<!-- Breadcrumb -->
 	<div class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
-    <app-breadcrumbs
-      title="Sondages"
-      [breadcrumbItems]="breadCrumbItems">
-    </app-breadcrumbs>
-    
+    <app-breadcrumbs></app-breadcrumbs>
+
     <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
       <!-- Bouton créer sondage -->
       <div class="mb-2">
-        <a href="javascript:void(0);" 
-           data-bs-toggle="modal" 
+        <a href="javascript:void(0);"
+           data-bs-toggle="modal"
            data-bs-target="#creerSondageModal"
            class="btn btn-primary d-flex align-items-center">
           <i class="ti ti-circle-plus me-2"></i>Créer un sondage
         </a>
       </div>
-      
-      <app-collapse-header></app-collapse-header>
+
     </div>
   </div>
   <!-- ========== SECTION STATISTIQUES ========== -->
@@ -220,7 +216,7 @@
       </div>
     </div>
   </div>
-	  
+
 </div>
 <!-- --------------Modal  de creation d'un sondage -------------->
  <app-create-sondage-modal></app-create-sondage-modal>

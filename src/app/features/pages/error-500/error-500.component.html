@@ -1,0 +1,30 @@
+<div class="container min-vh-100 d-flex align-items-center">
+  <div class="row justify-content-center w-100">
+    <div class="col-md-8 col-lg-6 text-center">
+      <!-- Logo -->
+      <app-logo></app-logo>
+
+      <!-- Illustration erreur -->
+      <div class="error-images">
+        <app-illustration
+          backgroundImage="assets/img/bg/error-500.png"
+          alt="Erreur serveur 500"
+          class="img-fluid"
+        ></app-illustration>
+      </div>
+
+      <!-- Texte -->
+
+        <app-description
+        title="Oups, une erreur s’est produite"
+        text="Erreur serveur 500
+        Nous nous excusons pour ce désagrément et travaillons à la résolution du
+        problème. Veuillez réessayer ultérieurement."
+      ></app-description>
+
+      <!-- Bouton -->
+     <app-button></app-button>
+
+    </div>
+  </div>
+</div>

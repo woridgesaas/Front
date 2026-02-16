@@ -1,0 +1,151 @@
+<div class="modal fade" id="add_ticket">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    @if (userRole === 'canAssigneticket') {
+                        Créer un ticket
+                    } @else {
+                        Soumettre une demande
+                    }
+                </h4>
+                <button type="button" class="btn-close custom-btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="ti ti-x"></i>
+                </button>
+            </div>
+            
+            <form #ticketForm="ngForm" (ngSubmit)="creerTicket(ticketForm)">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            
+                            <!-- Titre -->
+                            <div class="mb-3">
+                                <label class="form-label">Titre *</label>
+                                <input type="text" 
+                                       class="form-control" 
+                                       placeholder="Décrivez brièvement le problème"
+                                       name="titre"
+                                       [(ngModel)]="newTicket.titre"
+                                       required>
+                            </div>
+                            
+                            <!-- Catégorie -->
+                            <div class="mb-3">
+                                <label class="form-label">Catégorie *</label>
+                                <select class="form-select"
+                                        name="categorie"
+                                        [(ngModel)]="newTicket.categorie"
+                                        required>
+                                    <option value="" disabled>Sélectionnez une catégorie</option>
+                                    @for (cat of categories; track cat) {
+                                        <option [value]="cat">{{ cat }}</option>
+                                    }
+                                </select>
+                            </div>
+                            
+                            <!-- Description -->
+                            <div class="mb-3">
+                                <label class="form-label">Description *</label>
+                                <textarea class="form-control" 
+                                          rows="4"
+                                          placeholder="Décrivez en détail votre problème..."
+                                          name="description"
+                                          [(ngModel)]="newTicket.description"
+                                          required></textarea>
+                                <small class="text-muted">Incluez toutes les informations utiles pour résoudre le problème</small>
+                            </div>
+                            
+                            <!-- Priorité -->
+                            <div class="mb-3">
+                                <label class="form-label">Priorité *</label>
+                                <select class="form-select"
+                                        name="priorite"
+                                        [(ngModel)]="newTicket.priorite"
+                                        required>
+                                    @for (priority of priorities; track priority.value) {
+                                        <option [value]="priority.value">{{ priority.label }}</option>
+                                    }
+                                </select>
+                            </div>
+                            
+                            <!-- SECTION ADMIN/TECH -->
+                            @if (canAssignTickets()) {
+                                <div class="border-top pt-3 mb-3">
+                                    <h6 class="text-muted mb-3">
+                                        <i class="ti ti-settings me-2"></i>Configuration technique
+                                    </h6>
+                                    
+                                    <!-- Assignation -->
+                                    <div class="mb-3">
+                                        <label class="form-label">Assigner à un technicien</label>
+                                        <select class="form-select"
+                                                name="assignedTo"
+                                                [(ngModel)]="newTicket.assignedTo">
+                                            <option value="">-- Non assigné --</option>
+                                            @for (tech of techniciens; track tech.id) {
+                                                <option [value]="tech.id">{{ tech.nom }} ({{ tech.departement }})</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    
+                                    <!-- Statut (seulement admin/tech) -->
+                                    <div class="mb-3">
+                                        <label class="form-label">Statut initial</label>
+                                        <select class="form-select"
+                                                name="statut"
+                                                [(ngModel)]="newTicket.statut">
+                                            @for (status of statusOptions; track status.value) {
+                                                <option [value]="status.value">{{ status.label }}</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    
+                                    <!--  (seulement admin) -->
+                                    @if (canAssignTickets()) {
+                                        <div class="mb-3">
+                                            <label class="form-label">Département concerné</label>
+                                            <select class="form-select"
+                                                    name="departement"
+                                                    [(ngModel)]="newTicket.departement">
+                                                <option value="">-- Sélectionnez --</option>
+                                                @for (dep of departements; track dep) {
+                                                    <option [value]="dep">{{ dep }}</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    }
+                                </div>
+                            } @else {
+                                <!-- Pour les employes -->
+                                <div class="alert alert-info mb-3">
+                                    <i class="ti ti-info-circle me-2"></i>
+                                    Votre ticket sera automatiquement assigné à l'équipe de support.
+                                    Vous serez notifié dès qu'un technicien prendra en charge votre demande.
+                                </div>
+                            }
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" 
+                            class="btn btn-light me-2" 
+                            data-bs-dismiss="modal"
+                            (click)="reinitialiserFormulaire()">
+                        Annuler
+                    </button>
+                    <button type="submit" 
+                            class="btn btn-primary"
+                            [disabled]="ticketForm.invalid">
+                        @if (userRole === 'admin' || userRole === 'technicien') {
+                            Créer le ticket
+                        } @else {
+                            Soumettre la demande
+                        }
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -3,9 +3,10 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard/index',
+    redirectTo: 'dashboard/admin',
     pathMatch: 'full',
   },
+
   //* Auth routes
   {
     path: '',
@@ -16,6 +17,7 @@ export const routes: Routes = [
         path: 'login',
         loadComponent: () =>
           import('./auth/login/login.component').then((m) => m.LoginComponent),
+        data: { title: 'Connexion' },
       },
       {
         path: 'forgot-password',
@@ -23,6 +25,7 @@ export const routes: Routes = [
           import('./auth/forgot-password/forgot-password.component').then(
             (m) => m.ForgotPasswordComponent
           ),
+        data: { title: 'Mot de passe oublié' },
       },
       {
         path: 'email-verification',
@@ -30,6 +33,7 @@ export const routes: Routes = [
           import('./auth/email-verification/email-verification.component').then(
             (m) => m.EmailVerificationComponent
           ),
+        data: { title: "Vérification de l'adresse email" },
       },
       {
         path: 'reset-password',
@@ -37,6 +41,7 @@ export const routes: Routes = [
           import('./auth/reset-password/reset-password.component').then(
             (m) => m.ResetPasswordComponent
           ),
+        data: { title: 'Réinitialisation du mot de passe' },
       },
       {
         path: 'success',
@@ -44,6 +49,7 @@ export const routes: Routes = [
           import('./auth/success/success.component').then(
             (m) => m.SuccessComponent
           ),
+        data: { title: 'Succès' },
       },
       {
         path: 'lock-screen',
@@ -51,59 +57,62 @@ export const routes: Routes = [
           import('./auth/lock-screen/lock-screen.component').then(
             (m) => m.LockScreenComponent
           ),
-      },
-      {
-        path: 'error-404',
-        loadComponent: () =>
-          import('./auth/error-404/error-404.component').then(
-            (m) => m.Error404Component
-          ),
-      },
-      {
-        path: 'error-500',
-        loadComponent: () =>
-          import('./auth/error-500/error-500.component').then(
-            (m) => m.Error500Component
-          ),
+        data: { title: 'Écran verrouillé' },
       },
     ],
   },
-  //Features Routes//
+
+  //* Features routes
   {
     path: '',
     loadComponent: () =>
       import('./features/features.component').then((m) => m.FeaturesComponent),
     children: [
-      {
-        path: 'dashboard',
-        loadComponent: () =>
-          import('./features/dashboard/dashboard.component').then(
-            (m) => m.DashboardComponent
-          ),
-        children: [
-          {
-            path: 'index',
-            loadComponent: () =>
-              import(
-                './features/dashboard/admin-dashboard/admin-dashboard.component'
-              ).then((m) => m.AdminDashboardComponent),
-          },
-          {
-            path: 'employee',
-            loadComponent: () =>
-              import(
-                './features/dashboard/employee-dashboard/employee-dashboard.component'
-              ).then((m) => m.EmployeeDashboardComponent),
-          },
-        ],
+      //* Dashboard routes
+    {
+  path: 'dashboard',
+  loadComponent: () =>
+    import('./features/dashboard/dashboard.component').then(
+      (m) => m.DashboardComponent
+    ),
+  data: { breadcrumb: 'Dashboard', title: 'Dashboard' },
+  children: [
+    { path: '', pathMatch: 'full', redirectTo: 'admin' },
+
+    {
+      path: 'admin',
+      loadComponent: () =>
+        import('./features/dashboard/admin/pages/admin-dashboard/admin-dashboard.component')
+          .then((m) => m.AdminDashboardComponent),
+      data: {
+        breadcrumb: 'Dashboard administrateur',
+        title: 'dashboard administrateur',
+        role: 'ADMIN', // utile pour guard
       },
-      //Application//
+    },
+    {
+      path: 'employee',
+      loadComponent: () =>
+        import('./features/dashboard/employee/pages/employee-dashboard/employee-dashboard.component')
+          .then((m) => m.EmployeeDashboardComponent),
+      data: {
+        breadcrumb: 'Dashboard employé',
+        title: 'Dashboard employé',
+        role: 'EMPLOYEE',
+      },
+    },
+  ],
+},
+
+
+      //* Intranet routes
       {
         path: 'intranet',
         loadComponent: () =>
           import('./features/application/application.component').then(
             (m) => m.ApplicationComponent
           ),
+        data: { breadcrumb: 'Intranet', title: 'Intranet' },
         children: [
           {
             path: 'chats',
@@ -111,6 +120,7 @@ export const routes: Routes = [
               import('./features/application/chat/chat.component').then(
                 (m) => m.ChatComponent
               ),
+            data: { breadcrumb: 'Messagerie', title: 'Messagerie' },
           },
           {
             path: 'groups',
@@ -118,6 +128,7 @@ export const routes: Routes = [
               import(
                 './features/application/chat/groups/groups/groups.component'
               ).then((m) => m.GroupsComponent),
+            data: { breadcrumb: 'Groupes', title: 'Groupes' },
           },
           {
             path: 'calendar',
@@ -125,6 +136,7 @@ export const routes: Routes = [
               import('./features/application/calendar/calendar.component').then(
                 (m) => m.CalendarComponent
               ),
+            data: { breadcrumb: 'Calendrier', title: 'Calendrier' },
           },
           {
             path: 'annonces',
@@ -132,6 +144,7 @@ export const routes: Routes = [
               import(
                 './features/application/social-feed/social-feed.component'
               ).then((m) => m.SocialFeedComponent),
+            data: { breadcrumb: 'Annonces', title: 'Annonces' },
           },
           {
             path: 'annonces/edit/:id',
@@ -139,6 +152,10 @@ export const routes: Routes = [
               import(
                 './features/application/social-feed/admin/annonce/edit-annonce/edit-annonce.component'
               ).then((m) => m.EditAnnonceComponent),
+            data: {
+              breadcrumb: 'Modifier une annonce',
+              title: 'Modifier une annonce',
+            },
           },
           {
             path: 'sondages',
@@ -146,6 +163,7 @@ export const routes: Routes = [
               import(
                 './features/application/social-feed/admin/sondage/sondage.component'
               ).then((m) => m.SondageComponent),
+            data: { breadcrumb: 'Sondages', title: 'Sondages' },
           },
           {
             path: 'sondage-details/:id',
@@ -153,6 +171,10 @@ export const routes: Routes = [
               import(
                 './features/application/social-feed/admin/sondage/sondage-details/sondage-details.component'
               ).then((m) => m.SondageDetailsComponent),
+            data: {
+              breadcrumb: 'Détails du sondage',
+              title: 'Détails du sondage',
+            },
           },
         ],
       },
@@ -164,7 +186,7 @@ export const routes: Routes = [
           import('./features/settings/settings.component').then(
             (m) => m.SettingsComponent
           ),
-        data: { breadcrumb: 'Paramètres' },
+        data: { breadcrumb: 'Paramètres', title: 'Paramètres' },
         children: [
           {
             path: 'change-password',
@@ -172,7 +194,10 @@ export const routes: Routes = [
               import(
                 './features/settings/change-password/change-password.component'
               ).then((m) => m.ChangePasswordComponent),
-            data: { breadcrumb: 'Changer mot de passe' },
+            data: {
+              breadcrumb: 'Changer mot de passe',
+              title: 'Changer mot de passe',
+            },
           },
           {
             path: 'app-settings',
@@ -180,7 +205,10 @@ export const routes: Routes = [
               import(
                 './features/settings/app-settings/app-settings.component'
               ).then((m) => m.AppSettingsComponent),
-            data: { breadcrumb: "Paramètres d'application" },
+            data: {
+              breadcrumb: "Paramètres d'application",
+              title: "Paramètres d'application",
+            },
             children: [
               {
                 path: 'leave-settings',
@@ -188,15 +216,21 @@ export const routes: Routes = [
                   import(
                     './features/settings/app-settings/leave-settings/leave-settings.component'
                   ).then((m) => m.LeaveSettingsComponent),
-                data: { breadcrumb: 'Paramétrage des congés' },
+                data: {
+                  breadcrumb: 'Paramétrage des congés',
+                  title: 'Paramétrage des congés',
+                },
               },
               {
-                path: 'presence-absence-settings',
+                path: 'attendance-settings',
                 loadComponent: () =>
                   import(
-                    './features/settings/app-settings/presence-absence-settings/presence-absence-settings.component'
-                  ).then((m) => m.PresenceAbsenceSettingsComponent),
-                data: { breadcrumb: 'Paramétrage de présence et absence' },
+                    './features/settings/app-settings/attendance-settings/attendance-settings.component'
+                  ).then((m) => m.AttendanceSettingsComponent),
+                data: {
+                  breadcrumb: 'Paramétrage de présence et absence',
+                  title: 'Paramétrage de présence et absence',
+                },
               },
               {
                 path: 'documents-template-settings',
@@ -207,6 +241,7 @@ export const routes: Routes = [
                 data: {
                   breadcrumb:
                     'Paramètrage des modèles de documents administratifs',
+                  title: 'Paramètrage des modèles de documents administratifs',
                 },
               },
               {
@@ -217,6 +252,7 @@ export const routes: Routes = [
                   ).then((m) => m.RecruitmentSettingsComponent),
                 data: {
                   breadcrumb: 'Paramétrage de recrutement',
+                  title: 'Paramétrage de recrutement',
                 },
               },
             ],
@@ -224,98 +260,129 @@ export const routes: Routes = [
         ],
       },
 
+      //* Employees routes
       {
         path: 'employees',
         loadComponent: () =>
           import('./features/hrm/employees/employees.component').then(
             (m) => m.EmployeesComponent
           ),
+        data: { breadcrumb: 'Employés', title: 'Employés' },
         children: [
           {
             path: 'employee-list',
             loadComponent: () =>
               import(
-                './features/hrm/employees/employee-list/employee-list.component'
+                './features/hrm/employees/employees-list/employee-list/employee-list.component'
               ).then((m) => m.EmployeeListComponent),
+            data: {
+              breadcrumb: 'Liste des employés',
+              title: 'Liste des employés',
+            },
           },
           {
             path: 'employee-details',
             loadComponent: () =>
               import(
-                './features/hrm/employees/employee-details/employee-details.component'
+                './features/hrm/employees/profilemployee/employee-details/employee-details.component'
               ).then((m) => m.EmployeeDetailsComponent),
+            data: {
+              title: "Détails d'employé",
+            },
           },
           {
             path: 'departments',
             loadComponent: () =>
-              import(
-                './features/hrm/employees/departments/departments.component'
-              ).then((m) => m.DepartmentsComponent),
+              import('./features/hrm/departments/departments.component').then(
+                (m) => m.DepartmentsComponent
+              ),
+            data: { breadcrumb: 'Départements', title: 'Départements' },
           },
-          {path:'geenrate/contract' , loadComponent: ()=>import('./features/hrm/contract/contract.component').then(m=>m.ContractComponent)},
-          {path:'documents',loadComponent:()=>import('./features/hrm/documents/documents.component').then(m=>m.DocumentsComponent)},
+          {
+            path: 'generate/contract',
+            loadComponent: () =>
+              import('./features/hrm/contract/contract.component').then(
+                (m) => m.ContractComponent
+              ),
+            data: {
+              breadcrumb: 'Générer un contrat',
+              title: 'Générer un contrat',
+            },
+          },
+
+          {
+            path: 'documents',
+            loadComponent: () =>
+              import('./features/hrm/documents/documents.component').then(
+                (m) => m.DocumentsComponent
+              ),
+            data: {
+              breadcrumb: 'Documents administratifs',
+              title: 'Documents administratifs',
+            },
+          },
+          //* Holidays routes
+          {
+            path: 'holidays',
+            loadComponent: () =>
+              import('./features/hrm/holidays/holidays.component').then(
+                (m) => m.HolidaysComponent
+              ),
+            data: {
+              breadcrumb: 'Jours fériés',
+              title: 'Jours fériés',
+            },
+          },
         ],
       },
+
+      //* Tickets routes
       {
         path: 'tickets',
         loadComponent: () =>
-          import('./features/hrm/tickets/tickets.component').then(
+          import('./features/application/tickets/tickets.component').then(
             (m) => m.TicketsComponent
           ),
+        data: { breadcrumb: 'Tickets', title: 'Tickets' },
         children: [
           {
             path: 'ticket-list',
             loadComponent: () =>
-              import('./features/hrm/tickets/ticket/ticket.component').then(
-                (m) => m.TicketComponent
-              ),
+              import(
+                './features/application/tickets/ticket/ticket.component'
+              ).then((m) => m.TicketComponent),
+            data: {
+              breadcrumb: 'Liste des tickets',
+              title: 'Liste des tickets',
+            },
           },
           {
             path: 'ticket-details',
             loadComponent: () =>
               import(
-                './features/hrm/tickets/ticket-details/ticket-details.component'
+                './features/application/tickets/ticket-details/ticket-details.component'
               ).then((m) => m.TicketDetailsComponent),
+            data: { title: 'Détails du ticket' },
           },
           {
             path: 'mes-tickets',
             loadComponent: () =>
               import(
-                './features/hrm/tickets/employe/tickets/tickets.component'
+                './features/application/tickets/employe/tickets/tickets.component'
               ).then((m) => m.TicketsComponent),
-          },
-        ],
-      },
-      {
-        path: 'holidays',
-        loadComponent: () =>
-          import('./features/hrm/holidays/holidays.component').then(
-            (m) => m.HolidaysComponent
-          ),
-        children: [
-          {
-            path: 'religious-holidays',
-            loadComponent: () =>
-              import(
-                './features/hrm/holidays/religious-holidays/religious-holidays.component'
-              ).then((m) => m.ReligiousHolidaysComponent),
-          },
-          {
-            path: 'national-holidays',
-            loadComponent: () =>
-              import(
-                './features/hrm/holidays/national-holidays/national-holidays.component'
-              ).then((m) => m.NationalHolidaysComponent),
+            data: { breadcrumb: 'Mes tickets', title: 'Mes tickets' },
           },
         ],
       },
 
+      //* Attendance routes
       {
         path: 'attendance',
         loadComponent: () =>
           import('./features/hrm/attendance/attendance.component').then(
             (m) => m.AttendanceComponent
           ),
+        data: { breadcrumb: 'Présence/Absence', title: 'Présence/Absence' },
         children: [
           {
             path: 'attendance-admin',
@@ -323,6 +390,10 @@ export const routes: Routes = [
               import(
                 './features/hrm/attendance/attendance-admin/attendance-admin.component'
               ).then((m) => m.AttendanceAdminComponent),
+            data: {
+              breadcrumb: 'Liste de présence/absence',
+              title: 'Liste de présence/absence',
+            },
           },
           {
             path: 'attendance-employee',
@@ -330,42 +401,61 @@ export const routes: Routes = [
               import(
                 './features/hrm/attendance/attendance-employee/attendance-employee.component'
               ).then((m) => m.AttendanceEmployeeComponent),
-          },
-          {
-            path: 'leaves',
-            loadComponent: () =>
-              import('./features/hrm/attendance/leaves/leaves.component').then(
-                (m) => m.LeavesComponent
-              ),
-            children: [
-              {
-                path: 'leave-employee',
-                loadComponent: () =>
-                  import(
-                    './features/hrm/attendance/leaves/leave-employee/leave-employee.component'
-                  ).then((m) => m.LeaveEmployeeComponent),
-              },
-            ],
+            data: {
+              breadcrumb: 'Mes présence/absence',
+              title: 'Mes présence/absence',
+            },
           },
         ],
       },
 
+      //* Leave routes
+      {
+        path: 'leaves',
+        loadComponent: () =>
+          import('./features/hrm/leaves/leaves.component').then(
+            (m) => m.LeavesComponent
+          ),
+        data: { breadcrumb: 'Congés', title: 'Congés' },
+        children: [
+          {
+            path: 'leave-employee',
+            loadComponent: () =>
+              import(
+                './features/hrm//leaves/leave-employee/leave-employee.component'
+              ).then((m) => m.LeaveEmployeeComponent),
+            data: {
+              breadcrumb: 'Mes congés',
+              title: 'Mes congés',
+            },
+          },
+        ],
+      },
+
+      //* Promotion route
       {
         path: 'promotion',
         loadComponent: () =>
           import('./features/hrm/promotion/promotion.component').then(
-            (m) => m.PromotionComponent
+            (m) => m.PromotionsComponent
           ),
+        data: { breadcrumb: 'Promotion', title: 'Promotion' },
       },
+
+      //* Resignation route
       {
         path: 'resignation',
         loadComponent: () =>
           import('./features/hrm/resignation/resignation.component').then(
             (m) => m.ResignationComponent
           ),
+        data: { breadcrumb: 'Démission', title: 'Démission' },
       },
+
+      //* Validation routes
       {
         path: 'validation',
+        data: { breadcrumb: 'Validation', title: 'Validation' },
         children: [
           {
             path: 'justify-validation',
@@ -373,6 +463,10 @@ export const routes: Routes = [
               import(
                 './features/hrm/validation/validate-justification/validate-justification.component'
               ).then((m) => m.ValidateJustificationComponent),
+            data: {
+              breadcrumb: 'Validation des justificatifs',
+              title: 'Validation des justificatifs',
+            },
           },
           {
             path: 'validate-leave',
@@ -380,6 +474,10 @@ export const routes: Routes = [
               import(
                 './features/hrm/validation/validate-leave/validate-leave.component'
               ).then((m) => m.ValidateLeaveComponent),
+            data: {
+              breadcrumb: 'Validation des congés',
+              title: 'Validation des congés',
+            },
           },
           {
             path: 'validate-personal-info',
@@ -387,93 +485,83 @@ export const routes: Routes = [
               import(
                 './features/hrm/validation/validate-personal-info/validate-personal-info.component'
               ).then((m) => m.ValidateInfoPersonnelComponent),
+            data: {
+              breadcrumb: 'Validation des informations personnelles',
+              title: 'Validation des informations personnelles',
+            },
+          },
+          {
+            path: 'validate-documents',
+            loadComponent: () =>
+              import(
+                './features/hrm/validation/validate-administrativ-documents/validate-administrativ-documents.component'
+              ).then((m) => m.ValidateAdministrativDocumentsComponent),
+            data: {
+              breadcrumb: 'Documents Administratifs',
+              title: 'Documents Administratifs',
+            },
           },
         ],
       },
+
+      //* Candidates routes
 
       {
         path: 'candidates',
         loadComponent: () =>
-          import('./features/recruitment/candidates/candidates.component').then(
-            (m) => m.CandidatesComponent
-          ),
-        children: [
-          {
-            path: 'candidates-list',
-            loadComponent: () =>
-              import(
-                './features/recruitment/candidates/candidates-list/candidates-list.component'
-              ).then((m) => m.CandidatesListComponent),
-          },
+          import(
+            './features/rhextern/candidates/components/candidates-list/candidates-list.component'
+          ).then((m) => m.CandidatesListComponent),
+        data: {
+          breadcrumb: 'Candidats',
+          title: 'Liste des candidats',
+        },
+      },
 
-          // {path: 'candidates-grid', loadComponent: () => import('./features/recruitment/candidates/candidates-grid/candidates-grid.component').then(m => m.CandidatesGridComponent),},
-          // {path: 'candidates-kanban', loadComponent: () => import('./features/recruitment/candidates/candidates-kanban/candidates-kanban.component').then(m => m.CandidatesKanbanComponent),},
-        ],
-      },
+      //* Jobs routes
       {
-        path: 'jobs',
+        path: 'jobs-list',
         loadComponent: () =>
-          import('./features/recruitment/jobs/jobs.component').then(
-            (m) => m.JobsComponent
-          ),
-        children: [
-          {
-            path: 'jobs-list',
-            loadComponent: () =>
-              import(
-                './features/recruitment/jobs/jobs-list/jobs-list.component'
-              ).then((m) => m.JobsListComponent),
-          },
-        ],
+          import(
+            './features/rhextern/jobs/components/jobs-list/jobs-list.component'
+          ).then((m) => m.JobsListComponent),
+        data: { breadcrumb: "Offres d'emploi", title: "Offres d'emploi" },
       },
+
+      //* Filter route
 
       {
         path: 'filtrage',
         loadComponent: () =>
           import(
-            './features/recruitment/filtrage-list/filtrage-list.component'
-          ).then((m) => m.FiltrageListComponent),
+            './features/rhextern/filtering/pages/filtering-page/filtering-page.component'
+          ).then((m) => m.FilteringPageComponent),
         children: [],
+        data: { breadcrumb: 'Filtrage', title: 'Filtrage' },
       },
+
+      //* Interview route
       {
-        path: 'entretient',
+        path: 'entretiens',
         loadComponent: () =>
           import(
-            './features/recruitment/interviews-planning/interviews-planning.component'
+            './features/rhextern/interviews/pages/interviews-planning/interviews-planning.component'
           ).then((m) => m.InterviewsPlanningComponent),
         children: [],
+        data: {
+          breadcrumb: 'Planification des entretiens',
+          title: 'Planification des Entretiens',
+        },
       },
 
-      {
-        path: 'payroll',
-        loadComponent: () =>
-          import('./features/finance/payroll/payroll.component').then(
-            (m) => m.PayrollComponent
-          ),
-        children: [
-          // {
-          //   path: 'employee-salary',
-          //   loadComponent: () =>
-          //     import(
-          //       './features/finance/payroll/employee-salary/employee-salary.component'
-          //     ).then((m) => m.EmployeeSalaryComponent),
-          // },
-          {
-            path: 'payslip',
-            loadComponent: () =>
-              import(
-                './features/finance/payroll/payslip/payslip.component'
-              ).then((m) => m.PayslipComponent),
-          },
-        ],
-      },
-
+      //* Reports routes
       {
         path: 'reports',
         loadComponent: () =>
           import('./features/administration/reports/reports.component').then(
             (m) => m.ReportsComponent
           ),
+        data: { breadcrumb: 'Rapports', title: 'Rapports' },
         children: [
           {
             path: 'attendance-report',
@@ -481,6 +569,10 @@ export const routes: Routes = [
               import(
                 './features/administration/reports/attendance-report/attendance-report.component'
               ).then((m) => m.AttendanceReportComponent),
+            data: {
+              breadcrumb: 'Rapport des présences/absences',
+              title: 'Rapport des présences/absences',
+            },
           },
           {
             path: 'daily-report',
@@ -488,6 +580,10 @@ export const routes: Routes = [
               import(
                 './features/administration/reports/daily-report/daily-report.component'
               ).then((m) => m.DailyReportComponent),
+            data: {
+              breadcrumb: 'Rapport quotidien',
+              title: 'Rapport quotidien',
+            },
           },
           {
             path: 'employee-report',
@@ -495,6 +591,10 @@ export const routes: Routes = [
               import(
                 './features/administration/reports/employee-report/employee-report.component'
               ).then((m) => m.EmployeeReportComponent),
+            data: {
+              breadcrumb: 'Rapport des employés',
+              title: 'Rapport des employés',
+            },
           },
           {
             path: 'leave-report',
@@ -502,6 +602,10 @@ export const routes: Routes = [
               import(
                 './features/administration/reports/leave-report/leave-report.component'
               ).then((m) => m.LeaveReportComponent),
+            data: {
+              breadcrumb: 'Rapport des congés',
+              title: 'Rapport des congés',
+            },
           },
           {
             path: 'payslip-report',
@@ -509,17 +613,45 @@ export const routes: Routes = [
               import(
                 './features/administration/reports/payslip-report/payslip-report.component'
               ).then((m) => m.PayslipReportComponent),
+            data: {
+              breadcrumb: 'Rapport des fiches de paie',
+              title: 'Rapport des fiches de paie',
+            },
           },
         ],
       },
+      {
+        path: 'audits',
+        loadComponent: () =>
+          import('./features/administration/audits/audits.component').then(
+            (m) => m.AuditsComponent
+          ),
+        data: {
+          breadcrumb: 'Journal des événements',
+          title: 'Journal des événements',
+        },
+      },
     ],
   },
+
+  //* Onboarding routes
+  {
+    path: 'onboarding',
+    loadComponent: () =>
+      import('./onboarding/onboarding.component').then(
+        (m) => m.OnboardingComponent
+      ),
+    data: { title: 'Onboarding' },
+  },
+
+  //* Pages routes
   {
     path: 'under-maintenance',
     loadComponent: () =>
       import(
         './features/pages/under-maintenance/under-maintenance.component'
       ).then((m) => m.UnderMaintenanceComponent),
+    data: { title: 'Maintenance en cours' },
   },
   {
     path: 'under-construction',
@@ -527,8 +659,26 @@ export const routes: Routes = [
       import(
         './features/pages/under-construction/under-construction.component'
       ).then((m) => m.UnderConstructionComponent),
+    data: { title: 'Page en construction' },
+  },
+  {
+    path: 'error-404',
+    loadComponent: () =>
+      import('./features/pages/error-404/error-404.component').then(
+        (m) => m.Error404Component
+      ),
+    data: { title: 'Page non trouvée' },
+  },
+  {
+    path: 'error-500',
+    loadComponent: () =>
+      import('./features/pages/error-500/error-500.component').then(
+        (m) => m.Error500Component
+      ),
+    data: { title: 'Erreur serveur' },
   },
 
+  //* Fallback route
   {
     path: '**',
     redirectTo: '/error-404',

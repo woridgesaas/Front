@@ -1,0 +1,65 @@
+<div class="content">
+  <!-- Breadcrumb -->
+  <div
+    class="d-md-flex d-block align-items-center justify-content-between mb-3"
+  >
+    <app-breadcrumbs></app-breadcrumbs>
+    <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
+      <div class="mb-2">
+        <a
+          href="javascript:void(0);"
+          data-bs-toggle="modal"
+          data-bs-target="#add_leave"
+          class="btn btn-primary d-flex align-items-center"
+          ><i class="ti ti-circle-plus me-2"></i>Ajouter un congé</a
+        >
+      </div>
+    </div>
+  </div>
+  <!-- /Breadcrumb -->
+  <!-- Leaves Info -->
+  <app-leaves-kpis></app-leaves-kpis>
+  <!-- /Leaves Info -->
+  <!-- Leaves list -->
+  <div class="card">
+    <app-leaves-toolbar
+      (dateChange)="onDateFilter($event)"
+      (typeChange)="onTypeFilter($event)"
+      (approverChange)="onApproverFilter($event)"
+      (statusChange)="onStatusFilter($event)"
+      (sortChange)="onSortFilter($event)"
+    >
+    </app-leaves-toolbar>
+    <div class="card-body p-0">
+      <div class="custom-datatable-filter">
+        <div class="dataTables_wrapper dt-bootstrap5 no-footer">
+          <app-filter
+            [pageSize]="pageSize"
+            [pageSizes]="[10, 25, 50, 100]"
+            (searchChange)="onSearchChange($event)"
+            (pageSizeChange)="onPageSizeChange($event)"
+          >
+          </app-filter>
+          <app-leaves-table
+            [tableData]="tableData"
+            (sort)="sortData($event)"
+            (edit)="onEditClick($event)"
+            (delete)="onDeleteClick($event)"
+          >
+          </app-leaves-table>
+          <app-confirm-delete
+            modalId="confirmDeleteModal"
+            [title]="'Supprimer le congé'"
+            [message]="
+              'Voulez-vous vraiment supprimer cette demande de congé ?'
+            "
+            [item]="selectedLeave"
+            (confirm)="confirmDelete($event)"
+          ></app-confirm-delete>
+          <app-custom-pagination></app-custom-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /Leaves list -->
+</div>

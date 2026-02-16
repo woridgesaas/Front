@@ -5,11 +5,12 @@
       <ul class="nav-menu">
         @for (mainTittle of side_bar_data; track mainTittle) {
         <li class="menu-title">
-          <span>{{ mainTittle.title }} dodo safae imane amine faty</span>
+          <span>{{ mainTittle.title }}</span>
         </li>
         @for (menu of mainTittle?.menu; track menu) { 
-          @if (menu.hasSubRoute ===true)
-          {
+        
+        <!-- ============== SUB ROUTE LEVEL 1 (avec action layoutChange) ============== -->
+        @if (menu.hasSubRoute === true) {
         <li class="submenu">
           <a
             href="javascript:void(0)"
@@ -17,7 +18,8 @@
             (keydown.enter)="expandSubMenus(menu)"
             tabindex="0"
             [class.active]="base === menu.base"
-            [ngClass]="{'subdrop': menu.showSubRoute === true}">
+            [ngClass]="{ subdrop: menu.showSubRoute === true }"
+          >
             <i [class]="'ti ti-' + menu.icon"></i>
             <span>{{ menu.menuValue }}</span>
             <span class="menu-arrow"></span>
@@ -29,44 +31,76 @@
           >
             @for (subMenus of menu.subMenus; track subMenus) {
             <li>
+              <!-- Si c'est le bouton de changement de layout -->
+              @if (subMenus.action === 'layoutChange') {
               <a
-              (click)="settings.changeLayoutMode('2')"
+                href="javascript:void(0)"
+                (click)="toggleLayout()"
+              >
+                {{ subMenus.menuValue }}
+              </a>
+              } @else {
+              <!-- Lien normal -->
+              <a
                 [routerLink]="subMenus.route"
                 [class.active]="
                   page === subMenus.base || base === subMenus.base
                 "
               >
-                {{ subMenus.menuValue }}</a
-              >
+                {{ subMenus.menuValue }}
+              </a>
+              }
             </li>
             }
           </ul>
         </li>
-        } @if (menu.hasSubRouteTwo === true) {
+        } 
+        
+        <!-- ============== SUB ROUTE LEVEL 2 ============== -->
+        @if (menu.hasSubRouteTwo === true) {
         <li class="submenu">
           <a
             href="javascript:void(0);"
             (click)="expandSubMenus(menu)"
-            [class.active]="base === menu.base || base === menu.base2 || base === menu.base3 || base === menu.base4 || base === menu.base5 || base === menu.base6
-            || base === menu.base7 || base === menu.base8 || base === menu.base9 || base === menu.base10 "
-            [ngClass]="{ 'subdrop': menu.showSubRoute === true }"
+            [class.active]="
+              base === menu.base ||
+              base === menu.base2 ||
+              base === menu.base3 ||
+              base === menu.base4 ||
+              base === menu.base5 ||
+              base === menu.base6 ||
+              base === menu.base7 ||
+              base === menu.base8 ||
+              base === menu.base9 ||
+              base === menu.base10
+            "
+            [ngClass]="{ subdrop: menu.showSubRoute === true }"
           >
-            <i class="ti ti-cube"></i>
+            <i [class]="'ti ti-' + menu.icon"></i>
             <span>{{ menu.menuValue }}</span>
             <span class="menu-arrow"></span>
           </a>
           <ul [ngClass]="menu.showSubRoute === true ? 'd-block' : 'd-none'">
-            @for (subMenus of menu.subMenus; track subMenus) { @if
-            (subMenus.customSubmenuTwo === false) {
+            @for (subMenus of menu.subMenus; track subMenus) { 
+            
+            @if (subMenus.customSubmenuTwo === false) {
             <li>
-              <a [class.active]="base === subMenus.base || page === subMenus.base"
-              [routerLink]="subMenus.route">{{ subMenus.menuValue }}</a>
+              <a
+                [class.active]="
+                  base === subMenus.base || page === subMenus.base
+                "
+                [routerLink]="subMenus.route"
+              >
+                {{ subMenus.menuValue }}
+              </a>
             </li>
-            } @if (subMenus.customSubmenuTwo === true) {
+            } 
+            
+            @if (subMenus.customSubmenuTwo === true) {
             <li class="submenu submenu-two">
               <a
                 href="javascript:void(0);"
-                [class.active]="base === subMenus.base "
+                [class.active]="base === subMenus.base"
                 (click)="openSubmenuOne(subMenus)"
                 [ngClass]="{ subdrop: openSubmenuOneItem === subMenus }"
               >
@@ -80,19 +114,23 @@
               >
                 @for (subMenuTwo of subMenus.subMenusTwo; track subMenuTwo) {
                 <li>
-                  <a [class.active]="
-                  page === subMenuTwo.base
-                " [routerLink]="subMenuTwo.route">{{
-                    subMenuTwo.menuValue
-                  }}</a>
+                  <a
+                    [class.active]="page === subMenuTwo.base"
+                    [routerLink]="subMenuTwo.route"
+                  >
+                    {{ subMenuTwo.menuValue }}
+                  </a>
                 </li>
                 }
               </ul>
             </li>
-            } }
+            } 
+            }
           </ul>
         </li>
-        } } }
+        } 
+        } 
+        }
       </ul>
     </div>
   </div>

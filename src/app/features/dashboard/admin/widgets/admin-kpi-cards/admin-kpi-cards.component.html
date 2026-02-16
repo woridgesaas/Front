@@ -1,0 +1,103 @@
+      <!-- Widget Info -->
+        <div class="row flex-fill">
+          <!-- Widget 1: Attendance -->
+          <div class="col-md-3 d-flex">
+            <div class="card flex-fill">
+              <div class="card-body">
+                <span class="avatar rounded-circle bg-primary mb-2">
+                  <i class="ti ti-calendar-share fs-16"></i>
+                </span>
+                <h6 class="fs-13 fw-medium text-default mb-1">Présence</h6>
+                <h3 class="mb-3">
+                  91/99
+                  <span class="fs-12 fw-medium text-success">
+                    <i class="fa-solid fa-caret-up me-1"></i>+2.1%
+                  </span>
+                </h3>
+                <a
+                  [routerLink]="routes.attendanceadmin"
+                  class="link-default"
+                >
+                  Voir les détails
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Widget 2: Job Applicants -->
+          <div class="col-md-3 d-flex">
+            <div class="card flex-fill">
+              <div class="card-body">
+                <span class="avatar rounded-circle bg-success mb-2">
+                  <i class="ti ti-users-group fs-16"></i>
+                </span>
+                <h6 class="fs-13 fw-medium text-default mb-1">
+                  Candidats à l'emploi
+                </h6>
+                <h3 class="mb-3">
+                  98
+                  <span class="fs-12 fw-medium text-success">
+                    <i class="fa-solid fa-caret-up me-1"></i>+2.1%
+                  </span>
+                </h3>
+                <a class="link-default" [routerLink]="['/candidates']">
+                  Afficher tout
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Widget 3: New Hire -->
+          <div class="col-md-3 d-flex">
+            <div class="card flex-fill">
+              <div class="card-body">
+                <span class="avatar rounded-circle bg-dark mb-2">
+                  <i class="ti ti-user-star fs-16"></i>
+                </span>
+                <h6 class="fs-13 fw-medium text-default mb-1">
+                  Nouvelle recrue
+                </h6>
+                <h3 class="mb-3">
+                  45/48
+                  <span class="fs-12 fw-medium text-danger">
+                    <i class="fa-solid fa-caret-down me-1"></i>-11.2%
+                  </span>
+                </h3>
+                <a [routerLink]="routes.candidateslist" class="link-default"
+                  >Afficher tout</a
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-3 d-flex">
+            <div class="card flex-fill">
+              <div class="card-body">
+                <span class="avatar rounded-circle bg-green-custom mb-2">
+                  <i class="ti ti-ticket fs-16"></i>
+                </span>
+
+                <h6 class="fs-13 fw-medium text-default mb-1">
+                  Tickets aujourd'hui
+                </h6>
+                <h3 class="mb-3">
+                  12
+                  <span class="fs-12 fw-medium text-success">
+                    <i class="fa-solid fa-caret-up me-1"></i>+2.1%
+                  </span>
+                </h3>
+                <a [routerLink]="routes.ticketList" class="link-default">
+                  Voir les détails
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Widget 5: Annonces Stats -->
+          <div class="col-md-3 d-flex">
+            <app-anonces-chart></app-anonces-chart>
+          </div>
+        </div>
+      <!-- /Widget Info -->
+  
+

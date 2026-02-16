@@ -1,28 +1,29 @@
-image: node:20
+image: docker:24.0.5
+services:
+  - docker:24.0.5-dind
 
 stages:
   - build
+  - push
   - test
 
-cache:
-  paths:
-    - node_modules/
+variables:
+  IMAGE_NAME: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
 
-before_script:
-  - npm install
+#Execute for code source not image
+#test-job:
 
 build-job:
   stage: build
   script:
-    - echo "Running Angular build... in branch $CI_COMMIT_BRANCH"
-    - npm run build 
-  artifacts:
-    paths:
-      - dist/
-    
-
-#test-job:
-#  stage: test
-#  script:
-#    - echo "Running Angular tests... in branch $CI_COMMIT_BRANCH"
-#    - npm run test --watch=false --browsers=ChromeHeadless
+    - echo "NG_APP_TINYMCE_API_KEY=$NG_APP_TINYMCE_API_KEY" > .env
+    - docker build -t $IMAGE_NAME -f infra/Dockerfile .
+#push image just in case MR  OR push directly into main
+push-job:
+  stage: push
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker push $IMAGE_NAME
+    - echo "Pushing $IMAGE_NAME in $CI_COMMIT_BRANCH branch"
+  only:
+    - main

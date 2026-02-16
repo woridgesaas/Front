@@ -1,0 +1,159 @@
+<div class="content">
+    <div class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
+            <app-breadcrumbs></app-breadcrumbs>
+            <div class="d-flex my-xl-auto right-content align-items-center flex-wrap ">
+            <div class="mb-2">
+                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#add_ticket" class="btn btn-primary d-flex align-items-center"><i class="ti ti-circle-plus me-2"></i>Ajouter une Ticket</a>
+            </div>
+            </div>
+    </div>
+    <!--Le tableau la list-->
+    <div class="card">
+    <!--Header du tableau-->
+        <div class="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3">
+        <h5>Mes Tickets</h5>
+        <div class="d-flex my-xl-auto right-content align-items-center flex-wrap row-gap-3">
+            <div class="me-3">
+            <div class="input-icon position-relative">
+                <span class="input-icon-addon">
+                <i class="ti ti-calendar text-gray-9"></i>
+                </span>
+                <input
+                type="text"
+                class="form-control date-range bookingrange"
+                bsDaterangepicker
+                [(ngModel)]="bsRangeValue"
+                [bsConfig]="{ adaptivePosition: true }"
+                placeholder="dd/mm/yyyy - dd/mm/yyyy"
+                />
+            </div>
+            </div>
+            <div class="dropdown me-3">
+            <a
+                href="javascript:void(0);"
+                class="dropdown-toggle btn btn-white d-inline-flex align-items-center"
+                data-bs-toggle="dropdown"
+            >
+                Statut
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end p-3">
+                <li>
+                <a href="javascript:void(0);" class="dropdown-item rounded-1"
+                    >Tous</a
+                >
+                </li>
+                <li>
+                <a href="javascript:void(0);" class="dropdown-item rounded-1"
+                    >En Cours</a
+                >
+                </li>
+                <li>
+                <a href="javascript:void(0);" class="dropdown-item rounded-1"
+                    >Résolu</a
+                >
+                </li>
+                <li>
+                <a href="javascript:void(0);" class="dropdown-item rounded-1"
+                    >Ouvert</a
+                >
+                </li>
+            </ul>
+            </div>
+
+            <div class="dropdown me-3">
+            <a
+                href="javascript:void(0);"
+                class="dropdown-toggle btn btn-white d-inline-flex align-items-center"
+                data-bs-toggle="dropdown"
+            >
+                Priorité
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end p-3">
+                <li>
+                <a href="javascript:void(0);" class="dropdown-item rounded-1"
+                    >Tous</a
+                >
+                </li>
+                <li>
+                <a href="javascript:void(0);" class="dropdown-item rounded-1"
+                    >Haut</a
+                >
+                </li>
+                <li>
+                <a href="javascript:void(0);" class="dropdown-item rounded-1"
+                    >Faible</a
+                >
+                </li>
+                <li>
+                <a href="javascript:void(0);" class="dropdown-item rounded-1"
+                    >Par default</a
+                >
+                </li>
+            </ul>
+            </div>
+            </div>
+        </div>
+    <!--Tableau ...-->
+    <div class="card-body p-0">
+  <div class="custom-datatable-filter">
+    <div class="dataTables_wrapper dt-bootstrap5 no-footer">
+      <div class="row">
+        <div class="col-sm-12 col-md-6">
+          <div class="dataTables_length">
+            <label>
+              Lignes par page
+              @if(tickets.length > 0) {
+                <select
+                  [(ngModel)]="pageSize"
+                  (ngModelChange)="changePage(pageSize)"
+                  class="form-select form-select-sm"
+                >
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                </select>
+              }
+              tickets
+            </label>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-6">
+          <div id="DataTables_Table_0_filter" class="dataTables_filter">
+            <label>
+              <input
+                [(ngModel)]="searchDataValue"
+                [ngModelOptions]="{ standalone: true }"
+                (ngModelChange)="searchData(searchDataValue)"
+                type="search"
+                class="form-control form-control-sm"
+                placeholder="Rechercher un ticket..."
+              />
+            </label>
+          </div>
+        </div>
+      </div>
+
+     <app-ticket-list-employe
+       [tickets]="filteredTickets"
+        [initChecked]="initChecked"
+        (ticketSelected)="onTicketSelected($event)"
+        (ticketDeleted)="deleteTicket($event)"
+        (selectAllChanged)="selectAll($event)"
+     >
+     ></app-ticket-list-employe>
+
+      <!-- Pagination -->
+    <app-custom-pagination></app-custom-pagination>
+
+    </div>
+  </div>
+</div>
+    </div>
+</div>
+
+<!--on pass pas de role ici creation simple non technique just pour un employer-->
+<app-ticket-create></app-ticket-create>
+<!--Details de ticket d'employe -->
+<app-ticket-details-modal></app-ticket-details-modal>
+<!--Delete modal -->
+<app-confirm-delete [item]="ticketToDelete" (onConfirm)="confirmedDelete($event)"></app-confirm-delete>

@@ -281,10 +281,9 @@ export class DataService {
           menuValue: 'Dashboard',
           hasSubRoute: true,
           showSubRoute: false,
-          icon: 'smart-home',
+          icon: 'layout-dashboard',
           base: 'dashboard',
           materialicons: 'start',
-          dot: true,
           subMenus: [
             {
               menuValue: 'Admin Dashboard',
@@ -303,7 +302,7 @@ export class DataService {
           route: routes.apps,
           hasSubRouteTwo: true,
           showSubRoute: false,
-          icon: 'layout-grid-add',
+          icon: 'building-community',
           base: 'application',
           materialicons: 'dashboard',
           subMenus: [
@@ -383,12 +382,6 @@ export class DataService {
           materialicons: 'people',
           subMenus: [
             {
-              menuValue: 'liste des employés',
-              route: routes.employeeList,
-              base: 'employees',
-              base2: 'employee-list',
-            },
-            {
               menuValue: 'Congés',
               route: routes.leaveemployee,
               base: 'leave-employee',
@@ -407,68 +400,62 @@ export class DataService {
               customSubmenuTwo: false,
               hasSubRoute: false,
               showSubRoute: false,
-              base : 'documents-administratif'
-            }
+              base: 'documents-administratif',
+            },
+            {
+              menuValue: 'Mes Tickets',
+              route: routes.myTickets,
+              base: 'my-tickets',
+              customSubmenuTwo: false,
+              hasSubRoute: false,
+              showSubRoute: false,
+            },
+            {
+              menuValue: 'Jours fériés',
+              route: routes.holidays,
+              base: 'holidays',
+              hasSubRoute: false,
+              showSubRoute: false,
+            },
           ],
         },
       ],
     },
     {
       tittle: 'RH Intern',
-      icon: 'file',
+      icon: 'briefcase-2',
       showAsTab: false,
       separateRoute: false,
       menu: [
-         {
+        {
+          menuValue: 'Liste des Employés',
+          route: routes.employeeList,
+          base: 'employee-list',
+          hasSubRoute: false,
+          showSubRoute: false,
+          icon: 'users',
+          materialicons: 'confirmation_number',
+          subMenus: [],
+        },
+        {
           menuValue: 'Contrats',
           route: routes.contract,
           base: 'contrats',
           hasSubRoute: false,
           showSubRoute: false,
-          icon: 'file',
+          icon: 'file-description',
           materialicons: 'confirmation_number',
           subMenus: [],
         },
         {
           menuValue: 'Tickets',
           route: routes.ticketList,
-          hasSubRoute: true,
+          hasSubRoute: false,
           showSubRoute: false,
           icon: 'ticket',
-          base: 'tickets',
+          base: 'ticket-list',
           materialicons: 'leaderboard',
-          subMenus: [
-            {
-              menuValue: 'Tickets',
-              route: routes.ticketList,
-              base: 'ticket-list',
-            },
-            {
-              menuValue: 'Mes Tickets',
-              route: routes.myTickets,
-              base: 'my-tickets',
-            },
-          ],
-        },
-        {
-          menuValue: 'Jours fériés',
-          base: 'holidays',
-          hasSubRoute: true,
-          showSubRoute: false,
-          icon: 'calendar-event',
-          materialicons: 'confirmation_number',
-          subMenus: [
-            {
-              menuValue: 'Jours fériés nationaux',
-              route: routes.nationalHolidays,
-              base: 'national-holidays',
-            },
-            {
-              menuValue: 'Jours fériés religieux',
-              route: routes.religiousHolidays,
-              base: 'religious-holidays',
-            },
-          ],
+          subMenus: [],
         },
 
         {
@@ -487,7 +474,7 @@ export class DataService {
           base: 'attendance-admin',
           hasSubRoute: false,
           showSubRoute: false,
-          icon: 'file-time',
+          icon: 'clock-check',
           materialicons: 'track_changes',
           subMenus: [],
         },
@@ -505,7 +492,7 @@ export class DataService {
         {
           menuValue: 'Validation',
           base: 'validation',
-          icon: 'file-time',
+          icon: 'checklist',
           materialicons: 'fact_check',
           hasSubRoute: true,
           showSubRoute: false,
@@ -531,6 +518,13 @@ export class DataService {
               showSubRoute: false,
               base: 'validate-personal-info',
             },
+            {
+              menuValue: 'Valider doc administratif',
+              route: routes.validateAdministrativDocuments,
+              hasSubRoute: false,
+              showSubRoute: false,
+              base: 'validation',
+            },
           ],
         },
 
@@ -539,7 +533,7 @@ export class DataService {
           route: routes.resignation,
           hasSubRoute: false,
           showSubRoute: false,
-          icon: 'external-link',
+          icon: 'logout',
           base: 'resignation',
           materialicons: 'settings',
           subMenus: [],
@@ -548,16 +542,16 @@ export class DataService {
     },
     {
       tittle: 'RH-Extern',
-      icon: 'file',
+      icon: 'user-search',
       showAsTab: false,
       separateRoute: false,
       menu: [
         {
           menuValue: 'Offres',
-          route: routes.jobsList,
+          route: routes.jobList,
           hasSubRoute: false,
           showSubRoute: false,
-          icon: 'timeline',
+          icon: 'clipboard-list',
           base: 'jobs',
           materialicons: 'confirmation_number',
           subMenus: [],
@@ -567,7 +561,7 @@ export class DataService {
           route: routes.candidateslist,
           hasSubRoute: false,
           showSubRoute: false,
-          icon: 'user-shield',
+          icon: 'users',
           base: 'candidates',
           materialicons: 'shopping_bag',
           subMenus: [],
@@ -578,7 +572,7 @@ export class DataService {
           hasSubRoute: false,
           showSubRoute: false,
           icon: 'user-shield',
-          base: 'filtrage-list',
+          base: 'filter',
           materialicons: 'shopping_bag',
           subMenus: [],
         },
@@ -587,37 +581,10 @@ export class DataService {
           route: routes.Entretient,
           hasSubRoute: false,
           showSubRoute: false,
-          icon: 'user-shield',
+          icon: 'calendar-event',
           base: 'interviews-planning',
           materialicons: 'shopping_bag',
           subMenus: [],
-        },
-      ],
-    },
-    {
-      tittle: 'Fiche de paie',
-      icon: 'file',
-      showAsTab: false,
-      separateRoute: false,
-      menu: [
-        {
-          menuValue: 'paiement',
-          base: 'payroll',
-          hasSubRoute: true,
-          showSubRoute: false,
-          icon: 'cash',
-          subMenus: [
-            // {
-            //   menuValue: 'Employee Salary',
-            //   route: '/payroll/employee-salary',
-            //   base: 'employee-salary',
-            // },
-            {
-              menuValue: 'Fiche',
-              route: '/payroll/payslip',
-              base: 'payslip',
-            },
-          ],
         },
       ],
     },
@@ -629,6 +596,15 @@ export class DataService {
       separateRoute: false,
       menu: [
         {
+          menuValue: 'Traçabilité',
+          base: 'Administration',
+          hasSubRoute: false,
+          showSubRoute: false,
+          icon: 'ti ti-history',
+          subMenus: [],
+          route: routes.auditsUser,
+        },
+        {
           menuValue: 'Rapports',
           base: 'reports',
           hasSubRoute: true,
@@ -636,29 +612,29 @@ export class DataService {
           icon: 'user-star',
           subMenus: [
             {
-              menuValue: 'Employee Report',
-              route: '/reports/employee-report',
+              menuValue: 'Rapport des employés',
+              route: routes.employeereport,
               base: 'employee-report',
             },
             {
-              menuValue: 'Payslip Report',
-              route: '/reports/payslip-report',
+              menuValue: 'Rapport de paiement',
+              route: routes.payslipreport,
               base: 'payslip-report',
             },
             {
-              menuValue: 'Attendance Report',
-              route: '/reports/attendance-report',
+              menuValue: 'Rapport des présences/absences',
+              route: routes.attendancereport,
               base: 'attendance-report',
             },
             {
-              menuValue: 'Leave Report',
-              route: '/reports/leave-report',
+              menuValue: 'Rapport des congés',
+              route: routes.leavereport,
               base: 'leave-report',
             },
             {
-              menuValue: 'Rapport quotidient',
+              menuValue: 'Rapport quotidien',
               route: '/reports/daily-report',
-              base: 'daily-report',
+              base: routes.dailyreport,
             },
           ],
         },
@@ -672,14 +648,15 @@ export class DataService {
       separateRoute: false,
       menu: [
         {
-          menuValue: 'Changer mot de passe',
+          menuValue: 'Sécurité du compte',
           route: routes.changePassword,
           hasSubRoute: false,
           showSubRoute: false,
-          base: 'change-password',
-          icon: 'key',
+          base: 'Sécurité du compte',
+          icon: 'fas fa-user-shield',
           subMenus: [],
         },
+
         {
           menuValue: "Paramètres d'applications",
           hasSubRoute: true,
@@ -694,8 +671,8 @@ export class DataService {
             },
             {
               menuValue: 'Présence et absence',
-              route: routes.presenceAbsenceSettings,
-              base: 'presence-absence-settings',
+              route: routes.attendanceSettings,
+              base: 'attendance-settings',
             },
             {
               menuValue: 'Documents administratifs',
@@ -736,7 +713,7 @@ export class DataService {
           menuValue: 'Dashboard',
           hasSubRoute: true,
           showSubRoute: false,
-          icon: 'smart-home',
+          icon: 'layout-dashboard',
           base: 'dashboard',
           subMenus: [
             {
@@ -755,7 +732,7 @@ export class DataService {
           menuValue: 'Intranet',
           hasSubRouteTwo: true,
           showSubRoute: false,
-          icon: 'layout-grid-add',
+          icon: 'building-community',
           base: 'application',
           subMenus: [
             {
@@ -787,12 +764,21 @@ export class DataService {
               customSubmenuTwo: false,
               base: 'social-feed',
             },
+            {
+              menuValue: 'Sondages',
+              hasSubRoute: true,
+              showSubRoute: false,
+              route: routes.sondageList,
+              customSubmenuTwo: false,
+              base: 'sondages',
+            },
           ],
         },
         {
           menuValue: 'Layouts',
           hasSubRoute: true,
           showSubRoute: false,
+          icon: 'ti ti-layout',
 
           base: 'layout-horizontal',
           subMenus: [
@@ -808,51 +794,56 @@ export class DataService {
         },
         {
           menuValue: 'Employé',
-          hasSubRouteTwo: true,
+          hasSubRoute: true,
           showSubRoute: false,
           icon: 'users',
           base: 'employee',
           subMenus: [
             {
-              menuValue: 'Gestion Employé',
-              base: 'employee',
-              customSubmenuTwo: true,
-              subMenusTwo: [
-                {
-                  menuValue: 'Liste des Employés',
-                  route: routes.employeeList,
-                  base: 'employee-list',
-                },
-                {
-                  menuValue: 'Présence',
-                  route: routes.attendanceemployee,
-                  base: 'attendance-employee',
-                },
-                {
-                  menuValue: 'Congés',
-                  route: routes.leaveemployee,
-                  base: 'leave-employee',
-                },
-                {
-                  menuValue: 'Documents administratif',
-                  route: routes.documentsEmployee,
-
-                }
-              ],
+              menuValue: 'Absence/Présence',
+              route: routes.attendanceemployee,
+              base: 'attendance-employee',
+            },
+            {
+              menuValue: 'Congés',
+              route: routes.leaveemployee,
+              base: 'leave-employee',
+            },
+            {
+              menuValue: 'Documents administratifs',
+              route: routes.documentsEmployee,
+              base: 'documents-employee',
+            },
+            {
+              menuValue: 'Mes Tickets',
+              route: routes.myTickets,
+              base: 'my-tickets',
+            },
+            {
+              menuValue: 'Jours fériés',
+              route: routes.holidays,
+              base: 'holidays',
             },
           ],
         },
 
         {
-          menuValue: 'RH Inetrn',
+          menuValue: 'RH Intern',
           hasSubRouteTwo: true,
           showSubRoute: false,
-          icon: 'user-star',
+          icon: 'briefcase',
+
           base: 'client',
           base2: 'project',
           base3: 'crm',
           base5: 'ticket',
           subMenus: [
+            {
+              menuValue: 'Liste des employés',
+              route: routes.employeeList,
+              base: 'employee-list',
+              customSubmenuTwo: false,
+            },
             {
               menuValue: 'Contrats',
               route: routes.contract,
@@ -861,38 +852,9 @@ export class DataService {
             },
             {
               menuValue: 'Tickets',
-              base: 'ticket',
-              customSubmenuTwo: true,
-              subMenusTwo: [
-                {
-                  menuValue: 'Tickets',
-                  route: routes.ticketList,
-                  base: 'ticket-list',
-                },
-                {
-                  menuValue: 'Mes Tickets',
-                  route: routes.myTickets,
-                  base: 'my-tickets',
-                },
-              ],
-            },
-            {
-              menuValue: 'Jours fériés',
-              base: 'holidays',
-              customSubmenuTwo: true,
-
-              subMenusTwo: [
-                {
-                  menuValue: 'Jours fériés nationaux',
-                  route: routes.nationalHolidays,
-                  base: 'national-holidays',
-                },
-                {
-                  menuValue: 'Jours fériés religieux',
-                  route: routes.religiousHolidays,
-                  base: 'religious-holidays',
-                },
-              ],
+              base: 'ticket-list',
+              route: routes.ticketList,
+              customSubmenuTwo: false,
             },
 
             {
@@ -934,9 +896,16 @@ export class DataService {
                   showSubRoute: false,
                 },
                 {
-                  menuValue: 'Valider Info personnel',
+                  menuValue: 'Valider info personnel',
                   route: routes.validatePersonalInfo,
                   base: 'validate-personal-info',
+                  hasSubRoute: false,
+                  showSubRoute: false,
+                },
+                {
+                  menuValue: 'Valider doc administratif',
+                  route: routes.validateAdministrativDocuments,
+                  base: 'validation',
                   hasSubRoute: false,
                   showSubRoute: false,
                 },
@@ -955,12 +924,12 @@ export class DataService {
           menuValue: 'RH Externe',
           hasSubRoute: true,
           showSubRoute: false,
-          icon: 'users',
+          icon: 'clipboard-list',
           base: 'rh-externe',
           subMenus: [
             {
               menuValue: 'Offres',
-              route: routes.jobsList,
+              route: routes.jobList,
               base: 'jobs-list',
             },
             {
@@ -984,66 +953,58 @@ export class DataService {
         //* Administration section
         {
           menuValue: 'Administration',
-          hasSubRouteTwo: true,
+          hasSubRoute: true,
           showSubRoute: false,
           icon: 'user-star',
           base: 'administration',
           subMenus: [
-           
             {
-              menuValue: 'Rapports',
-              base: 'reports',
-              customSubmenuTwo: true,
-              subMenusTwo: [
-                {
-                  menuValue: 'Rapport des Employés',
-                  route: routes.employeereport,
-                  base: 'employee-report',
-                },
-                {
-                  menuValue: 'Rapport de paiement',
-                  route: '/reports/payslip-report',
-                  base: 'payslip-report',
-                },
-                {
-                  menuValue: 'Rapport des Présences',
-                  route: '/reports/attendance-report',
-                  base: 'attendance-report',
-                },
-                {
-                  menuValue: 'Rapport des Congés',
-                  route: '/reports/leave-report',
-                  base: 'leave-report',
-                },
-                {
-                  menuValue: 'Rapport quotidien',
-                  route: '/reports/daily-report',
-                  base: 'daily-report',
-                },
-              ],
+              menuValue: 'Traçabilité',
+              hasSubRoute: false,
+              showSubRoute: false,
+              route: routes.auditsUser,
+            },
+            {
+              menuValue: 'Rapport des employés',
+              route: routes.employeereport,
+              base: 'employee-report',
+            },
+            {
+              menuValue: 'Rapport de paiement',
+              route: routes.payslipreport,
+              base: 'payslip-report',
+            },
+            {
+              menuValue: 'Rapport des présences/absences',
+              route: routes.attendancereport,
+              base: 'attendance-report',
+            },
+            {
+              menuValue: 'Rapport des congés',
+              route: routes.leavereport,
+              base: 'leave-report',
+            },
+            {
+              menuValue: 'Rapport quotidien',
+              route: '/reports/daily-report',
+              base: routes.dailyreport,
             },
           ],
         },
 
         //* Setings section
         {
-          menuValue: 'Settings',
+          menuValue: 'Paramètres',
           hasSubRouteTwo: true,
           showSubRoute: false,
-          icon: 'user-star',
+          icon: 'settings',
           base: 'settings',
           subMenus: [
             {
-              menuValue: 'Sécurité',
-              customSubmenuTwo: true,
-              base: 'security',
-              subMenusTwo: [
-                {
-                  menuValue: 'Changer mot de passe',
-                  route: routes.changePassword,
-                  base: 'change-password',
-                },
-              ],
+              menuValue: 'Sécurité du compte',
+              route: routes.changePassword,
+              base: 'Sécurité du compte',
+              customSubmenuTwo: false,
             },
             {
               menuValue: "Paramètres d'applications",
@@ -1057,8 +1018,8 @@ export class DataService {
                 },
                 {
                   menuValue: 'Présence et absence',
-                  route: routes.presenceAbsenceSettings,
-                  base: 'presence-absence-settings',
+                  route: routes.attendanceSettings,
+                  base: 'attendance-settings',
                 },
                 {
                   menuValue: 'Documents administratifs',

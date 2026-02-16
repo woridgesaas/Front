@@ -1,66 +1,100 @@
-{
-    "data":[
-        {
-            "Title": "New Year",
-            "Date": "01 Jan 2024",
-            "Description": "First day of the new year",
-            "Status": "Active"
-        },
-        {
-            "Title": "Martin Luther King Jr. Day",
-            "Date": "15 Jan 2024",
-            "Description": "Celebrating the civil rights leader",
-            "Status": "Active"
-        },
-        {
-            "Title": "President's Day",
-            "Date": "19 Feb 2024",
-            "Description": "Honoring past US Presidents",
-            "Status": "Active"
-        },
-        {
-            "Title": "Good Friday",
-            "Date": "29 Mar 2024",
-            "Description": "Holiday before Easter",
-            "Status": "Active"
-        },
-        {
-            "Title": "Easter Monday",
-            "Date": "01 Apr 2024",
-            "Description": "Holiday after Easter",
-            "Status": "Active"
-        },
-        {
-            "Title": "Memorial Day",
-            "Date": "27 May 2024",
-            "Description": "Honors military personnel",
-            "Status": "Active"
-        },
-        {
-            "Title": "Independence Day",
-            "Date": "04 Jul 2024",
-            "Description": "Celebrates Independence",
-            "Status": "Active"
-        },
-        {
-            "Title": "Labour Day",
-            "Date": "02 Sep 2024",
-            "Description": "Honors working people",
-            "Status": "Inactive"
-        },
-        {
-            "Title": "Veterans Day",
-            "Date": "11 Nov 2024",
-            "Description": "Honors military veterans",
-            "Status": "Active"
-        },
-        {
-            "Title": "Christmas Day",
-            "Date": "25 Dec 2024",
-            "Description": "Celebration of Christmas",
-            "Status": "Active"
-        }
-    ],
-    "totalData":10
-    
-}
+[
+  {
+    "nameFr": "Nouvel An",
+    "nameAr": "رأس السنة الميلادية",
+    "date": "2026-01-01",
+    "days": 1,
+    "type": "national"
+  },
+  {
+    "nameFr": "Manifeste de l’Indépendance",
+    "nameAr": "ذكرى تقديم وثيقة الاستقلال",
+    "date": "2026-01-11",
+    "days": 1,
+    "type": "national"
+  },
+  {
+    "nameFr": "Nouvel An Amazigh",
+    "nameAr": "رأس السنة الأمازيغية",
+    "date": "2026-01-14",
+    "days": 1,
+    "type": "national"
+  },
+  {
+    "nameFr": "Aïd Al-Fitr",
+    "nameAr": "عيد الفطر",
+    "date": "2026-03-31",
+    "days": 2,
+    "type": "religious"
+  },
+  {
+    "nameFr": "Fête du Travail",
+    "nameAr": "عيد الشغل",
+    "date": "2026-05-01",
+    "days": 1,
+    "type": "national"
+  },
+  {
+    "nameFr": "Aïd Al-Adha",
+    "nameAr": "عيد الأضحى",
+    "date": "2026-06-06",
+    "days": 2,
+    "type": "religious"
+  },
+  {
+    "nameFr": "1er Moharram",
+    "nameAr": "رأس السنة الهجرية",
+    "date": "2026-06-27",
+    "days": 1,
+    "type": "religious"
+  },
+  {
+    "nameFr": "Fête du Trône",
+    "nameAr": "عيد العرش",
+    "date": "2026-07-30",
+    "days": 1,
+    "type": "national"
+  },
+  {
+    "nameFr": "la Récupération de Oued Eddahab",
+    "nameAr": "ذكرى استرجاع وادي الذهب",
+    "date": "2026-08-14",
+    "days": 1,
+    "type": "national"
+  },
+  {
+    "nameFr": "Révolution du Roi et du Peuple",
+    "nameAr": "ذكرى ثورة الملك والشعب",
+    "date": "2026-08-20",
+    "days": 1,
+    "type": "national"
+  },
+  {
+    "nameFr": "Fête de la Jeunesse",
+    "nameAr": "عيد الشباب",
+    "date": "2026-08-21",
+    "days": 1,
+    "type": "national"
+  },
+  {
+    "nameFr": "Aïd Al Mawlid",
+    "nameAr": "عيد المولد النبوي",
+    "date": "2026-09-05",
+    "days": 1,
+    "type": "religious"
+  },
+  {
+    "nameFr": "la Marche Verte",
+    "nameAr": "ذكرى المسيرة الخضراء",
+    "date": "2026-11-06",
+    "days": 1,
+    "type": "national"
+  },
+  {
+    "nameFr": "Fête de l’Indépendance",
+    "nameAr": "عيد الاستقلال",
+    "date": "2026-11-18",
+    "days": 1,
+    "type": "national"
+  }
+]

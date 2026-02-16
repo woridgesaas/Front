@@ -1,0 +1,257 @@
+<div class="modal fade" id="demandDetailsModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <!-- Header -->
+      <div class="modal-header border-0 pb-0">
+        <div class="d-flex align-items-center w-100">
+          <div class="me-3">
+            <div class="avatar avatar-lg avatar-rounded" [ngClass]="getStatusBgClass()">
+              <i class="ti {{ getDocumentIcon() }} fs-24 text-white"></i>
+            </div>
+          </div>
+          <div class="flex-grow-1">
+            <h5 class="modal-title mb-1">
+              {{ data?.documentName }}
+              <small class="text-muted">#{{ data?.id }}</small>
+            </h5>
+            <div class="d-flex align-items-center flex-wrap gap-2">
+              <span class="badge" [ngClass]="getStatusBadgeClass()">
+                <i class="ti ti-circle-filled me-1 fs-10"></i>
+                {{ getStatusText() }}
+              </span>
+              <span class="badge bg-light text-dark border">
+                <i class="ti ti-category me-1"></i>
+                {{ data?.category }}
+              </span>
+              <span class="text-muted ms-2">
+                <i class="ti ti-calendar me-1"></i>
+                {{ data?.requestDate | date:'dd/MM/yyyy' }}
+              </span>
+            </div>
+          </div>
+          <div class="d-flex gap-2">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <div class="row g-4">
+          <!-- left coloone employe & doc -->
+          <div class="col-lg-7">
+            <!-- Empl section -->
+            <div class="card border mb-4" id="section-employee">
+              <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                <h6 class="mb-0">
+                  <i class="ti ti-user-circle me-2"></i>
+                  Informations employé
+                </h6>
+                <a (click)="closeModal()" routerLink="/intranet/chats"  class="btn btn-sm btn-outline-primary">
+                  <i class="ti ti-mail"></i> Contacter
+                </a>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-4 text-center">
+                    <div class="mb-3">
+                      <div class="avatar avatar-xxl avatar-rounded mx-auto mb-2">
+                        <img [src]="data?.employeeAvatar || 'assets/images/default-avatar.png'" 
+                             [alt]="data?.employeeName"
+                             class="rounded-circle border shadow">
+                      </div>
+                      <h6 class="mb-1">{{ data?.employeeName }}</h6>
+                      <div class="badge bg-primary">{{ data?.employeeRole }}</div>
+                    </div>
+                  </div>
+                  <div class="col-md-8">
+                    <div class="row g-3">
+                      <div class="col-6">
+                        <div class="info-card">
+                          <small class="text-muted d-block">Département</small>
+                          <div class="fw-medium">{{ data?.employeeDepartment }}</div>
+                        </div>
+                      </div>
+                      <div class="col-12">
+                        <div class="info-card">
+                          <small class="text-muted d-block">Email</small>
+                          <div class="fw-medium">
+                            <a href="mailto:{{ data?.employeeEmail }}" class="text-decoration-none">
+                              {{ data?.employeeEmail }}
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Section Document -->
+            <div class="card border mb-4" id="section-document">
+              <div class="card-header bg-light">
+                <h6 class="mb-0">
+                  <i class="ti ti-file-text me-2"></i>
+                  Détails du document
+                </h6>
+              </div>
+              <div class="card-body">
+                <div class="mb-4">
+                  <h5 class="text-primary">{{ data?.documentName }}</h5>
+                  <p class="text-muted mb-0">{{ data?.description }}</p>
+                </div>
+
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <div class="info-card">
+                      <div class="d-flex align-items-center mb-2">
+                        <div class="avatar avatar-xs avatar-rounded bg-light-primary me-2">
+                          <i class="ti ti-category text-primary"></i>
+                        </div>
+                        <small class="text-muted">Catégorie</small>
+                      </div>
+                      <div class="fw-medium">{{ data?.category }}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Justification -->
+            @if (data?.justification) {
+              <div class="card border mb-4" id="section-justification">
+                <div class="card-header bg-light">
+                  <h6 class="mb-0">
+                    <i class="ti ti-note me-2"></i>
+                    Justification de l'employé
+                  </h6>
+                </div>
+                <div class="card-body">
+                  <div class="bg-light p-3 rounded border">
+                    <i class="ti ti-quote text-primary me-2"></i>
+                    "{{ data?.justification }}"
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+
+          <!-- Right colonne : Chronologie & Traitement -->
+          <div class="col-lg-5">
+            <!-- Chronologie -->
+            <div class="card border mb-4" id="section-timeline">
+              <div class="card-header bg-light">
+                <h6 class="mb-0">
+                  <i class="ti ti-timeline me-2"></i>
+                  Chronologie
+                </h6>
+              </div>
+              <div class="card-body">
+                <div class="timeline">
+                  <!-- Stepe 1: -->
+                  <div class="timeline-item">
+                    <div class="timeline-indicator bg-primary">
+                      <i class="ti ti-file-plus text-white"></i>
+                    </div>
+                    <div class="timeline-content">
+                      <h6 class="mb-1">Demande créée</h6>
+                      <p class="text-muted mb-0">
+                        {{ data?.employeeName }} a soumis la demande
+                      </p>
+                      <small class="text-muted">
+                        {{ data?.requestDate | date:'dd/MM/yyyy à HH:mm' }}
+                      </small>
+                    </div>
+                  </div>
+
+                  <!-- Stepe 2: Traitement -->
+                  @if (data?.status !== 'pending') {
+                    <div class="timeline-item">
+                      <div class="timeline-indicator" [ngClass]="getStatusBgClass()">
+                        <i class="ti ti-refresh text-white"></i>
+                      </div>
+                      <div class="timeline-content">
+                        <h6 class="mb-1">Prise en charge</h6>
+                        <p class="text-muted mb-0">
+                          Demande {{ getStatusText().toLowerCase() }}
+                          @if (data?.processedBy) {
+                            par {{ data?.processedBy }}
+                          }
+                        </p>
+                        @if (data?.processedDate) {
+                          <small class="text-muted">
+                            {{ data?.processedDate | date:'dd/MM/yyyy à HH:mm' }}
+                          </small>
+                        }
+                      </div>
+                    </div>
+                  }
+                  <!-- Step 3: -->
+                  <div class="timeline-item">
+                    <div class="timeline-indicator" [ngClass]="getStatusBgClass()">
+                      <i class="ti ti-circle-check text-white"></i>
+                    </div>
+                    <div class="timeline-content">
+                      <h6 class="mb-1">Statut actuel</h6>
+                      <p class="text-muted mb-0">
+                        <span class="badge" [ngClass]="getStatusBadgeClass()">
+                          {{ getStatusText() }}
+                        </span>
+                      </p>
+                      <small class="text-muted">
+                        Dernière mise à jour: {{ getLastUpdateDate() | date:'dd/MM/yyyy' }}
+                      </small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Traitement RH -->
+            <div class="card border" id="section-processing">
+              <div class="card-header bg-light">
+                <h6 class="mb-0">
+                  <i class="ti ti-settings me-2"></i>
+                  Informations de traitement
+                </h6>
+              </div>
+              <div class="card-body">
+                <div class="row g-3">
+                  <!-- Responsable -->
+                  <div class="col-12">
+                    <div class="info-card">
+                      <div class="d-flex align-items-center mb-2">
+                        <div class="avatar avatar-xs avatar-rounded bg-light-primary me-2">
+                          <i class="ti ti-user-check text-primary"></i>
+                        </div>
+                        <small class="text-muted">Responsable</small>
+                      </div>
+                      <div class="fw-medium">
+                        {{ data?.processedBy || 'Non assigné' }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer border-top bg-light">
+        <div class="d-flex justify-content-between w-100 align-items-center">
+          <div>
+            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">
+              <i class="ti ti-x me-1"></i>Fermer
+            </button>
+            <button type="button" class="btn btn-primary" (click)="exportDetails()">
+              <i class="ti ti-download me-1"></i>Exporter
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

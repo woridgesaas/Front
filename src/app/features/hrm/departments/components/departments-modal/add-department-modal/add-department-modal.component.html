@@ -1,0 +1,56 @@
+
+<div class="modal fade show d-block" *ngIf="open">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content">
+   <app-modal-header
+  title="Ajouter département"
+  icon="ti ti-building"
+  (close)="onCancel()">
+</app-modal-header>
+
+
+      <!-- Form -->
+      <form (ngSubmit)="submit()">
+        <div class="modal-body pb-0">
+          <div class="row">
+            <!-- Nom -->
+            <div class="col-md-12">
+              <div class="mb-3">
+                <label class="form-label">Nom du département</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="model.Department"
+                  name="department"
+                  required
+                />
+              </div>
+            </div>
+            <!-- Statut -->
+            <div class="col-md-12">
+              <div class="mb-3">
+                <label class="form-label">Statut</label>
+                <mat-select
+                  class="select custom-mat-select"
+                  placeholder="Sélectionner"
+                  [(ngModel)]="model.Status"
+                  name="status"
+                  required
+                >
+                  <mat-option value="Actif">Actif</mat-option>
+                  <mat-option value="Inactif">Inactif</mat-option>
+                </mat-select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <app-modal-footer
+          submitText="Ajouter département"
+          submitIcon="ti ti-check"
+          (cancel)="onCancel()"
+        >
+        </app-modal-footer>
+      </form>
+    </div>
+  </div>
+</div>

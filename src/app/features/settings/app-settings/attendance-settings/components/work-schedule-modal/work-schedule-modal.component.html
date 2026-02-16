@@ -1,0 +1,60 @@
+<div class="modal-backdrop fade show" *ngIf="open"></div>
+
+<div class="modal fade show d-block" *ngIf="open">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content rounded-4">
+
+      <!--* Modal header (title  + close button)-->
+      <app-modal-header title="Horaires de travail" icon="fa-solid fa-clock" (close)="close.emit()"></app-modal-header>
+
+      <form (ngSubmit)="submit()">
+        <div class="modal-body">
+
+          <!--* Alert information -->
+          <app-alert-information description="Choisissez la méthode de calcul du temps de travail."></app-alert-information>
+
+          <!--* Mode switch -->
+          <div class="d-flex gap-2 mb-4">
+            <!--* fixed schedule button -->
+            <app-switch-button label="Horaires fixes" icon="fas fa-business-time" [active]="workTimeMode === WorkTimeMode.STRICT" (select)="switchMode(WorkTimeMode.STRICT)"></app-switch-button>
+
+            <!--* Daily hours -->
+            <app-switch-button label="Heures à effectuer" icon="fas fa-hourglass-half" [active]="workTimeMode === WorkTimeMode.HOURS" (select)="switchMode(WorkTimeMode.HOURS)"></app-switch-button>
+          </div>
+
+          <!--* fixed schedule section -->
+          <div *ngIf="workTimeMode === WorkTimeMode.STRICT" class="row g-3">
+
+            <div class="col-md-6">
+              <label class="form-label fw-medium"> Heure d'entrée </label>
+              <input type="time" class="form-control" name="startTime" [(ngModel)]="startTime" (ngModelChange)="touchedStrict = true"/>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-medium"> Heure de sortie </label>
+              <input type="time" class="form-control" name="endTime" [(ngModel)]="endTime" (ngModelChange)="touchedStrict = true"/>
+            </div>
+          </div>
+
+          <!--* Daily hours section -->
+          <div *ngIf="workTimeMode === WorkTimeMode.HOURS" class="col-md-6">
+            <label class="form-label fw-medium"> Heures journalières </label>
+            <div class="input-group">
+              <input type="number" class="form-control" name="dailyHours" [(ngModel)]="dailyHours" (ngModelChange)="touchedHours = true"/>
+              <span class="input-group-text"> heures </span>
+            </div>
+          </div>
+
+          <!--* Error message -->
+          <app-form-error-message [show]="(workTimeMode === WorkTimeMode.STRICT && touchedStrict && isInvalid) || (workTimeMode === WorkTimeMode.HOURS && touchedHours && isInvalid)" [message]="getErrorMessage()"></app-form-error-message>
+
+          </div>
+
+          <!--* Modal footer (submit + cancel button) -->
+          <app-modal-footer (cancel)="close.emit()" [disabled]="isInvalid" submitText="Configurer" submitIcon="fa-solid fa-gear"></app-modal-footer>
+
+      </form>
+
+    </div>
+  </div>
+</div>

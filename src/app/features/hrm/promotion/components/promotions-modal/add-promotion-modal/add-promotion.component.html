@@ -1,0 +1,166 @@
+<div class="modal fade show d-block" *ngIf="open">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content">
+      <!-- HEADER -->
+      <app-modal-header
+        title="Ajouter une promotion"
+        icon="ti ti-trending-up"
+        (close)="onCancel()"
+      >
+      </app-modal-header>
+
+      <!-- FORM -->
+      <form (ngSubmit)="submit()">
+        <div class="modal-body pb-0">
+          <div class="row">
+            <!-- CIN -->
+            <div class="col-md-12 mb-3">
+              <label class="form-label">CIN de l’employé</label>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="cin"
+                name="cin"
+                required
+              />
+            </div>
+
+            <!-- EMPLOYÉ -->
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Employé promu</label>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="model.PromotedEmployee"
+                name="employee"
+                disabled
+              />
+            </div>
+
+            <!-- DEPARTEMENT (DROPDOWN COMME DEMISSION) -->
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Département</label>
+
+              <div class="dropdown">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary d-flex justify-content-between w-100"
+                  (click)="isDeptOpen = !isDeptOpen"
+                >
+                  {{ model.Department || "Sélectionner un département" }}
+                  <i class="ti ti-chevron-down"></i>
+                </button>
+
+                <ul class="dropdown-menu show w-100" *ngIf="isDeptOpen">
+                  <li *ngFor="let dept of departments">
+                    <button
+                      type="button"
+                      class="dropdown-item"
+                      (click)="selectDepartment(dept.Department)"
+                    >
+                      {{ dept.Department }}
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- ANCIEN POSTE -->
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Ancien poste</label>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="model.DesignationFrom"
+                name="from"
+                disabled
+              />
+            </div>
+
+            <!-- NOUVEAU POSTE (DROPDOWN DEPENDANT DU DÉPARTEMENT) -->
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Nouveau poste</label>
+
+              <div class="dropdown">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary d-flex justify-content-between w-100"
+                  [disabled]="!model.Department"
+                  (click)="isPostOpen = !isPostOpen"
+                >
+                  {{
+                    model.DesignationTo ||
+                      (model.Department
+                        ? "Sélectionner un poste"
+                        : "Sélectionnez d’abord un département")
+                  }}
+                  <i class="ti ti-chevron-down"></i>
+                </button>
+
+                <ul class="dropdown-menu show w-100" *ngIf="isPostOpen">
+                  <li *ngFor="let position of availablePositions">
+                    <button
+                      type="button"
+                      class="dropdown-item"
+                      (click)="selectPosition(position)"
+                    >
+                      {{ position }}
+                    </button>
+                  </li>
+
+                  <li *ngIf="availablePositions.length === 0">
+                    <span class="dropdown-item text-muted">
+                      Aucun poste disponible
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- SALAIRES -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Ancien salaire (MAD)</label>
+              <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="model.OldSalary"
+                name="oldSalary"
+                (ngModelChange)="calculateNewSalary()"
+                disabled
+              />
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Prime / Augmentation (MAD)</label>
+              <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="model.Bonus"
+                name="bonus"
+                (ngModelChange)="calculateNewSalary()"
+              />
+            </div>
+
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Nouveau salaire (MAD)</label>
+              <input
+                type="number"
+                class="form-control"
+                [value]="model.NewSalary"
+                disabled
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- FOOTER -->
+        <app-modal-footer
+          submitText="Ajouter promotion"
+          submitIcon="ti ti-check"
+          (cancel)="onCancel()"
+        >
+        </app-modal-footer>
+      </form>
+    </div>
+  </div>
+</div>

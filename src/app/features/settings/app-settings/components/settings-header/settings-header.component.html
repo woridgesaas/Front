@@ -1,0 +1,11 @@
+<div class="settings-header">
+
+  <!--* Title + icon -->
+  <h3 class="settings-title fw-bold mb-1">
+    <i *ngIf="icon" [class]="icon"></i> {{ title }}
+  </h3>
+
+  <!--* Description -->
+  <p *ngIf="description" class="settings-header-desc text-muted mb-0"> {{ description }} </p>
+
+</div>

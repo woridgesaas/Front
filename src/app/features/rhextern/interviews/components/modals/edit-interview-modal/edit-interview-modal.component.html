@@ -1,0 +1,81 @@
+<div class="modal fade" [id]="modalId" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header border-bottom">
+          <h4 class="modal-title">
+            <i class="ti ti-edit me-2"></i>Modifier l'Entretien
+          </h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+  
+        <div class="modal-body" *ngIf="interview">
+          <form>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Date</label>
+                <input type="date" class="form-control" [(ngModel)]="interview.date" name="date">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Heure</label>
+                <input type="time" class="form-control" [(ngModel)]="interview.heure" name="heure">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Durée</label>
+                <select class="form-select" [(ngModel)]="interview.duree" name="duree">
+                  <option [value]="30">30 minutes</option>
+                  <option [value]="45">45 minutes</option>
+                  <option [value]="60">1 heure</option>
+                  <option [value]="90">1h 30</option>
+                  <option [value]="120">2 heures</option>
+                </select>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Statut</label>
+                <select class="form-select" [(ngModel)]="interview.statut" name="statut">
+                  <option value="Planifié">Planifié</option>
+                  <option value="Confirmé">Confirmé</option>
+                  <option value="En cours">En cours</option>
+                  <option value="Terminé">Terminé</option>
+                  <option value="Reporté">Reporté</option>
+                </select>
+              </div>
+              <div class="col-12 mb-3">
+                <label class="form-label">Type</label>
+                <select class="form-select" [(ngModel)]="interview.type" name="type">
+                  <option value="Téléphonique">Téléphonique</option>
+                  <option value="Visioconférence">Visioconférence</option>
+                  <option value="Présentiel">Présentiel</option>
+                  <option value="Technique">Technique</option>
+                </select>
+              </div>
+              @if(interview.type === 'Visioconférence') {
+                <div class="col-12">
+                  <label class="form-label">Lien Visio</label>
+                  <input type="url" class="form-control" [(ngModel)]="interview.lienVisio" name="lien">
+                </div>
+              }
+              @if(interview.type === 'Présentiel') {
+                <div class="col-12">
+                  <label class="form-label">Salle</label>
+                  <input type="text" class="form-control" [(ngModel)]="interview.salle" name="salle">
+                </div>
+              }
+              <div class="col-12">
+                <label class="form-label">Notes</label>
+                <textarea class="form-control" rows="3" [(ngModel)]="interview.notes" name="notes"></textarea>
+              </div>
+            </div>
+          </form>
+        </div>
+  
+        <div class="modal-footer border-top">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="cancel()">
+            Annuler
+          </button>
+          <button type="button" class="btn btn-outline-primary" (click)="update()" data-bs-dismiss="modal">
+            <i class="ti ti-device-floppy me-1"></i>Enregistrer et Notifier
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>

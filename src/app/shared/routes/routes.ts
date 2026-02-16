@@ -14,133 +14,86 @@ export const routes = {
   error: '/error-404',
   errors: '/error-500',
 
-  // page routes
-  index: '/dashboard/index',
-  baseUi: '/dashboard/base-ui',
-  admin: '/dashboard/admin',
+  //* Dashboard routes
+  index: '/dashboard/admin',
   employee: '/dashboard/employee',
-  //Layouts
+
+  //* Layouts routes
   Horizontal: '/layout-horizontal',
   MenuAside: '/layout-horizontal-sidemenu',
-  /**Communication intern routes */
+
+  //* Intranet routes
   apps: '/intranet',
   chat: '/intranet/chats',
   groups: '/intranet/groups',
   contacts: '/intranet/contacts',
   calendar: '/intranet/calendar',
   socialFeed: '/intranet/annonces',
-  socialFeedEdit: '/intranet/annonces/edit/', //=>angular va injecter le id par le tableau param de [routerLink]
+  socialFeedEdit: '/intranet/annonces/edit/', //! Angular va injecter le id par le tableau param de [routerLink]
   sondageList: '/intranet/sondages',
   sondageDetails: '/intranet/sondage-details/:id',
-  /**------- FIN communication routes ------------- */
+  ticketList: '/tickets/ticket-list',
+  myTickets: '/tickets/mes-tickets',
+  ticketDetails: '/tickets/ticket-details',
+
+  //* Employee routes
   employeeList: '/employees/employee-list',
   employeeDetails: '/employees/employee-details',
-  employeePage: '/employees/employee-page',
   departments: '/employees/departments',
-  contract : 'employees/geenrate/contract',
-  documentsEmployee : 'employees/documents',
-  //validation
+  contract: '/employees/generate/contract',
+  documentsEmployee: 'employees/documents',
+
+  //* Validation routes
   validateLeave: '/validation/validate-leave',
   justifyValidation: '/validation/justify-validation',
   validatePersonalInfo: '/validation/validate-personal-info',
+  validateAdministrativDocuments : '/validation/validate-documents',
+  //* Holidays routes
+  holidays: '/employees/holidays',
 
-  // Holidays
-  holidays: '/holidays',
-  nationalHolidays: '/holidays/national-holidays',
-  religiousHolidays: '/holidays/religious-holidays',
+  //* Leaves routes
+  leaveemployee: '/leaves/leave-employee',
 
-  // Leaves
-  sales: '/sales',
-  leaveemployee: '/attendance/leaves/leave-employee',
-
-  // Attendance
+  //* Attendance routes
   attendanceadmin: '/attendance/attendance-admin',
   attendanceemployee: '/attendance/attendance-employee',
 
-  clientGrid: '/client/client-grid',
-  clientList: '/client/client-list',
-
-  ticketList: '/tickets/ticket-list',
-  myTickets: '/tickets/mes-tickets',
-  payments: '/sales/payments',
-  expenses: '/sales/expenses',
-  providentfund: '/sales/provident-fund',
-  taxes: '/sales/taxes',
-
-  // employeesalary: '/payroll/employee-salary',
-  payslip: '/payroll/payslip',
-  policies: '/policies/main',
-
+  //* Reports routes
   employeereport: '/reports/employee-report',
   payslipreport: '/reports/payslip-report',
   attendancereport: '/reports/attendance-report',
   leavereport: '/reports/leave-report',
   dailyreport: '/reports/daily-report',
+
+  //* Audit route
+  auditsUser:'/audits',
+  //* Promotion route
   promotion: '/promotion',
+
+  //* Resignation route
   resignation: '/resignation',
-  jobsList: '/jobs/jobs-list',
-  userDashboard: '/jobs/user-dashboard',
-  jobsdashboard: '/jobs/jobs-dashboard',
-  managejobs: '/jobs/manage-jobs',
-  manageresumes: '/jobs/manage-resumes',
-  shortlist: '/jobs/shortlist',
-  jobview: '/jobs/job-view',
-  interviewquestions: '/jobs/interview-questions',
-  offerapproval: '/jobs/offer-approval',
-  experiencelevel: '/jobs/experience-level',
-  candidateslist: '/candidates/candidates-list',
-  scheduletiming: '/jobs/schedule-timing',
-  aptituderesult: '/jobs/aptitude-result',
-  appliedcandidates: '/jobs/applied-candidates',
-  companysettings: '/settings/company-settings',
-  employeeProfile: '/employees/employee-profile',
-  clientProfile: '/clients/client-profile',
 
-  //filtrage IA recrutement
+  //* Jobs route
+  jobList: 'jobs-list',
+
+  //* Candidates route
+  candidateslist: '/candidates',
+
+  //* filter AI route
   FiltrageList: '/filtrage',
-  //gestion entretiens
-  Entretient: '/entretient',
 
-  subscriptions: '/subscriptions',
-  subadmin: '/subscriptions/admins',
-  subscribedcompanies: '/subscriptions/subscribed-companies',
-
-  search: '/pages/search',
-  blankpage: '/pages/blank-page',
-  components: '/components',
-  userAssetsDetails: '/assets/user-assets-details',
-  assetsDetails: '/assets/assets-details',
-  adminDashboard: '/dashboard/admin',
-  jobAptitude: '/jobs/job-aptitude',
-  mailView: '/application/mailview',
-  compose: '/application/compose',
-  projectView: '/projects/project-view',
-  jobDetails: '/jobs/jobs-details',
-  userAllJobs: '/jobs/user-all-jobs',
-  savedJobs: '/jobs/saved-jobs',
-  appliedJobs: '/jobs/applied-jobs',
-  interviewJobs: '/jobs/interview-jobs',
-  offeredJobs: '/jobs/offered-jobs',
-  visitedJobs: '/jobs/visited-jobs',
-  archivedJobs: '/jobs/archived-jobs',
-  projectList: '/projects/project-list',
-  projectGrid: '/projects/project-grid',
-  projectDetails: '/projects/project-details',
-  jobList: '/jobs/jobs-list',
-  jobGrid: '/jobs/jobs-grid',
-
-  ticketDetails: '/tickets/ticket-details',
-
-  horizontalTimeline: '/horizontal-timeline',
-  layoutDark: '/layout-dark',
+  //* Interview route
+  Entretient: '/entretiens',
 
   //* Settings routes
   changePassword: '/settings/change-password',
   leaveSettings: '/settings/app-settings/leave-settings',
-  presenceAbsenceSettings: '/settings/app-settings/presence-absence-settings',
-  documentsTemplateSettings: '/settings/app-settings/documents-template-settings',
+  attendanceSettings: '/settings/app-settings/attendance-settings',
+  documentsTemplateSettings:
+    '/settings/app-settings/documents-template-settings',
   recruitmentSettings: '/settings/app-settings/recruitment-settings',
 
+  //* Pages routes
   comingSoon: '/coming-soon',
   underMaintanance: '/under-maintenance',
   underConstruction: '/under-construction',

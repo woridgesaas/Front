@@ -1,0 +1,30 @@
+<div class="row mb-4 g-3">
+
+  <div class="col-lg-4 col-md-6">
+    <app-kpi-card
+      title="Total des démissions"
+      [value]="resignations.length"
+      icon="ti ti-user-off"
+      color="danger">
+    </app-kpi-card>
+  </div>
+
+  <div class="col-lg-4 col-md-6">
+    <app-kpi-card
+      title="Département le plus touché"
+      [value]="departmentMostResignations"
+      icon="ti ti-building"
+      color="primary">
+    </app-kpi-card>
+  </div>
+
+  <div class="col-lg-4 col-md-6">
+    <app-kpi-card
+      title="Moyenne mensuelle des démissions"
+      [value]="averageResignationsPerMonth"
+      icon="ti ti-trending-up"
+      color="warning">
+    </app-kpi-card>
+  </div>
+
+</div>

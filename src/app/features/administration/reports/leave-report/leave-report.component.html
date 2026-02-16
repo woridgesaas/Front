@@ -1,144 +1,53 @@
 <div class="content">
-
   <!-- ================= HEADER ================= -->
-  <div class="d-md-flex d-block align-items-center justify-content-between mb-4">
-    <app-breadcrumbs
-      title="Rapport des Congés"
-      [breadcrumbItems]="breadCrumbItems">
-    </app-breadcrumbs>
+  <div
+    class="d-md-flex d-block align-items-center justify-content-between mb-4"
+  >
+    <app-breadcrumbs> </app-breadcrumbs>
     <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
-            <div class="me-2 mb-2">
-                <div class="dropdown">
-                    <a href="javascript:void(0);" class="dropdown-toggle btn btn-white d-inline-flex align-items-center" data-bs-toggle="dropdown">
-                        <i class="ti ti-file-export me-1"></i>Exporter
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end p-3">
-                        <li>
-                            <a href="javascript:void(0);" class="dropdown-item rounded-1">
-                                <i class="ti ti-file-type-pdf me-1"></i>Exporter en PDF
-                            </a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0);" class="dropdown-item rounded-1">
-                                <i class="ti ti-file-type-xls me-1"></i>Exporter en Excel
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+      <div class="me-2 mb-2">
+        <div class="dropdown">
+          <a
+            href="javascript:void(0);"
+            class="dropdown-toggle btn btn-white d-inline-flex align-items-center"
+            data-bs-toggle="dropdown"
+          >
+            <i class="ti ti-file-export me-1"></i>Exporter
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end p-3">
+            <li>
+              <a href="javascript:void(0);" class="dropdown-item rounded-1">
+                <i class="ti ti-file-type-pdf me-1"></i>Exporter en PDF
+              </a>
+            </li>
+            <li>
+              <a href="javascript:void(0);" class="dropdown-item rounded-1">
+                <i class="ti ti-file-type-xls me-1"></i>Exporter en Excel
+              </a>
+            </li>
+          </ul>
         </div>
+      </div>
+    </div>
   </div>
 
   <!-- ================= KPI ================= -->
-  <div class="row g-3 mb-4">
-    <div class="col-xl-3 col-md-6" *ngFor="let kpi of kpis">
-      <div class="card kpi-card h-100">
-        <div class="card-body">
-          <div class="d-flex justify-content-between align-items-center mb-2">
-            <div>
-              <p class="text-muted fs-13 mb-1">{{ kpi.label }}</p>
-              <h3 class="fw-bold mb-0">{{ kpi.value }}</h3>
-            </div>
-            <div class="icon-circle" [ngClass]="kpi.color">
-              <i [class]="kpi.icon"></i>
-            </div>
-          </div>
-
-          <p class="fs-12 mb-0">
-            <span [ngClass]="kpi.evolution >= 0 ? 'text-success' : 'text-danger'">
-              {{ kpi.evolution }}%
-            </span>
-            vs mois dernier
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
+  <app-leave-kpis [kpiData]="kpis"></app-leave-kpis>
 
   <!-- ================= CHART 1 ================= -->
-  <div class="card mb-4">
-    <div class="card-header">
-      <h5 class="mb-0">
-        <i class="ti ti-chart-bar me-2 text-primary"></i>
-        Évolution des congés par type
-      </h5>
-    </div>
-    <div class="card-body">
-      <apx-chart
-        [series]="leaveEvolutionChart.series"
-        [chart]="leaveEvolutionChart.chart"
-        [plotOptions]="leaveEvolutionChart.plotOptions"
-        [xaxis]="leaveEvolutionChart.xaxis"
-        [legend]="leaveEvolutionChart.legend"
-        [colors]="leaveEvolutionChart.colors">
-      </apx-chart>
-    </div>
-  </div>
+  <app-leave-evolution-chart [leaveEvolutionChart]="leaveEvolutionChart"></app-leave-evolution-chart>
 
   <!-- ================= CHART 2 & 3 ================= -->
   <div class="row mb-4">
-
     <div class="col-xl-6">
-      <div class="card h-100">
-        <div class="card-header">
-          <h5 class="mb-0">
-            <i class="ti ti-chart-pie me-2 text-success"></i>
-            Répartition par type de congé
-          </h5>
-        </div>
-        <div class="card-body">
-          <apx-chart
-            [series]="leaveTypeDonutChart.series"
-            [chart]="leaveTypeDonutChart.chart"
-            [labels]="leaveTypeDonutChart.labels"
-            [colors]="leaveTypeDonutChart.colors"
-            [legend]="leaveTypeDonutChart.legend">
-          </apx-chart>
-        </div>
-      </div>
+        <app-leave-type-donut [leaveTypeDonutChart] = "leaveTypeDonutChart"></app-leave-type-donut>
     </div>
-
+    
     <div class="col-xl-6">
-      <div class="card h-100">
-        <div class="card-header">
-          <h5 class="mb-0">
-            <i class="ti ti-building me-2 text-warning"></i>
-            Congés par département
-          </h5>
-        </div>
-        <div class="card-body">
-          <apx-chart
-            [series]="leaveByDepartmentChart.series"
-            [chart]="leaveByDepartmentChart.chart"
-            [plotOptions]="leaveByDepartmentChart.plotOptions"
-            [xaxis]="leaveByDepartmentChart.xaxis"
-            [tooltip]="leaveByDepartmentChart.tooltip"
-            [colors]="leaveByDepartmentChart.colors">
-          </apx-chart>
-        </div>
-      </div>
+        <app-leave-department-chart [leaveByDepartmentChart]="leaveByDepartmentChart"></app-leave-department-chart>
     </div>
-
   </div>
 
   <!-- ================= CHART 4 ================= -->
-  <div class="card">
-    <div class="card-header">
-      <h5 class="mb-0">
-        <i class="ti ti-chart-area me-2 text-info"></i>
-        Taux d’acceptation des congés (%)
-      </h5>
-    </div>
-    <div class="card-body">
-      <apx-chart
-        [series]="leaveApprovalRateChart.series"
-        [chart]="leaveApprovalRateChart.chart"
-        [stroke]="leaveApprovalRateChart.stroke"
-        [fill]="leaveApprovalRateChart.fill"
-        [xaxis]="leaveApprovalRateChart.xaxis"
-        [colors]="leaveApprovalRateChart.colors">
-      </apx-chart>
-    </div>
-  </div>
-
+  <app-leave-acceptance-rate [leaveApprovalRateChart]="leaveApprovalRateChart"></app-leave-acceptance-rate>
 </div>

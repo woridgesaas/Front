@@ -1,0 +1,18 @@
+<div class="card h-100">
+        <div class="card-header">
+          <h5 class="mb-0">
+            <i class="ti ti-chart-pie me-2 text-success"></i>
+            Répartition globale
+          </h5>
+        </div>
+        <div class="card-body">
+          <apx-chart
+            [series]="presenceDonutChart.series"
+            [chart]="presenceDonutChart.chart"
+            [labels]="presenceDonutChart.labels"
+            [colors]="presenceDonutChart.colors"
+            [legend]="presenceDonutChart.legend"
+          >
+          </apx-chart>
+        </div>
+      </div>

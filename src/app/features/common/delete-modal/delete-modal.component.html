@@ -1,0 +1,55 @@
+<div
+  class="modal fade"
+  [id]="modalId"
+  tabindex="-1"
+  aria-hidden="true"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content confirm-modal">
+      <!-- Body -->
+      <div class="modal-body text-center px-4 py-4">
+        <!-- ICÔNE STATIQUE -->
+
+        <div
+          class="avatar avatar-xl bg-danger-transparent rounded-circle mx-auto mb-3"
+        >
+          <i class="ti ti-trash fs-36 text-danger"></i>
+        </div>
+
+        <!-- TITRE DYNAMIQUE -->
+        <h5 class="fw-semibold mb-2">
+          {{ title }}
+        </h5>
+
+        <!-- MESSAGE DYNAMIQUE -->
+        <p class="text-muted mb-4">
+          {{ message }}
+        </p>
+
+        <!-- ACTIONS -->
+        <div class="d-flex justify-content-center gap-3">
+          <button
+            type="button"
+            class="btn btn-outline-secondary px-4"
+            data-bs-dismiss="modal"
+          >
+            <i class="ti ti-x me-1"></i>
+            Annuler
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-danger px-4"
+            (click)="onConfirm()"
+            data-bs-dismiss="modal"
+          >
+            <i class="ti ti-trash me-1"></i>
+            Supprimer
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

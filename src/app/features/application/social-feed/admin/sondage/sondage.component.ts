@@ -3,11 +3,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MatSortModule, MatSort, Sort } from '@angular/material/sort';
-import {  breadCrumbItems,Sondage} from '../../../../../shared/models/models';
+import { Sondage } from '../../../../../shared/models/models';
 import { routes } from '../../../../../shared/routes/routes';
 import { CustomPaginationComponent } from '../../../../../shared/custom-pagination/custom-pagination.component';
 import { BreadcrumbsComponent } from '../../../../common/breadcrumbs/breadcrumbs.component';
-import { CollapseHeaderComponent } from '../../../../common/collapse-header/collapse-header.component';
 import { SondageChartsComponent } from '../../components/sondage-charts/sondage-charts.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { CreateSondageModalComponent } from '../../components/create-sondage-modal/create-sondage-modal.component';
@@ -21,22 +20,17 @@ import { CreateSondageModalComponent } from '../../components/create-sondage-mod
     MatSortModule,
     CustomPaginationComponent,
     BreadcrumbsComponent,
-    CollapseHeaderComponent,
     SondageChartsComponent,
     BsDatepickerModule,
-    CreateSondageModalComponent
+    CreateSondageModalComponent,
   ],
   templateUrl: './sondage.component.html',
 })
-
 export class SondageComponent {
   @ViewChild(MatSort) sort!: MatSort;
 
   // Routes
   routes = routes;
-
-  // Breadcrumb
-  breadCrumbItems: breadCrumbItems[] =[];
 
   // Données du tableau
   tableData: Partial<Sondage>[] = [];
@@ -55,7 +49,7 @@ export class SondageComponent {
   stats = {
     sondagesActifs: 8,
     totalSondages: 42,
-    participantsTotaux: 1245
+    participantsTotaux: 1245,
   };
 
   // Données mockées
@@ -70,7 +64,7 @@ export class SondageComponent {
       participationRate: 72,
       statut: 'Actif',
       expiration: 19,
-      nbrOptions: 4
+      nbrOptions: 4,
     },
     {
       id: 2,
@@ -82,7 +76,7 @@ export class SondageComponent {
       participationRate: 45,
       statut: 'Actif',
       expiration: 6,
-      nbrOptions: 5
+      nbrOptions: 5,
     },
     {
       id: 3,
@@ -94,7 +88,7 @@ export class SondageComponent {
       participationRate: 85,
       statut: 'Actif',
       expiration: 20,
-      nbrOptions: 6
+      nbrOptions: 6,
     },
     {
       id: 4,
@@ -106,7 +100,7 @@ export class SondageComponent {
       participationRate: 89,
       statut: 'Expiré',
       expiration: 0,
-      nbrOptions: 5
+      nbrOptions: 5,
     },
     {
       id: 5,
@@ -118,7 +112,7 @@ export class SondageComponent {
       participationRate: 78,
       statut: 'Actif',
       expiration: 24,
-      nbrOptions: 4
+      nbrOptions: 4,
     },
     {
       id: 7,
@@ -130,7 +124,7 @@ export class SondageComponent {
       participationRate: 90,
       statut: 'Expiré',
       expiration: 0,
-      nbrOptions: 5
+      nbrOptions: 5,
     },
     {
       id: 8,
@@ -142,7 +136,7 @@ export class SondageComponent {
       participationRate: 34,
       statut: 'Actif',
       expiration: 16,
-      nbrOptions: 4
+      nbrOptions: 4,
     },
     {
       id: 9,
@@ -154,7 +148,7 @@ export class SondageComponent {
       participationRate: 67,
       statut: 'Expiré',
       expiration: 0,
-      nbrOptions: 6
+      nbrOptions: 6,
     },
     {
       id: 10,
@@ -166,17 +160,9 @@ export class SondageComponent {
       participationRate: 28,
       statut: 'Actif',
       expiration: 20,
-      nbrOptions: 5
-    }
+      nbrOptions: 5,
+    },
   ];
-
-  constructor() {
-        this.breadCrumbItems = [
-      { label: 'Intranet' },
-      {label: 'Administration'},
-      { label: 'Liste des sondages', active: true }
-  ];
-  }
 
   ngOnInit(): void {
     this.tableData = [...this.mockData];
@@ -204,14 +190,14 @@ export class SondageComponent {
   // Recherche
   searchData(value: string): void {
     this.searchDataValue = value;
-    
+
     if (value === '') {
       this.tableData = [...this.originalData];
       return;
     }
 
     const searchLower = value.toLowerCase();
-    this.tableData = this.originalData.filter(item => {
+    this.tableData = this.originalData.filter((item) => {
       return (
         item.titre?.toLowerCase().includes(searchLower) ||
         item.auteur?.toLowerCase().includes(searchLower) ||
@@ -224,7 +210,7 @@ export class SondageComponent {
   // Tri des données
   sortData(sort: Sort): void {
     const data = this.tableData.slice();
-    
+
     if (!sort.active || sort.direction === '') {
       this.tableData = data;
       return;
@@ -232,7 +218,7 @@ export class SondageComponent {
 
     this.tableData = data.sort((a, b) => {
       const isAsc = sort.direction === 'asc';
-      
+
       switch (sort.active) {
         case 'id':
           return this.compare(a.id!, b.id!, isAsc);
@@ -256,22 +242,26 @@ export class SondageComponent {
     });
   }
 
-  private compare(a: number | string, b: number | string, isAsc: boolean): number {
+  private compare(
+    a: number | string,
+    b: number | string,
+    isAsc: boolean
+  ): number {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 
   private compareDates(dateA: string, dateB: string, isAsc: boolean): number {
     const [dayA, monthA, yearA] = dateA.split('/').map(Number);
     const [dayB, monthB, yearB] = dateB.split('/').map(Number);
-    
+
     const dateObjA = new Date(yearA, monthA - 1, dayA);
     const dateObjB = new Date(yearB, monthB - 1, dayB);
-    
+
     return this.compare(dateObjA.getTime(), dateObjB.getTime(), isAsc);
   }
 
   // selection 3lalisr des id
-selectAll(initChecked: boolean) {
+  selectAll(initChecked: boolean) {
     if (!initChecked) {
       this.tableData.forEach((f) => {
         f.isSelected = true;
@@ -290,7 +280,6 @@ selectAll(initChecked: boolean) {
     //appele de service pour recuperer les donnes
   }
 
-  
   onEdit(sondage: Sondage): void {
     console.log('Éditer le sondage:', sondage.id);
     //Ouvrir modal d'édition
@@ -308,19 +297,23 @@ selectAll(initChecked: boolean) {
 
   // Méthodes utilitaires
   getSelectedItems(): Partial<Sondage>[] {
-    return this.tableData.filter(item => item.isSelected);
+    return this.tableData.filter((item) => item.isSelected);
   }
 
   getTotalSelected(): number {
     return this.getSelectedItems().length;
   }
 
-
   // Statistiques (pourraient venir d'un service)
   updateStats(): void {
     // En temps réel, tu pourrais appeler un service
-    this.stats.sondagesActifs = this.tableData.filter(s => s.statut === 'Actif').length;
+    this.stats.sondagesActifs = this.tableData.filter(
+      (s) => s.statut === 'Actif'
+    ).length;
     this.stats.totalSondages = this.tableData.length;
-    this.stats.participantsTotaux = this.tableData.reduce((sum, sondage) => sum + sondage.participants!, 0);
+    this.stats.participantsTotaux = this.tableData.reduce(
+      (sum, sondage) => sum + sondage.participants!,
+      0
+    );
   }
 }

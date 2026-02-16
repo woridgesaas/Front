@@ -1,0 +1,7 @@
+<app-add-leave-modal (save)="createLeave($event)"></app-add-leave-modal>
+
+<app-edit-leave-modal
+  [leave]="selectedLeave"
+  (update)="updateLeave($event)">
+</app-edit-leave-modal>
+

@@ -2,11 +2,21 @@ import { Component, Renderer2 } from '@angular/core';
 import { routes } from '../../shared/routes/routes';
 import { Router} from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { IllustrationComponent } from '../Common/illustration/illustration.component';
+import { LogoComponent } from '../Common/logo/logo.component';
+import { DescriptionComponent } from '../Common/description/description.component';
+import { FooterComponent } from '../Common/footer/footer.component';
 @Component({
     selector: 'app-reset-password',
     templateUrl: './reset-password.component.html',
     styleUrl: './reset-password.component.scss',
-    imports: [CommonModule]
+    imports: [
+      CommonModule,
+      IllustrationComponent,
+      LogoComponent,
+      DescriptionComponent,
+      FooterComponent,
+    ]
 })
 export class ResetPasswordComponent {
   public routes = routes;
@@ -43,25 +53,25 @@ export class ResetPasswordComponent {
     const inputElement = event.target as HTMLInputElement;
     const password = inputElement.value;
     this.passwordValue = password;
-  
+
     const passwordLength = password.length;
     const hasPoor = this.poorRegExp.test(password);
     const hasWeak = this.weakRegExp.test(password);
     const hasStrong = this.strongRegExp.test(password);
     const hasWhitespace = this.whitespaceRegExp.test(password);
-  
+
     if (password === '') {
       this.resetStrength();
       return;
     }
-  
+
     if (hasWhitespace) {
       this.passwordInfoMessage = 'Whitespaces are not allowed';
       this.passwordInfoColor = 'red';
       this.strengthLevel = '';
       return;
     }
-  
+
     if (passwordLength < 8) {
       this.strengthLevel = 'poor';
       this.passwordInfoMessage = 'Weak. Must contain at least 8 characters.';
@@ -71,20 +81,20 @@ export class ResetPasswordComponent {
       this.passwordInfoMessage = 'Average. Must contain at least 1 letter or number.';
       this.passwordInfoColor = '#FFB54A';
     }
-  
+
     if (passwordLength >= 8 && hasPoor && (hasWeak || hasStrong)) {
       this.strengthLevel = 'strong';
       this.passwordInfoMessage = 'Almost strong. Must contain a special symbol.';
       this.passwordInfoColor = '#1D9CFD';
     }
-  
+
     if (passwordLength >= 8 && hasPoor && hasWeak && hasStrong) {
       this.strengthLevel = 'heavy';
       this.passwordInfoMessage = 'Awesome! You have a secure password.';
       this.passwordInfoColor = '#159F46';
     }
   }
-  
+
 
   private resetStrength(): void {
     this.strengthLevel = '';

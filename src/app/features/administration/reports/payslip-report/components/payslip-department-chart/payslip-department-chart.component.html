@@ -1,0 +1,23 @@
+<div class="card flex-fill">
+                <div class="card-header border-0 pb-0">
+                    <div class="d-flex align-items-center">
+                        <span class="me-2"><i class="ti ti-chart-bar text-success"></i></span>
+                        <h5 class="mb-0">Comparaison par Département</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <apx-chart
+                        [series]="comparaisonDepartementsChart.series"
+                        [chart]="comparaisonDepartementsChart.chart"
+                        [plotOptions]="comparaisonDepartementsChart.plotOptions"
+                        [dataLabels]="comparaisonDepartementsChart.dataLabels"
+                        [stroke]="comparaisonDepartementsChart.stroke"
+                        [xaxis]="comparaisonDepartementsChart.xaxis"
+                        [yaxis]="comparaisonDepartementsChart.yaxis"
+                        [fill]="comparaisonDepartementsChart.fill"
+                        [colors]="comparaisonDepartementsChart.colors"
+                        [tooltip]="comparaisonDepartementsChart.tooltip"
+                        [legend]="comparaisonDepartementsChart.legend">
+                    </apx-chart>
+                </div>
+            </div>

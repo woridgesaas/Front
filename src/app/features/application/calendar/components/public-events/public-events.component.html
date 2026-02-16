@@ -1,0 +1,15 @@
+ <div class="border-bottom pb-2 mb-4">
+              <h5 class="mb-2">Événements publics<span class="badge badge-primary rounded-pill ms-2">{{publicEvents.length}}</span></h5>
+              @for (event of publicEvents; track event.id) {
+                <div class="border-start border-3 mb-3 border-secondary">
+                  <div class="ps-3">
+                    <h6 class="fw-medium mb-1">{{event.title}}</h6>
+                    <p class="fs-12">
+                      <i class="ti ti-calendar-check text-info me-2"></i>
+                      {{event.date | date:'dd MMM yyyy'}}
+                      <span class="badge badge-soft-info ms-2">{{event.type}}</span>
+                    </p>
+                  </div>
+                </div>
+              }
+            </div>

@@ -1,0 +1,40 @@
+  <div class="row">
+        
+        <div class="col-xl-12 d-flex">
+            <div class="card flex-fill">
+                <div class="card-header border-0 pb-0">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center row-gap-2">
+                        <div class="d-flex align-items-center">
+                            <span class="me-2">
+                                <i class="ti ti-building text-success fs-20"></i>
+                            </span>
+                            <div>
+                                <h5 class="mb-1">Répartition par Département</h5>
+                                <p class="text-muted fs-13 mb-0">Distribution des effectifs selon les services de l'entreprise</p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge badge-soft-primary fs-12">
+                                <i class="ti ti-users me-1"></i>{{ totalEmployes }} employés au total
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <apx-chart
+                        [series]="repartitionDepartementsChart.series"
+                        [chart]="repartitionDepartementsChart.chart"
+                        [plotOptions]="repartitionDepartementsChart.plotOptions"
+                        [colors]="repartitionDepartementsChart.colors"
+                        [dataLabels]="repartitionDepartementsChart.dataLabels"
+                        [stroke]="repartitionDepartementsChart.stroke"
+                        [xaxis]="repartitionDepartementsChart.xaxis"
+                        [yaxis]="repartitionDepartementsChart.yaxis"
+                        [legend]="repartitionDepartementsChart.legend"
+                        [tooltip]="repartitionDepartementsChart.tooltip"
+                        [grid]="repartitionDepartementsChart.grid">
+                    </apx-chart>
+                </div>
+            </div>
+        </div>
+    </div>

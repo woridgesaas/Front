@@ -5,313 +5,233 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 import { BreadcrumbsComponent } from '../../common/breadcrumbs/breadcrumbs.component';
-import { breadCrumbItems } from '../../../shared/models/models';
-import {  MatSortModule, Sort } from '@angular/material/sort';
+import { MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { DemandeDocumentModalComponent } from './components/demande-document-modal/demande-document-modal.component';
+import { DemandeDocumentModalComponent } from './components/request-document-modal/demande-document-modal.component';
 import { DocumentTemplate } from '../../../shared/models/document-template.model';
-interface DocumentDemande {
-  id: string;                     
-  documentCode: string;          
-  documentName: string;
-  description: string;           
-  category: string;            
-  requestDate: Date;            
-  processedDate?: Date;           
-  status: 'completed' | 'in_progress' | 'pending' | 'rejected' | 'ready';                          
-  notes?: string; 
-  isSelected?: boolean;
-  sNo?: number;
-}
+import { CancelModalComponent } from '../../common/cancel-modal/cancel-modal.component';
+import { DocumentDemande } from '../../../shared/models/models';
+import { DocumentsListComponent } from './components/documents-list/documents-list.component';
+import { DocumentsService } from '../../../shared/services/documents-service';
+import { ConfirmDeleteComponent } from '../../common/delete-modal/delete-modal.component';
+
 
 @Component({
   selector: 'app-documents',
   imports: [
+    CancelModalComponent,
     CustomPaginationComponent,
-    FormsModule, 
+    FormsModule,
     CommonModule,
     MatSelectModule,
     BreadcrumbsComponent,
     MatSortModule,
-    DemandeDocumentModalComponent
+    DemandeDocumentModalComponent,
+    DocumentsListComponent,
+    ConfirmDeleteComponent
   ],
   templateUrl: './documents.component.html',
   styleUrl: './documents.component.scss',
 })
-export class DocumentsComponent implements OnDestroy {
-  initChecked = false;
-  
-  // pagination variables
-  public pageSize = 10;
-  public tableData: DocumentDemande[] = [];
-  public tableDataCopy: DocumentDemande[] = [];
+export class DocumentsComponent{
+
+    // Data
   public actualData: DocumentDemande[] = [];
+  public tableData: DocumentDemande[] = [];
+  public itemToBeDeleted:DocumentDemande | null =null;
+  // Pagination
+  public pageSize = 10;
   public currentPage = 1;
   public skip = 0;
-  public limit: number = this.pageSize;
-  public serialNumberArray: number[] = [];
   public totalData = 0;
-  showFilter = false;
+  
+  // Filters
   public searchDataValue = '';
+  public filterStatus: string = '';
+  public filterCategory: string = '';
+  public categories: string[] = [];
   
-  dataSource!: MatTableDataSource<DocumentDemande>;
-  
-  breadCrumbItems: breadCrumbItems[] = [
-    { label: 'Employe', active: false },
-    { label: 'Documents', active: false },
-    { label: 'Mes demandes', active: true }
-  ];
-  
-  // Filtres
-  filterStatus: string = '';
-  filterCategory: string = '';
-  categories: string[] = [];
-  
-  isOpen = false;
-  
-  //Pour envoiyer au modal de creation :
-  documentTemplates : DocumentTemplate[]=[];
+  // Modal
+  public selectedDemande: DocumentDemande | null = null;
+  public actionType: 'cancel' | 'delete' = 'cancel';
+  public documentTemplates: any[] = [];
+
   constructor(
     private documentsService: DocumentTemplateService,
+    private employeDocService: DocumentsService
   ) {}
-  
-  ngOnDestroy(): void {
-    this.isOpen = false;
-  }
-  
+
   ngOnInit(): void {
     this.loadDemandes();
   }
-  
   loadDemandes(): void {
-    // Donéne mocjked statiqument
-    this.actualData = [
-      {
-        id: '1',
-        documentCode: 'ATTESTATION_TRAVAIL',
-        documentName: 'Attestation de travail',
-        description: 'Document attestant que vous êtes employé dans l\'entreprise',
-        category: 'Attestations',
-        requestDate: new Date('2024-01-15'),
-        processedDate: new Date('2024-01-16'),
-        status: 'completed',
-      },
-      {
-        id: '3',
-        documentCode: 'ATTESTATION_SALAIRE',
-        documentName: 'Attestation de salaire',
-        description: 'Document précisant votre rémunération',
-        category: 'Attestations',
-        requestDate: new Date('2024-01-10'),
-        processedDate: new Date('2024-01-12'),
-        status: 'pending',
-      },
-      {
-        id: '5',
-        documentCode: 'CERTIFICAT_TRAVAIL',
-        documentName: 'Certificat de travail',
-        description: 'Document obligatoire remis à la fin du contrat',
-        category: 'Attestations',
-        requestDate: new Date('2024-01-05'),
-        processedDate: new Date('2024-01-07'),
-        status: 'completed',
-      },
-      {
-        id: '6',
-        documentCode: 'DECISION_PROMOTION',
-        documentName: 'Décision de promotion',
-        description: 'Acte officialisant votre évolution professionnelle',
-        category: 'Documents internes RH',
-        requestDate: new Date('2024-01-22'),
-        processedDate: undefined,
-        status: 'rejected',
-        notes: 'Demande incomplète'
-      }
-    ];
-    
+    this.actualData = this.employeDocService.getDocumentsByEmploye();
     this.calculateCategories();
-    this.getTableData({ skip: this.skip, limit: this.limit });
+    this.updateTableData();
   }
-  
-  private getTableData(pageOption: any): void {
-    this.tableData = [];
-    this.tableDataCopy = [];
-    this.serialNumberArray = [];
-    this.totalData = this.actualData.length;
-    
+  calculateCategories(): void {
+    const uniqueCategories = new Set(this.actualData.map(d => d.category));
+    this.categories = Array.from(uniqueCategories);
+  }
 
-    let filteredData = this.applyFiltersToData(this.actualData);
-    
-    filteredData.forEach((res: DocumentDemande, index: number) => {
-      const serialNumber = index + 1;
-      if (index >= pageOption.skip && serialNumber <= pageOption.limit) {
-        res.sNo = serialNumber;
-        this.tableData.push(res);
-        this.tableDataCopy.push(res);
-        this.serialNumberArray.push(serialNumber);
-      }
-    });
-    
-    this.dataSource = new MatTableDataSource<DocumentDemande>(this.tableData);
-  }
-  
-  private applyFiltersToData(data: DocumentDemande[]): DocumentDemande[] {
-    let result = [...data];
-    
+  updateTableData(): void {
+    // Appliquer les filtres
+    let filteredData = this.actualData;
     
     if (this.filterStatus) {
-      result = result.filter(d => d.status === this.filterStatus);
+      filteredData = filteredData.filter(d => d.status === this.filterStatus);
     }
     
-   
     if (this.filterCategory) {
-      result = result.filter(d => d.category === this.filterCategory);
+      filteredData = filteredData.filter(d => d.category === this.filterCategory);
     }
     
-    // Filtre par recherche
     if (this.searchDataValue) {
       const term = this.searchDataValue.toLowerCase();
-      result = result.filter(d => 
+      filteredData = filteredData.filter(d =>
         d.documentName.toLowerCase().includes(term) ||
         d.description.toLowerCase().includes(term) ||
         d.category.toLowerCase().includes(term)
       );
     }
     
-    return result;
+    this.totalData = filteredData.length;
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.tableData = filteredData.slice(startIndex, endIndex);
   }
-  
-  calculateCategories(): void {
-    const uniqueCategories = new Set(this.actualData.map(d => d.category));
-    this.categories = Array.from(uniqueCategories);
-  }
-  
-  //   recherche 
-  public searchData(value: string): void {
-    this.searchDataValue = value.trim().toLowerCase();
-    this.skip = 0;
-    this.currentPage = 1;
-    this.getTableData({ skip: this.skip, limit: this.limit });
-  }
-  
-  // methods de trie decolones 
-  public sortData(sort: Sort) {
-    alert(sort.active)
-    const data = this.tableData.slice();
 
-    if (!sort.active || sort.direction === '') {
-      this.tableData = data;
-    } else {
-      this.tableData = data.sort((a, b) => {
-        const aValue = (a as never)[sort.active];
-        const bValue = (b as never)[sort.active];
-        
-        
-        if (sort.active === 'date' || sort.active === 'processed') {
-          const dateA = sort.active === 'date' ? a.requestDate : (a.processedDate || new Date(0));
-          const dateB = sort.active === 'date' ? b.requestDate : (b.processedDate || new Date(0));
-          return (dateA.getTime() - dateB.getTime()) * (sort.direction === 'asc' ? 1 : -1);
-        }
-        
-        return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
-      });
-    }
-  }
-  
- 
-  public changePageSize(pageSize: number): void {
-    this.pageSize = pageSize;
-    this.limit = pageSize;
-    this.skip = 0;
-    this.currentPage = 1;
-    this.getTableData({ skip: this.skip, limit: this.limit });
-  }
-  
-
-  selectAll(initChecked: boolean) {
-    if (!initChecked) {
-      this.tableData.forEach((f) => {
-        f.isSelected = true;
-      });
-    } else {
-      this.tableData.forEach((f) => {
-        f.isSelected = false;
-      });
-    }
-  }
-  
-
+  // Filtres
   applyStatusFilter(status: string): void {
     this.filterStatus = status;
-    this.skip = 0;
     this.currentPage = 1;
-    this.getTableData({ skip: this.skip, limit: this.limit });
+    this.updateTableData();
   }
-  
+
   applyCategoryFilter(category: string): void {
     this.filterCategory = category;
-    this.skip = 0;
     this.currentPage = 1;
-    this.getTableData({ skip: this.skip, limit: this.limit });
+    this.updateTableData();
   }
-  
 
-  getStatusText(status: string): string {
-    switch (status) {
-      case 'pending': return 'En attente';
-      case 'in_progress': return 'En traitement';
-      case 'ready': return 'Prêt';
-      case 'completed': return 'Terminé';
-      case 'rejected': return 'Rejeté';
-      default: return status;
-    }
+  // Recherche
+  searchData(value: string): void {
+    this.searchDataValue = value.trim().toLowerCase();
+    this.currentPage = 1;
+    this.updateTableData();
   }
-  
-  getStatusBadgeClass(status: string): string {
-    switch (status) {
-      case 'pending': return 'badge-warning';
-      case 'in_progress': return 'badge-info';
-      case 'ready': return 'badge-success';
-      case 'completed': return 'badge-success';
-      case 'rejected': return 'badge-danger';
-      default: return 'badge-secondary';
-    }
+
+  resetFilters(): void {
+    this.filterStatus = '';
+    this.filterCategory = '';
+    this.searchDataValue = '';
+    this.currentPage = 1;
+    this.updateTableData();
   }
-  
-  // Actions
+
+  // Modal actions
   openNewDemandModal(): void {
-    this.isOpen = !this.isOpen;
-  }
-  
-  viewDetails(demande: DocumentDemande): void {
-    alert('Voir détails:'+ demande);
-  }
-  
-  downloadDocument(demande: DocumentDemande): void {
-    alert("downloaded :)")
-  }
-  
-  cancelDemande(demande: DocumentDemande): void {
-    alert('Annuler demande:'+demande.id);
-  }
-  
-  deleteDemande(demande: DocumentDemande): void {
-    if (confirm(`Supprimer la demande "${demande.documentName}" ?`)) {
-      alert('Supprimer demande:'+ demande.id);
-    }
-  }
-  
-  onPageChange(event: any): void {
-    this.skip = (event.page - 1) * this.pageSize;
-    this.currentPage = event.page;
-    this.getTableData({ skip: this.skip, limit: this.limit });
+    this.documentTemplates = this.documentsService.getDocumentTemplates();
+    
   }
 
-  sendDataToModal():void{
-    this.documentTemplates= this.documentsService.getDocumentTemplates();
+  closeModal(): void {
+    const modalEl = document.getElementById("newDocumentDemand");
+    if(modalEl){
+      const modal = (window as any).bootstrap.Modal.getOrCreateInstance(modalEl);
+      modal.hide();
+
+    }
   }
-  //Event recus 
-  onDemandeCreated(event:any):void{ //event => l'obje newDemande envoyer par le modal
-    alert("Bien reçu : " + event?.documentCode);
+
+
+  viewDetails(demande: DocumentDemande): void {
+   alert('Voir détails:'+demande.category);
+  }
+
+  downloadDocument(demande: DocumentDemande): void {
+   alert('Télécharger:'+demande.documentName);
+    
+  }
+
+  openCancelModal(demande: any): void {
+    const modalEl = document.getElementById("cancelDemandeModal");
+    if(modalEl){
+      const modal = new(window as any).bootstrap.Modal(modalEl);
+      modal.show();
+      this.selectedDemande = demande;
+      this.actionType = 'cancel';
+    }
+  }
+
+  cancelDemande(event:any): void {
+    if (!this.selectedDemande) return;
+    
+    const index = this.actualData.findIndex(d => d.id === this.selectedDemande!.id);
+    if (index !== -1) {
+      this.actualData[index].status = 'rejected';
+      this.updateTableData();
+    }
+    this.selectedDemande = null;
+  }
+  public showDeleteModal(demande:DocumentDemande):void{
+    const modalEl = document.getElementById('confirmDeleteModal');
+    if (modalEl) {
+      const modal = new (window as any).bootstrap.Modal(modalEl);
+      modal.show();
+    }
+    this.itemToBeDeleted = demande;
+    
+  }
+  deleteDemande(): void {
+    
+      this.actualData = this.actualData.filter(d => d.id !== this.itemToBeDeleted?.id);
+      this.updateTableData();
+    
+  }
+
+  // Pagination
+  onPageChange(page: any): void {
+    this.currentPage = page;
+    this.skip = (page - 1) * this.pageSize;
+    this.updateTableData();
+  }
+
+  changePageSize(size: number): void {
+    this.pageSize = size;
+    this.currentPage = 1;
+    this.updateTableData();
+  }
+
+  // Helpers
+  getStatusText(status: string): string {
+    const statusMap: Record<string, string> = {
+      'pending': 'En attente',
+      'in_progress': 'En traitement',
+      'ready': 'Prêt',
+      'completed': 'Terminé',
+      'rejected': 'Rejeté'
+    };
+    return statusMap[status] || status;
+  }
+
+  getStatusBadgeClass(status: string): string {
+    const classMap: Record<string, string> = {
+      'pending': 'badge-warning',
+      'in_progress': 'badge-info',
+      'ready': 'badge-success',
+      'completed': 'badge-success',
+      'rejected': 'badge-danger'
+    };
+    return classMap[status] || 'badge-secondary';
+  }
+
+  // Callback 
+  onDemandeCreated(newDemande: any): void {
+    // add
+    alert(newDemande.documentCode)
+    
+    this.updateTableData();
+    this.closeModal();
   }
 }

@@ -1,0 +1,38 @@
+<div class="row mb-4">
+  <div class="col-12">
+    <div class="card h-100">
+      <div class="card-header border-0 pb-0 d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">
+          <i class="ti ti-chart-bar me-2 text-primary"></i>
+          Activités quotidiennes
+        </h5>
+
+        
+          <a class="btn btn-sm btn-white dropdown-toggle fs-12" href="javascript:void(0)">
+            Aujourd'hui
+          </a>
+      
+      </div>
+
+      <div class="card-body pt-2" style="min-height: 400px">
+        <!-- Chart -->
+        <apx-chart
+          [series]="daily_chart.series"
+          [chart]="daily_chart.chart"
+          [colors]="daily_chart.colors"
+          [plotOptions]="daily_chart.plotOptions"
+          [dataLabels]="daily_chart.dataLabels"
+          [stroke]="daily_chart.stroke"
+          [xaxis]="daily_chart.xaxis"
+          [yaxis]="daily_chart.yaxis"
+          [grid]="daily_chart.grid"
+          [tooltip]="daily_chart.tooltip"
+          [legend]="daily_chart.legend"
+          [title]="daily_chart.title"
+          [subtitle]="daily_chart.subtitle">
+        </apx-chart>
+
+      </div>
+    </div>
+  </div>
+</div>

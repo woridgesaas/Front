@@ -1,18 +1,19 @@
 <div class="content">
   <!-- Breadcrums -->
-  <div class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
-    <app-breadcrumbs
-      title="Documents administratifs"
-      [breadcrumbItems]="breadCrumbItems">
-    </app-breadcrumbs>
-    
+  <div
+    class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3"
+  >
+    <app-breadcrumbs></app-breadcrumbs>
+
     <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
       <div class="mb-2">
-        <a href="javascript:void(0);"
-           data-bs-toggle="modal"
-           data-bs-target="#newDocumentDemand"
-           (click)="sendDataToModal()"
-           class="btn btn-primary d-flex align-items-center">
+        <a
+          href="javascript:void(0);"
+          data-bs-toggle="modal"
+          data-bs-target="#newDocumentDemand"
+          (click)="openNewDemandModal()"
+          class="btn btn-primary d-flex align-items-center"
+        >
           <i class="ti ti-circle-plus me-2"></i>Nouvelle demande
         </a>
       </div>
@@ -22,94 +23,109 @@
 
   <!-- Liste des Documents -->
   <div class="card">
-    <div class="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3">
+    <div
+      class="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3"
+    >
       <h5>Mes demandes de documents</h5>
-      <div class="d-flex my-xl-auto right-content align-items-center flex-wrap row-gap-3">
+      <div
+        class="d-flex my-xl-auto right-content align-items-center flex-wrap row-gap-3"
+      >
         <!-- Filtre Statut -->
         <div class="dropdown me-3">
-          <a href="javascript:void(0);"
-             class="dropdown-toggle btn btn-white d-inline-flex align-items-center"
-             data-bs-toggle="dropdown">
-            @if (filterStatus) {
-              Statut: {{ getStatusText(filterStatus) }}
-            } @else {
-              Statut
-            }
+          <a
+            href="javascript:void(0);"
+            class="dropdown-toggle btn btn-white d-inline-flex align-items-center"
+            data-bs-toggle="dropdown"
+          >
+            @if (filterStatus) { Statut: {{ getStatusText(filterStatus) }}
+            } @else { Statut }
           </a>
           <ul class="dropdown-menu dropdown-menu-end p-3">
             <li>
-              <a href="javascript:void(0);" 
-                 class="dropdown-item rounded-1"
-                 (click)="applyStatusFilter('')">
+              <a
+                href="javascript:void(0);"
+                class="dropdown-item rounded-1"
+                (click)="applyStatusFilter('')"
+              >
                 Tous les statuts
               </a>
             </li>
             <li>
-              <a href="javascript:void(0);" 
-                 class="dropdown-item rounded-1"
-                 (click)="applyStatusFilter('pending')">
+              <a
+                href="javascript:void(0);"
+                class="dropdown-item rounded-1"
+                (click)="applyStatusFilter('pending')"
+              >
                 En attente
               </a>
             </li>
             <li>
-              <a href="javascript:void(0);" 
-                 class="dropdown-item rounded-1"
-                 (click)="applyStatusFilter('in_progress')">
+              <a
+                href="javascript:void(0);"
+                class="dropdown-item rounded-1"
+                (click)="applyStatusFilter('in_progress')"
+              >
                 En traitement
               </a>
             </li>
+            <li></li>
             <li>
-            </li>
-            <li>
-              <a href="javascript:void(0);" 
-                 class="dropdown-item rounded-1"
-                 (click)="applyStatusFilter('completed')">
+              <a
+                href="javascript:void(0);"
+                class="dropdown-item rounded-1"
+                (click)="applyStatusFilter('completed')"
+              >
                 Terminé
               </a>
             </li>
             <li>
-              <a href="javascript:void(0);" 
-                 class="dropdown-item rounded-1"
-                 (click)="applyStatusFilter('rejected')">
+              <a
+                href="javascript:void(0);"
+                class="dropdown-item rounded-1"
+                (click)="applyStatusFilter('rejected')"
+              >
                 Rejeté
               </a>
             </li>
           </ul>
         </div>
-        
+
         <!-- Filtre Catégorie -->
         <div class="dropdown">
-          <a href="javascript:void(0);"
-             class="dropdown-toggle btn btn-white d-inline-flex align-items-center"
-             data-bs-toggle="dropdown">
-            @if (filterCategory) {
-              Catégorie: {{ filterCategory }}
-            } @else {
-              Catégorie
-            }
+          <a
+            href="javascript:void(0);"
+            class="dropdown-toggle btn btn-white d-inline-flex align-items-center"
+            data-bs-toggle="dropdown"
+          >
+            @if (filterCategory) { Catégorie: {{ filterCategory }}
+            } @else { Catégorie }
           </a>
           <ul class="dropdown-menu dropdown-menu-end p-3">
             <li>
-              <a href="javascript:void(0);" 
-                 class="dropdown-item rounded-1"
-                 (click)="applyCategoryFilter('')">
+              <a
+                href="javascript:void(0);"
+                class="dropdown-item rounded-1"
+                (click)="applyCategoryFilter('')"
+              >
                 Toutes catégories
               </a>
             </li>
             @for (category of categories; track category) {
-              <li>
-                <a href="javascript:void(0);" 
-                   class="dropdown-item rounded-1"
-                   (click)="applyCategoryFilter(category)">
-                  {{ category }}
-                </a>
-              </li>
+            <li>
+              <a
+                href="javascript:void(0);"
+                class="dropdown-item rounded-1"
+                (click)="applyCategoryFilter(category)"
+              >
+                {{ category }}
+              </a>
+            </li>
             }
           </ul>
         </div>
       </div>
     </div>
-    
+
     <div class="card-body p-0">
       <div class="custom-datatable-filter">
         <div class="dataTables_wrapper dt-bootstrap5 no-footer">
@@ -117,16 +133,17 @@
             <div class="col-sm-12 col-md-6">
               <div class="dataTables_length">
                 <label>
-                  Lignes par page 
-                  @if (tableData.length > 0) {
-                    <select [(ngModel)]="pageSize"
-                            (ngModelChange)="changePageSize(pageSize)"
-                            class="form-select form-select-sm">
-                      <option value="10">10</option>
-                      <option value="25">25</option>
-                      <option value="50">50</option>
-                      <option value="100">100</option>
-                    </select>
+                  Lignes par page @if (tableData.length > 0) {
+                  <select
+                    [(ngModel)]="pageSize"
+                    (ngModelChange)="changePageSize(pageSize)"
+                    class="form-select form-select-sm"
+                  >
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                  </select>
                   } entrées
                 </label>
               </div>
@@ -134,147 +151,32 @@
             <div class="col-sm-12 col-md-6">
               <div id="DataTables_Table_0_filter" class="dataTables_filter">
                 <label>
-                  <input [(ngModel)]="searchDataValue"
-                         [ngModelOptions]="{ standalone: true }"
-                         (ngModelChange)="searchData(searchDataValue)"
-                         type="search"
-                         class="form-control form-control-sm"
-                         placeholder="Rechercher..." />
+                  <input
+                    [(ngModel)]="searchDataValue"
+                    [ngModelOptions]="{ standalone: true }"
+                    (ngModelChange)="searchData(searchDataValue)"
+                    type="search"
+                    class="form-control form-control-sm"
+                    placeholder="Rechercher..."
+                  />
                 </label>
               </div>
             </div>
           </div>
-          
+
           <div class="table-responsive">
-            <table matSort
-                   (matSortChange)="sortData($event)"
-                   class="mat-sort table datanew table-center datatable dataTable mb-0">
-              <thead class="thead-light">
-                <tr>
-                  <th class="no-sort">
-                    <div class="form-check form-check-md"
-                         (click)="selectAll(initChecked)"
-                         (keydown.enter)="selectAll(initChecked)"
-                         tabindex="0">
-                      <input class="form-check-input"
-                             type="checkbox"
-                             id="select-all"
-                             [(ngModel)]="initChecked" />
-                    </div>
-                  </th>
-                  <th mat-sort-header="documentName">Document</th>
-                  <th mat-sort-header="category">Catégorie</th>
-                  <th mat-sort-header="date">Date demande</th>
-                  <th mat-sort-header="status">Statut</th>
-                  <th mat-sort-header="processed">Date traitement</th>
-                  <th class="no-sort">Actions</th>
-                </tr>
-              </thead>
-              
-              <tbody>
-                @for (data of tableData; track data) {
-                  <tr>
-                    <td>
-                      <div class="form-check form-check-md">
-                        <input class="form-check-input"
-                               type="checkbox"
-                               [(ngModel)]="data.isSelected" />
-                      </div>
-                    </td>
-                    
-                    <td>
-                      <a href="javascript:void(0);" 
-                         class="fw-medium"
-                         (click)="viewDetails(data)">
-                        {{ data.documentName }}
-                      </a>
-                      <div class="text-muted small mt-1">
-                        {{ data.description }}
-                      </div>
-                    </td>
-                    
-                    <td>{{ data.category }}</td>
-                    
-                    <td>
-                      {{ data.requestDate | date:'dd/MM/yyyy' }}
-                    </td>
-                    
-                    <td>
-                      <span class="badge d-inline-flex align-items-center badge-xs"
-                            [ngClass]="getStatusBadgeClass(data.status)">
-                        <i class="ti ti-point-filled me-1"></i>
-                        {{ getStatusText(data.status) }}
-                      </span>
-                    </td>
-                    
-                    <td>
-                      @if (data.processedDate) {
-                        {{ data.processedDate | date:'dd/MM/yyyy' }}
-                      } @else {
-                        <span class="text-muted">-</span>
-                      }
-                    </td>
-                    
-                   <td>
-                    <div class="action-icon">
-                        <!-- Télécharger -->
-                        @if (data.status === 'ready') {
-                        <a href="javascript:void(0);"
-                            class="me-2"
-                            (click)="downloadDocument(data)"
-                            title="Télécharger">
-                            <i class="ti ti-download text-success"></i>
-                        </a>
-                        }
-                        
-                        <!-- Voir détails -->
-                        <a href="javascript:void(0);"
-                        class="me-2"
-                        (click)="viewDetails(data)"
-                        title="Détails">
-                        <i class="ti ti-eye"></i>
-                        </a>
-                        
-                        <!-- Annuler -->
-                        @if (data.status === 'pending' || data.status === 'in_progress') {
-                        <a href="javascript:void(0);"
-                            class="me-2"
-                            (click)="cancelDemande(data)"
-                            title="Annuler">
-                            <i class="ti ti-x text-warning"></i>
-                        </a>
-                        }
-                        
-                        <!-- Bouton suppression avec tooltip -->
-                        <a href="javascript:void(0);"
-                        class="text-danger position-relative"
-                        (click)="deleteDemande(data)"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="top"
-                        title="Supprimer">
-                        <i class="ti ti-trash"></i>
-                        </a>
-                    </div>
-                    </td>
-                </tr>
-                }
-                
-                @if (tableData.length === 0) {
-                  <tr>
-                    <td colspan="7">
-                      <h5 class="no-record">Aucune demande trouvée</h5>
-                    </td>
-                  </tr>
-                }
-              </tbody>
-            </table>
+           <app-documents-list 
+            (delete)="showDeleteModal($event)"
+            (cancel)="openCancelModal($event)"
+            (viewDetails)="viewDetails($event)"
+            [data]="tableData">
+          </app-documents-list>
           </div>
-          
+
           <!-- Pagination -->
           @if (tableData.length > 0) {
-            <app-custom-pagination
-              (pageChange)="onPageChange($event)">
-            </app-custom-pagination>
+          <app-custom-pagination (pageChange)="onPageChange($event)">
+          </app-custom-pagination>
           }
         </div>
       </div>
@@ -282,6 +184,20 @@
   </div>
   <!-- /Liste des Documents -->
 </div>
-
+<!--Modal de Cancel '-->
+<app-cancel-modal
+  modalId="cancelDemandeModal"
+  title="Annuler la demande"
+  message="Voulez-vous vraiment annuler cette demande ?"
+  [item]="selectedDemande"
+  (confirm)="cancelDemande($event)"
+>
+</app-cancel-modal>
+<!--Modal delete confirmation -->
+<app-confirm-delete [item]="itemToBeDeleted" (confirm)="deleteDemande()"></app-confirm-delete>
 <!--Modal de creation d'une nouvelle demande '-->
-<app-demande-document-modal [documentTemplates]="documentTemplates" (demandCreated)="onDemandeCreated($event)"></app-demande-document-modal>
+<app-demande-document-modal
+  [documentTemplates]="documentTemplates"
+  (close)="closeModal()"
+  (demandCreated)="onDemandeCreated($event)"
+></app-demande-document-modal>

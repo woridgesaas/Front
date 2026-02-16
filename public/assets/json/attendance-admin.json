@@ -10,7 +10,7 @@
             "Break": "30 Min",
             "Late": "32 Min",
             "Production":1,
-            "ProductionHours": "8.55 Hrs"
+            "ProductionHours": "7.40 Hrs"
         },
         {
             "Employee": "Brian Villalobos",
@@ -22,7 +22,7 @@
             "Break": "20 Min",
             "Late": "20 Min",
             "Production":3,
-            "ProductionHours": "7.54 Hrs"
+            "ProductionHours": "8.00 Hrs"
         },
         {
             "Employee": "Harvey Smith",
@@ -46,7 +46,7 @@
             "Break": "41 Min",
             "Late": "50 Min",
             "Production":1,
-            "ProductionHours": "8.35 Hrs"
+            "ProductionHours": "2.35 Hrs"
         },
         {
             "Employee": "Doglas Martini",
@@ -122,5 +122,5 @@
         }
     ],
     "totalData":10
-    
+
 }

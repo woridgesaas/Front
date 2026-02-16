@@ -1,0 +1,97 @@
+<div class="table-responsive">
+  <table class="table table-hover align-middle mb-0">
+    <thead class="thead-light">
+      <tr>
+        <th>Employé</th>
+        <th>Département</th>
+        <th>Date d’envoi</th>
+        <th>Justification</th>
+        <th>Statut</th>
+<th class="text-center">Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let emp of employees">
+        <!-- Employé -->
+        <td>
+          <div
+            class="d-flex align-items-center gap-2 cursor-pointer"
+            (click)="openProfile.emit(emp)"
+          >
+            <img
+              [src]="'assets/img/users/' + emp.Image"
+              class="rounded-circle"
+              width="36"
+              height="36"
+            />
+            <div>
+              <div class="fw-medium">{{ emp.Name }}</div>
+              <small class="text-muted">{{ emp.Designation }}</small>
+            </div>
+          </div>
+        </td>
+        <!-- Département -->
+        <td>{{ emp.Designation }}</td>
+        <!-- Date -->
+        <td>12-12-2025</td>
+
+        <!-- Justification -->
+        <td>
+        <button   type="button" class="btn btn-link p-0 view-link" (click)="viewChanges(req)">
+              Voir justification
+            
+                  
+                  </button>
+        </td>
+
+        <!-- Statut -->
+     <td>
+  <span
+    class="status-badge"
+    [ngClass]="{
+      'status-warning': emp.Status === 'En attente',
+      'status-success': emp.Status === 'Accepter',
+      'status-danger': emp.Status === 'Refuser'
+    }"
+  >
+    {{
+      emp.Status === 'Accepter'
+        ? 'Acceptée'
+        : emp.Status === 'Refuser'
+        ? 'Refusée'
+        : 'En attente'
+    }}
+  </span>
+</td>
+
+
+        <!-- Actions -->
+        <td class="text-center">
+          <ng-container *ngIf="emp.Status === 'En attente'; else noAction">
+            <button
+              class="btn btn-success btn-sm me-2"
+              (click)="validate.emit(emp)"
+            >
+              Accepter
+            </button>
+
+            <button class="btn btn-danger btn-sm" (click)="refuse.emit(emp)">
+              Refuser
+            </button>
+          </ng-container>
+
+          <ng-template #noAction>
+            <span class="text-muted">—</span>
+          </ng-template>
+        </td>
+      </tr>
+
+      <tr *ngIf="!employees.length">
+        <td colspan="6" class="text-center py-4 text-muted">
+          Aucune justification trouvée
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

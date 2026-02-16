@@ -4,59 +4,59 @@ export interface Sondage {
   description?: string;
   auteur: string;
   departement: string;
-  dateCreation: string;       
-  dateExpiration: string;    
-  statut: 'Actif' | 'Expiré' ;
-  
+  dateCreation: string;
+  dateExpiration: string;
+  statut: 'Actif' | 'Expiré';
+
   // Options du sondage
   options: SondageOption[];
-  
+
   // donnes de participation
   totalVotes: number;
-  tauxParticipation?: number; 
-  
+  tauxParticipation?: number;
+
   // Pour l'afficher (fil d'actualité)  (votant)
-  selectedOption?: number;   
-  voted?: boolean;          
-  
+  selectedOption?: number;
+  voted?: boolean;
+
   // Pour l'affichage admin
-  participants?: number;     
+  participants?: number;
   participationRate?: number;
   expiration?: number;
-  nbrOptions?: number;  
-  isSelected?: boolean;     
+  nbrOptions?: number;
+  isSelected?: boolean;
 }
 
 export interface SondageOption {
   id: number;
   texte: string;
   votes: number;
-  pourcentage?: number;      
-  couleur?: string;          // Pour les charts
+  pourcentage?: number;
+  couleur?: string; // Pour les charts
 }
-export interface SondageForm{
-    titre: string;
-    description?: string;
-    options: string[];
+export interface SondageForm {
+  titre: string;
+  description?: string;
+  options: string[];
 }
-  export interface sondageEmployes{
-     id: number;
-    titre: string;
-    creeIlYa: string;
-    expireDans: number;
-    options: string[];
-    selectedOption?: number;
-    voted: boolean;
-    totalVotes: number;
-  }
-  export interface AnnonceForm{
-    titre: string;
-    contenu: string;
-    visibilite:'public' | 'departement';
-    departementId?: number; //pour visibilite = departement
-    hashtags?: string[];
-  }
-  export interface pageSelection {
+export interface sondageEmployes {
+  id: number;
+  titre: string;
+  creeIlYa: string;
+  expireDans: number;
+  options: string[];
+  selectedOption?: number;
+  voted: boolean;
+  totalVotes: number;
+}
+export interface AnnonceForm {
+  titre: string;
+  contenu: string;
+  visibilite: 'public' | 'departement';
+  departementId?: number; //pour visibilite = departement
+  hashtags?: string[];
+}
+export interface pageSelection {
   skip: number;
   limit: number;
 }
@@ -69,9 +69,8 @@ export interface TicketBase {
   priorite: 'Basse' | 'Moyenne' | 'Haute' | 'Urgente' | 'Par default';
   statut: 'Ouvert' | 'En Cours' | 'Résolu' | 'Fermé';
   createdAt: string;
-  isSelected?:boolean;
+  isSelected?: boolean;
 }
-
 
 export interface TicketAdmin extends TicketBase {
   assignedTo: {
@@ -81,25 +80,24 @@ export interface TicketAdmin extends TicketBase {
   } | null;
   departement: string;
   updated: string;
-
 }
 export interface NewTicketForm {
   titre: string;
   description: string;
   categorie: string;
   priorite: 'Basse' | 'Moyenne' | 'Haute' | 'Urgente' | 'Par default';
-  statut?: 'Ouvert' | 'En Cours' | 'Résolu' | 'Fermé'; 
+  statut?: 'Ouvert' | 'En Cours' | 'Résolu' | 'Fermé';
   assignedTo?: number; // role = canAssigneTicket just
   departement?: string; // role = canAssigneTicket just
 }
-export interface TicketDetailData extends TicketBase{
-  // Historique des statuts 
+export interface TicketDetailData extends TicketBase {
+  // Historique des statuts
   historiqueStatuts: Array<{
     date: string;
     statut: string;
     description: string;
   }>;
-  
+
   // Pour les actions
   noteFermeture?: string;
 }
@@ -159,10 +157,104 @@ export interface ChatGroup {
   createdAt: Date;
   status: 'actif' | 'fermé';
   memberCount: number;
-  members: number[];  
+  members: number[];
   type: 'department' | 'announcement' | '';
   lastActivity?: Date;
-  isSelected?:boolean
+  isSelected?: boolean;
+}
+export interface Justification {
+  EmpId: string;
+  Name: string;
+  Image: string;
+  Email: string;
+  Phone: string;
+  Designation: string;      // Département
+  RequestDate?: string;     // Date de demande
+  Document?: string;        // justificatif
+  Status: 'En attente' | 'Accepter' | 'Refuser';
+}
+
+
+export interface ChartOptions {
+  series: ApexAxisChartSeries | ApexNonAxisChartSeries;
+  chart: ApexChart;
+  xaxis?: ApexXAxis;
+  yaxis?: ApexYAxis;
+  dataLabels?: ApexDataLabels;
+  grid?: ApexGrid;
+  stroke?: ApexStroke;
+  title?: ApexTitleSubtitle;
+  labels?: string[];
+  colors?: string[];
+  plotOptions?: ApexPlotOptions;
+  legend?: ApexLegend;
+  tooltip?: ApexTooltip;
+  fill?: ApexFill;
+}
+export interface AuditLog {
+  id: number;
+  timestamp: Date;
+  user: {
+    id: number;
+    name: string;
+    avatar: string;
+    role: string;
+    department: string;
+  };
+  action: string;
+  module: string;
+  objectName: string;
+  objectType?: string;
+  objectLink?: string;
+  details?: any;
+  ipAddress?: string;
+  status: string;
+  duration?: number;
+  isSelected?: boolean;
+}
+export interface DocumentDemande {
+  id: number;
+  documentCode: string;
+  documentName: string;
+  description: string;
+  category: string;
+  requestDate: Date;
+  processedDate?: Date;
+  status: 'completed' | 'in_progress' | 'pending' | 'rejected' | 'ready';
+  notes?: string;
+  isSelected?: boolean;
+  sNo?: number;
+}
+export interface RhDocumentDemande {
+
+  id: number;
+  documentName: string;
+  description: string;
+  category: string;
+  requestDate: Date;
+  status: 'pending' | 'in_progress' | 'ready' | 'accepted' | 'rejected' | 'cancelled';
+  processedDate?: Date;
+
+  employeeId: number;
+  employeeName: string;
+  employeeAvatar?: string;
+  employeeRole: string;
+  employeeDepartment: string;
+  employeeEmail: string;
+  
+  // Gestion RH
+  justification?: string;
+  urgency?: 'low' | 'medium' | 'high';
+  processedBy?: string;
+  processingNotes?: string;
+  
+
+  documentType?: string; 
+  requiredFormat?: string;
+  deliveryMethod?: 'email' | 'download' | 'print';
+  
+  estimatedProcessingDays: number;
+  actualProcessingDays?: number;
 }
 export interface apiResultFormat {
   data: [];
@@ -229,7 +321,6 @@ export class passwordResponce {
   passwordResponceImage?: string;
   passwordResponceKey?: string;
 }
-
 
 export interface language {
   isSelected?: boolean;
@@ -323,7 +414,6 @@ export interface chatSidebar {
   class?: string;
 }
 
-
 export interface PackageList {
   sNo?: number;
   isSelected: boolean;
@@ -349,6 +439,7 @@ export interface Star {
   show?: boolean;
   half?: boolean;
 }
+
 export interface SideBarMenu {
   showMyTab?: boolean;
   menuValue: string;
@@ -357,14 +448,14 @@ export interface SideBarMenu {
   showSubRoute: boolean;
   icon: string;
   base?: string;
-  base2?:string;
-  base3?:string;
-  base4?:string;
-  base5?:string;
-  base7?:string;
-  base8?:string;
-  base9?:string;
-  base10?:string;
+  base2?: string;
+  base3?: string;
+  base4?: string;
+  base5?: string;
+  base7?: string;
+  base8?: string;
+  base9?: string;
+  base10?: string;
   last1?: string;
   last?: string;
   page?: string;
@@ -394,7 +485,7 @@ export interface SubMenu {
   base6?: string;
   base7?: string;
   base8?: string;
-  dot?:boolean;
+  dot?: boolean;
   currentActive?: boolean;
   hasSubRoute?: boolean;
   showSubRoute?: boolean;
@@ -424,8 +515,8 @@ export interface SideBar {
   tittle: string;
   icon?: string;
   showAsTab: boolean;
-  base?:string;
-  base2?:string;
+  base?: string;
+  base2?: string;
   separateRoute: boolean;
   materialicons?: string;
   menu: SideBarMenu[];
@@ -454,7 +545,7 @@ export interface SubMenu2 {
   showSubRoute?: boolean;
   customSubmenuTwo?: boolean;
   subMenusTwo?: SubMenuTwo[];
-  action?: string;
+  action?: string; // ✅ Cette ligne existe déjà dans votre code
 }
 
 export interface Menu {
@@ -477,6 +568,8 @@ export interface Menu {
   subMenus?: SubMenu2[];
   customSubmenuTwo?: boolean;
   subMenusTwo?: SubMenuTwo[];
+  action?: string; // ✅ AJOUTEZ CETTE LIGNE
+  route?: string | null; // ✅ AJOUTEZ AUSSI CELLE-CI si elle n'existe pas
 }
 
 export interface MainMenu {
@@ -487,7 +580,6 @@ export interface MainMenu {
   menu: Menu[];
 }
 
-
 export interface activities {
   sNo?: number;
   isSelected: boolean;
@@ -497,7 +589,6 @@ export interface activities {
   owner: string;
   createdAt: string;
 }
-
 
 export interface Activity {
   sNo?: number;
@@ -524,11 +615,11 @@ export interface employees {
 }
 
 export interface department {
-  sNo?: number;
-  isSelected: boolean;
+  id: number;
   Department: string;
-  NoOfEmployees: string;
-  Status: string;
+  NoOfEmployees: number;
+  Status: 'Actif' | 'Inactif';
+  isSelected: boolean;
 }
 
 export interface designation {
@@ -540,18 +631,20 @@ export interface designation {
   Status: string;
 }
 
-export interface holiday {
-  sNo?: number;
-  isSelected: boolean;
-  Title: string;
-  Date: string;
-  Description: string;
-  Status: string;
+export interface Holiday {
+  id: number;
+  type: 'national' | 'religious';
+  nameFr: string;
+  nameAr: string;
+  date: Date;
+  days: number;
 }
 
 export interface attendanceadmin {
+  Date: string | number | Date;
+  Department: string | null;
   sNo?: number;
-  isSelected: boolean;
+  isSelected?: boolean;
   Employee: string;
   Image: string;
   Role: string;
@@ -561,53 +654,65 @@ export interface attendanceadmin {
   Late: string;
   Production: number;
   ProductionHours: string;
-  Status: string;
+  Status: 'Present' | 'Absent' | 'Overtime';
+  isOvertime?: boolean;
+  overtimeDecision?: 'PENDING' | 'APPROVED' | 'REJECTED';
 }
 
 export interface attendanceemployee {
   sNo?: number;
-  isSelected: boolean;
   Date: string;
   CheckIn: string;
   Status: string;
   CheckOut: string;
   Break: string;
   Late: string;
-  Overtime: string;
+  overtimeDecision?: 'PENDING' | 'APPROVED' | 'REJECTED';
   Production: number;
   ProductionHours: string;
+  overtimeApproved?: boolean;
+  isSelected?: boolean;
 }
-
-
-
-export interface promotion {
+export type OvertimeDecision = 'APPROVED' | 'REJECTED' | 'PENDING';
+export interface AttendanceRow {
+  Date: string;
+  CheckIn: string;
+  CheckOut: string;
+  ProductionHours: string | number;
+  OvertimeDecision?: OvertimeDecision; // ⚠️ optionnel (API)
+}
+export interface Promotion {
   sNo?: number;
   Image?: string;
   PromotedEmployee?: string;
   Department?: string;
   DesignationFrom?: string;
   DesignationTo?: string;
-
-  OldSalary?: number;   
-  Bonus?: number;       
-  NewSalary?: number;   
-
+  OldSalary?: number;
+  Bonus?: number;
+  NewSalary?: number;
   PromotionDate?: string;
   isSelected?: boolean;
 }
 
+export interface pageSizeCal {
+  totalData: number;
+  pageSize: number;
+  tableData: any[];
+  serialNumberArray?: number[]; // ✅ optionnel
+}
 
 export interface resignation {
+resignation: any;
   sNo?: number;
   isSelected: boolean;
   Image: string;
   ResigningEmployee: string;
   Department: string;
   Reason: string;
-  NoticeDate: string;
-  ResignationDate: string;
+  NoticeDate: Date | null;
+  ResignationDate: Date | null;
 }
-
 
 export interface Activity {
   sNo?: number;
@@ -668,8 +773,8 @@ export interface leaveEmployee {
   To: string;
   NoOfDays: string;
   Status: string;
+  justificatif?: File;
 }
-
 
 export interface InvoiceList {
   sNo?: number;
@@ -698,15 +803,10 @@ export interface InvoicePaymentDetails {
   Paid_Amount: string;
 }
 
-
-
-
-
-
 export interface employeeSalary {
   sNo?: number;
   isSelected: boolean;
-  Image:string;
+  Image: string;
   EmpID: string;
   Name: string;
   Department: string;
@@ -716,11 +816,7 @@ export interface employeeSalary {
   JoiningDate: string;
   Salary: string;
   PaySlip: string;
-};
-
-
-
-
+}
 
 export interface payslipReport {
   sNo?: number;
@@ -732,7 +828,6 @@ export interface payslipReport {
   PaidMonth: string;
   PaidYear: string;
 }
-
 
 export interface leaveReport {
   sNo?: number;
@@ -748,8 +843,6 @@ export interface leaveReport {
   Status: string;
 }
 
-
-
 export interface employeeReport {
   sNo?: number;
   isSelected: boolean;
@@ -763,7 +856,6 @@ export interface employeeReport {
   JoiningDate: string;
   Status: string;
 }
-
 
 export interface dailyReport {
   sNo?: number;
@@ -789,7 +881,7 @@ export interface attendanceReport {
   Break: string;
   Late: string;
   Overtime: string;
-  Progress:number;
+  Progress: number;
   ProductionHours: string;
 }
 export interface ApiData {
