@@ -1,0 +1,11 @@
+/* ===================================== */
+/* 🔥 Déplacer icône validation Bootstrap */
+/* ===================================== */
+
+.pass-group .form-control.is-invalid,
+.pass-group .form-control.is-valid {
+
+  /* On enlève la position par défaut */
+  background-position: right 3.5rem center !important;
+
+}
