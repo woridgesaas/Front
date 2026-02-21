@@ -4,11 +4,15 @@ import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 
 import { routes } from './app.routes';
-import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
+import {
+  provideClientHydration,
+  withEventReplay,
+} from '@angular/platform-browser';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHttpClient } from '@angular/common/http';
 import { provideNgxMask } from 'ngx-mask';
+import { provideToastr } from 'ngx-toastr';
 
 registerLocaleData(localeFr);
 
@@ -20,7 +24,13 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     provideHttpClient(),
     provideNgxMask(),
-
-    { provide: LOCALE_ID, useValue: 'fr-FR' }
+    provideToastr({
+  positionClass: 'toast-top-right',
+  timeOut: 3000,
+  closeButton: true,
+  progressBar: true,
+  preventDuplicates: true
+}),
+    { provide: LOCALE_ID, useValue: 'fr-FR' },
   ],
 };

@@ -14,7 +14,11 @@
         >
           <div class="col-md-7 mx-auto vh-100">
             <!--* Log in form -->
-            <form class="vh-100">
+            <form
+              class="vh-100"
+              #loginForm="ngForm"
+              (ngSubmit)="onSubmit(loginForm)"
+            >
               <div
                 class="min-vh-100 d-flex flex-column justify-content-center p-3 p-md-5 pb-0"
               >
@@ -27,20 +31,43 @@
                     text="Veuillez entrer vos coordonnées pour vous connecter"
                   ></app-description>
 
-                  <!--* CIN input -->
+                  <!--* EMAIL input -->
                   <div class="mb-3">
                     <div class="input-group">
                       <input
-                        type="text"
-                        value=""
+                        type="email"
                         class="form-control border-end-0 rounded-start-4"
-                        placeholder="Entrer votre adress email"
+                        placeholder="Entrer votre adresse email"
+                        [(ngModel)]="email"
+                        name="email"
+                        #emailCtrl="ngModel"
+                        required
+                        minlength="5"
+                        maxlength="100"
+                        email
+                        [ngClass]="{
+                          'is-invalid': emailCtrl.invalid && emailCtrl.touched,
+                          'is-valid': emailCtrl.valid && emailCtrl.touched
+                        }"
                       />
+
                       <span
                         class="input-group-text border-start-0 rounded-end-4"
                       >
                         <i class="fa-solid fa-envelope"></i>
                       </span>
+                    </div>
+
+                    <div
+                      class="invalid-feedback d-block"
+                      *ngIf="emailCtrl.invalid && emailCtrl.touched"
+                    >
+                      {{
+                        validationService.getErrorMessage(
+                          emailCtrl.control,
+                          "Email"
+                        )
+                      }}
                     </div>
                   </div>
 
@@ -51,14 +78,38 @@
                         [type]="password[0] ? 'text' : 'password'"
                         class="pass-input form-control rounded-4"
                         placeholder="Entrer votre mot de passe"
+                        [(ngModel)]="userPassword"
+                        name="password"
+                        #passwordCtrl="ngModel"
+                        required
+                        minlength="8"
+                        maxlength="128"
+                        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$"
+                        [ngClass]="{
+                          'is-invalid':
+                            passwordCtrl.invalid && passwordCtrl.touched,
+                          'is-valid': passwordCtrl.valid && passwordCtrl.touched
+                        }"
                       />
+
                       <span
                         class="ti toggle-password"
                         [ngClass]="password[0] ? 'ti-eye' : 'ti-eye-off'"
                         (click)="togglePassword(0)"
-                        (keydown.enter)="togglePassword(0)"
                         tabindex="0"
                       ></span>
+                    </div>
+
+                    <div
+                      class="invalid-feedback d-block"
+                      *ngIf="passwordCtrl.invalid && passwordCtrl.touched"
+                    >
+                      {{
+                        validationService.getErrorMessage(
+                          passwordCtrl.control,
+                          "Mot de passe"
+                        )
+                      }}
                     </div>
                   </div>
 
@@ -93,6 +144,7 @@
                     <button
                       type="submit"
                       class="btn btn-primary w-100 rounded-4"
+                      [disabled]="loginForm.invalid"
                     >
                       <i class="fa fa-sign-in-alt me-2"></i>
                       <span> Se connecter </span>
@@ -101,7 +153,7 @@
                 </div>
 
                 <!--* Footer -->
-               <app-footer></app-footer>
+                <app-footer></app-footer>
               </div>
             </form>
           </div>
