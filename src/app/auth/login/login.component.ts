@@ -10,6 +10,7 @@ import { AuthService } from '../services/auth.service';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { FormValidationService } from '../../core/services/form-validation.service';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -29,10 +30,8 @@ export class LoginComponent {
   password: boolean[] = [false, false];
   email: string = '';
   userPassword: string = '';
+  isLoading: boolean = false;
 
-  togglePassword(index: number): void {
-    this.password[index] = !this.password[index];
-  }
   constructor(
     private router: Router,
     private renderer: Renderer2,
@@ -41,55 +40,57 @@ export class LoginComponent {
     public validationService: FormValidationService
   ) {}
 
-  /* navigation() {//cette fonction sert simplement à naviguer vers la page d’accueil (ou index)
-    this.router.navigate([routes.index]);
-  }*/
+  togglePassword(index: number): void {
+    this.password[index] = !this.password[index];
+  }
+
   ngOnInit(): void {
     this.renderer.addClass(document.body, 'bg-white');
   }
+
   ngOnDestroy(): void {
     this.renderer.removeClass(document.body, 'bg-white');
   }
-  onSubmit(form: any) {
-     if (form.invalid) {
-    return;
+
+  onSubmit() {
+    console.log('Submit!', this.email, this.userPassword);
+
+    if (!this.email || !this.userPassword) {
+      this.toastr.error('Veuillez remplir tous les champs', 'Erreur');
+      return;
+    }
+
+    this.isLoading = true;
+
+    this.authService.login({
+      email: this.email,
+      password: this.userPassword,
+    }).subscribe({
+      next: (res: any) => {
+        this.isLoading = false;
+        const token = res.data;
+        this.authService.saveToken(token);
+        this.toastr.success('Connexion réussie', 'Bienvenue');
+        setTimeout(() => {
+          this.router.navigate([routes.index]);
+        }, 1000);
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.handleError(err);
+      },
+    });
   }
 
-    this.authService
-      .login({
-        email: this.email,
-        password: this.userPassword,
-      })
-      .subscribe({
-        next: (res: any) => {
-          const token = res.data;
-
-          this.authService.saveToken(token);
-
-          this.toastr.success('Connexion réussie', 'Bienvenue');
-
-          setTimeout(() => {
-            this.router.navigate([routes.index]);
-          }, 1000);
-        },
-
-        error: (err) => {
-          this.handleError(err);
-        },
-      });
-  }
   handleError(err: any) {
-    let message = 'Veuillez vérifier les champs saisis'; //400 modelstate is not valid
-
+    let message = 'Veuillez vérifier les champs saisis';
     switch (err.status) {
       case 401:
         message = 'Mot de passe incorrect.';
         break;
-
       case 404:
         message = 'Aucun utilisateur ne correspond à cet email.';
         break;
-
       case 403:
         message = 'Votre compte est désactivé ou bloqué.';
         break;

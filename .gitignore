@@ -45,5 +45,6 @@ src/environments/*.local.ts
 src/environments/*.dev.ts
 src/environments/*.prod.ts
 .env
+.env.docker
 #Cache de ang
 .angular/cache/
