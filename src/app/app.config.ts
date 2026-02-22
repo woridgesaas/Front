@@ -2,8 +2,9 @@ import { ApplicationConfig, LOCALE_ID } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
-
+import {  withInterceptors } from '@angular/common/http';
 import { routes } from './app.routes';
+import { authInterceptor } from '../app/core/interceptors/auth.interceptor';
 import {
   provideClientHydration,
   withEventReplay,
@@ -22,7 +23,9 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(withEventReplay()),
     BsDatepickerModule.forRoot().providers!,
     provideAnimations(),
-    provideHttpClient(),
+provideHttpClient(
+  withInterceptors([authInterceptor])
+),
     provideNgxMask(),
     provideToastr({
   positionClass: 'toast-top-right',
