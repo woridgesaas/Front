@@ -41,6 +41,7 @@
         </app-resignation-table>
       </div>
     </div>
+    <div class="modal-backdrop fade show" *ngIf="openAddModal || openEditModal || openDeleteModal"></div>
 
     <!-- MODALS -->
     <app-add-resignation-modal
