@@ -309,6 +309,7 @@ export interface adminSubMenus {
 export interface url {
   url: string;
 }
+
 export class register {
   name?: string;
   email?: string;
