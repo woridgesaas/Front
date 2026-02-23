@@ -1,7 +1,6 @@
 <div class="container-fuild">
   <div class="w-100 overflow-hidden position-relative flex-wrap d-block vh-100">
     <div class="row">
-
       <!--* Background image -->
       <div class="col-lg-5 d-none d-lg-block p-0 bg-primary-transparent">
         <app-illustration backgroundImage="assets/img/bg/login.png"></app-illustration>
@@ -11,7 +10,7 @@
         <div class="row justify-content-center align-items-center vh-100 overflow-auto flex-wrap">
           <div class="col-md-7 mx-auto vh-100">
 
-            <div class="vh-100">
+            <form class="vh-100" #loginForm="ngForm">
               <div class="min-vh-100 d-flex flex-column justify-content-center p-3 p-md-5 pb-0">
 
                 <!--* Logo -->
@@ -32,10 +31,23 @@
                         placeholder="Entrer votre adresse email"
                         [(ngModel)]="email"
                         name="email"
+                        #emailCtrl="ngModel"
+                        required
+                        minlength="5"
+                        maxlength="100"
+                        email
+                        [ngClass]="{
+                          'is-invalid': emailCtrl.invalid && emailCtrl.touched,
+                          'is-valid': emailCtrl.valid && emailCtrl.touched
+                        }"
                       />
                       <span class="input-group-text border-start-0 rounded-end-4">
                         <i class="fa-solid fa-envelope"></i>
                       </span>
+                    </div>
+                    <div class="invalid-feedback d-block"
+                      *ngIf="emailCtrl.invalid && emailCtrl.touched">
+                      {{ validationService.getErrorMessage(emailCtrl.control, "Email") }}
                     </div>
                   </div>
 
@@ -48,6 +60,15 @@
                         placeholder="Entrer votre mot de passe"
                         [(ngModel)]="userPassword"
                         name="password"
+                        #passwordCtrl="ngModel"
+                        required
+                        minlength="8"
+                        maxlength="128"
+                        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$"
+                        [ngClass]="{
+                          'is-invalid': passwordCtrl.invalid && passwordCtrl.touched,
+                          'is-valid': passwordCtrl.valid && passwordCtrl.touched
+                        }"
                       />
                       <span
                         class="ti toggle-password"
@@ -55,6 +76,10 @@
                         (click)="togglePassword(0)"
                         tabindex="0"
                       ></span>
+                    </div>
+                    <div class="invalid-feedback d-block"
+                      *ngIf="passwordCtrl.invalid && passwordCtrl.touched">
+                      {{ validationService.getErrorMessage(passwordCtrl.control, "Mot de passe") }}
                     </div>
                   </div>
 
@@ -68,7 +93,6 @@
                         </label>
                       </div>
                     </div>
-
                     <!--* Forgot password -->
                     <div class="text-end">
                       <a [routerLink]="routes.forgotPassword" class="hover-a">
@@ -82,7 +106,7 @@
                     <button
                       type="button"
                       class="btn btn-primary w-100 rounded-4"
-                      [disabled]="isLoading"
+                      [disabled]="loginForm.invalid || isLoading"
                       (click)="onSubmit()"
                     >
                       <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
@@ -95,7 +119,7 @@
                 <!--* Footer -->
                 <app-footer></app-footer>
               </div>
-            </div>
+            </form>
 
           </div>
         </div>

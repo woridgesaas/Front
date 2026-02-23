@@ -53,7 +53,7 @@ export class LoginComponent {
   }
 
   onSubmit() {
-    console.log('Submit!', this.email, this.userPassword);
+    // console.log('Submit!', this.email, this.userPassword);
 
     if (!this.email || !this.userPassword) {
       this.toastr.error('Veuillez remplir tous les champs', 'Erreur');
