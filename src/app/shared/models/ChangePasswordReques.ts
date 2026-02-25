@@ -10,4 +10,5 @@ export interface ApiResponse {
   };
   message: string;
   timestamp: string;
+  errorMessage?: string  ;
 }
