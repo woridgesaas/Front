@@ -24,4 +24,5 @@ export class ProfileDropdownComponent {
   logout() {
     this.authService.logout();
   }
+  
 }
