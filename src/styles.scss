@@ -5,8 +5,89 @@
 @import url("https://cdn.jsdelivr.net/npm/lightgallery@2.0.0-beta.4/css/lg-video.css");
 // @import "~ngx-editor/prebuilt-themes/ng-bundle.css";
 // @import '@fontsource/inter/variable.css';
+@import 'ngx-toastr/toastr';
 
+/*  WORIDGE  TOAST STYLE    */
+.toast-container {
+  width: 440px !important;
+}
+/* Toast box */
+.toast-container .ngx-toastr {
+  width: 100% !important;
+  padding: 22px 28px 22px 85px !important; /* espace à gauche pour l’icône */
+  border-radius: 16px !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18) !important;
+  font-family: 'Inter', sans-serif;
+  position: relative !important;
+}
 
+/* SUCCESS */
+.toast-success {
+  background-color: #28C76F !important;
+  color: #ffffff !important;
+}
+
+/* ERROR */
+.toast-error {
+  background-color: #FF0000 !important;
+  color: #ffffff !important;
+}
+
+/* Positionner l’icône native */
+.toast-container .ngx-toastr .toast-icon {
+  position: absolute !important;
+  left: 26px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+
+  width: 44px !important;
+  height: 44px !important;
+  margin: 0 !important;
+
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.18) !important;
+
+  /* centre le X / ✓ */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  font-size: 22px !important;
+}
+
+/* Titre et message bien séparés */
+.toast-title {
+  display: block !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  margin: 0 0 6px 0 !important;
+}
+
+.toast-message {
+  display: block !important;
+  font-size: 15px !important;
+  font-weight: 500 !important;
+  line-height: 1.6 !important;
+}
+
+/* Close button */
+.toast-close-button {
+  color: #ffffff !important;
+  opacity: 0.85 !important;
+  font-size: 18px !important;
+}
+
+.toast-close-button:hover {
+  opacity: 1 !important;
+}
+
+/* 📱 Responsive */
+@media (max-width: 576px) {
+  .toast-container {
+    width: 95% !important;
+    right: 10px !important;
+  }
+}
   .offcanvas-body{
     height: 100vh !important;;
   }
@@ -539,7 +620,7 @@ popover-container.popover .popover-header {
     }
     tag-input-form{
       input{
-  
+
         background-color: #0a0a0a;
       }
     }
@@ -1436,7 +1517,7 @@ p-datepicker {
     border: none;
   }
   }
- 
+
 }
 
 table.mat-sort .mat-sort-header-container .mat-sort-header-arrow:before,.mat-sort-header-container .mat-sort-header-arrow:after{
@@ -1476,7 +1557,7 @@ tag-input{
   }
   tag {
     border-radius: 4px !important;
-    
+
   }
   tag-ripple{
     background-color: #e8e9ea;
@@ -1624,15 +1705,15 @@ tag-input{
 .NgxEditor__Content h6 { font-size: 0.67em; font-weight: bold; margin: 1.33em 0; }
 
 .NgxEditor__Content p { margin: 0.5em 0; }
-.NgxEditor__Content ul, 
+.NgxEditor__Content ul,
 .NgxEditor__Content ol { margin: 0.5em 0; padding-left: 2em; }
 .NgxEditor__Content li { margin: 0.25em 0; }
 .NgxEditor__Content a { color: #0d6efd; text-decoration: underline; }
 .NgxEditor__Content strong { font-weight: bold; }
 .NgxEditor__Content em { font-style: italic; }
-.NgxEditor__Content code { 
-  background: #f8f9fa; 
-  padding: 2px 4px; 
+.NgxEditor__Content code {
+  background: #f8f9fa;
+  padding: 2px 4px;
   border-radius: 3px;
   font-family: monospace;
 }
@@ -1649,7 +1730,7 @@ tag-input{
   .NgxEditor__MenuBar {
     padding: 6px 8px;
   }
-  
+
   .NgxEditor__MenuItem {
     padding: 4px 8px;
     font-size: 0.875rem;

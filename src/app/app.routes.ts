@@ -1,4 +1,6 @@
 import { Routes } from '@angular/router';
+import { AuthGuard } from './core/guards/auth.guard';
+import { NoAuthGuard } from './core/guards/no-auth.guard';
 
 export const routes: Routes = [
   {
@@ -15,6 +17,7 @@ export const routes: Routes = [
     children: [
       {
         path: 'login',
+        canActivate: [NoAuthGuard],
         loadComponent: () =>
           import('./auth/login/login.component').then((m) => m.LoginComponent),
         data: { title: 'Connexion' },
@@ -63,8 +66,10 @@ export const routes: Routes = [
   },
 
   //* Features routes
+  
   {
     path: '',
+    canActivate: [AuthGuard],
     loadComponent: () =>
       import('./features/features.component').then((m) => m.FeaturesComponent),
     children: [

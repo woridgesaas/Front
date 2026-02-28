@@ -1,20 +1,21 @@
 <div class="dropdown profile-dropdown">
+
+  <!-- Toggle -->
   <a
-    href="javascript:void(0);"
+    href="#"
     class="dropdown-toggle d-flex align-items-center"
     data-bs-toggle="dropdown"
+    (click)="$event.preventDefault()"
   >
     <span class="avatar avatar-sm online">
-      <img
-        [src]="user.avatar"
-        alt="Img"
-        class="img-fluid rounded-circle"
-      />
+      <img [src]="user.avatar" alt="Img" class="img-fluid rounded-circle" />
     </span>
   </a>
 
-  <div class="dropdown-menu shadow-none">
+  <!-- Menu -->
+  <div class="dropdown-menu shadow-none dropdown-menu-end">
     <div class="card mb-0">
+
       <!-- Header -->
       <div class="card-header">
         <div class="d-flex align-items-center">
@@ -30,34 +31,40 @@
 
       <!-- Body -->
       <div class="card-body">
+
         <a
-          class="dropdown-item d-inline-flex align-items-center p-0 py-2"
+          class="dropdown-item d-flex align-items-center py-2"
           [routerLink]="routes.employeeDetails"
         >
-          <i class="ti ti-circle-arrow-up me-1"></i>
+          <i class="ti ti-circle-arrow-up me-2"></i>
           Profil
         </a>
 
         <a
-          class="dropdown-item d-inline-flex align-items-center p-0 py-2"
+          class="dropdown-item d-flex align-items-center py-2"
           [routerLink]="routes.changePassword"
         >
-          <i class="ti ti-settings me-1"></i>
+          <i class="ti ti-settings me-2"></i>
           Paramètres
         </a>
+
       </div>
 
       <!-- Footer -->
       <div class="card-footer">
+
         <a
-          class="dropdown-item d-inline-flex align-items-center p-0 py-2"
-          [routerLink]="routes.login"
+          href="#"
+          class="dropdown-item d-flex align-items-center py-2"
+          (click)="logout(); $event.preventDefault()"
         >
           <i class="ti ti-login me-2"></i>
           Déconnexion
         </a>
+
       </div>
+
     </div>
   </div>
-</div>
 
+</div>
