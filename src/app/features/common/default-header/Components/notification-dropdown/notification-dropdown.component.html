@@ -1,70 +1,112 @@
 <div class="me-1 notification_item dropdown">
   <a
-    href="javascript:void(0);"
-    class="btn btn-menubar position-relative"
-    data-bs-toggle="dropdown"
-    id="notification_popup"
-  >
-    <i class="ti ti-bell"></i>
+  href="javascript:void(0);"
+  class="btn btn-menubar position-relative"
+  data-bs-toggle="dropdown"
+  id="notification_popup"
+>
+  <i class="ti ti-bell"></i>
+  @if (notificationsCount > 0) {
     <span class="notification-status-dot"></span>
-  </a>
+  }
+</a>
 
-  <div class="dropdown-menu dropdown-menu-end notification-dropdown p-4">
-    <!-- Header -->
-    <div
-      class="d-flex align-items-center justify-content-between border-bottom p-0 pb-3 mb-3"
-    >
-      <h4 class="notification-title">
-        Notifications ({{ notificationsCount }})
-      </h4>
+<div class="dropdown-menu dropdown-menu-end notification-dropdown p-4">
 
-      <a href="javascript:void(0);" class="text-primary fs-15">
-        Mark all as read
-      </a>
+  <!-- Header -->
+  <div class="d-flex align-items-center justify-content-between border-bottom p-0 pb-3 mb-3">
+    <h4 class="notification-title">
+      Notifications ({{ notificationsCount }})
+    </h4>
+    <a href="javascript:void(0);" class="text-primary fs-15" (click)="markAllAsRead()">
+      Mark all as read
+    </a>
+  </div>
+
+  <!-- Loading -->
+  @if (isLoading) {
+    <div class="text-center py-3">
+      <div class="spinner-border spinner-border-sm text-primary"></div>
     </div>
+  }
 
-    <!-- Content -->
-    <div class="noti-content">
-      <div class="d-flex flex-column">
-        @for (noti of notifications; track noti) {
-          <div class="border-bottom mb-3 pb-3">
-            <div class="d-flex">
-              <span class="avatar avatar-lg me-2 flex-shrink-0">
-                <img [src]="noti.avatar" alt="Profile" />
-              </span>
+  <!-- Erreur -->
+  @if (error) {
+    <div class="alert alert-danger py-2 small">{{ error }}</div>
+  }
 
-              <div class="flex-grow-1">
-                <p class="mb-1">
-                  <span class="text-dark fw-semibold">
-                    {{ noti.user }}
-                  </span>
-                  {{ noti.message }}
-                </p>
+  <!-- Vide -->
+  @if (!isLoading && !error && notifications.length === 0) {
+    <div class="text-center text-muted py-4">
+      <i class="ti ti-bell-off fs-2"></i>
+      <p class="mt-2 mb-0">Aucune notification</p>
+    </div>
+  }
 
-                <span>{{ noti.time }}</span>
+  <!-- Liste -->
+  <div class="noti-content">
+    <div class="d-flex flex-column">
+      @for (notif of notifications; track notif.id) {
+        <div
+          class="border-bottom mb-3 pb-3"
+          style="cursor:pointer"
+          (click)="markAsRead(notif)"
+        >
+          <div class="d-flex align-items-start">
 
-                @if (noti.actions) {
-                  <div
-                    class="d-flex justify-content-start align-items-center mt-1"
-                  >
-                    <span class="btn btn-light btn-sm me-2">Deny</span>
-                    <span class="btn btn-primary btn-sm">Approve</span>
-                  </div>
-                }
+            <!-- Point rouge si non lue -->
+            <span class="me-2 mt-1 flex-shrink-0">
+              @if (!notif.isRead) {
+                <span
+                  class="rounded-circle bg-danger d-inline-block"
+                  style="width:8px;height:8px">
+                </span>
+              } @else {
+                <span class="d-inline-block" style="width:8px"></span>
+              }
+            </span>
+
+            <div class="flex-grow-1" [class.opacity-50]="notif.isRead">
+
+              <!-- Titre -->
+              <p class="mb-1">
+                <span class="text-dark fw-semibold">{{ notif.title }}</span>
+              </p>
+
+              <!-- Description -->
+              <p class="mb-1 text-muted small">{{ notif.description }}</p>
+
+              <!-- Badges + date -->
+              <div class="d-flex align-items-center gap-2 flex-wrap">
+                <span
+                  class="badge"
+                  [class.bg-danger]="notif.priority === 'Critical'"
+                  [class.bg-warning]="notif.priority === 'High'"
+                  [class.bg-info]="notif.priority === 'Medium'"
+                  [class.bg-secondary]="notif.priority === 'Low'"
+                >
+                  {{ notif.priority }}
+                </span>
+
+                <span class="badge bg-light text-dark">{{ notif.type }}</span>
+
+                <span class="text-muted small ms-auto">
+                  {{ notif.creationDate | date:'dd/MM HH:mm' }}
+                </span>
               </div>
+
             </div>
           </div>
-        }
-      </div>
-    </div>
-
-    <!-- Footer -->
-    <div class="d-flex p-0">
-      <a href="javascript:void(0);" class="btn btn-light w-100 me-2">
-        Cancel
-      </a>
-      <a class="btn btn-primary w-100">View All</a>
+        </div>
+      }
     </div>
   </div>
-</div>
 
+  <!-- Footer -->
+  <div class="d-flex p-0 pt-2">
+    <a href="javascript:void(0);" class="btn btn-light w-100 me-2">Cancel</a>
+    <a href="javascript:void(0);" class="btn btn-primary w-100">View All</a>
+  </div>
+
+</div>
+</div>
