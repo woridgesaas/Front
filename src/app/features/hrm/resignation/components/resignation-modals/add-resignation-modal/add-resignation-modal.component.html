@@ -1,121 +1,119 @@
 <div class="modal fade show d-block" *ngIf="open">
   <div class="modal-dialog modal-dialog-centered modal-md">
     <div class="modal-content">
+
       <!-- HEADER -->
       <app-modal-header
         title="Ajouter une démission"
         icon="ti ti-user-off"
-        (close)="cancel.emit()"
-      >
+        (cancel)="onCancel()">
       </app-modal-header>
 
       <form (ngSubmit)="submit()">
         <div class="modal-body">
+
+          <!-- CIN AUTOCOMPLETE -->
           <div class="mb-3">
             <label class="form-label">CIN d'Employé</label>
             <input
               type="text"
               class="form-control"
-              [(ngModel)]="form.ResigningEmployee"
-              name="employee"
+              [(ngModel)]="cinInput"
+              name="cin"
+              placeholder="Entrer le CIN..."
+              (ngModelChange)="onCinChange()"
               required
             />
+            <!-- Recherche en cours -->
+            <small class="text-muted" *ngIf="isSearching">
+              <i class="ti ti-loader"></i> Recherche...
+            </small>
+            <!-- Erreur -->
+            <small class="text-danger" *ngIf="cinError">
+              {{ cinError }}
+            </small>
           </div>
 
-          <div class="mb-3">
+          <!-- INFOS AUTO-REMPLIES -->
+          <div class="mb-3" *ngIf="userFound">
             <label class="form-label">Nom d'Employé</label>
             <input
               type="text"
               class="form-control"
-              [(ngModel)]="form.ResigningEmployee"
-              name="employee"
-              required
+              [value]="userFound.fullName"
+              disabled
             />
           </div>
 
-          <div class="mb-3">
+          <div class="mb-3" *ngIf="userFound">
             <label class="form-label">Département</label>
-
-            <div class="dropdown">
-              <button
-                type="button"
-                class="btn btn-outline-secondary d-flex justify-content-between"
-                (click)="isDeptOpen = !isDeptOpen"
-              >
-                {{ form.Department || "Sélectionner un département" }}
-                <i class="ti ti-chevron-down"></i>
-              </button>
-
-              <ul class="dropdown-menu show" *ngIf="isDeptOpen">
-                <li *ngFor="let dept of departments">
-                  <button
-                    type="button"
-                    class="dropdown-item"
-                    (click)="selectDepartment(dept.Department)"
-                  >
-                    {{ dept.Department }}
-                  </button>
-                </li>
-              </ul>
-            </div>
+            <input
+              type="text"
+              class="form-control"
+              [value]="userFound.departmentName"
+              disabled
+            />
           </div>
 
+          <!-- DATE PRÉAVIS -->
           <div class="mb-3">
             <label class="form-label">Date de préavis</label>
-
             <div class="input-icon position-relative">
               <span class="input-icon-addon">
                 <i class="ti ti-calendar text-gray-9"></i>
               </span>
-
               <input
                 type="text"
                 class="form-control"
                 bsDatepicker
-                [(ngModel)]="form.NoticeDate"
+                [(ngModel)]="form.noticeDate"
                 name="noticeDate"
                 placeholder="jj/mm/aaaa"
+                required
               />
             </div>
           </div>
 
+          <!-- DATE DÉMISSION -->
           <div class="mb-3">
             <label class="form-label">Date de démission</label>
             <div class="input-icon position-relative">
               <span class="input-icon-addon">
                 <i class="ti ti-calendar text-gray-9"></i>
               </span>
-
               <input
                 type="text"
                 class="form-control"
                 bsDatepicker
-                [(ngModel)]="form.NoticeDate"
-                name="noticeDate"
+                [(ngModel)]="form.resignationDate"
+                name="resignationDate"
                 placeholder="jj/mm/aaaa"
+                required
               />
             </div>
           </div>
 
+          <!-- MOTIF -->
           <div class="mb-3">
             <label class="form-label">Motif</label>
             <textarea
               class="form-control"
               rows="3"
-              [(ngModel)]="form.Reason"
+              [(ngModel)]="form.reason"
               name="reason"
-            >
-            </textarea>
+              required
+            ></textarea>
           </div>
+
         </div>
 
         <!-- FOOTER -->
         <app-modal-footer
           submitText="Ajouter"
           submitIcon="ti ti-circle-plus"
-          (cancel)="cancel.emit()"
-        >
+          (cancel)="onCancel()">
         </app-modal-footer>
+
       </form>
     </div>
   </div>

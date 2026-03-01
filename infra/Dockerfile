@@ -4,9 +4,11 @@ COPY package.json package-lock.json ./
 RUN npm install
 COPY . .
 
-
 ARG NG_APP_API_URL
 ENV NG_APP_API_URL=$NG_APP_API_URL
+
+ARG NG_APP_NOTIF_URL
+ENV NG_APP_NOTIF_URL=$NG_APP_NOTIF_URL
 
 RUN npm run build -- woridge --configuration production
 

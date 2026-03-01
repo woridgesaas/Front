@@ -1,11 +1,10 @@
+
 <div class="page-wrapper">
+  <app-toast></app-toast>
   <div class="content">
     <!-- HEADER -->
-    <div
-      class="d-md-flex align-items-center justify-content-between page-breadcrumb mb-3"
-    >
+    <div class="d-md-flex align-items-center justify-content-between page-breadcrumb mb-3">
       <app-breadcrumbs></app-breadcrumbs>
-
       <button class="btn btn-primary" (click)="openAddModal = true">
         <i class="ti ti-circle-plus me-2"></i>
         Ajouter Démission
@@ -13,66 +12,55 @@
     </div>
 
     <!-- STATS -->
-    <app-resignation-stats
-      [resignations]="filteredResignations"
-    ></app-resignation-stats>
+    <app-resignation-stats [resignations]="filteredResignations"></app-resignation-stats>
 
     <!-- CARD -->
     <div class="card mb-0">
-      <div
-        class="card-header d-flex justify-content-between align-items-center flex-wrap gap-3"
-      >
+      <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-3">
         <h5 class="mb-0">Liste des démissions</h5>
-
-        <!--  FILTRES AU BON ENDROIT -->
         <app-resignation-filters
           [(searchValue)]="searchValue"
-          [(dateRange)]="dateRange"
-        >
+          [(dateRange)]="dateRange">
         </app-resignation-filters>
       </div>
-
       <div class="card-body p-0">
         <app-resignation-table
           [tableData]="filteredResignations"
           (edit)="openEdit($event)"
-          (delete)="openDelete($event)"
-        >
+          (delete)="openDelete($event)">
         </app-resignation-table>
       </div>
     </div>
 
+    <div class="modal-backdrop fade show" 
+    *ngIf="openAddModal || openEditModal || openDeleteModal"
+    (click)="openAddModal = false; openEditModal = false; openDeleteModal = false">
+</div>
+
     <!-- MODALS -->
     <app-add-resignation-modal
-      [open]="openAddModal"
-      [departments]="departments ?? []"
-      (cancel)="openAddModal = false"
-      (add)="add($event)"
-    >
-    </app-add-resignation-modal>
+    [open]="openAddModal"
+    (cancel)="openAddModal = false"
+    (add)="add($event)">
+</app-add-resignation-modal>
 
     <app-edit-resignation-modal
       [open]="openEditModal"
       [resignation]="selectedResignation!"
-      [departments]="departments ?? []"
       (cancel)="openEditModal = false"
-      (update)="update($event)"
-    >
+      (update)="update($event)">
     </app-edit-resignation-modal>
 
     <app-confirm-delete
-      modalId="deleteModal"
-      title="Supprimer la démission"
-      [message]="
-        selectedResignation
-          ? 'Êtes-vous sûr de vouloir supprimer la démission de ' +
-            selectedResignation.ResigningEmployee +
-            ' ?'
-          : ''
-      "
-      (confirm)="delete()"
-    >
-    </app-confirm-delete>
+  [isOpen]="openDeleteModal"
+  title="Supprimer la démission"
+  [message]="selectedResignation
+    ? 'Êtes-vous sûr de vouloir supprimer la démission de ' + selectedResignation.userFullName + ' ?'
+    : ''"
+  (confirm)="delete()"
+  (cancel)="cancelDelete()">
+</app-confirm-delete>
+      
   </div>
   <app-footer></app-footer>
 </div>

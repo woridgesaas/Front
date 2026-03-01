@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-import { resignation } from '../../../../../../shared/models/models';
+import { Resignation } from '../../../models/models';
 import { ModalHeaderComponent } from '../../../../../common/modal-header/modal-header.component';
 import { ModalFooterComponent } from '../../../../../common/modal-footer/modal-footer.component';
 
@@ -21,30 +21,22 @@ import { ModalFooterComponent } from '../../../../../common/modal-footer/modal-f
 export class EditResignationModalComponent {
 
   @Input() open = false;
-  @Input() departments: { Department: string }[] = [];
-
   @Output() cancel = new EventEmitter<void>();
-  @Output() update = new EventEmitter<resignation>();
+  @Output() update = new EventEmitter<Resignation>();
 
-  isDeptOpen = false;
-  form!: resignation;
+  form: Resignation = {
+    reason: '',
+    noticeDate: null,
+    resignationDate: null,
+  };
 
-  /** INPUT resignation (setter UNIQUE) */
-  @Input() set resignation(value: resignation | undefined) {
+  @Input() set resignation(value: Resignation | undefined) {
     if (!value) return;
-
     this.form = {
       ...value,
-      NoticeDate: value.NoticeDate ? new Date(value.NoticeDate) : null,
-      ResignationDate: value.ResignationDate
-        ? new Date(value.ResignationDate)
-        : null,
+      noticeDate: value.noticeDate ? new Date(value.noticeDate) : null,
+      resignationDate: value.resignationDate ? new Date(value.resignationDate) : null,
     };
-  }
-
-  selectDepartment(dept: string) {
-    this.form.Department = dept;
-    this.isDeptOpen = false;
   }
 
   submit() {
