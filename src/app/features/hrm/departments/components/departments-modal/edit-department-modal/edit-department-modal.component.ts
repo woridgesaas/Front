@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { department } from '../../../../../../shared/models/models';
+import { Department } from '../../../../../../shared/models/models';
 import { ModalFooterComponent } from '../../../../../common/modal-footer/modal-footer.component';
 import { ModalHeaderComponent } from '../../../../../common/modal-header/modal-header.component';
 
@@ -25,25 +25,48 @@ import { ModalHeaderComponent } from '../../../../../common/modal-header/modal-h
 })
 export class EditDepartmentModalComponent implements OnChanges {
 
-  @Input() open = false;                 // ✅ comme Add
-  @Input() department!: department;
-  @Output() update = new EventEmitter<department>();
+  @Input() open = false;
+  @Input() department!: Department;
+
+@Output() update = new EventEmitter<{
+  id: string;
+  name: string;
+  status: 'ACTIVE' | 'INACTIVE';
+}>();
   @Output() cancel = new EventEmitter<void>();
 
-  model!: department;
+  model = {
+  id: '',
+  name: '',
+  status: 'ACTIVE' as 'ACTIVE' | 'INACTIVE'
+};
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['department'] && this.department) {
-      this.model = { ...this.department };
-    }
+  if (changes['department'] && this.department) {
+    this.model = {
+      id: this.department.id,
+      name: this.department.name,
+      status: this.department.status
+    };
   }
+}
 
   onCancel() {
-    this.cancel.emit();                  // le parent met open = false
+    this.cancel.emit();
   }
 
   submit() {
-    this.update.emit(this.model);
-    this.onCancel();                     // ferme le modal
-  }
+  if (!this.model.name.trim()) return;
+
+  this.update.emit({
+    id: this.model.id,
+    name: this.model.name.trim(),
+    status: this.model.status
+  });
+
+  this.onCancel();
+}
+
+    
+
 }

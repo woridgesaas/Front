@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { department } from '../../../../../shared/models/models';
+import { Department } from '../../../../../shared/models/models';
 import { KpisComponent } from "../../../../common/kpis/kpis.component";
 
 @Component({
@@ -10,17 +10,17 @@ import { KpisComponent } from "../../../../common/kpis/kpis.component";
   templateUrl: './departments-stats.component.html',
 })
 export class DepartmentsStatsComponent {
-  @Input() departments: department[] = [];
+  @Input() departments: Department[] = [];
 
   get total() {
-    return this.departments.length;
-  }
+  return this.departments.length;
+}
 
-  get active() {
-    return this.departments.filter(d => d.Status === 'Actif').length;
-  }
+get active() {
+  return this.departments.filter(d => d.status === 'ACTIVE').length;
+}
 
-  get inactive() {
-    return this.departments.filter(d => d.Status === 'Inactif').length;
-  }
+get inactive() {
+  return this.departments.filter(d => d.status === 'INACTIVE').length;
+}
 }
