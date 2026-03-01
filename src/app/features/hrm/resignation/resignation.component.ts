@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { HttpClientModule } from '@angular/common/http';
 
-import { resignation } from '../../../shared/models/models';
+// import { resignation } from '../../../shared/models/models';
 import { ResignationApiService } from './services/resignation-api.service';
 
 import { BreadcrumbsComponent } from '../../common/breadcrumbs/breadcrumbs.component';
@@ -15,7 +15,9 @@ import { ResignationFiltersComponent } from './components/resignation-filters/re
 import { ResignationStatsComponent } from './components/resignation-stats/resignation-stats.component';
 import { AddResignationModalComponent } from './components/resignation-modals/add-resignation-modal/add-resignation-modal.component';
 import { EditResignationModalComponent } from './components/resignation-modals/edit-resignation-modal/edit-resignation-modal.component';
-
+import { Resignation } from './models/models';
+import { ToastComponent } from '../../../shared/components/toast/toast.component';
+import { ToastService } from '../../../shared/services/toast.service';
 @Component({
   selector: 'app-resignation',
   standalone: true,
@@ -34,35 +36,22 @@ import { EditResignationModalComponent } from './components/resignation-modals/e
     ResignationStatsComponent,
     AddResignationModalComponent,
     EditResignationModalComponent,
+    ToastComponent,
   ],
 })
 export class ResignationComponent implements OnInit {
 
-  resignations: resignation[] = [];
+  resignations: Resignation[] = [];
   searchValue = '';
   dateRange?: Date[];
   openDeleteModal = false;
   openAddModal = false;
   openEditModal = false;
-  selectedResignation?: resignation;
+  selectedResignation?: Resignation;
   isLoading = false;
   errorMessage = '';
 
-  departments: { Department: string }[] = [
-    { Department: 'Finance' },
-    { Department: 'Developpement applications' },
-    { Department: 'Gestion informatique' },
-    { Department: 'Developpement Web' },
-    { Department: 'Ventes' },
-    { Department: 'UI / UX' },
-    { Department: 'Gestion des comptes' },
-    { Department: 'Marketing' },
-    { Department: 'Administration' },
-    { Department: 'Developpement commercial' },
-  ];
-
-  // ← On injecte ResignationApiService (plus DataService ni HttpClient directement)
-  constructor(private apiService: ResignationApiService) {}
+  constructor(private apiService: ResignationApiService, private toast: ToastService) {}
 
   ngOnInit(): void {
     this.loadResignations();
@@ -80,77 +69,87 @@ export class ResignationComponent implements OnInit {
       },
       error: (err) => {
         console.error('Erreur chargement:', err);
-        this.errorMessage = 'Impossible de charger les donnees. Verifiez que le backend tourne.';
+        this.errorMessage = 'Impossible de charger les données.';
         this.isLoading = false;
       }
     });
   }
 
   // ─── FILTRAGE ────────────────────────────────────────────
-  get filteredResignations(): resignation[] {
+  get filteredResignations(): Resignation[] {
     return this.resignations.filter((r) =>
-      r.ResigningEmployee.toLowerCase().includes(this.searchValue.toLowerCase())
+      r.userFullName?.toLowerCase().includes(this.searchValue.toLowerCase())
     );
   }
 
   // ─── ADD ─────────────────────────────────────────────────
-  add(item: resignation): void {
-    this.apiService.create(item).subscribe({
-      next: (created) => {
-        this.resignations.unshift(created);  // Ajoute en haut de la liste
-        this.openAddModal = false;
-      },
-      error: (err) => {
-        console.error('Erreur ajout:', err);
-        alert('Erreur lors de l\'ajout. Reessayez.');
-      }
+  add(item: Resignation): void {
+    this.apiService.create(item, item.cin!).subscribe({
+        next: (created) => {
+            this.resignations.unshift(created);
+            this.openAddModal = false;
+            this.toast.success('Démission ajoutée avec succès !');
+        },
+        error: (err) => {
+            if (err.status === 409) {
+              this.toast.warning('Cet employé a déjà une démission enregistrée !');
+            } else {
+              this.toast.error('Erreur lors de l\'ajout. Réessayez.');
+            }
+        }
     });
-  }
+}
 
   // ─── EDIT ────────────────────────────────────────────────
-  openEdit(item: resignation): void {
+  openEdit(item: Resignation): void {
     this.selectedResignation = item;
     this.openEditModal = true;
   }
 
-  update(updated: resignation): void {
-    const id = this.selectedResignation?.sNo;
+  update(updated: Resignation): void {
+    const id = this.selectedResignation?.id;
     if (!id) return;
 
     this.apiService.update(id, updated).subscribe({
       next: (result) => {
-        const index = this.resignations.findIndex(r => r.sNo === id);
+        const index = this.resignations.findIndex(r => r.id === id);
         if (index !== -1) this.resignations[index] = result;
         this.openEditModal = false;
         this.selectedResignation = undefined;
+        this.toast.success('Démission modifiée avec succès !');
       },
       error: (err) => {
         console.error('Erreur modification:', err);
-        alert('Erreur lors de la modification. Reessayez.');
+        this.toast.error('Erreur lors de la modification. Réessayez.');
       }
     });
   }
 
   // ─── DELETE ──────────────────────────────────────────────
-  openDelete(item: resignation): void {
+  openDelete(item: Resignation): void {
     this.selectedResignation = item;
     this.openDeleteModal = true;
   }
 
   delete(): void {
-    const id = this.selectedResignation?.sNo;
+    const id = this.selectedResignation?.id;
     if (!id) return;
 
     this.apiService.delete(id).subscribe({
       next: () => {
-        this.resignations = this.resignations.filter(r => r.sNo !== id);
+        this.resignations = this.resignations.filter(r => r.id !== id);
         this.selectedResignation = undefined;
         this.openDeleteModal = false;
+        this.toast.success('Démission supprimée avec succès !');
       },
       error: (err) => {
         console.error('Erreur suppression:', err);
-        alert('Erreur lors de la suppression. Reessayez.');
+        this.toast.error('Erreur lors de la suppression. Réessayez.');
       }
     });
+  }
+  cancelDelete(): void {
+    this.openDeleteModal = false;
+    this.selectedResignation = undefined;
   }
 }

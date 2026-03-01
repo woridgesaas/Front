@@ -8,15 +8,18 @@ import { CommonModule } from '@angular/common';
   templateUrl: './delete-modal.component.html',
 })
 export class ConfirmDeleteComponent {
-  // DYNAMIQUES
+  @Input() isOpen = false;       // contrôle Angular
   @Input() title = 'Confirmer la suppression';
   @Input() message = 'Voulez-vous vraiment supprimer cet élément ?';
-  @Input() modalId = 'confirmDeleteModal';
   @Input() item: any;
-
   @Output() confirm = new EventEmitter<any>();
+  @Output() cancel = new EventEmitter<void>();
 
   onConfirm() {
     this.confirm.emit(this.item);
+  }
+
+  onCancel() {
+    this.cancel.emit();
   }
 }
