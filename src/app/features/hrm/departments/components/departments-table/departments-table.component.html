@@ -6,51 +6,47 @@
   >
     <thead class="thead-light">
       <tr>
-        <th mat-sort-header="Department">Département</th>
-        <th mat-sort-header="NoOfEmployees " >
+        <th mat-sort-header="name">Département</th>
+        <th mat-sort-header="noOfEmployees">
           Nombre d'employés
         </th>
-        <th mat-sort-header="Status" class="text-center">Statut</th>
+        <th mat-sort-header="status" class="text-center">
+          Statut
+        </th>
         <th class="text-center">Actions</th>
       </tr>
     </thead>
 
     <tbody>
       <tr *ngFor="let d of departments">
+
         <td class="fw-medium text-center">
-          {{ d.Department }}
+          {{ d.name }}
         </td>
 
-        <td class="text-center">{{ d.NoOfEmployees }}</td>
+        <td class="text-center">
+          {{ d.noOfEmployees }}
+        </td>
 
-        
-        <td class="col-status text-center">
+        <td class="text-center">
           <span
             class="badge"
-            [ngClass]="d.Status === 'Actif' ? 'badge-success' : 'badge-danger'"
-          >
-            {{ d.Status }}
+            [ngClass]="d.status === 'ACTIVE'
+              ? 'badge-success'
+              : 'badge-danger'">
+            {{ d.status === 'ACTIVE' ? 'Actif' : 'Inactif' }}
           </span>
         </td>
 
-        <!-- ACTIONS -->
         <td class="text-center">
-          <div
-            class="action-icon d-inline-flex align-items-center justify-content-center"
-          >
+          <div class="action-icon d-inline-flex align-items-center justify-content-center">
             <a class="me-2" (click)="edit.emit(d)">
               <i class="ti ti-edit"></i>
             </a>
-            <a
-              class="text-danger"
-              data-bs-toggle="modal"
-              data-bs-target="#deleteModal"
-              (click)="delete.emit(d)"
-            >
-              <i class="ti ti-trash"></i>
-            </a>
+           
           </div>
         </td>
+
       </tr>
 
       <tr *ngIf="departments.length === 0">
@@ -58,6 +54,7 @@
           Aucun enregistrement trouvé
         </td>
       </tr>
+
     </tbody>
   </table>
 </div>

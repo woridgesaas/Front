@@ -615,12 +615,11 @@ export interface employees {
   Status: string;
 }
 
-export interface department {
-  id: number;
-  Department: string;
-  NoOfEmployees: number;
-  Status: 'Actif' | 'Inactif';
-  isSelected: boolean;
+export interface Department {
+id: string;
+  name: string;
+  noOfEmployees: number; // calculé côté front
+  status: 'ACTIVE' | 'INACTIVE';
 }
 
 export interface designation {
