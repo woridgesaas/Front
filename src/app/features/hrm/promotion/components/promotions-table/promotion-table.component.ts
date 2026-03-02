@@ -10,9 +10,14 @@ import { MatSortModule, Sort } from '@angular/material/sort';
   templateUrl: './promotion-table.component.html',
 })
 export class PromotionsTableComponent {
+
   @Input() promotions: Promotion[] = [];
 
   @Output() edit = new EventEmitter<Promotion>();
-  @Output() remove = new EventEmitter<Promotion>(); // ✔ renommé
+  @Output() remove = new EventEmitter<Promotion>();
   @Output() sort = new EventEmitter<Sort>();
+
+  trackById(index: number, item: Promotion) {
+    return item.id;
+  }
 }

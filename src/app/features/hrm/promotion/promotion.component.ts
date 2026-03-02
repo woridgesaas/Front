@@ -3,8 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Sort } from '@angular/material/sort';
 
 import { Promotion } from '../../../shared/models/models';
-import { DataService } from '../../../shared/data/data.service';
-
+import { PromotionService } from '../../../shared/services/promotion-service';
 import { BreadcrumbsComponent } from '../../common/breadcrumbs/breadcrumbs.component';
 import { FooterComponent } from '../../common/footer/footer.component';
 
@@ -46,8 +45,7 @@ export class PromotionsComponent implements OnInit {
   openAddModal = false;
   openEditModal = false;
 
-  constructor(private dataService: DataService) {}
-
+constructor(private promotionService: PromotionService) {}
   ngOnInit(): void {
     this.loadPromotions();
         this.loadDepartments();
@@ -68,13 +66,26 @@ export class PromotionsComponent implements OnInit {
       { Department: 'Développement commercial' },
     ];
   }
-  loadPromotions() {
-    this.dataService.getpromotion().subscribe((res: any) => {
-      this.promotions = res.data || [];
-      this.applyFilters();
-    });
-  }
+loadPromotions() {
+  this.promotionService.getAllPromotions().subscribe(res => {
 
+    this.promotions = res.map((p: any) => ({
+      id: p.id,
+      PromotedEmployee: p.fullName,
+      Department: p.department,
+      DesignationFrom: p.previousPost,
+      DesignationTo: p.newPost,
+      OldSalary: p.previousSalary,
+      Bonus: p.newSalary - p.previousSalary,
+      NewSalary: p.newSalary,
+      PromotionDate: p.promotionDate
+    }));
+
+    this.applyFilters();
+  });
+}
+
+    
   filteredPromotions: Promotion[] = [];
 
   applyFilters() {
@@ -111,6 +122,7 @@ export class PromotionsComponent implements OnInit {
  addPromotion(promotion: Promotion) {
   this.promotions.unshift(promotion);
   this.applyFilters();
+  this.openAddModal = false;
 }
 
 
@@ -122,14 +134,20 @@ export class PromotionsComponent implements OnInit {
 
   // EDIT save
 updatePromotion(updated: Promotion) {
-  const index = this.promotions.findIndex(
-    p => p === this.selectedPromotion
-  );
 
-  if (index !== -1) {
-    this.promotions[index] = updated;
-    this.applyFilters();
-  }
+  if (!updated.id) return;
+
+  const payload = {
+    bonus: updated.Bonus,
+    newPost: updated.DesignationTo,
+    promotionDate: updated.PromotionDate
+  };
+
+  this.promotionService.updatePromotion(updated.id, payload)
+    .subscribe(() => {
+      this.loadPromotions();
+      this.openEditModal = false;
+    });
 }
 
 
@@ -139,8 +157,13 @@ updatePromotion(updated: Promotion) {
 }
 
   // DELETE confirm
-  deleteItem() {
-    this.promotions = this.promotions.filter((p) => p !== this.selectedItem);
-    this.applyFilters();
-  }
+ deleteItem() {
+
+  if (!this.selectedItem?.id) return;
+
+  this.promotionService.deletePromotion(this.selectedItem.id)
+    .subscribe(() => {
+      this.loadPromotions();
+    });
+}
 }

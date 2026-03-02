@@ -682,8 +682,8 @@ export interface AttendanceRow {
   OvertimeDecision?: OvertimeDecision; // ⚠️ optionnel (API)
 }
 export interface Promotion {
-  sNo?: number;
-  Image?: string;
+  id?: string;   // 🔥 IMPORTANT
+
   PromotedEmployee?: string;
   Department?: string;
   DesignationFrom?: string;
@@ -692,7 +692,6 @@ export interface Promotion {
   Bonus?: number;
   NewSalary?: number;
   PromotionDate?: string;
-  isSelected?: boolean;
 }
 
 export interface pageSizeCal {
