@@ -1,5 +1,13 @@
-<div class="modal fade show d-block" *ngIf="open">
-  <div class="modal-dialog modal-dialog-centered modal-md">
+<div class="modal-backdrop fade show" *ngIf="open"></div>
+  
+<div
+  class="modal fade"
+  [class.show]="open"
+  [class.d-block]="open"
+  *ngIf="open"
+  tabindex="-1"
+>
+<div class="modal-dialog modal-dialog-centered modal-md">
     <div class="modal-content">
 
       <!-- HEADER -->
@@ -83,37 +91,38 @@
                 disabled />
             </div>
 
-            <!-- ✅ DATE PICKER -->
-            <div class="col-md-12 mb-3">
-              <label class="form-label">Date de promotion</label>
+          <div class="col-md-12 mb-3">
+  <label class="form-label">Date de promotion</label>
 
-              <div class="input-icon position-relative">
-                <span class="input-icon-addon">
-                  <i class="ti ti-calendar text-gray-9"></i>
-                </span>
+  <div class="input-icon position-relative">
+    <span class="input-icon-addon">
+      <i class="ti ti-calendar text-gray-9"></i>
+    </span>
 
-                <input
-                  type="text"
-                  class="form-control"
-                  bsDatepicker
-                  [(ngModel)]="form.PromotionDate"
-                  name="date"
-                  placeholder="jj/mm/aaaa" />
-              </div>
-            </div>
+    <input
+  type="text"
+  class="form-control"
+  bsDatepicker
+  [container]="'body'"
+  [placement]="'bottom'"
+  [(ngModel)]="promotionDate"
+  name="date"
+  placeholder="jj/mm/aaaa" />
+  </div>
+</div>
 
           </div>
         </div>
 
         <!-- FOOTER -->
         <app-modal-footer
-          submitText="Enregistrer"
-          submitIcon="ti ti-check"
-          (cancel)="onCancel()">
-        </app-modal-footer>
+  submitText="Enregistrer"
+  submitIcon="ti ti-check"
+  [disabled]="loading"
+  (cancel)="onCancel()">
+</app-modal-footer>
 
       </form>
 
     </div>
-  </div>
-</div>
+  </div></div>
