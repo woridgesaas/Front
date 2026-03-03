@@ -1,174 +1,252 @@
 <!-- Add Employee -->
 <div class="modal fade" id="add_employee">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <div class="d-flex align-items-center">
-            <h4 class="modal-title me-2">Ajouter Nouveau Employé</h4>
-          </div>
-          <button
-            type="button"
-            class="btn-close custom-btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          >
-            <i class="ti ti-x"></i>
-          </button>
-        </div>
-        <form>
-          <div class="tab-content" id="myTabContent">
-            <div
-              class="tab-pane fade show active"
-              id="basic-info"
-              role="tabpanel"
-              aria-labelledby="info-tab"
-              tabindex="0"
-            >
-              <div class="modal-body pb-0">
-                <div class="row">
-                  <div class="col-md-12">
-                    <div
-                      class="d-flex align-items-center flex-wrap row-gap-3 bg-light w-100 rounded p-3 mb-4"
-                    >
-                      <div
-                        class="d-flex align-items-center justify-content-center avatar avatar-xxl rounded-circle border border-dashed me-2 flex-shrink-0 text-dark frames"
-                      >
-                        <i class="ti ti-photo text-gray-2 fs-16"></i>
-                      </div>
-                      <div class="profile-upload">
-                        <div class="mb-2">
-                          <h6 class="mb-1">Image de Profil</h6>
-                          <p class="fs-12">Image doit etre inférieur à 4 mb</p>
-                        </div>
-                        <div class="profile-uploader d-flex align-items-center">
-                          <div
-                            class="drag-upload-btn btn btn-sm btn-primary me-2"
-                          >
-                            Parcourir
-                            <input
-                              type="file"
-                              class="form-control image-sign"
-                              multiple=""
-                            />
-                          </div>
-                          <a
-                            href="javascript:void(0);"
-                            class="btn btn-light btn-sm"
-                            >Annuler</a
-                          >
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="mb-3">
-                      <label class="form-label"
-                        >Prénom <span class="text-danger"> *</span></label
-                      >
-                      <input type="text" class="form-control" />
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="mb-3">
-                      <label class="form-label">Nom<span class="text-danger"> *</span></label>
-                      <input type="email" class="form-control" />
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="mb-3 ngx-date2">
-                      <label [htmlFor]="" class="form-label">Date de fin</label>
-                      <div class="input-icon-end position-relative">
-                        <input
-                          type="text"
-                          class="form-control datetimepicker"
-                          bsDatepicker
-                          container=".ngx-date2"
-                          [bsConfig]="{ adaptivePosition: true }"
-                          placeholder="dd/mm/yyyy"
-                          value="02-05-2024"
-                        />
-                        <span class="input-icon-addon">
-                          <i class="ti ti-calendar text-gray-7"></i>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="mb-3">
-                      <label class="form-label"
-                        >CIN <span class="text-danger"> *</span></label
-                      >
-                      <input type="text" class="form-control" />
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="mb-3">
-                      <label class="form-label"
-                        >Email <span class="text-danger"> *</span></label
-                      >
-                      <input type="email" class="form-control" />
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="mb-3">
-                      <label class="form-label"
-                        >Télèphone <span class="text-danger"> *</span></label
-                      >
-                      <input type="text" class="form-control" />
-                    </div>
-                  </div>
-                  
-                  <div class="col-md-6">
-                    <div class="mb-3">
-                      <label [htmlFor]="" class="form-label">Département</label>
-                      <mat-select
-                        placeholder="Select"
-                        class="select custom-mat-select"
-                      >
-                        <mat-option value="1">Select</mat-option>
-                        <mat-option value="2">Tout Département</mat-option>
-                        <mat-option value="3">Finance</mat-option>
-                        <mat-option value="4">Developpement</mat-option>
-                        <mat-option value="0">Executive</mat-option>
-                      </mat-select>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="mb-3">
-                      <label [htmlFor]="" class="form-label">Poste</label>
-                      <mat-select
-                        placeholder="Select"
-                        class="select custom-mat-select"
-                      >
-                        <mat-option value="1">Select</mat-option>
-                        <mat-option value="2">Finance</mat-option>
-                        <mat-option value="3">Developer</mat-option>
-                        <mat-option value="4">Executive</mat-option>
-                      </mat-select>
-                    </div>
-                  </div>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Ajouter Nouveau Employé</h4>
+        <button
+          type="button"
+          class="btn-close custom-btn-close"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="modal-body pb-0">
+          <div class="row">
+            <!-- PHOTO SECTION -->
+            <div class="col-md-12">
+              <div class="d-flex align-items-center bg-light rounded p-3 mb-4">
+                <div
+                  class="avatar avatar-xxl rounded-circle border border-dashed me-3 d-flex align-items-center justify-content-center"
+                >
+                  <i class="ti ti-photo text-gray-2"></i>
+                </div>
+
+                <div>
+                  <h6>Image de Profil</h6>
+                  <p class="fs-12">Image doit être inférieur à 4 MB</p>
+
+                  <input
+                    #fileInput
+                    type="file"
+                    hidden
+                    (change)="onFileSelected($event)"
+                  />
+
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-primary me-2"
+                    (click)="fileInput.click()"
+                  >
+                    Parcourir
+                  </button>
+
+                  <span *ngIf="selectedFileName" class="text-success small">
+                    {{ selectedFileName }}
+                  </span>
+
+                  <button
+                    type="button"
+                    class="btn btn-light btn-sm ms-2"
+                    (click)="
+                      form.patchValue({ picturePath: '' });
+                      selectedFileName = null
+                    "
+                  >
+                    Annuler
+                  </button>
                 </div>
               </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-outline-light border me-2"
-                  data-bs-dismiss="modal"
+            </div>
+
+            <!-- FIRST NAME -->
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Prénom *</label>
+                <input
+                  class="form-control"
+                  formControlName="firstName"
+                  placeholder="douae"
+                />
+                <div class="text-danger small">
+                  {{
+                    validationService.getErrorMessage(
+                      form.get("firstName"),
+                      "Prénom"
+                    )
+                  }}
+                </div>
+              </div>
+            </div>
+
+            <!-- LAST NAME -->
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Nom *</label>
+                <input
+                  class="form-control"
+                  formControlName="lastName"
+                  placeholder="Ayachi"
+                />
+                <div class="text-danger small">
+                  {{
+                    validationService.getErrorMessage(
+                      form.get("lastName"),
+                      "Nom"
+                    )
+                  }}
+                </div>
+              </div>
+            </div>
+
+            <!-- ROLE -->
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Role *</label>
+                <mat-select
+                  placeholder="Sélectionner"
+                  class="select custom-mat-select"
+                  formControlName="role"
                 >
-                  Annuler
-                </button>
-                <button
-                  type="submit"
-                  class="btn btn-primary"
-                  data-bs-toggle="modal"
+                  <mat-option *ngFor="let role of roles" [value]="role">
+                    {{ role }}
+                  </mat-option>
+                </mat-select>
+                <div class="text-danger small">
+                  {{
+                    validationService.getErrorMessage(form.get("role"), "Role")
+                  }}
+                </div>
+              </div>
+            </div>
+
+            <!-- CIN -->
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">CIN *</label>
+                <input
+                  class="form-control"
+                  formControlName="CIN"
+                  placeholder="FB189900"
+                />
+                <div class="text-danger small">
+                  {{
+                    validationService.getErrorMessage(form.get("CIN"), "CIN")
+                  }}
+                </div>
+              </div>
+            </div>
+
+            <!-- EMAIL -->
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Email *</label>
+                <input
+                  class="form-control"
+                  formControlName="email"
+                  placeholder="douaeAya12@gmail.com"
+                />
+                <div class="text-danger small">
+                  {{
+                    validationService.getErrorMessage(
+                      form.get("email"),
+                      "Email"
+                    )
+                  }}
+                </div>
+              </div>
+            </div>
+
+            <!-- PHONE -->
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Téléphone *</label>
+                <input
+                  class="form-control"
+                  formControlName="phoneNumber"
+                  placeholder="067777777777"
+                />
+                <div class="text-danger small">
+                  {{
+                    validationService.getErrorMessage(
+                      form.get("phoneNumber"),
+                      "Téléphone"
+                    )
+                  }}
+                </div>
+              </div>
+            </div>
+
+            <!-- DEPARTMENT -->
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Département *</label>
+                <mat-select
+                  placeholder="Sélectionner"
+                  class="select custom-mat-select"
+                  formControlName="departmentId"
                 >
-                  Enregistrer
-                </button>
+                  <mat-option *ngFor="let dep of departments" [value]="dep.id">
+                    {{ dep.name }}
+                  </mat-option>
+                </mat-select>
+                <div class="text-danger small">
+                  {{
+                    validationService.getErrorMessage(
+                      form.get("departmentId"),
+                      "Département"
+                    )
+                  }}
+                </div>
+              </div>
+            </div>
+
+            <!-- POST -->
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Poste *</label>
+                <mat-select
+                  placeholder="Sélectionner"
+                  class="select custom-mat-select"
+                  formControlName="postId"
+                >
+                  <mat-option *ngFor="let post of posts" [value]="post.id">
+                    {{ post.name }}
+                  </mat-option>
+                </mat-select>
+                <div class="text-danger small">
+                  {{
+                    validationService.getErrorMessage(
+                      form.get("postId"),
+                      "Poste"
+                    )
+                  }}
+                </div>
               </div>
             </div>
           </div>
-          </form>
-      </div>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-outline-light border me-2"
+            data-bs-dismiss="modal"
+          >
+            Annuler
+          </button>
+
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="form.invalid"
+            data-bs-dismiss="modal"
+          >
+            Enregistrer
+          </button>
+        </div>
+      </form>
     </div>
   </div>
-  <!-- /Add Employee -->
+</div>
