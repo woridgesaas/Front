@@ -5,29 +5,6 @@
   >
     <app-breadcrumbs></app-breadcrumbs>
     <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
-      <div class="me-2 mb-2">
-        <div class="dropdown">
-          <a
-            href="javascript:void(0);"
-            class="dropdown-toggle btn btn-white d-inline-flex align-items-center"
-            data-bs-toggle="dropdown"
-          >
-            <i class="ti ti-file-export me-1"></i>Exporter
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end p-3">
-            <li>
-              <a href="javascript:void(0);" class="dropdown-item rounded-1"
-                ><i class="ti ti-file-type-pdf me-1"></i>Exporter en PDF</a
-              >
-            </li>
-            <li>
-              <a href="javascript:void(0);" class="dropdown-item rounded-1"
-                ><i class="ti ti-file-type-xls me-1"></i>Exporter en Excel</a
-              >
-            </li>
-          </ul>
-        </div>
-      </div>
       <div class="mb-2">
         <a
           href="javascript:void(0);"
@@ -189,22 +166,6 @@
             >
               <thead class="thead-light">
                 <tr>
-                  <th class="no-sort">
-                    <div
-                      class="form-check form-check-md"
-                      (click)="selectAll(initChecked)"
-                      (keydown.enter)="selectAll(initChecked)"
-                      tabindex="0"
-                    >
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        id="select-all"
-                        [(ngModel)]="initChecked"
-                      />
-                    </div>
-                  </th>
-
                   <th mat-sort-header="Name">Nom</th>
                   <th mat-sort-header="Email">Email</th>
                   <th mat-sort-header="Phone">Téléphone</th>
@@ -217,16 +178,6 @@
               <tbody>
                 @for (employee of tableData; track employee) {
                 <tr>
-                  <td>
-                    <div class="form-check form-check-md">
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        [(ngModel)]="employee.isSelected"
-                      />
-                    </div>
-                  </td>
-
                   <td>
                     <div class="d-flex align-items-center file-name-icon">
                       <a
@@ -290,7 +241,8 @@
                           : 'badge-danger'
                       "
                     >
-                      <i class="ti ti-point-filled me-1"></i>{{ employee.Status }}
+                      <i class="ti ti-point-filled me-1"></i
+                      >{{ employee.Status }}
                     </span>
                   </td>
                   <td>
@@ -325,7 +277,7 @@
               </tbody>
             </table>
           </div>
-          
+
           <app-custom-pagination></app-custom-pagination>
         </div>
       </div>
@@ -335,8 +287,6 @@
 
 <!-- Modal d ajout -->
 <app-add-employee></app-add-employee>
- 
-
 
 <!-- Modal de modification -->
 <app-edit-employee-modal
