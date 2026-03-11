@@ -65,10 +65,10 @@ export class DepartmentsComponent {
 
 
 
-  addDepartment(payload: { name: string }) {
-    this.departmentService.create(payload.name)
-      .subscribe(() => this.loadDepartments());
-  }
+  addDepartment(payload: { name: string; status: string }) {
+  this.departmentService.create(payload.name, payload.status)
+    .subscribe(() => this.loadDepartments());
+}
 
   sortData(sort: Sort) {
     const data = [...this.departments];
