@@ -1,4 +1,5 @@
 <div class="modal-backdrop fade show" *ngIf="open"></div>
+
 <div
   class="modal fade"
   [class.show]="open"
@@ -6,40 +7,44 @@
   *ngIf="open"
   tabindex="-1"
 >
-<div class="modal-dialog modal-dialog-centered modal-md">
+  <div class="modal-dialog modal-dialog-centered modal-md">
     <div class="modal-content">
+
       <!-- HEADER -->
       <app-modal-header
         title="Ajouter une promotion"
         icon="ti ti-trending-up"
         (close)="onCancel()"
-      >
-      </app-modal-header>
+      ></app-modal-header>
 
       <!-- FORM -->
       <form (ngSubmit)="submit()">
+
         <div class="modal-body pb-0">
           <div class="row">
+
             <!-- CIN -->
             <div class="col-md-12 mb-3">
               <label class="form-label">CIN de l’employé</label>
-              <input
-  type="text"
-  class="form-control"
-  [(ngModel)]="cin"
-  name="cin"
-  required
-  (blur)="fetchEmployee()"
-/>
 
-<div *ngIf="errorMessage" class="text-danger mt-2">
-  {{ errorMessage }}
-</div>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="cin"
+                name="cin"
+                required
+                (blur)="fetchEmployee()"
+              />
+
+              <div *ngIf="errorMessage" class="text-danger mt-2">
+                {{ errorMessage }}
+              </div>
             </div>
 
             <!-- EMPLOYÉ -->
             <div class="col-md-12 mb-3">
               <label class="form-label">Employé promu</label>
+
               <input
                 type="text"
                 class="form-control"
@@ -49,11 +54,12 @@
               />
             </div>
 
-            <!-- DEPARTEMENT (DROPDOWN COMME DEMISSION) -->
+            <!-- DEPARTEMENT -->
             <div class="col-md-12 mb-3">
               <label class="form-label">Département</label>
 
               <div class="dropdown">
+
                 <button
                   type="button"
                   class="btn btn-outline-secondary d-flex justify-content-between w-100"
@@ -64,15 +70,19 @@
                 </button>
 
                 <ul class="dropdown-menu show w-100" *ngIf="isDeptOpen">
+
                   <li *ngFor="let dept of departments">
+
                     <button
                       type="button"
                       class="dropdown-item"
-                      (click)="selectDepartment(dept.Department)"
+                      (click)="selectDepartment(dept.name)"
                     >
-                      {{ dept.Department }}
+                      {{ dept.name }}
                     </button>
+
                   </li>
+
                 </ul>
               </div>
             </div>
@@ -80,6 +90,7 @@
             <!-- ANCIEN POSTE -->
             <div class="col-md-12 mb-3">
               <label class="form-label">Ancien poste</label>
+
               <input
                 type="text"
                 class="form-control"
@@ -89,61 +100,68 @@
               />
             </div>
 
-            <!-- NOUVEAU POSTE (DROPDOWN DEPENDANT DU DÉPARTEMENT) -->
+            <!-- NOUVEAU POSTE -->
             <div class="col-md-12 mb-3">
+
               <label class="form-label">Nouveau poste</label>
 
               <div class="dropdown">
+
                 <button
                   type="button"
                   class="btn btn-outline-secondary d-flex justify-content-between w-100"
-                  [disabled]="!model.Department"
                   (click)="isPostOpen = !isPostOpen"
                 >
                   {{
-                    model.DesignationTo ||
-                      (model.Department
-                        ? "Sélectionner un poste"
-                        : "Sélectionnez d’abord un département")
+                    model.DesignationTo
+                      ? model.DesignationTo
+                      : "Sélectionner un poste"
                   }}
                   <i class="ti ti-chevron-down"></i>
                 </button>
 
                 <ul class="dropdown-menu show w-100" *ngIf="isPostOpen">
-                  <li *ngFor="let position of availablePositions">
+
+                  <li *ngFor="let post of posts">
+
                     <button
                       type="button"
                       class="dropdown-item"
-                      (click)="selectPosition(position)"
+                      (click)="selectPosition(post.name)"
                     >
-                      {{ position }}
+                      {{ post.name }}
                     </button>
+
                   </li>
 
-                  <li *ngIf="availablePositions.length === 0">
+                  <li *ngIf="posts.length === 0">
                     <span class="dropdown-item text-muted">
                       Aucun poste disponible
                     </span>
                   </li>
+
                 </ul>
+
               </div>
             </div>
 
             <!-- SALAIRES -->
+
             <div class="col-md-6 mb-3">
               <label class="form-label">Ancien salaire (MAD)</label>
+
               <input
                 type="number"
                 class="form-control"
                 [(ngModel)]="model.OldSalary"
                 name="oldSalary"
-                (ngModelChange)="calculateNewSalary()"
                 disabled
               />
             </div>
 
             <div class="col-md-6 mb-3">
               <label class="form-label">Prime / Augmentation (MAD)</label>
+
               <input
                 type="number"
                 class="form-control"
@@ -155,6 +173,7 @@
 
             <div class="col-md-12 mb-3">
               <label class="form-label">Nouveau salaire (MAD)</label>
+
               <input
                 type="number"
                 class="form-control"
@@ -162,17 +181,20 @@
                 disabled
               />
             </div>
+
           </div>
         </div>
 
         <!-- FOOTER -->
+
         <app-modal-footer
           submitText="Ajouter promotion"
           submitIcon="ti ti-check"
           (cancel)="onCancel()"
-        >
-        </app-modal-footer>
+        ></app-modal-footer>
+
       </form>
+
     </div>
   </div>
-  </div>
+</div>

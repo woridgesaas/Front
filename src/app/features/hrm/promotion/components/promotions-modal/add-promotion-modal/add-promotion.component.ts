@@ -1,12 +1,15 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { Promotion } from '../../../../../../shared/models/models';
 import { PromotionService } from '../../../../../../shared/services/promotion-service';
+import { Post } from '../../../../models/post/post.model';
+import { Department } from '../../../../../../shared/models/models';
 
 import { ModalHeaderComponent } from '../../../../../common/modal-header/modal-header.component';
 import { ModalFooterComponent } from '../../../../../common/modal-footer/modal-footer.component';
+import { UserApiService } from '../../../../services/user/user-api.service';
 
 @Component({
   selector: 'app-add-promotion-modal',
@@ -15,32 +18,34 @@ import { ModalFooterComponent } from '../../../../../common/modal-footer/modal-f
     CommonModule,
     FormsModule,
     ModalHeaderComponent,
-    ModalFooterComponent,
+    ModalFooterComponent
   ],
-  templateUrl: './add-promotion.component.html',
+  templateUrl: './add-promotion.component.html'
 })
-export class AddPromotionModalComponent {
+export class AddPromotionModalComponent implements OnInit {
 
   /* ================= INPUT / OUTPUT ================= */
 
   @Input() open = false;
-  @Input() departments: { Department: string }[] = [];
 
   @Output() submitPromotion = new EventEmitter<Promotion>();
   @Output() cancel = new EventEmitter<void>();
-errorMessage = '';
-  constructor(private promotionService: PromotionService) {}
+
+  /* ================= DATA ================= */
+
+  departments: Department[] = [];
+  posts: Post[] = [];
+
+  cin = '';
+  loading = false;
+  errorMessage = '';
 
   /* ================= UI STATE ================= */
 
   isDeptOpen = false;
   isPostOpen = false;
-  loading = false;
 
-  /* ================= DATA ================= */
-
-  cin = '';
-  availablePositions: string[] = [];
+  /* ================= MODEL ================= */
 
   model: Promotion = {
     PromotedEmployee: '',
@@ -50,56 +55,79 @@ errorMessage = '';
     OldSalary: 0,
     Bonus: 0,
     NewSalary: 0,
-    PromotionDate: '',
+    PromotionDate: ''
   };
 
-  /* ================= STATIC DATA ================= */
+  constructor(
+    private promotionService: PromotionService,
+    private userApi: UserApiService
+  ) {}
 
-  positionsByDepartment: Record<string, string[]> = {
-    Finance: ['Senior Accountant', 'Finance Manager', 'Financial Controller'],
-    'Application Development': ['Senior App Developer', 'Tech Lead', 'Software Architect'],
-    'Web Development': ['Team Lead', 'Senior Web Developer', 'Project Manager'],
-    'UI / UX': ['Senior Designer', 'UX Lead', 'Product Designer'],
-    Marketing: ['Senior SEO Analyst', 'Marketing Manager', 'Growth Manager'],
-  };
+  /* ================= INIT ================= */
 
-  /* ================= METHODS ================= */
+  ngOnInit(): void {
+    this.loadDepartments();
+    this.loadPosts();
+  }
 
- fetchEmployee() {
-  if (!this.cin) return;
+  /* ================= LOAD DATA ================= */
 
-  this.loading = true;
-  this.errorMessage = '';
+  loadDepartments() {
+    this.userApi.getDepartments().subscribe({
+      next: (res) => this.departments = res,
+      error: () => console.error('Erreur chargement departments')
+    });
+  }
 
-  this.promotionService.getEmployeeInfo(this.cin).subscribe({
-    next: (res) => {
-      this.model.PromotedEmployee = res.fullName;
-      this.model.Department = res.departmentName;
-      this.model.DesignationFrom = res.currentPost;
-      this.model.OldSalary = res.currentSalary;
-      this.calculateNewSalary();
-      this.loading = false;
-    },
-    error: (err) => {
-      this.errorMessage = 'Employé introuvable';
-      this.loading = false;
+  loadPosts() {
+    this.userApi.getPosts().subscribe({
+      next: (res) => this.posts = res,
+      error: () => console.error('Erreur chargement posts')
+    });
+  }
 
-      // Reset champs
-      this.model.PromotedEmployee = '';
-      this.model.Department = '';
-      this.model.DesignationFrom = '';
-      this.model.OldSalary = 0;
-      this.model.NewSalary = 0;
-    }
-  });
-}
+  /* ================= FETCH EMPLOYEE ================= */
+
+  fetchEmployee() {
+
+    if (!this.cin) return;
+
+    this.loading = true;
+    this.errorMessage = '';
+
+    this.promotionService.getEmployeeInfo(this.cin).subscribe({
+
+      next: (res) => {
+
+        this.model.PromotedEmployee = res.fullName;
+        this.model.Department = res.departmentName;
+        this.model.DesignationFrom = res.currentPost;
+        this.model.OldSalary = res.currentSalary;
+
+        this.calculateNewSalary();
+        this.loading = false;
+      },
+
+      error: () => {
+
+        this.errorMessage = 'Employé introuvable';
+        this.loading = false;
+
+        this.model.PromotedEmployee = '';
+        this.model.Department = '';
+        this.model.DesignationFrom = '';
+        this.model.OldSalary = 0;
+        this.model.NewSalary = 0;
+      }
+    });
+  }
+
+  /* ================= SELECT ================= */
 
   selectDepartment(dept: string) {
     this.model.Department = dept;
     this.model.DesignationTo = '';
-    this.availablePositions = this.positionsByDepartment[dept] || [];
     this.isDeptOpen = false;
-    this.isPostOpen = false;
   }
 
   selectPosition(position: string) {
@@ -107,41 +135,49 @@ errorMessage = '';
     this.isPostOpen = false;
   }
 
+  /* ================= SALARY ================= */
+
   calculateNewSalary() {
     this.model.NewSalary =
       (this.model.OldSalary || 0) + (this.model.Bonus || 0);
   }
 
+  /* ================= SUBMIT ================= */
+
   submit() {
-if (!this.cin) return;
+
+    if (!this.cin) return;
+
     this.loading = true;
 
     const payload = {
       cin: this.cin,
-      bonus: this.model.Bonus || 0,
+      bonus: this.model.Bonus || 0
     };
 
     this.promotionService.createPromotion(payload).subscribe({
+
       next: (res) => {
 
-       const mappedPromotion: Promotion = {
-  id: res.id,
-  PromotedEmployee: res.fullName ?? '',
-  Department: res.department ?? '',
-  DesignationFrom: res.previousPost ?? '',
-  DesignationTo: res.newPost ?? '',
-  OldSalary: res.previousSalary ?? 0,
-  Bonus: (res.newSalary ?? 0) - (res.previousSalary ?? 0),
-  NewSalary: res.newSalary ?? 0,
-  PromotionDate: res.promotionDate ?? '',
-};
+        const promotion: Promotion = {
+          id: res.id,
+          PromotedEmployee: res.fullName ?? '',
+          Department: res.department ?? '',
+          DesignationFrom: res.previousPost ?? '',
+          DesignationTo: res.newPost ?? '',
+          OldSalary: res.previousSalary ?? 0,
+          Bonus: (res.newSalary ?? 0) - (res.previousSalary ?? 0),
+          NewSalary: res.newSalary ?? 0,
+          PromotionDate: res.promotionDate ?? ''
+        };
 
-        this.submitPromotion.emit(mappedPromotion);
+        this.submitPromotion.emit(promotion);
 
         this.resetForm();
         this.onCancel();
         this.loading = false;
       },
+
       error: () => {
         alert('Erreur lors de la promotion');
         this.loading = false;
@@ -149,13 +185,15 @@ if (!this.cin) return;
     });
   }
 
+  /* ================= ACTIONS ================= */
+
   onCancel() {
     this.cancel.emit();
   }
 
   private resetForm() {
+
     this.cin = '';
-    this.availablePositions = [];
 
     this.model = {
       PromotedEmployee: '',
@@ -165,7 +203,8 @@ if (!this.cin) return;
       OldSalary: 0,
       Bonus: 0,
       NewSalary: 0,
-      PromotionDate: '',
+      PromotionDate: ''
     };
   }
+
 }

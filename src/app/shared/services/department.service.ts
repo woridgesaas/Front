@@ -14,9 +14,9 @@ export class DepartmentService {
     return this.http.get<Department[]>(this.baseUrl);
   }
 
-  create(name: string) {
-    return this.http.post(this.baseUrl, { name });
-  }
+  create(name: string, status: string) {
+  return this.http.post(this.baseUrl, { name, status });
+}
 
   update(id: string, name: string, status: string) {
   return this.http.patch(`${this.baseUrl}/${id}`, { name, status });

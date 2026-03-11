@@ -43,12 +43,11 @@
 
         <!-- ADD MODAL -->
         <app-add-promotion-modal
-          [open]="openAddModal"
-          [departments]="departments ?? []"
-          (cancel)="openAddModal = false"
-          (submitPromotion)="addPromotion($event)"
-        >
-        </app-add-promotion-modal>
+  [open]="openAddModal"
+  (submitPromotion)="addPromotion($event)"
+  (cancel)="openAddModal = false"
+>
+</app-add-promotion-modal>
 
         <!-- EDIT MODAL -->
         <app-edit-promotion-modal
