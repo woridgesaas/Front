@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Holiday } from '../../../../../shared/models/models';
 import { ModalHeaderComponent } from '../../../../common/modal-header/modal-header.component';
@@ -18,7 +18,9 @@ import { ModalFooterComponent } from '../../../../common/modal-footer/modal-foot
 })
 export class HolidayTableComponent {
   @Input() holidays: Holiday[] = [];
-
+  @Input() showResetButton: boolean = false;
+  @Output() resetFilters = new EventEmitter<void>();
+  @Output() openAddModal = new EventEmitter<void>();
   selectedHoliday: Holiday | null = null;
 
   selectHoliday(holiday: Holiday) {
@@ -28,4 +30,10 @@ export class HolidayTableComponent {
   closeModal() {
     this.selectedHoliday = null;
   }
+  openUpdateModal(holiday:Holiday){
+    alert("Do something");
+  }
+
+
+
 }

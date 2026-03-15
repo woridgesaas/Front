@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Holiday } from '../../../../../shared/models/models';
+import { Holiday, HolidayRequest } from '../../../../../shared/models/models';
 import { ModalHeaderComponent } from '../../../../common/modal-header/modal-header.component';
 import { ModalFooterComponent } from '../../../../common/modal-footer/modal-footer.component';
 import { HolidayService } from '../../../../../shared/services/holiday.service';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-holiday-add-modal',
@@ -24,62 +25,75 @@ export class HolidayAddModalComponent implements OnInit {
 
   @Input() open = false;
 
-  @Output() add = new EventEmitter<Holiday>();
+  @Output() add = new EventEmitter<HolidayRequest>();
   @Output() cancel = new EventEmitter<void>();
 
-  holiday: Holiday = this.emptyHoliday();
-
-  allHolidays: Holiday[] = [];
-  filteredHolidays: Holiday[] = [];
-
+  holiday: HolidayRequest = this.emptyHoliday();
+  loading:boolean = false;
   showDropdown = false;
-
-  constructor(private holidayService: HolidayService) {}
+  fieldErrors: { [key: string]: string } = {};
+logicError: string | null = null;
+  constructor(private holidayService: HolidayService, private toastService :ToastrService) {}
 
   ngOnInit() {
-    this.holidayService.getHolidayTemplates().subscribe(data => {
-      this.allHolidays = data;
-      this.filteredHolidays = data;
+    
+  }
+  submit() {
+    this.loading = true;
+    console.log(this.holiday);
+    this.holidayService.createHoliday(this.holiday).subscribe({
+      next: (response: Holiday) => {
+        this.loading = false;
+        this.add.emit(response);
+        this.toastService.success("Jour férié créé avec succès !" , "Succès")
+        this.close();
+      },
+  error: (err) => {
+      this.loading = false;
+      
+      const validationErrors = this.validateHoliday(this.holiday);
+      if (validationErrors.length > 0) {
+        validationErrors.forEach(msg => this.toastService.warning(msg, "Validation"));
+        return;
+      }
+      
+      
+      if (err.status === 400) {
+        this.toastService.warning("Veuillez vérifier les champs du formulaire", "Données invalides");
+      } else if (err.status === 409) {
+        this.toastService.warning("Ce jour férié existe déjà", "Attention");
+      } else if (err.status === 422) {
+        this.toastService.warning("La date doit être dans le futur", "Date invalide");
+      } else {
+        this.toastService.error("Erreur serveur, réessayez plus tard", "Erreur");
+      }
+    }
     });
   }
-
-  onFocus() {
-    this.showDropdown = true;
-    this.filteredHolidays = this.allHolidays;
-  }
-
-  filterHolidays(term: string) {
-    this.showDropdown = true;
-
-    if (!term) {
-      this.filteredHolidays = this.allHolidays;
-      return;
+  private validateHoliday(h: HolidayRequest): string[] {
+    const errors: string[] = [];
+    
+    if (!h.labelFr || h.labelFr.length < 3) {
+      errors.push("Le libellé français doit contenir au moins 3 caractères");
     }
-
-    const value = term.toLowerCase();
-    this.filteredHolidays = this.allHolidays.filter(h =>
-      h.nameFr.toLowerCase().includes(value) ||
-      h.nameAr.includes(value)
-    );
-  }
-
-  selectHoliday(h: Holiday) {
-    this.holiday = {
-      ...h,
-      id: Date.now(),
-      date: new Date(h.date),
-    };
-
-    this.showDropdown = false;
-  }
-
-  onBlur() {
-    setTimeout(() => (this.showDropdown = false), 150);
-  }
-
-  submit() {
-    this.add.emit(this.holiday);
-    this.close();
+    if (!h.labelAr || h.labelAr.length < 3) {
+      errors.push("Le libellé arabe doit contenir au moins 3 caractères");
+    }
+    if (!h.duration || h.duration < 1 || h.duration > 5) {
+      errors.push("La durée doit être entre 1 et 5 jours");
+    }
+    if (!h.date) {
+      errors.push("La date est requise");
+    } else {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const holidayDate = new Date(h.date);
+      if (holidayDate <= today) {
+        errors.push("La date doit être dans le futur");
+      }
+    }
+    
+    return errors;
   }
 
   close() {
@@ -88,14 +102,13 @@ export class HolidayAddModalComponent implements OnInit {
     this.showDropdown = false;
   }
 
-  private emptyHoliday(): Holiday {
+  private emptyHoliday(): HolidayRequest {
     return {
-      id: Date.now(),
-      nameFr: '',
-      nameAr: '',
+      labelFr: '',
+      labelAr: '',
       date: new Date(),
-      days: 1,
-      type: 'national',
+      duration: 1,
+      isFixed: true,
     };
   }
 }

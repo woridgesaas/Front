@@ -12,52 +12,28 @@
       <!-- Body -->
       <form (ngSubmit)="submit()">
         <div class="modal-body">
-
+            <div *ngIf="logicError" class="alert alert-important alert-danger mb-3">
+              <i class="ti ti-alert-triangle me-2"></i> {{ logicError }}
+            </div>
           <!-- Fête searchable -->
          <div class="mb-3 position-relative">
-  <label class="form-label">Fête</label>
+           <label class="form-label">Fête</label>
+            <div class="mb-3">
+           <input
+              type="text"
+              class="form-control"
+              [class.is-invalid]="fieldErrors['labelFr']"
+              [(ngModel)]="holiday.labelFr"
+              name="labelFr"
+              autocomplete="off"
+            />
+            <!-- errors -->
+            <div class="invalid-feedback" *ngIf="fieldErrors['labelFr']">
+              {{ fieldErrors['labelFr'] }}
+            </div>
+          </div>
 
-  <div class="input-group">
-    <input
-      type="text"
-      class="form-control"
-      placeholder="Sélectionner ou saisir une fête"
-      [(ngModel)]="holiday.nameFr"
-      name="nameFr"
-      (focus)="onFocus()"
-      (input)="filterHolidays(holiday.nameFr)"
-      (blur)="onBlur()"
-      autocomplete="off"
-    />
-    <span class="input-group-text bg-white">
-      <i class="ti ti-chevron-down"></i>
-    </span>
-  </div>
-
-  <!-- Dropdown -->
-  <ul
-    *ngIf="showDropdown"
-    class="list-group autocomplete-list"
-  >
-    <li
-      *ngFor="let h of filteredHolidays"
-      class="list-group-item list-group-item-action"
-      (mousedown)="selectHoliday(h)"
-    >
-      <div class="fw-semibold">{{ h.nameFr }}</div>
-      <small class="text-muted d-block text-end" dir="rtl">
-        {{ h.nameAr }}
-      </small>
-    </li>
-
-    <li
-      *ngIf="filteredHolidays.length === 0"
-      class="list-group-item text-muted fst-italic"
-    >
-      Aucune fête trouvée — sera ajoutée manuellement
-    </li>
-  </ul>
-</div>
+        </div>
 
 
 
@@ -65,14 +41,17 @@
           <div class="mb-3">
             <label class="form-label">العيد</label>
            <input
-  type="text"
-  class="form-control"
-  dir="rtl"
-  [(ngModel)]="holiday.nameAr"
-  name="nameAr"
-  autocomplete="off"
-/>
-
+              type="text"
+              class="form-control"
+              dir="rtl"
+              [(ngModel)]="holiday.labelAr"
+              name="labelAr"
+              [class.is-invalid]="fieldErrors['labelAr']"
+              autocomplete="off"
+            />
+            <div class="invalid-feedback" *ngIf="fieldErrors['labelFr']">
+              {{ fieldErrors['labelAr'] }}
+            </div>
           </div>
 
           <!-- Date -->
@@ -90,9 +69,14 @@
       bsDatepicker
       [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', adaptivePosition: true }"
       placeholder="jj/mm/aaaa"
+      [class.is-invalid]="fieldErrors['date']"
       [(ngModel)]="holiday.date"
       name="date"
     />
+    <!-- errors -->
+    <div class="invalid-feedback" *ngIf="fieldErrors['date']">
+        {{ fieldErrors['date'] }}
+      </div>
   </div>
 </div>
 
@@ -103,23 +87,11 @@
             <input
               type="number"
               class="form-control"
-              [(ngModel)]="holiday.days"
-              name="days"
+              [(ngModel)]="holiday.duration"
+              name="duration"
             />
           </div>
 
-          <!-- Type -->
-          <div class="mb-3">
-            <label class="form-label">Type</label>
-            <select
-              class="form-select"
-              [(ngModel)]="holiday.type"
-              name="type"
-            >
-              <option value="national">National</option>
-              <option value="religious">Religieux</option>
-            </select>
-          </div>
 
         </div>
 
@@ -128,6 +100,7 @@
           submitText="Ajouter"
           submitIcon="ti ti-check"
           (cancel)="close()"
+          [disabled]="loading"
         ></app-modal-footer>
       </form>
     </div>
