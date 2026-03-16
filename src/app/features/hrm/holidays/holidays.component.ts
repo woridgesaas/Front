@@ -49,7 +49,7 @@ loadHolidays() {
       error: (err) => console.error('Error while charging data', err)
     });
   }
-onHolidayAdded(newHoliday: Holiday) {
+onHolidayAdded(newHoliday: any) {
   this.holidays = [...this.holidays, newHoliday];
 }
 
