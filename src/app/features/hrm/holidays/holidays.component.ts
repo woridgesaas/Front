@@ -31,35 +31,66 @@ openHoliday = false;
   holidays: Holiday[] = [];
   selectedMonth: number | '' = '';
   bsRangeValue: Date[] = [];
-  selectedType: 'all' | 'national' | 'religious' = 'all';
+  selectedType: boolean | 'all'= 'all';
 
   constructor(private holidayService: HolidayService) {
     this.loadHolidays();
   }
-openHolidayModal() {
-  this.openHoliday = true;
-}
+  openHolidayModal() {
+    this.openHoliday = true;
+  }
 
-  loadHolidays() {
-    this.holidayService.getHolidays().subscribe(data => {
-      this.holidays = data;
+loadHolidays() {
+    this.holidayService.getHolidays().subscribe({
+      next: (data) => {
+        this.holidays = data;
+        console.log(data);
+      },
+      error: (err) => console.error('Error while charging data', err)
     });
   }
-addHoliday(h: Holiday) {
-  this.holidays = [...this.holidays, h];
+onHolidayAdded(newHoliday: any) {
+  this.holidays = [...this.holidays, newHoliday];
 }
 
-  get filteredHolidays(): Holiday[] {
+get filteredHolidays(): Holiday[] {
     return this.holidays.filter(h => {
-      const byType =
-        this.selectedType === 'all' || h.type === this.selectedType;
-
-      const byMonth =
-        !this.selectedMonth || h.date.getMonth() + 1 === this.selectedMonth;
-
-      return byType && byMonth;
+      // Filtre par type (isFixed)
+      const byType = this.selectedType === 'all' || h.isFixed === this.selectedType;
+      
+      // Filtre par mois
+      const byMonth = !this.selectedMonth || 
+                     (h.date && h.date.getMonth() + 1 === this.selectedMonth);
+      
+      let byRange = true;
+      if (this.bsRangeValue && this.bsRangeValue.length === 2) {
+        const holidayDate = new Date(h.date).setHours(0,0,0,0);
+        const startDate = new Date(this.bsRangeValue[0]).setHours(0,0,0,0);
+        const endDate = new Date(this.bsRangeValue[1]).setHours(0,0,0,0);
+      
+        byRange = holidayDate >= startDate && holidayDate <= endDate;
+      }
+      return byType && byMonth && byRange;
     });
   }
+  getActiveFiltersCount(): number {
+    let count = 0;
+    if (this.selectedType !== 'all') count++;
+    if (this.selectedMonth) count++;
+    if (this.bsRangeValue?.length === 2) count++;
+    return count;
+  }
+
+  hasActiveFilters(): boolean {
+    return this.getActiveFiltersCount() > 0;
+  }
+
+  resetFilters(): void {
+    this.selectedType = 'all';
+    this.selectedMonth = '';
+    this.bsRangeValue = [];
+  }
+  
 }
 
 

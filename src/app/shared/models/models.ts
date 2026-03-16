@@ -1,3 +1,5 @@
+import { HolidaysStatus } from "../enum/holidays-status";
+
 export interface Sondage {
   id: number;
   titre: string;
@@ -633,11 +635,19 @@ export interface designation {
 
 export interface Holiday {
   id: number;
-  type: 'national' | 'religious';
-  nameFr: string;
-  nameAr: string;
+  labelFr: string;    
+  labelAr: string; 
   date: Date;
-  days: number;
+  duration: number;   
+  isFixed: boolean;    
+  status: HolidaysStatus
+}
+export interface HolidayRequest {
+  labelFr: string;
+  labelAr: string;
+  date: Date | string;
+  duration: number;
+  isFixed: boolean; 
 }
 
 export interface attendanceadmin {

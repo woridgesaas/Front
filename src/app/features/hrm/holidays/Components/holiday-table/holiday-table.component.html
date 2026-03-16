@@ -1,29 +1,87 @@
-<div class="table-responsive">
-  <table class="table table-sm datanew mb-0 equal-table">
+<div class="container-fluid py-3">
+  <!-- En-tête avec titre et filtre -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4>Jours fériés</h4>
+    <span class="badge bg-warning text-dark">⚠️ À confirmer</span>
+  </div>
+
+
+  <div class="row g-3" *ngIf="holidays.length > 0; else emptyState">
+    <div *ngFor="let h of holidays" class="col-12 col-sm-6 col-md-4 col-lg-3">
+      <div class="card h-100 shadow-sm border-0" 
+           [class.border-warning]="h.status === 'TO_BE_CONFIRMED'"
+           [class.bg-light-warning]="h.status === 'TO_BE_CONFIRMED'">
+        
+        <!-- Header coard-->
+        <div class="card-header bg-transparent d-flex justify-content-between align-items-center py-2">
+          <span class="small text-muted">{{ h.date | date:'EEEE d MMMM' }}</span>
+          <span *ngIf="h.status === 'TO_BE_CONFIRMED'" 
+                class="badge bg-warning text-dark rounded-pill px-2"
+                title="Date à confirmer">
+            ⏳ À confirmer
+          </span>
+        </div>
+
+        <div class="card-body">
+          <h5 class="card-title mb-1">{{ h.labelFr }}</h5>
+          <h6 class="card-subtitle mb-2 text-muted" dir="rtl">{{ h.labelAr }}</h6>
+          <div class="d-flex justify-content-between align-items-center mt-2">
+            <span class="badge bg-light text-dark rounded-pill">
+              <i class="bi bi-calendar"></i> {{ h.date | date:'dd/MM/yyyy' }}
+            </span>
+            <span class="badge bg-light text-dark rounded-pill">
+              <i class="bi bi-clock"></i> {{ h.duration }} jour(s)
+            </span>
+          </div>
+        </div>
+
+
+        <div *ngIf="!h.isFixed && h.status === 'TO_BE_CONFIRMED'" class="card-footer bg-transparent border-0 pt-0">
+          <button class="btn btn-sm btn-outline-primary w-100" (click)="openUpdateModal(h)">
+            <i class="bi bi-pencil"></i> Modifier
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<ng-template #emptyState>
+  <div class="text-center py-5 my-5">
+    <!-- Illustration -->
+    <div class="mb-4">
+      <svg width="120" height="120" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.5;">
+        <path d="M8 2V6" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M16 2V6" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"/>
+        <rect x="3" y="4" width="18" height="18" rx="3" stroke="#6B7280" stroke-width="1.5"/>
+        <path d="M3 10H21" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="12" cy="15" r="1.5" fill="#6B7280"/>
+        <circle cx="16" cy="15" r="1.5" fill="#6B7280"/>
+        <circle cx="8" cy="15" r="1.5" fill="#6B7280"/>
+      </svg>
+    </div>
     
-    <colgroup>
-      <col style="width: 35%">
-      <col style="width: 35%">
-      <col style="width: 30%">
-      <col style="width: 25%">
-    </colgroup>
 
-    <thead class="thead-light">
-      <tr>
-        <th class="text-center">Fêtes</th>
-        <th class="text-center">الأعياد</th>
-        <th class="text-center">Date</th>
-        <th class="text-center">Jours</th>
-      </tr>
-    </thead>
+    <h5 class="text-muted mb-3">Aucun jour férié trouvé</h5>
+    
 
-    <tbody>
-      <tr *ngFor="let h of holidays">
-        <td class="text-center fw-medium">{{ h.nameFr }}</td>
-        <td class="text-center" dir="rtl">{{ h.nameAr }}</td>
-        <td class="text-center">{{ h.date | date:'dd MMM yyyy' }}</td>
-        <td class="text-center">{{ h.days }}</td>
-      </tr>
-    </tbody>
-  </table>
+    <p class="text-muted mb-4" style="max-width: 400px; margin-left: auto; margin-right: auto;">
+      <ng-container *ngIf="showResetButton; else noFilters">
+        Aucun résultat ne correspond à vos filtres. Essayez d'autres critères.
+      </ng-container>
+      <ng-template #noFilters>
+        Aucun jour férié n'est disponible pour le moment.
+      </ng-template>
+    </p>
+    
+    <!-- Boutons d'action -->
+    <div class="d-flex gap-2 justify-content-center">
+      <button *ngIf="showResetButton" 
+              class="btn btn-outline-secondary" 
+              (click)="resetFilters.emit()">
+        <i class="bi bi-x-circle me-2"></i>Effacer les filtres
+      </button>
+    </div>
+  </div>
+</ng-template>
 </div>
