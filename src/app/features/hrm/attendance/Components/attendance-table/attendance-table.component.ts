@@ -85,5 +85,10 @@ hoursBadgeClass(row: any): string {
 showManagerDecision(row: any): boolean {
   return this.getUiStatus(row) === 'OVERTIME';
 }
+@Output() enrollCard = new EventEmitter<attendanceadmin>();
+
+openEnrollModal(row: attendanceadmin): void {
+  this.enrollCard.emit(row);
+}
 
 }

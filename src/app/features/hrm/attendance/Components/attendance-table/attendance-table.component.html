@@ -12,91 +12,114 @@
         <th>Statut</th>
         <th>Heures production</th>
         <th>Décision manager</th>
+        <th>Carte RFID</th>
       </tr>
     </thead>
-
     <tbody>
-      <tr *ngFor="let row of tableData; trackBy: trackByEmployee"
-    [ngClass]="{ 'bg-danger text-white': getUiStatus(row) === 'ABSENT' }">
+      <tr
+        *ngFor="let row of tableData; trackBy: trackByEmployee"
+        [ngClass]="{ 'bg-danger text-white': getUiStatus(row) === 'ABSENT' }"
+      >
+        <!-- 1) Employé -->
+        <td>
+          <div class="d-flex align-items-center file-name-icon">
+            <a class="avatar avatar-md border avatar-rounded">
+              <img
+                src="assets/img/users/{{ row?.Image }}"
+                class="img-fluid"
+                alt="img"
+              />
+            </a>
+            <div class="ms-2">
+              <h6 class="fw-medium">{{ row.Employee }}</h6>
+              <span class="fs-12">{{ row.Role }}</span>
+            </div>
+          </div>
+        </td>
 
-  <!-- 1) Employé -->
-  <td>
-    <div class="d-flex align-items-center file-name-icon">
-      <a class="avatar avatar-md border avatar-rounded">
-        <img src="assets/img/users/{{ row?.Image }}" class="img-fluid" alt="img" />
-      </a>
-      <div class="ms-2">
-        <h6 class="fw-medium">{{ row.Employee }}</h6>
-        <span class="fs-12">{{ row.Role }}</span>
-      </div>
-    </div>
-  </td>
+        <!-- 2) Entrée -->
+        <td>{{ row.CheckIn }}</td>
 
-  <!--  Heures de travail (CheckIn) -->
-  <td>{{ row.CheckIn }}</td>
+        <!-- 3) Sortie -->
+        <td>{{ row.CheckOut }}</td>
 
-    <!-- Sortie -->
-  <td>{{ row.CheckOut }}</td>
+        <!-- 4) Statut -->
+        <td>
+          <span
+            class="badge d-inline-flex align-items-center badge-xs"
+            [ngClass]="statusBadgeClass(row)"
+          >
+            <i class="ti ti-point-filled me-1"></i>
+            {{ getStatusLabel(row) }}
+          </span>
+        </td>
 
-  <!--  Statut -->
-  <td>
-    <span class="badge d-inline-flex align-items-center badge-xs"
-          [ngClass]="statusBadgeClass(row)">
-      <i class="ti ti-point-filled me-1"></i>
-      {{ getStatusLabel(row) }}
-    </span>
-  </td>
+        <!-- 5) Heures production -->
+        <td>
+          <span
+            class="badge d-inline-flex align-items-center"
+            [ngClass]="hoursBadgeClass(row)"
+          >
+            <i class="ti ti-clock-hour-11 me-1"></i>
+            {{ row.ProductionHours }}
+          </span>
+        </td>
 
-
-
-  <!-- 5) Heures production -->
-  <td>
-    <span class="badge d-inline-flex align-items-center"
-          [ngClass]="hoursBadgeClass(row)">
-      <i class="ti ti-clock-hour-11 me-1"></i>
-      {{ row.ProductionHours }}
-    </span>
-  </td>
-
-  <!-- 6) Décision manager -->
-  <td>
-    <ng-container *ngIf="showManagerDecision(row); else noDecision">
-
-      <button *ngIf="row.overtimeDecision === 'PENDING'"
+        <!-- 6) Décision manager -->
+        <td>
+          <ng-container *ngIf="showManagerDecision(row); else noDecision">
+            <button
+              *ngIf="row.overtimeDecision === 'PENDING'"
               class="btn btn-success btn-sm me-1"
-              (click)="approve(row)">
-        Accepter
-      </button>
-
-      <button *ngIf="row.overtimeDecision === 'PENDING'"
+              (click)="approve(row)"
+            >
+              Accepter
+            </button>
+            <button
+              *ngIf="row.overtimeDecision === 'PENDING'"
               class="btn btn-danger btn-sm"
-              (click)="reject(row)">
-        Refuser
-      </button>
+              (click)="reject(row)"
+            >
+              Refuser
+            </button>
+            <span
+              *ngIf="row.overtimeDecision === 'APPROVED'"
+              class="badge badge-success"
+            >
+              Approuvé
+            </span>
+            <span
+              *ngIf="row.overtimeDecision === 'REJECTED'"
+              class="badge badge-danger"
+            >
+              Refusé
+            </span>
+          </ng-container>
+          <ng-template #noDecision></ng-template>
+        </td>
 
-      <span *ngIf="row.overtimeDecision === 'APPROVED'"
-            class="badge badge-success">
-        Approuvé
-      </span>
+        <!-- 7) Carte RFID -->
+        <td>
+          <button
+            class="btn btn-sm btn-outline-primary"
+            (click)="openEnrollModal(row)"
+          >
+            <i class="ti ti-credit-card me-1"></i>
+            Carte RFID
+          </button>
+        </td>
 
-      <span *ngIf="row.overtimeDecision === 'REJECTED'"
-            class="badge badge-danger">
-        Refusé
-      </span>
+      </tr>
 
-    </ng-container>
+      <!-- Message vide -->
+      @if (!tableData.length) {
+        <tr>
+          <td colspan="7" class="text-center py-3">
+            Aucun enregistrement trouvé
+          </td>
+        </tr>
+      }
 
-    <ng-template #noDecision>
-    </ng-template>
-  </td>
-</tr>
-@if (!tableData.length) {
-  <tr>
-    <td colspan="6" class="text-center py-3">
-      Aucun enregistrement trouvé
-    </td>
-  </tr>
-}
     </tbody>
   </table>
 </div>

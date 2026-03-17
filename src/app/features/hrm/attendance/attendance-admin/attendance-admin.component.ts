@@ -5,6 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
+import { EnrollCardModalComponent } from '../Components/enroll-card-modal/enroll-card-modal.component';
+
 import { routes } from '../../../../shared/routes/routes';
 import { DataService } from '../../../../shared/data/data.service';
 import { attendanceadmin, apiResultFormat } from '../../../../shared/models/models';
@@ -38,6 +40,7 @@ import { AttendanceViewSwitchComponent } from '../Components/attendance-view-swi
     AttendanceFiltersComponent,
     AttendanceTableComponent,
     AttendanceViewSwitchComponent,
+    EnrollCardModalComponent,
   ],
 })
 export class AttendanceAdminComponent {
@@ -158,4 +161,19 @@ searchData(value: string): void {
 
 
   changePageSize(_: number): void {}
+
+  // test btn enroll
+
+  selectedEmployee: attendanceadmin | null = null;
+showEnrollModal = false;
+
+openEnrollModal(employee: attendanceadmin): void {
+  this.selectedEmployee = employee;
+  this.showEnrollModal = true;
+}
+
+closeEnrollModal(): void {
+  this.showEnrollModal = false;
+  this.selectedEmployee = null;
+}
 }

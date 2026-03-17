@@ -2,16 +2,18 @@
     "data":[
         {
             "Employee": "Anthony Lewis",
-            "Image":"user-49.jpg",
-            "Role":"UI/UX Team",
+            "Image": "user-49.jpg",
+            "Role": "UI/UX Team",
+            "Department": "UI/UX",
+            "employeeId": "96aad06d-5e4e-4a1a-a533-625221f8dcf1",
             "Status": "Present",
             "CheckIn": "09:00 AM",
             "CheckOut": "06:45 PM",
             "Break": "30 Min",
             "Late": "32 Min",
-            "Production":1,
+            "Production": 1,
             "ProductionHours": "7.40 Hrs"
-        },
+          },
         {
             "Employee": "Brian Villalobos",
             "Image":"user-09.jpg",

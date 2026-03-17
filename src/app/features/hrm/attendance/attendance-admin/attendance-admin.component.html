@@ -29,12 +29,21 @@
             (pageSizeChange)="changePageSize($event)"
           >
           </app-filter>
+
+          <!-- Ajouter le modal en bas du template -->
+<app-enroll-card-modal
+*ngIf="showEnrollModal && selectedEmployee"
+[employee]="selectedEmployee"
+(close)="closeEnrollModal()">
+</app-enroll-card-modal>
+
           <app-attendance-table
             [tableData]="tableData"
             (sortChange)="sortData($event)"
             (approveOvertime)="approve($event)"
             (rejectOvertime)="reject($event)"
-          >
+            (enrollCard)="openEnrollModal($event)">  
+          
           </app-attendance-table>
           <app-custom-pagination></app-custom-pagination>
         </div>
