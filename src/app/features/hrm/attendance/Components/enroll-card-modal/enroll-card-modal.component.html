@@ -1,0 +1,116 @@
+<!-- Overlay -->
+<div class="modal-overlay" (click)="closeModal()"></div>
+
+<!-- Modal -->
+<div class="modal-box">
+
+  <!-- Header -->
+  <div class="modal-header-custom">
+    <h5>
+      <i class="ti ti-credit-card me-2"></i>
+      Associer une carte RFID
+    </h5>
+    <button class="btn-close-custom" (click)="closeModal()">
+      <i class="ti ti-x"></i>
+    </button>
+  </div>
+
+  <!-- Body -->
+  <div class="modal-body-custom">
+
+    <!-- Infos employé -->
+    <div class="employee-info">
+      <img
+        src="assets/img/users/{{ employee?.Image }}"
+        class="avatar-img"
+        alt="avatar"
+      />
+      <div>
+        <h6>{{ employee?.Employee }}</h6>
+        <span>{{ employee?.Role }}</span>
+      </div>
+    </div>
+
+    <!-- Étape 1 : Confirmation -->
+    <div *ngIf="step === 'CONFIRM'">
+      <p class="text-muted text-center mt-3">
+        Cliquez sur "Activer" puis approchez la carte RFID sur le lecteur.
+      </p>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" (click)="cancel()">
+          <i class="ti ti-x me-1"></i>
+          Annuler
+        </button>
+        <button class="btn btn-primary" (click)="activate()">
+          <i class="ti ti-wifi me-1"></i>
+          Activer le lecteur
+        </button>
+      </div>
+    </div>
+
+    <!-- Étape 1.5 : Activation en cours -->
+    <div *ngIf="step === 'ACTIVATING'" class="text-center py-3">
+      <i class="ti ti-loader-2 text-primary spinner-icon" style="font-size: 2.5rem"></i>
+      <p class="text-muted mt-2">
+        <i class="ti ti-clock me-1"></i>
+        Activation du lecteur en cours, veuillez patienter...
+      </p>
+    </div>
+
+    <!-- Étape 2 : Attente du scan -->
+    <div *ngIf="step === 'WAITING'" class="waiting-state">
+      <div class="rfid-animation">
+        <i class="ti ti-credit-card rfid-icon"></i>
+        <div class="pulse-ring"></div>
+      </div>
+      <p class="text-warning fw-semibold mt-3">
+        <i class="ti ti-scan me-1"></i>
+        Approchez la carte sur le lecteur...
+      </p>
+      <p class="text-muted small">
+        <i class="ti ti-clock me-1"></i>
+        Le lecteur s'éteindra automatiquement après 30 secondes
+      </p>
+      <button class="btn btn-danger mt-2" (click)="cancel()">
+        <i class="ti ti-x me-1"></i>
+        Annuler
+      </button>
+    </div>
+
+    <!-- Étape 3 : Succès -->
+    <div *ngIf="step === 'SUCCESS'" class="text-center py-3">
+      <i class="ti ti-circle-check text-success" style="font-size: 3rem"></i>
+      <p class="text-success fw-semibold mt-2">
+        <i class="ti ti-circle-check me-1"></i>
+        Carte associée avec succès !
+      </p>
+    </div>
+
+    <!-- Étape 4 : Carte déjà associée -->
+    <div *ngIf="step === 'ALREADY_ENROLLED'" class="text-center py-3">
+      <i class="ti ti-alert-triangle text-warning" style="font-size: 3rem"></i>
+      <p class="text-warning fw-semibold mt-2">
+        <i class="ti ti-alert-triangle me-1"></i>
+        Cet employé possède déjà une carte RFID
+      </p>
+      <button class="btn btn-secondary mt-2" (click)="closeModal()">
+        <i class="ti ti-x me-1"></i>
+        Fermer
+      </button>
+    </div>
+
+    <!-- Étape 5 : Erreur -->
+    <div *ngIf="step === 'ERROR'" class="text-center py-3">
+      <i class="ti ti-alert-circle text-danger" style="font-size: 3rem"></i>
+      <p class="text-danger fw-semibold mt-2">
+        <i class="ti ti-alert-circle me-1"></i>
+        Une erreur est survenue
+      </p>
+      <button class="btn btn-secondary mt-2" (click)="closeModal()">
+        <i class="ti ti-x me-1"></i>
+        Fermer
+      </button>
+    </div>
+
+  </div>
+</div>

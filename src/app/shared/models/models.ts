@@ -667,6 +667,7 @@ export interface attendanceadmin {
   Status: 'Present' | 'Absent' | 'Overtime';
   isOvertime?: boolean;
   overtimeDecision?: 'PENDING' | 'APPROVED' | 'REJECTED';
+  employeeId?: string;
 }
 
 export interface attendanceemployee {
