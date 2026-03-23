@@ -27,7 +27,6 @@ import { EditPromotionModalComponent } from './components/promotions-modal/edit-
     PromotionsStatsComponent,
     PromotionsFiltersComponent,
     PromotionsTableComponent,
-    ConfirmDeleteComponent,
     AddPromotionModalComponent,
     EditPromotionModalComponent,
   ],
@@ -67,21 +66,26 @@ constructor(private promotionService: PromotionService) {}
     ];
   }
 loadPromotions() {
-  this.promotionService.getAllPromotions().subscribe(res => {
+  this.promotionService.getAllPromotions().subscribe({
+   next: (res: any) => {
 
-    this.promotions = res.map((p: any) => ({
-      id: p.id,
-      PromotedEmployee: p.fullName,
-      Department: p.department,
-      DesignationFrom: p.previousPost,
-      DesignationTo: p.newPost,
-      OldSalary: p.previousSalary,
-      Bonus: p.newSalary - p.previousSalary,
-      NewSalary: p.newSalary,
-      PromotionDate: p.promotionDate
-    }));
+  const data = res.data;
+this.promotions = data.map((p: any) => ({
+  id: p.id,
+  CIN: p.basicUserInfo?.CIN ?? null,
+  promotedEmployee: p.basicUserInfo?.fullName ?? '—',
+  department: p.departmentName ?? '—',
+  designationFrom: p.previousPostName ?? '—',
+  designationTo: p.newPostName ?? '—',
+  oldSalary: p.previousSalary ?? 0,
+  newSalary: p.newSalary ?? 0,
+  bonus: (p.newSalary ?? 0) - (p.previousSalary ?? 0),
+  promotionDate: p.promotionDate
+}));
 
-    this.applyFilters();
+      this.applyFilters();
+    },
+   
   });
 }
 
@@ -93,9 +97,9 @@ loadPromotions() {
 
     this.filteredPromotions = this.promotions.filter((p) => {
       const bySearch =
-        !search ||
-        (p.PromotedEmployee || '').toLowerCase().includes(search) ||
-        (p.Department || '').toLowerCase().includes(search);
+  !search ||
+  (p.promotedEmployee || '').toLowerCase().includes(search) ||
+  (p.department || '').toLowerCase().includes(search);
 
       // (Optionnel) filtre dateRange si tu veux l’activer plus tard
       return bySearch;
@@ -128,19 +132,31 @@ loadPromotions() {
 
   // EDIT open
   openEdit(p: Promotion) {
-    this.selectedPromotion = { ...p };
-    this.openEditModal = true;
+
+  if (!p.CIN) {
+    return;
   }
+
+  this.promotionService.getEmployeeInfo(p.CIN).subscribe((res: any) => {
+
+    this.selectedPromotion = {
+      ...p,
+    };
+
+    this.openEditModal = true;
+  });
+}
 
   // EDIT save
 updatePromotion(updated: Promotion) {
 
-  if (!updated.id) return;
+  if (!updated.id || !updated.newPostId) return;
 
   const payload = {
-    bonus: updated.Bonus,
-    newPost: updated.DesignationTo,
-    promotionDate: updated.PromotionDate
+    promotionId: updated.id,
+    newPostId: updated.newPostId,
+    bonus: updated.bonus ?? 0,
+    promotionDate: updated.promotionDate!
   };
 
   this.promotionService.updatePromotion(updated.id, payload)
@@ -151,19 +167,6 @@ updatePromotion(updated: Promotion) {
 }
 
 
-  // DELETE open (set selectedItem)
- openDelete(p: Promotion) {
-  this.selectedItem = { ...p };
-}
 
-  // DELETE confirm
- deleteItem() {
-
-  if (!this.selectedItem?.id) return;
-
-  this.promotionService.deletePromotion(this.selectedItem.id)
-    .subscribe(() => {
-      this.loadPromotions();
-    });
-}
+  
 }

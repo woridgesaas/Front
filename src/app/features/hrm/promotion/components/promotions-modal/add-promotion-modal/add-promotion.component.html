@@ -26,14 +26,15 @@
             <!-- CIN -->
             <div class="col-md-12 mb-3">
               <label class="form-label">CIN de l’employé</label>
-
-              <input
+<div *ngIf="loading" class="text-primary mt-2">
+   Chargement employé...
+</div>              <input
                 type="text"
                 class="form-control"
                 [(ngModel)]="cin"
                 name="cin"
                 required
-                (blur)="fetchEmployee()"
+(keyup)="cinChanged.next(cin)"
               />
 
               <div *ngIf="errorMessage" class="text-danger mt-2">
@@ -48,44 +49,23 @@
               <input
                 type="text"
                 class="form-control"
-                [(ngModel)]="model.PromotedEmployee"
+                [(ngModel)]="model.promotedEmployee"
                 name="employee"
                 disabled
               />
             </div>
 
             <!-- DEPARTEMENT -->
-            <div class="col-md-12 mb-3">
-              <label class="form-label">Département</label>
+           <div class="col-md-12 mb-3">
+  <label class="form-label">Département</label>
 
-              <div class="dropdown">
-
-                <button
-                  type="button"
-                  class="btn btn-outline-secondary d-flex justify-content-between w-100"
-                  (click)="isDeptOpen = !isDeptOpen"
-                >
-                  {{ model.Department || "Sélectionner un département" }}
-                  <i class="ti ti-chevron-down"></i>
-                </button>
-
-                <ul class="dropdown-menu show w-100" *ngIf="isDeptOpen">
-
-                  <li *ngFor="let dept of departments">
-
-                    <button
-                      type="button"
-                      class="dropdown-item"
-                      (click)="selectDepartment(dept.name)"
-                    >
-                      {{ dept.name }}
-                    </button>
-
-                  </li>
-
-                </ul>
-              </div>
-            </div>
+  <input
+    type="text"
+    class="form-control"
+    [value]="model.department"
+    disabled
+  />
+</div>
 
             <!-- ANCIEN POSTE -->
             <div class="col-md-12 mb-3">
@@ -94,7 +74,7 @@
               <input
                 type="text"
                 class="form-control"
-                [(ngModel)]="model.DesignationFrom"
+                [(ngModel)]="model.designationFrom"
                 name="from"
                 disabled
               />
@@ -113,8 +93,8 @@
                   (click)="isPostOpen = !isPostOpen"
                 >
                   {{
-                    model.DesignationTo
-                      ? model.DesignationTo
+                    model.designationTo
+                      ? model.designationTo
                       : "Sélectionner un poste"
                   }}
                   <i class="ti ti-chevron-down"></i>
@@ -122,17 +102,18 @@
 
                 <ul class="dropdown-menu show w-100" *ngIf="isPostOpen">
 
-                  <li *ngFor="let post of posts">
+                 <li *ngFor="let post of posts">
 
-                    <button
-                      type="button"
-                      class="dropdown-item"
-                      (click)="selectPosition(post.name)"
-                    >
-                      {{ post.name }}
-                    </button>
+  <button
+    type="button"
+    class="dropdown-item"
+    [disabled]="post.name === model.designationFrom"
+    (click)="selectPosition(post.name)"
+  >
+    {{ post.name }}
+  </button>
 
-                  </li>
+</li>
 
                   <li *ngIf="posts.length === 0">
                     <span class="dropdown-item text-muted">
@@ -153,7 +134,7 @@
               <input
                 type="number"
                 class="form-control"
-                [(ngModel)]="model.OldSalary"
+                [(ngModel)]="model.oldSalary"
                 name="oldSalary"
                 disabled
               />
@@ -165,7 +146,7 @@
               <input
                 type="number"
                 class="form-control"
-                [(ngModel)]="model.Bonus"
+                [(ngModel)]="model.bonus"
                 name="bonus"
                 (ngModelChange)="calculateNewSalary()"
               />
@@ -177,10 +158,30 @@
               <input
                 type="number"
                 class="form-control"
-                [value]="model.NewSalary"
+                [value]="model.newSalary"
                 disabled
               />
             </div>
+            <div class="col-md-12 mb-3">
+  <label class="form-label">Date de promotion</label>
+
+  <div class="input-icon position-relative">
+    <span class="input-icon-addon">
+      <i class="ti ti-calendar text-gray-7"></i>
+    </span>
+
+    <input
+      type="text"
+      class="form-control"
+      bsDatepicker
+      [bsConfig]="{ adaptivePosition: true }"
+      [(ngModel)]="promotionDate"
+      name="promotionDate"
+      placeholder="jj/mm/aaaa"
+      required
+    />
+  </div>
+</div>
 
           </div>
         </div>

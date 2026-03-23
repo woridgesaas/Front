@@ -10,7 +10,7 @@ import { CreateUserRequest } from "../../models/user/create-user.model";
 })
 export class UserApiService {
 
-  private baseUrl = 'http://localhost:8081/api';
+  private baseUrl = 'http://localhost:8081/api/internal-users';
 
   constructor(private http: HttpClient) {}
 

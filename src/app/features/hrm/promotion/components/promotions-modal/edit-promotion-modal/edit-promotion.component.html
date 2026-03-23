@@ -27,7 +27,7 @@
               <input
                 type="text"
                 class="form-control"
-                [(ngModel)]="form.PromotedEmployee"
+                [(ngModel)]="form.promotedEmployee"
                 name="employee"
                 disabled />
             </div>
@@ -37,7 +37,7 @@
               <input
                 type="text"
                 class="form-control"
-                [(ngModel)]="form.Department"
+                [(ngModel)]="form.department"
                 name="department"
                 disabled />
             </div>
@@ -47,39 +47,63 @@
               <input
                 type="text"
                 class="form-control"
-                [(ngModel)]="form.DesignationFrom"
+                [(ngModel)]="form.designationFrom"
                 name="from"
                 disabled />
             </div>
 
-            <div class="col-md-12 mb-3">
-              <label class="form-label">Nouveau poste</label>
-              <input
-                type="text"
-                class="form-control"
-                [(ngModel)]="form.DesignationTo"
-                name="to"
-                required />
-            </div>
+                  <div class="col-md-12 mb-3">
+  <label class="form-label">Nouveau poste</label>
+
+  <div class="dropdown">
+
+    <button
+      type="button"
+      class="btn btn-outline-secondary d-flex justify-content-between w-100"
+      (click)="isPostOpen = !isPostOpen"
+    >
+      {{ form.designationTo || "Sélectionner un poste" }}
+      <i class="ti ti-chevron-down"></i>
+    </button>
+
+    <ul class="dropdown-menu show w-100" *ngIf="isPostOpen">
+
+      <li *ngFor="let post of posts">
+
+        <button
+          type="button"
+          class="dropdown-item"
+          [disabled]="post.name === form.designationFrom"
+          (click)="selectPosition(post)"
+        >
+          {{ post.name }}
+        </button>
+
+      </li>
+
+    </ul>
+  </div>
+</div>
 
             <div class="col-md-6 mb-3">
               <label class="form-label">Ancien salaire (MAD)</label>
               <input
                 type="number"
                 class="form-control"
-                [(ngModel)]="form.OldSalary"
+                [(ngModel)]="form.oldSalary"
                 name="oldSalary"
                 disabled />
             </div>
 
             <div class="col-md-6 mb-3">
               <label class="form-label">Prime / Augmentation (MAD)</label>
-              <input
-                type="number"
-                class="form-control"
-                [(ngModel)]="form.Bonus"
-                name="bonus"
-                (ngModelChange)="calculateNewSalary()" />
+             <input
+  type="number"
+  class="form-control"
+  [(ngModel)]="form.bonus"
+  [ngModelOptions]="{ standalone: true }"
+  (ngModelChange)="onBonusChange()"
+/>
             </div>
 
             <div class="col-md-12 mb-3">
@@ -87,7 +111,7 @@
               <input
                 type="number"
                 class="form-control"
-                [value]="form.NewSalary"
+                [value]="form.newSalary"
                 disabled />
             </div>
 
@@ -100,14 +124,15 @@
     </span>
 
     <input
-  type="text"
-  class="form-control"
-  bsDatepicker
-  [container]="'body'"
-  [placement]="'bottom'"
-  [(ngModel)]="promotionDate"
-  name="date"
-  placeholder="jj/mm/aaaa" />
+      type="text"
+      class="form-control"
+      bsDatepicker
+      [bsConfig]="{ adaptivePosition: true }"
+      [(ngModel)]="promotionDate"
+      name="promotionDate"
+      placeholder="jj/mm/aaaa"
+      required
+    />
   </div>
 </div>
 

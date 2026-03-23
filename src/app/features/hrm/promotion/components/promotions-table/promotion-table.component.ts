@@ -18,6 +18,6 @@ export class PromotionsTableComponent {
   @Output() sort = new EventEmitter<Sort>();
 
   trackById(index: number, item: Promotion) {
-    return item.id;
-  }
+  return item.id ?? index;
+}
 }

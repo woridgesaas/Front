@@ -19,17 +19,17 @@
     <tbody>
       <tr *ngFor="let p of promotions; trackBy: trackById">
 
-        <td>{{ p.PromotedEmployee || '-' }}</td>
-        <td>{{ p.Department || '-' }}</td>
-        <td>{{ p.DesignationFrom || '-' }}</td>
-        <td>{{ p.DesignationTo || '-' }}</td>
+        <td>{{ p.promotedEmployee || '-' }}</td>
+        <td>{{ p.department || '-' }}</td>
+        <td>{{ p.designationFrom || '-' }}</td>
+        <td>{{ p.designationTo || '-' }}</td>
 
         <td>
-          {{ p.NewSalary | number:'1.0-2' }} MAD
+          {{ p.newSalary | number:'1.0-2' }} MAD
         </td>
 
         <td>
-          {{ p.PromotionDate | date:'dd/MM/yyyy' }}
+          {{ p.promotionDate | date:'dd/MM/yyyy' }}
         </td>
 
         <td class="text-center">
