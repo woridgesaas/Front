@@ -36,7 +36,6 @@
         <app-promotions-table
           [promotions]="filteredPromotions"
           (edit)="openEdit($event)"
-          (remove)="openDelete($event)"
           (sort)="sortData($event)"
         >
         </app-promotions-table>
@@ -58,21 +57,7 @@
         >
         </app-edit-promotion-modal>
 
-        <!-- DELETE MODAL -->
-        <app-confirm-delete
-          modalId="deleteModal"
-          title="Supprimer Promotion"
-          [message]="
-            selectedItem
-              ? 'Êtes-vous sûr de vouloir supprimer la promotion de ' +
-                selectedItem.PromotedEmployee +
-                ' ?'
-              : ''
-          "
-          [item]="selectedItem"
-          (confirm)="deleteItem()"
-        >
-        </app-confirm-delete>
+        
       </div>
     </div>
   </div>

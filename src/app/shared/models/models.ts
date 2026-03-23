@@ -693,17 +693,43 @@ export interface AttendanceRow {
   OvertimeDecision?: OvertimeDecision; // ⚠️ optionnel (API)
 }
 export interface Promotion {
-  id?: string;   // 🔥 IMPORTANT
+  id?: string;
+  CIN?: string;
 
-  PromotedEmployee?: string;
-  Department?: string;
-  DesignationFrom?: string;
-  DesignationTo?: string;
-  OldSalary?: number;
-  Bonus?: number;
-  NewSalary?: number;
-  PromotionDate?: string;
+  promotedEmployee?: string;
+  department?: string;
+
+  designationFrom?: string;
+  designationTo?: string;
+
+  oldSalary?: number;
+  bonus?: number;
+  newSalary?: number;
+
+  promotionDate?: string;
+
+  newPostId?: string;
 }
+export interface PromotionRequest {
+  cin: string;
+  bonus: number;
+  newPostId: string;
+  promotionDate: string;
+}
+export interface EmployeeInfoResponse {
+  fullName: string;
+  departmentName: string;
+  currentPost: string;
+  currentSalary: number;
+}
+
+export interface UpdatePromotionRequest {
+  promotionId: string;
+  newPostId: string;
+  bonus: number;
+  promotionDate: string;
+}
+
 
 export interface pageSizeCal {
   totalData: number;

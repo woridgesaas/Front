@@ -42,7 +42,7 @@
     style="min-width: 180px;"
     placeholder="Rechercher..."
     [(ngModel)]="searchValue"
-    (ngModelChange)="searchValueChange.emit($event)"
+    (ngModelChange)="searchChanged.next($event)"
   />
 
 </div>

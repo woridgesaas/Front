@@ -20,24 +20,27 @@ export class PromotionsStatsComponent {
   // KPI 2 — Promotions avec augmentation >= 3000 MAD
   get highIncreaseCount(): number {
     return this.promotions.filter(
-      p => (p.Bonus || 0) >= 3000
+      p => (p.bonus || 0) >= 3000
     ).length;
   }
 
   // KPI 3 — Département le plus impacté (somme des bonus)
-  get mostImpactedDepartment(): string {
-    if (!this.promotions.length) return '—';
+ get mostImpactedDepartment(): string {
+  if (!this.promotions?.length) return '—';
 
-    const totals: Record<string, number> = {};
+  const totals = this.promotions.reduce((acc, p) => {
+    if (!p.department) return acc;
 
-    this.promotions.forEach(p => {
-      if (!p.Department) return;
-      totals[p.Department] =
-        (totals[p.Department] || 0) + (p.Bonus || 0);
-    });
+    acc[p.department] = (acc[p.department] || 0) + (p.bonus || 0);
+    return acc;
+  }, {} as Record<string, number>);
 
-    return Object.keys(totals).reduce((a, b) =>
-      totals[a] > totals[b] ? a : b
-    );
-  }
+  const entries = Object.entries(totals);
+
+  if (!entries.length) return '—';
+
+  return entries.reduce((max, curr) =>
+    curr[1] > max[1] ? curr : max
+  )[0];
+}
 }
