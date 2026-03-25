@@ -13,7 +13,7 @@ export interface PromotionRequest {
 })
 export class PromotionService {
 
-private api = `${process.env['NG_APP_intern_URL']}/api/internal-users/promotions`;
+private api = `http://localhost:8000/api/internal-users/promotions`;
   constructor(private http: HttpClient) {}
 
   // 🔹 Infos employé
