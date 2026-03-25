@@ -9,8 +9,8 @@ import { Resignation, UserSearch } from '../models/models';
 })
 export class ResignationApiService {
 
-  private apiUrl = 'http://localhost:8081/api/resignations';
-  private userUrl = 'http://localhost:8081/api/user';
+  private apiUrl = 'http://localhost:8000/api/resignations';
+  private userUrl = 'http://localhost:8000/api/user';
 
   constructor(private http: HttpClient) {}
 

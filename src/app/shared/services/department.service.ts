@@ -6,7 +6,7 @@ import { HttpClient } from "@angular/common/http";
 @Injectable({ providedIn: 'root' })
 export class DepartmentService {
 
-  private baseUrl = 'http://localhost:8081/api/internal-users/departments';
+  private baseUrl = 'http://localhost:8000/api/internal-users/departments';
 
   constructor(private http: HttpClient) {}
 
