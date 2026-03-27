@@ -56,7 +56,42 @@ export class EmployeeDetailModalComponent implements OnInit {
   ngOnInit(): void {
     this.checkPendingRequests();
   }
+activeTab: 'info' | 'password' = 'info';
 
+passwordData = {
+  currentPassword: '',
+  newPassword: '',
+  confirmPassword: ''
+};
+changePassword(): void {
+
+  if (!this.passwordData.currentPassword ||
+      !this.passwordData.newPassword ||
+      !this.passwordData.confirmPassword) {
+    alert('Tous les champs sont obligatoires');
+    return;
+  }
+
+  if (this.passwordData.newPassword !== this.passwordData.confirmPassword) {
+    alert('Les mots de passe ne correspondent pas');
+    return;
+  }
+
+  // 🔥 appel API ms-auth
+  console.log('Changer mot de passe:', this.passwordData);
+
+  // TODO:
+  // this.authService.changePassword(this.passwordData).subscribe(...)
+
+  alert('Mot de passe modifié avec succès');
+
+  // reset
+  this.passwordData = {
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: ''
+  };
+}
   /**
    * Vérifier s'il existe déjà une demande en attente
    */
@@ -127,6 +162,10 @@ export class EmployeeDetailModalComponent implements OnInit {
    * Soumission du formulaire
    */
   onSubmit(): void {
+
+  if (this.activeTab === 'password') {
+    return; // ❌ empêcher submit RH
+  }
     // Vérifier s'il y a une demande en attente
     if (this.hasPendingRequest) {
       alert('Vous avez déjà une demande de modification en attente de validation.');

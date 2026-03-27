@@ -15,6 +15,29 @@
 
       <form (ngSubmit)="onSubmit()">
         <div class="modal-body pb-0">
+          <ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <button 
+      class="nav-link"
+      [class.active]="activeTab === 'info'"
+      (click)="activeTab = 'info'"
+    >
+      <i class="ti ti-user me-1"></i>
+      Informations
+    </button>
+  </li>
+
+  <li class="nav-item">
+    <button 
+      class="nav-link"
+      [class.active]="activeTab === 'password'"
+      (click)="activeTab = 'password'"
+    >
+      <i class="ti ti-lock me-1"></i>
+      Mot de passe
+    </button>
+  </li>
+</ul>
           
           <!-- ✅ Alerte: Demande en attente -->
           <div 
@@ -164,7 +187,54 @@
             </div>
           </div>
         </div>
+<div *ngIf="activeTab === 'password'" class="p-2">
 
+  <div class="alert alert-info">
+    <small>
+      Le changement de mot de passe est appliqué immédiatement (pas de validation RH).
+    </small>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Mot de passe actuel *</label>
+    <input
+      type="password"
+      class="form-control"
+      [(ngModel)]="passwordData.currentPassword"
+      name="currentPassword"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Nouveau mot de passe *</label>
+    <input
+      type="password"
+      class="form-control"
+      [(ngModel)]="passwordData.newPassword"
+      name="newPassword"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Confirmer le mot de passe *</label>
+    <input
+      type="password"
+      class="form-control"
+      [(ngModel)]="passwordData.confirmPassword"
+      name="confirmPassword"
+    />
+  </div>
+
+  <button 
+    type="button"
+    class="btn btn-primary"
+    (click)="changePassword()"
+  >
+    <i class="ti ti-lock-check me-1"></i>
+    Changer le mot de passe
+  </button>
+
+</div>
         <div class="modal-footer">
           <button
             type="button"
