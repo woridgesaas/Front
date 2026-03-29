@@ -2,7 +2,12 @@
   width: 96px;
   height: 96px;
 }
-
+.eye-icon {
+  position: absolute;
+  right: 10px;
+  top: 38px;
+  cursor: pointer;
+}
 .border-dashed {
   border-style: dashed;
 }
@@ -38,3 +43,35 @@
   border-top: 1px solid #f0f0f0;
 }
 
+/* NAV TABS STYLE */
+.nav-tabs {
+  border-bottom: none;
+  gap: 10px;
+}
+
+.nav-tabs .nav-link {
+  border: none;
+  background: #f3f4f6;
+  color: #6b7280;
+  border-radius: 10px;
+  padding: 8px 16px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.nav-tabs .nav-link i {
+  font-size: 14px;
+}
+
+/* hover */
+.nav-tabs .nav-link:hover {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+/* ACTIVE TAB 🔥 */
+.nav-tabs .nav-link.active {
+  background: #ede9fe;
+  color: #7c3aed;
+  box-shadow: 0 2px 6px rgba(124, 58, 237, 0.2);
+}

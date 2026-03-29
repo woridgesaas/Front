@@ -647,15 +647,7 @@ export class DataService {
       showAsTab: false,
       separateRoute: false,
       menu: [
-        {
-          menuValue: 'Sécurité du compte',
-          route: routes.changePassword,
-          hasSubRoute: false,
-          showSubRoute: false,
-          base: 'Sécurité du compte',
-          icon: 'fas fa-user-shield',
-          subMenus: [],
-        },
+      
 
         {
           menuValue: "Paramètres d'applications",
@@ -1000,12 +992,7 @@ export class DataService {
           icon: 'settings',
           base: 'settings',
           subMenus: [
-            {
-              menuValue: 'Sécurité du compte',
-              route: routes.changePassword,
-              base: 'Sécurité du compte',
-              customSubmenuTwo: false,
-            },
+           
             {
               menuValue: "Paramètres d'applications",
               customSubmenuTwo: true,
