@@ -193,17 +193,7 @@ export const routes: Routes = [
           ),
         data: { breadcrumb: 'Paramètres', title: 'Paramètres' },
         children: [
-          {
-            path: 'change-password',
-            loadComponent: () =>
-              import(
-                './features/settings/change-password/change-password.component'
-              ).then((m) => m.ChangePasswordComponent),
-            data: {
-              breadcrumb: 'Changer mot de passe',
-              title: 'Changer mot de passe',
-            },
-          },
+          
           {
             path: 'app-settings',
             loadComponent: () =>

@@ -1,14 +1,9 @@
-<!-- Edit Employee -->
 <div class="modal fade" id="edit_employee_detail">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title">Modifier Vos Informations Personnelles</h4>
-        <button
-          type="button"
-          class="btn-close custom-btn-close"
-          data-bs-dismiss="modal"
-        >
+        <button type="button" class="btn-close" data-bs-dismiss="modal">
           <i class="ti ti-x"></i>
         </button>
       </div>
@@ -16,225 +11,324 @@
       <form (ngSubmit)="onSubmit()">
         <div class="modal-body pb-0">
           <ul class="nav nav-tabs mb-3">
-  <li class="nav-item">
-    <button 
-      class="nav-link"
-      [class.active]="activeTab === 'info'"
-      (click)="activeTab = 'info'"
-    >
-      <i class="ti ti-user me-1"></i>
-      Informations
-    </button>
-  </li>
+            <li class="nav-item">
+              <button
+                type="button"
+                class="nav-link"
+                [class.active]="activeTab === 'info'"
+                (click)="activeTab = 'info'"
+              >
+                <i class="ti ti-user me-1"></i>
+                Informations Personnelles
+              </button>
+            </li>
 
-  <li class="nav-item">
-    <button 
-      class="nav-link"
-      [class.active]="activeTab === 'password'"
-      (click)="activeTab = 'password'"
-    >
-      <i class="ti ti-lock me-1"></i>
-      Mot de passe
-    </button>
-  </li>
-</ul>
-          
-          <!-- ✅ Alerte: Demande en attente -->
-          <div 
-            *ngIf="hasPendingRequest" 
-            class="alert alert-warning d-flex align-items-center mb-3"
-          >
-            <i class="ti ti-alert-circle me-2 fs-5"></i>
-            <div>
-              <strong>Demande en attente</strong><br>
-              <small>
-                Vous avez une demande de modification en cours de validation par le service RH. 
-                Vous ne pouvez pas soumettre de nouvelles modifications pour le moment.
-              </small>
+            <li class="nav-item">
+              <button
+                type="button"
+                class="nav-link"
+                [class.active]="activeTab === 'password'"
+                (click)="activeTab = 'password'"
+              >
+                <i class="ti ti-lock me-1"></i>
+                Securite
+              </button>
+            </li>
+          </ul>
+
+          <div *ngIf="activeTab === 'info'">
+            <div
+              *ngIf="hasPendingRequest"
+              class="alert alert-warning d-flex align-items-center mb-3"
+            >
+              <i class="ti ti-alert-circle me-2 fs-5"></i>
+              <div>
+                <!-- ✅ Alerte: Demande en attente -->
+                <strong>Demande en attente</strong><br />
+                <small>
+                  Vous avez une demande de modification en cours de validation
+                  par le service RH. Vous ne pouvez pas soumettre de nouvelles
+                  modifications pour le moment.
+                </small>
+              </div>
             </div>
-          </div>
-
-          <!-- ✅ Alerte: Succès -->
-          <div 
-            *ngIf="showSuccessAlert" 
-            class="alert alert-success d-flex align-items-center mb-3"
-          >
-            <i class="ti ti-circle-check me-2 fs-5"></i>
-            <div>
-              <strong>Demande envoyée !</strong><br>
-              <small>Votre demande de modification a été envoyée au service RH pour validation.</small>
-            </div>
-          </div>
-
-          <!-- ✅ Info: Validation requise -->
-          <div class="alert alert-info d-flex align-items-center mb-3">
-            <i class="ti ti-info-circle me-2 fs-5"></i>
-            <div>
-              <small>
-                Les modifications seront soumises au service RH pour validation avant d'être appliquées.
-              </small>
-            </div>
-          </div>
-
-          <div class="row">
-            <!-- Image -->
-            <div class="col-md-12">
-              <div class="d-flex align-items-center bg-light rounded p-3 mb-4">
-                <div
-                  class="avatar avatar-xxl rounded-circle border border-dashed me-3 d-flex align-items-center justify-content-center"
+            <!-- ✅ Alerte: Succès -->
+            <div
+              *ngIf="showSuccessAlert"
+              class="alert alert-success d-flex align-items-center mb-3"
+            >
+              <i class="ti ti-circle-check me-2 fs-5"></i>
+              <div>
+                <strong>Demande envoyée !</strong><br />
+                <small
+                  >Votre demande de modification a été envoyée au service RH
+                  pour validation.</small
                 >
-                  <i class="ti ti-photo text-gray-2"></i>
-                </div>
-
-                <div>
-                  <h6>Image de Profil</h6>
-                  <p class="fs-12">Image doit être inférieure à 4 MB</p>
-
-                  <div class="d-flex">
-                    <label class="btn btn-sm btn-primary me-2">
-                      Parcourir
-                      <input
-                        type="file"
-                        hidden
-                        (change)="onImageSelected($event)"
-                        [disabled]="hasPendingRequest"
-                      />
-                    </label>
-                    <button 
-                      type="button" 
-                      class="btn btn-light btn-sm"
-                      [disabled]="hasPendingRequest"
-                    >
-                      Annuler
-                    </button>
-                  </div>
-                </div>
               </div>
             </div>
 
-            <!-- Prénom -->
-            <div class="col-md-6">
-              <label class="form-label">Prénom *</label>
-              <input
-                type="text"
-                class="form-control"
-                [(ngModel)]="employee.firstName"
-                name="firstName"
-                [disabled]="hasPendingRequest"
-              />
+            <!-- ✅ Info: Validation requise -->
+
+            <div class="alert alert-info d-flex align-items-center mb-3">
+              <i class="ti ti-info-circle me-2 fs-5"></i>
+              <div>
+                <small>
+                  Les modifications seront soumises au service RH pour
+                  validation avant d'être appliquées.
+                </small>
+              </div>
             </div>
 
-            <!-- Nom -->
-            <div class="col-md-6">
-              <label class="form-label">Nom *</label>
-              <input
-                type="text"
-                class="form-control"
-                [(ngModel)]="employee.lastName"
-                name="lastName"
-                [disabled]="hasPendingRequest"
-              />
-            </div>
+            <div class="row">
+              <!-- Image -->
+              <div class="col-md-12">
+                <div
+                  class="d-flex align-items-center bg-light rounded p-3 mb-4"
+                >
+                  <div
+                    class="avatar avatar-xxl rounded-circle border border-dashed me-3 d-flex align-items-center justify-content-center"
+                  >
+                    <i class="ti ti-photo text-gray-2"></i>
+                  </div>
 
-            <!-- Date fin -->
-            <div class="col-md-6 ngx-date2">
-              <label class="form-label">Date de fin</label>
-              <input
-                type="text"
-                class="form-control"
-                bsDatepicker
-                [(ngModel)]="employee.endDate"
-                name="endDate"
-                placeholder="dd/mm/yyyy"
-                [disabled]="hasPendingRequest"
-              />
-            </div>
+                  <div>
+                    <h6>Image de Profil</h6>
+                    <p class="fs-12">Image doit être inférieure à 4 MB</p>
 
-            <!-- CIN -->
-            <div class="col-md-6">
-              <label class="form-label">CIN *</label>
-              <input
-                type="text"
-                class="form-control"
-                [(ngModel)]="employee.cin"
-                name="cin"
-                [disabled]="hasPendingRequest"
-              />
-            </div>
+                    <div class="d-flex">
+                      <label class="btn btn-sm btn-primary me-2">
+                        Parcourir
+                        <input
+                          type="file"
+                          hidden
+                          (change)="onImageSelected($event)"
+                          [disabled]="hasPendingRequest"
+                        />
+                      </label>
+                      <button
+                        type="button"
+                        class="btn btn-light btn-sm"
+                        [disabled]="hasPendingRequest"
+                      >
+                        Annuler
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-            <!-- Email -->
-            <div class="col-md-6">
-              <label class="form-label">Email *</label>
-              <input
-                type="email"
-                class="form-control"
-                [(ngModel)]="employee.email"
-                name="email"
-                [disabled]="hasPendingRequest"
-              />
-            </div>
+              <!-- Prénom -->
+              <div class="col-md-6">
+                <label class="form-label">Prénom *</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="employee.firstName"
+                  name="firstName"
+                  [disabled]="hasPendingRequest"
+                />
+              </div>
 
-            <!-- Téléphone -->
-            <div class="col-md-6">
-              <label class="form-label">Téléphone *</label>
-              <input
-                type="text"
-                class="form-control"
-                [(ngModel)]="employee.phone"
-                name="phone"
-                [disabled]="hasPendingRequest"
-              />
+              <!-- Nom -->
+              <div class="col-md-6">
+                <label class="form-label">Nom *</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="employee.lastName"
+                  name="lastName"
+                  [disabled]="hasPendingRequest"
+                />
+              </div>
+
+              <!-- Date fin -->
+              <div class="col-md-6 ngx-date2">
+                <label class="form-label">Date de fin</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  bsDatepicker
+                  [(ngModel)]="employee.endDate"
+                  name="endDate"
+                  placeholder="dd/mm/yyyy"
+                  [disabled]="hasPendingRequest"
+                />
+              </div>
+
+              <!-- CIN -->
+              <div class="col-md-6">
+                <label class="form-label">CIN *</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="employee.cin"
+                  name="cin"
+                  [disabled]="hasPendingRequest"
+                />
+              </div>
+
+              <!-- Email -->
+              <div class="col-md-6">
+                <label class="form-label">Email *</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  [(ngModel)]="employee.email"
+                  name="email"
+                  [disabled]="hasPendingRequest"
+                />
+              </div>
+
+              <!-- Téléphone -->
+              <div class="col-md-6">
+                <label class="form-label">Téléphone *</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="employee.phone"
+                  name="phone"
+                  [disabled]="hasPendingRequest"
+                />
+              </div>
             </div>
           </div>
+
+          <div *ngIf="activeTab === 'password'">
+            <div class="alert alert-info d-flex align-items-center">
+              <i class="ti ti-lock me-2"></i>
+              <small>
+                Le mot de passe est modifié immédiatement (pas de validation RH)
+              </small>
+            </div>
+            <div class="alert alert-warning d-flex align-items-center mt-2">
+              <i class="ti ti-alert-triangle me-2"></i>
+              <small>
+                ⚠️ Si le mot de passe actuel est incorrect, vous serez
+                automatiquement déconnecté.
+              </small>
+            </div>
+
+            <!-- 🔐 CURRENT PASSWORD -->
+            <div class="mb-3 position-relative">
+              <label class="form-label">Mot de passe actuel *</label>
+
+              <input
+                [type]="showCurrent ? 'text' : 'password'"
+                class="form-control"
+                [(ngModel)]="passwordData.currentPassword"
+                name="currentPassword"
+              />
+              <div *ngIf="passwordError" class="alert alert-danger mt-2">
+                {{ passwordError }}
+              </div>
+              <button
+                type="button"
+                class="btn btn-link px-0 mt-2"
+                (click)="sendOtp()"
+                [disabled]="isSendingOtp"
+              >
+                {{ isSendingOtp ? "Envoi..." : "Envoyer le code" }}
+              </button>
+              <div
+                *ngIf="otpMessage"
+                class="mt-2"
+                [ngClass]="{
+                  'alert alert-success': otpMessageType === 'success',
+                  'alert alert-danger': otpMessageType === 'error',
+                }"
+              >
+                {{ otpMessage }}
+              </div>
+              <span class="eye-icon" (click)="showCurrent = !showCurrent"
+                >👁️</span
+              >
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Code OTP *</label>
+
+              <div class="d-flex gap-2">
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="passwordData.otpCode"
+                  name="otpCode"
+                />
+
+                <button
+                  type="button"
+                  class="btn btn-outline-primary"
+                  (click)="verifyOtp()"
+                  [disabled]="isVerifyingOtp || !otpSent"
+                >
+                  {{ isVerifyingOtp ? "Validation..." : "Valider le code" }}
+                </button>
+              </div>
+            </div>
+
+            <!-- ✅ OTP OK -->
+            <div *ngIf="otpVerified" class="alert alert-success">
+              Code OTP validé avec succès.
+            </div>
+
+            <!-- 🔑 NEW PASSWORD -->
+            <div class="mb-3 position-relative">
+              <label class="form-label">Nouveau mot de passe *</label>
+
+              <input
+                [type]="showNew ? 'text' : 'password'"
+                class="form-control"
+                [(ngModel)]="passwordData.newPassword"
+                name="newPassword"
+                [disabled]="!otpVerified"
+              />
+
+              <span class="eye-icon" (click)="showNew = !showNew">👁️</span>
+            </div>
+            <div
+              *ngIf="passwordChangeMessage"
+              class="mt-3"
+              [ngClass]="{
+                'alert alert-success': passwordChangeType === 'success',
+                'alert alert-danger': passwordChangeType === 'error',
+              }"
+            >
+              {{ passwordChangeMessage }}
+            </div>
+            <!-- 🔑 CONFIRM PASSWORD -->
+            <div class="mb-3 position-relative">
+              <label class="form-label">Confirmer le mot de passe *</label>
+
+              <input
+                [type]="showConfirm ? 'text' : 'password'"
+                class="form-control"
+                [(ngModel)]="passwordData.confirmPassword"
+                name="confirmPassword"
+                [disabled]="!otpVerified"
+              />
+
+              <span class="eye-icon" (click)="showConfirm = !showConfirm"
+                >👁️</span
+              >
+            </div>
+
+            <!-- 🔘 BUTTON -->
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="changePassword()"
+              [disabled]="isChangingPassword || !otpVerified"
+            >
+              <i class="ti ti-lock-check me-1"></i>
+              {{
+                isChangingPassword
+                  ? "Modification..."
+                  : "Changer le mot de passe"
+              }}
+            </button>
+          </div>
         </div>
-<div *ngIf="activeTab === 'password'" class="p-2">
 
-  <div class="alert alert-info">
-    <small>
-      Le changement de mot de passe est appliqué immédiatement (pas de validation RH).
-    </small>
-  </div>
-
-  <div class="mb-3">
-    <label class="form-label">Mot de passe actuel *</label>
-    <input
-      type="password"
-      class="form-control"
-      [(ngModel)]="passwordData.currentPassword"
-      name="currentPassword"
-    />
-  </div>
-
-  <div class="mb-3">
-    <label class="form-label">Nouveau mot de passe *</label>
-    <input
-      type="password"
-      class="form-control"
-      [(ngModel)]="passwordData.newPassword"
-      name="newPassword"
-    />
-  </div>
-
-  <div class="mb-3">
-    <label class="form-label">Confirmer le mot de passe *</label>
-    <input
-      type="password"
-      class="form-control"
-      [(ngModel)]="passwordData.confirmPassword"
-      name="confirmPassword"
-    />
-  </div>
-
-  <button 
-    type="button"
-    class="btn btn-primary"
-    (click)="changePassword()"
-  >
-    <i class="ti ti-lock-check me-1"></i>
-    Changer le mot de passe
-  </button>
-
-</div>
         <div class="modal-footer">
           <button
             type="button"
@@ -244,8 +338,10 @@
           >
             Annuler
           </button>
-          <button 
-            type="submit" 
+
+          <button
+            *ngIf="activeTab === 'info'"
+            type="submit"
             class="btn btn-primary"
             [disabled]="hasPendingRequest || isSubmitting"
           >

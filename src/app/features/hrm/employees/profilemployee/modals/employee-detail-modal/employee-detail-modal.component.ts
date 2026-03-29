@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-import { 
-  PersonalInfoRequestService, 
+import { ChangePasswordService } from '../../../../../../shared/services/changePassword';
+import {
+  PersonalInfoRequestService,
   PersonalInfoChange,
-  PersonalInfoRequest 
+  PersonalInfoRequest,
 } from '../../../services/personal-info-request.service';
+import { ToastrService } from 'ngx-toastr';
 
-// Déclaration TypeScript pour Bootstrap
 declare const bootstrap: any;
 
 interface Employee {
@@ -27,10 +28,10 @@ interface Employee {
   selector: 'app-employee-detail-modal',
   standalone: true,
   templateUrl: './employee-detail-modal.component.html',
-  imports: [CommonModule, FormsModule, BsDatepickerModule]
+  styleUrl: './employee-detail-modal.component.scss',
+  imports: [CommonModule, FormsModule, BsDatepickerModule],
 })
 export class EmployeeDetailModalComponent implements OnInit {
-  // Données originales (actuelles dans la DB)
   originalEmployee: Employee = {
     id: 1,
     firstName: 'Stephan',
@@ -40,68 +41,229 @@ export class EmployeeDetailModalComponent implements OnInit {
     email: 'perralt12@example.com',
     phone: '(163) 2459 315',
     role: 'Développeur Logiciel',
-    image: 'assets/img/users/user-13.jpg'
+    image: 'assets/img/users/user-13.jpg',
   };
+  showCurrent = false;
+  showNew = false;
+  showConfirm = false;
 
-  // Copie pour modification
-  employee: Employee = { ...this.originalEmployee };
-
+  employee: Employee = { ...this.originalEmployee }; // Copie pour modification
   // État de soumission
   isSubmitting = false;
   hasPendingRequest = false;
   showSuccessAlert = false;
+  passwordChangeMessage: string = '';
+  passwordChangeType: 'success' | 'error' | '' = '';
+  activeTab: 'info' | 'password' = 'info';
+  otpMessage: string = '';
+  otpMessageType: 'success' | 'error' | '' = '';
+  isSendingOtp = false;
+  isVerifyingOtp = false;
+  isChangingPassword = false;
+  otpVerified = false;
+  otpSent = false;
+  passwordError: string = '';
+  passwordData = {
+    currentPassword: '',
+    otpCode: '',
+    newPassword: '',
+    confirmPassword: '',
+  };
 
-  constructor(private requestService: PersonalInfoRequestService) {}
+  constructor(
+    private requestService: PersonalInfoRequestService,
+    private changePasswordService: ChangePasswordService,
+    private toastr: ToastrService,
+  ) {}
 
   ngOnInit(): void {
     this.checkPendingRequests();
   }
-activeTab: 'info' | 'password' = 'info';
 
-passwordData = {
-  currentPassword: '',
-  newPassword: '',
-  confirmPassword: ''
-};
-changePassword(): void {
+  sendOtp(): void {
+    this.passwordError = '';
+    this.otpMessage = '';
+    this.otpMessageType = '';
 
-  if (!this.passwordData.currentPassword ||
-      !this.passwordData.newPassword ||
-      !this.passwordData.confirmPassword) {
-    alert('Tous les champs sont obligatoires');
-    return;
+    if (!this.passwordData.currentPassword.trim()) {
+      this.passwordError = 'Veuillez entrer votre mot de passe actuel';
+      return;
+    }
+
+    this.isSendingOtp = true;
+
+    this.changePasswordService
+      .requestOtp({
+        currentPassword: this.passwordData.currentPassword,
+      })
+      .subscribe({
+        next: () => {
+          this.otpSent = true;
+          this.otpVerified = false;
+
+          this.otpMessage = 'Code OTP envoyé avec succès';
+          this.otpMessageType = 'success';
+        },
+
+        error: (error: any) => {
+          this.isSendingOtp = false;
+
+          this.otpMessageType = 'error';
+
+          if (error.status === 400) {
+            this.passwordError = 'Mot de passe actuel incorrect';
+            this.otpMessage = 'Veuillez vérifier votre mot de passe';
+          } else if (error.status === 401) {
+            this.otpMessage = 'Session expirée';
+          } else {
+            this.otpMessage = 'Erreur lors de l’envoi du code OTP';
+          }
+        },
+
+        complete: () => {
+          this.isSendingOtp = false;
+        },
+      });
   }
 
-  if (this.passwordData.newPassword !== this.passwordData.confirmPassword) {
-    alert('Les mots de passe ne correspondent pas');
-    return;
+  verifyOtp(): void {
+    this.otpMessage = '';
+    this.otpMessageType = '';
+
+    if (!this.passwordData.otpCode.trim()) {
+      this.otpMessage = 'Veuillez entrer le code OTP';
+      this.otpMessageType = 'error';
+      return;
+    }
+
+    this.isVerifyingOtp = true;
+
+    this.changePasswordService
+      .verifyOtp({
+        otpCode: this.passwordData.otpCode,
+      })
+      .subscribe({
+        next: () => {
+          this.otpVerified = true;
+
+          this.otpMessage = 'Code OTP validé avec succès';
+          this.otpMessageType = 'success';
+        },
+
+        error: (error: any) => {
+          this.isVerifyingOtp = false;
+          this.otpVerified = false;
+
+          this.otpMessageType = 'error';
+
+          if (error.status === 400) {
+            this.otpMessage = 'Code OTP incorrect ou expiré';
+          } else if (error.status === 401) {
+            this.otpMessage = 'Session expirée, veuillez vous reconnecter';
+          } else {
+            this.otpMessage = 'Erreur lors de la vérification du code';
+          }
+        },
+
+        complete: () => {
+          this.isVerifyingOtp = false;
+        },
+      });
   }
 
-  // 🔥 appel API ms-auth
-  console.log('Changer mot de passe:', this.passwordData);
+  changePassword(): void {
+    this.passwordChangeMessage = '';
+    this.passwordChangeType = '';
 
-  // TODO:
-  // this.authService.changePassword(this.passwordData).subscribe(...)
+    if (!this.passwordData.currentPassword.trim()) {
+      this.passwordChangeMessage = 'Mot de passe actuel requis';
+      this.passwordChangeType = 'error';
+      return;
+    }
 
-  alert('Mot de passe modifié avec succès');
+    if (!this.passwordData.otpCode.trim()) {
+      this.passwordChangeMessage = 'Code OTP requis';
+      this.passwordChangeType = 'error';
+      return;
+    }
 
-  // reset
-  this.passwordData = {
-    currentPassword: '',
-    newPassword: '',
-    confirmPassword: ''
-  };
-}
+    if (!this.otpVerified) {
+      this.passwordChangeMessage = 'Veuillez valider le code OTP';
+      this.passwordChangeType = 'error';
+      return;
+    }
+
+    if (
+      !this.passwordData.newPassword.trim() ||
+      !this.passwordData.confirmPassword.trim()
+    ) {
+      this.passwordChangeMessage = 'Veuillez remplir tous les champs';
+      this.passwordChangeType = 'error';
+      return;
+    }
+
+    if (this.passwordData.newPassword !== this.passwordData.confirmPassword) {
+      this.passwordChangeMessage = 'Les mots de passe ne correspondent pas';
+      this.passwordChangeType = 'error';
+      return;
+    }
+
+    this.isChangingPassword = true;
+
+    this.changePasswordService
+      .confirmPassword({
+        newPassword: this.passwordData.newPassword,
+        confirmPassword: this.passwordData.confirmPassword,
+      })
+      .subscribe({
+        next: () => {
+          this.passwordChangeMessage = 'Mot de passe modifié avec succès';
+          this.passwordChangeType = 'success';
+          this.resetPasswordForm();
+        },
+
+        error: (error: any) => {
+          this.isChangingPassword = false;
+
+          this.passwordChangeType = 'error';
+
+          if (error.status === 400) {
+            this.passwordChangeMessage =
+              'Les mots de passe ne correspondent pas';
+          } else if (error.status === 401) {
+            this.passwordChangeMessage = 'Session expirée';
+          } else {
+            this.passwordChangeMessage =
+              'Erreur lors du changement du mot de passe';
+          }
+        },
+
+        complete: () => {
+          this.isChangingPassword = false;
+        },
+      });
+  }
+
+  private resetPasswordForm(): void {
+    this.passwordData = {
+      currentPassword: '',
+      otpCode: '',
+      newPassword: '',
+      confirmPassword: '',
+    };
+
+    this.otpSent = false;
+    this.otpVerified = false;
+  }
   /**
    * Vérifier s'il existe déjà une demande en attente
    */
   checkPendingRequests(): void {
     const pending = this.requestService.getPendingRequestsByEmployeeId(
-      this.originalEmployee.id
+      this.originalEmployee.id,
     );
     this.hasPendingRequest = pending.length > 0;
   }
-
   /**
    * Gestion de la sélection d'image
    */
@@ -110,13 +272,12 @@ changePassword(): void {
     const file = target.files?.[0];
     if (file) {
       console.log('Image sélectionnée:', file);
-      // TODO: Implémenter l'upload d'image
     }
   }
-
   /**
    * Détecter les changements entre original et modifié
    */
+
   private detectChanges(): PersonalInfoChange[] {
     const changes: PersonalInfoChange[] = [];
 
@@ -126,11 +287,11 @@ changePassword(): void {
       cin: 'CIN',
       email: 'Email',
       phone: 'Téléphone',
-      endDate: 'Date de fin'
+      endDate: 'Date de fin',
     };
 
     // Comparer chaque champ
-    (Object.keys(fieldMappings) as Array<keyof Employee>).forEach(field => {
+    (Object.keys(fieldMappings) as Array<keyof Employee>).forEach((field) => {
       const oldValue = this.formatValue(this.originalEmployee[field]);
       const newValue = this.formatValue(this.employee[field]);
 
@@ -139,7 +300,7 @@ changePassword(): void {
           field: field as string,
           label: fieldMappings[field],
           oldValue,
-          newValue
+          newValue,
         });
       }
     });
@@ -161,14 +322,13 @@ changePassword(): void {
   /**
    * Soumission du formulaire
    */
-  onSubmit(): void {
 
-  if (this.activeTab === 'password') {
-    return; // ❌ empêcher submit RH
-  }
+  onSubmit(): void {
     // Vérifier s'il y a une demande en attente
     if (this.hasPendingRequest) {
-      alert('Vous avez déjà une demande de modification en attente de validation.');
+      alert(
+        'Vous avez déjà une demande de modification en attente de validation.',
+      );
       return;
     }
 
@@ -189,36 +349,38 @@ changePassword(): void {
     this.isSubmitting = true;
 
     // Soumettre la demande
-    this.requestService.submitRequest(
-      this.originalEmployee.id,
-      `${this.employee.firstName} ${this.employee.lastName}`,
-      this.originalEmployee.role,
-      this.originalEmployee.image,
-      changes,
-      'Employé' // TODO: récupérer l'utilisateur connecté
-    ).subscribe({
-      next: (request: PersonalInfoRequest) => {
-        console.log('Demande soumise:', request);
-        
-        // Afficher message de succès
-        this.showSuccessAlert = true;
-        this.hasPendingRequest = true;
-        
-        // Fermer le modal après 2 secondes
-        setTimeout(() => {
-          this.closeModal();
-          this.showSuccessAlert = false;
-        }, 2000);
-      },
-      error: (error: any) => {
-        console.error('Erreur lors de la soumission:', error);
-        alert('Erreur lors de la soumission de la demande.');
-        this.isSubmitting = false;
-      },
-      complete: () => {
-        this.isSubmitting = false;
-      }
-    });
+    this.requestService
+      .submitRequest(
+        this.originalEmployee.id,
+        `${this.employee.firstName} ${this.employee.lastName}`,
+        this.originalEmployee.role,
+        this.originalEmployee.image,
+        changes,
+        'Employé', // TODO: récupérer l'utilisateur connecté
+      )
+      .subscribe({
+        next: (request: PersonalInfoRequest) => {
+          console.log('Demande soumise:', request);
+
+          // Afficher message de succès
+          this.showSuccessAlert = true;
+          this.hasPendingRequest = true;
+
+          // Fermer le modal après 2 secondes
+          setTimeout(() => {
+            this.closeModal();
+            this.showSuccessAlert = false;
+          }, 2000);
+        },
+        error: (error: any) => {
+          console.error('Erreur lors de la soumission:', error);
+          alert('Erreur lors de la soumission de la demande.');
+          this.isSubmitting = false;
+        },
+        complete: () => {
+          this.isSubmitting = false;
+        },
+      });
   }
 
   /**
@@ -240,7 +402,7 @@ changePassword(): void {
         modal.hide();
       }
     }
-    
+
     // Réinitialiser le formulaire
     this.onCancel();
   }
