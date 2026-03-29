@@ -1,13 +1,11 @@
 import { Component, OnDestroy } from '@angular/core';
 import { routes } from '../../../../../shared/routes/routes';
-import { apiResultFormat, employees } from '../../../../../shared/models/models';
 import {
   pageSelection,
   PaginationService,
   tablePageSize,
 } from '../../../../../shared/custom-pagination/pagination.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { DataService } from '../../../../../shared/data/data.service';
 import { Router, RouterLink } from '@angular/router';
 import { Sort } from '@angular/material/sort';
 import { BreadcrumbsComponent } from '../../../../common/breadcrumbs/breadcrumbs.component';
@@ -20,8 +18,9 @@ import { EditEmployeeModalComponent } from '../modals/edit-employee-modal/edit-e
 import { KpisComponent } from '../../../../common/kpis/kpis.component';
 import { ConfirmDeleteComponent } from '../../../../common/delete-modal/delete-modal.component';
 import { AddEmployeeComponent } from '../modals/add-employee/add-employee.component';
+import { GetAllUserResponse } from '../../../models/user/get-all-user.model';
+import { UserApiService } from '../../../services/user/user-api.service';
 
-// Déclaration de Bootstrap
 declare const bootstrap: any;
 
 @Component({
@@ -45,46 +44,31 @@ declare const bootstrap: any;
 export class EmployeeListComponent implements OnDestroy {
   public routes = routes;
   initChecked = false;
-  
-  // Employé sélectionné pour modification
+  isDeleteModalOpen = false;
+  // Filtres
+  posts: string[] = [];
+  selectedPost: string = '';
+  selectedStatus: string = '';
+  selectedSort: string = '7days';
   selectedEmployee: any = null;
-  
-  // Employé sélectionné pour suppression
   selectedItem: any = null;
-  
-  // Données KPI
+
   kpis = [
-    {
-      title: 'Total employés',
-      value: 1007,
-      icon: 'ti ti-users',
-      color: 'dark'
-    },
-    {
-      title: 'Actifs',
-      value: 1007,
-      icon: 'ti ti-user-share',
-      color: 'success'
-    },
-    {
-      title: 'Inactifs',
-      value: 1007,
-      icon: 'ti ti-user-pause',
-      color: 'danger'
-    },
+    { title: 'Total employés', value: 0, icon: 'ti ti-users', color: 'dark' },
+    { title: 'Actifs', value: 0, icon: 'ti ti-user-share', color: 'success' },
+    { title: 'Inactifs', value: 0, icon: 'ti ti-user-pause', color: 'danger' },
     {
       title: 'Nouveaux arrivants',
-      value: 67,
+      value: 0,
       icon: 'ti ti-user-plus',
-      color: 'info'
-    }
+      color: 'info',
+    },
   ];
-  
-  // Variables de pagination
+
   public pageSize = 10;
-  public tableData: employees[] = [];
-  public tableDataCopy: employees[] = [];
-  public actualData: employees[] = [];
+  public tableData: GetAllUserResponse[] = [];
+  public tableDataCopy: GetAllUserResponse[] = [];
+  public actualData: GetAllUserResponse[] = [];
   public currentPage = 1;
   public skip = 0;
   public limit: number = this.pageSize;
@@ -92,101 +76,92 @@ export class EmployeeListComponent implements OnDestroy {
   public totalData = 0;
   showFilter = false;
   public pageSelection: pageSelection[] = [];
-  dataSource!: MatTableDataSource<employees>;
+  dataSource!: MatTableDataSource<GetAllUserResponse>;
   public searchDataValue = '';
   bsValue = new Date();
   bsRangeValue: Date[];
   maxDate = new Date();
-  public password: boolean[] = [false, false, false, false];
   isOpen = false;
-  
-  togglePassword(index: number) {
-    this.password[index] = !this.password[index];
-  }
-  
-  openSuccessModal() {
-    this.isOpen = !this.isOpen;
-  }
-  
+
   ngOnDestroy(): void {
     this.isOpen = false;
   }
-  
+
   constructor(
-    private data: DataService,
+    private userApi: UserApiService,
     private router: Router,
     private pagination: PaginationService
   ) {
-    this.data.getEmployeeList().subscribe((apiRes: apiResultFormat) => {
-      this.actualData = apiRes.data;
+    this.userApi.getAllUsers().subscribe((data: GetAllUserResponse[]) => {
+      this.actualData = data;
+      this.totalData = data.length;
+      this.dataSource = new MatTableDataSource<GetAllUserResponse>(
+        this.actualData
+      );
+      this.updateKPIs();
+
       this.pagination.tablePageSize.subscribe((res: tablePageSize) => {
         if (this.router.url == this.routes.employeeList) {
-          this.getTableData({ skip: res.skip, limit: res.limit });
+          this.applyPagination({ skip: res.skip, limit: res.limit });
           this.pageSize = res.pageSize;
         }
       });
-    });
-    this.maxDate.setDate(this.maxDate.getDate() + 7);
-    this.bsRangeValue = [this.bsValue, this.maxDate];
-  }
-  
-  private getTableData(pageOption: pageSelection): void {
-    this.data.getEmployeeList().subscribe((apiRes: apiResultFormat) => {
-      this.tableData = [];
-      this.tableDataCopy = [];
-      this.serialNumberArray = [];
-      this.totalData = apiRes.totalData;
-      apiRes.data.map((res: employees, index: number) => {
-        const serialNumber = index + 1;
-        if (index >= pageOption.skip && serialNumber <= pageOption.limit) {
-          res.sNo = serialNumber;
-          this.tableData.push(res);
-          this.tableDataCopy.push(res);
-          this.serialNumberArray.push(serialNumber);
-        }
+      this.userApi.getPosts().subscribe((data: any[]) => {
+        this.posts = [...new Set(data.map((p) => p.name))];
       });
-      this.dataSource = new MatTableDataSource<employees>(this.actualData);
+
+      // Déclencher la pagination initiale
       this.pagination.calculatePageSize.next({
         totalData: this.totalData,
         pageSize: this.pageSize,
-        tableData: this.tableData,
-        tableDataCopy: this.tableDataCopy,
-        serialNumberArray: this.serialNumberArray,
+        tableData: this.actualData,
+        tableDataCopy: this.actualData,
+        serialNumberArray: this.actualData.map((_, i) => i + 1),
       });
-      
-      // Mettre à jour les KPIs
-      this.updateKPIs();
+    });
+
+    this.maxDate.setDate(this.maxDate.getDate() + 7);
+    this.bsRangeValue = [this.bsValue, this.maxDate];
+  }
+
+  private applyPagination(pageOption: pageSelection): void {
+    this.tableData = [];
+    this.tableDataCopy = [];
+    this.serialNumberArray = [];
+
+    this.actualData.forEach((res, index) => {
+      const serialNumber = index + 1;
+      if (index >= pageOption.skip && serialNumber <= pageOption.limit) {
+        this.tableData.push(res);
+        this.tableDataCopy.push(res);
+        this.serialNumberArray.push(serialNumber);
+      }
+    });
+
+    this.pagination.calculatePageSize.next({
+      totalData: this.totalData,
+      pageSize: this.pageSize,
+      tableData: this.tableData,
+      tableDataCopy: this.tableDataCopy,
+      serialNumberArray: this.serialNumberArray,
     });
   }
 
-  public row = true;
-  
   public searchData(value: string): void {
     this.searchDataValue = value.trim().toLowerCase();
     this.dataSource.filter = this.searchDataValue;
     this.tableData = this.dataSource.filteredData;
-    this.row = this.tableData.length > 0;
 
-    if (this.searchDataValue !== '') {
-      this.pagination.calculatePageSize.next({
-        totalData: this.tableData.length,
-        pageSize: this.pageSize,
-        tableData: this.tableData,
-        serialNumberArray: this.tableData.map((_, i) => i + 1),
-      });
-    } else {
-      this.pagination.calculatePageSize.next({
-        totalData: this.totalData,
-        pageSize: this.pageSize,
-        tableData: this.tableData,
-        serialNumberArray: this.serialNumberArray,
-      });
-    }
+    this.pagination.calculatePageSize.next({
+      totalData: this.tableData.length,
+      pageSize: this.pageSize,
+      tableData: this.tableData,
+      serialNumberArray: this.tableData.map((_, i) => i + 1),
+    });
   }
 
   public sortData(sort: Sort) {
     const data = this.tableData.slice();
-
     if (!sort.active || sort.direction === '') {
       this.tableData = data;
     } else {
@@ -197,7 +172,7 @@ export class EmployeeListComponent implements OnDestroy {
       });
     }
   }
-  
+
   public changePageSize(pageSize: number): void {
     this.pageSelection = [];
     this.limit = pageSize;
@@ -209,189 +184,155 @@ export class EmployeeListComponent implements OnDestroy {
       pageSize: this.pageSize,
     });
   }
-  
-  selectAll(initChecked: boolean) {
-    if (!initChecked) {
-      this.tableData.forEach((f) => {
-        f.isSelected = true;
-      });
-    } else {
-      this.tableData.forEach((f) => {
-        f.isSelected = false;
-      });
-    }
-  }
 
-  // ========================================
-  // GESTION DE LA MODIFICATION
-  // ========================================
-
-  /**
-   * Ouvre le modal de modification avec les données de l'employé
-   */
   openEditModal(employee: any): void {
-    console.log('📋 Ouverture du modal pour:', employee);
-    
     this.selectedEmployee = employee;
-    
     const modalElement = document.getElementById('edit_employee_multistep');
     if (modalElement) {
       const modal = new bootstrap.Modal(modalElement);
       modal.show();
-    } else {
-      console.error('❌ Modal element #edit_employee_multistep not found!');
     }
   }
 
-  /**
-   * Callback appelé quand une section est sauvegardée
-   */
   onEmployeeSaved(saveEvent: any): void {
-    console.log('💾 Section sauvegardée:', saveEvent);
-    
     if (saveEvent.data && this.selectedEmployee) {
       Object.assign(this.selectedEmployee, saveEvent.data);
-      
-      const index = this.tableData.findIndex(e => e === this.selectedEmployee);
+      const index = this.tableData.findIndex(
+        (e) => e === this.selectedEmployee
+      );
       if (index !== -1) {
         this.tableData[index] = { ...this.selectedEmployee };
       }
-      
-      console.log('✅ Données mises à jour dans le tableau');
-      
-      // Mettre à jour les KPIs
       this.updateKPIs();
     }
   }
 
-  // ========================================
-  // GESTION DE LA SUPPRESSION
-  // ========================================
-
-  /**
-   * Prépare la suppression en stockant l'employé sélectionné
-   * Le modal s'ouvrira automatiquement via data-bs-toggle
-   */
   prepareDelete(employee: any): void {
-    console.log('🗑️ Préparation de suppression pour:', employee);
     this.selectedItem = employee;
+    this.isDeleteModalOpen = true;
   }
-
-  /**
-   * Callback appelé quand la suppression est confirmée depuis le modal
-   */
-  deleteItem(employee: any): void {
-    console.log('🗑️ Suppression confirmée pour:', employee);
-    
-    if (!employee) {
-      console.error('❌ Aucun employé à supprimer');
-      return;
-    }
-    
-    // Supprimer de tableData
-    const tableIndex = this.tableData.findIndex(e => e === employee);
-    if (tableIndex !== -1) {
-      this.tableData.splice(tableIndex, 1);
-      console.log('✅ Supprimé de tableData');
-    }
-    
-    // Supprimer de actualData
-    const actualIndex = this.actualData.findIndex(e => e === employee);
-    if (actualIndex !== -1) {
-      this.actualData.splice(actualIndex, 1);
-      console.log('✅ Supprimé de actualData');
-    }
-    
-    // Mettre à jour le datasource
-    this.dataSource.data = this.actualData;
-    this.totalData = this.actualData.length;
-    
-    // Mettre à jour la pagination
-    this.pagination.calculatePageSize.next({
-      totalData: this.totalData,
-      pageSize: this.pageSize,
-      tableData: this.tableData,
-      tableDataCopy: this.tableDataCopy,
-      serialNumberArray: this.serialNumberArray,
-    });
-    
-    // Mettre à jour les KPIs
-    this.updateKPIs();
-    
-    // Réinitialiser l'employé à supprimer
+  onDeleteCancel(): void {
+    this.isDeleteModalOpen = false;
     this.selectedItem = null;
-    
-    console.log('✅ Suppression terminée avec succès');
-    
-    // Optionnel : Appeler votre API pour supprimer en base de données
-    /*
-    this.data.deleteEmployee(employee.id).subscribe({
-      next: (response) => {
-        console.log('✅ Supprimé en base de données:', response);
-        // Afficher un message de succès
-        this.openSuccessModal();
-      },
-      error: (error) => {
-        console.error('❌ Erreur lors de la suppression:', error);
-        // Restaurer l'employé en cas d'erreur
-        if (tableIndex !== -1) {
-          this.tableData.splice(tableIndex, 0, employee);
-        }
-        if (actualIndex !== -1) {
-          this.actualData.splice(actualIndex, 0, employee);
-        }
-        this.dataSource.data = this.actualData;
-        this.updateKPIs();
-      }
-    });
-    */
   }
 
-  // ========================================
-  // MISE À JOUR DES KPIS
-  // ========================================
+  deleteItem(employee: any): void {
+    if (!employee) return;
 
-  /**
-   * Met à jour les valeurs des KPIs en fonction des données actuelles
-   */
+    this.userApi.deleteUser(employee.id).subscribe({
+      next: () => {
+        const tableIndex = this.tableData.findIndex((e) => e === employee);
+        if (tableIndex !== -1) this.tableData.splice(tableIndex, 1);
+
+        const actualIndex = this.actualData.findIndex((e) => e === employee);
+        if (actualIndex !== -1) this.actualData.splice(actualIndex, 1);
+
+        this.dataSource.data = this.actualData;
+        this.totalData = this.actualData.length;
+
+        this.pagination.calculatePageSize.next({
+          totalData: this.totalData,
+          pageSize: this.pageSize,
+          tableData: this.tableData,
+          tableDataCopy: this.tableDataCopy,
+          serialNumberArray: this.serialNumberArray,
+        });
+
+        this.updateKPIs();
+        this.selectedItem = null;
+        this.isDeleteModalOpen = false;
+      },
+      error: (err: any) => {
+        console.error('❌ Erreur lors de la suppression:', err);
+      },
+    });
+  }
+  applyFilters(): void {
+  let filtered = [...this.actualData];
+
+  if (this.selectedPost) {
+    filtered = filtered.filter(e => e.postName === this.selectedPost);
+  }
+
+  if (this.selectedStatus) {
+    filtered = filtered.filter(e => e.status === this.selectedStatus);
+  }
+
+  if (this.selectedSort === '7days') {
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+    filtered = filtered.filter(e => new Date(e.createdAt) >= sevenDaysAgo);
+  } else if (this.selectedSort === 'asc') {
+    filtered.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+  } else if (this.selectedSort === 'desc') {
+    filtered.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
+
+  this.tableData = filtered;
+  this.totalData = filtered.length;
+
+  this.pagination.calculatePageSize.next({
+    totalData: this.totalData,
+    pageSize: this.pageSize,
+    tableData: this.tableData,
+    tableDataCopy: this.tableData,
+    serialNumberArray: this.tableData.map((_, i) => i + 1),
+  });
+}
+
+selectPost(post: string): void {
+  this.selectedPost = this.selectedPost === post ? '' : post;
+  this.applyFilters();
+}
+
+selectStatus(status: string): void {
+  this.selectedStatus = this.selectedStatus === status ? '' : status;
+  this.applyFilters();
+}
+
+selectSort(sort: string): void {
+  this.selectedSort = sort;
+  this.applyFilters();
+}
+
   private updateKPIs(): void {
     const total = this.actualData.length;
-    const actifs = this.actualData.filter(e => e.Status === 'Active').length;
-    const inactifs = this.actualData.filter(e => e.Status === 'Inactive').length;
-    
-    // Calculer les nouveaux arrivants (exemple: derniers 30 jours)
+    const actifs = this.actualData.filter((e) => e.status === 'ACTIVE').length;
+    const inactifs = this.actualData.filter(
+      (e) => e.status === 'INACTIVE'
+    ).length;
+
     const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-    const nouveaux = this.actualData.filter(e => {
-      const joiningDate = new Date(e.JoiningDate);
-      return joiningDate >= thirtyDaysAgo;
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);//li dkhlo 3ed jdad hed cheher 
+    const nouveaux = this.actualData.filter((e) => {
+      return new Date(e.createdAt) >= thirtyDaysAgo;
     }).length;
-    
+
     this.kpis = [
       {
         title: 'Total employés',
         value: total,
         icon: 'ti ti-users',
-        color: 'dark'
+        color: 'dark',
       },
       {
         title: 'Actifs',
         value: actifs,
         icon: 'ti ti-user-share',
-        color: 'success'
+        color: 'success',
       },
       {
         title: 'Inactifs',
         value: inactifs,
         icon: 'ti ti-user-pause',
-        color: 'danger'
+        color: 'danger',
       },
       {
         title: 'Nouveaux arrivants',
         value: nouveaux,
         icon: 'ti ti-user-plus',
-        color: 'info'
-      }
+        color: 'info',
+      },
     ];
   }
 }

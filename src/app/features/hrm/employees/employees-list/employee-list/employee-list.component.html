@@ -60,22 +60,24 @@
             class="dropdown-toggle btn btn-white d-inline-flex align-items-center"
             data-bs-toggle="dropdown"
           >
-            Poste
+            {{ selectedPost || "Poste" }}
           </a>
           <ul class="dropdown-menu dropdown-menu-end p-3">
             <li>
-              <a href="javascript:void(0);" class="dropdown-item rounded-1"
-                >Finance</a
+              <a
+                href="javascript:void(0);"
+                class="dropdown-item rounded-1"
+                (click)="selectPost('')"
+                >Tous</a
               >
             </li>
-            <li>
-              <a href="javascript:void(0);" class="dropdown-item rounded-1"
-                >Developer</a
-              >
-            </li>
-            <li>
-              <a href="javascript:void(0);" class="dropdown-item rounded-1"
-                >Executive</a
+            <li *ngFor="let post of posts">
+              <a
+                href="javascript:void(0);"
+                class="dropdown-item rounded-1"
+                [class.active]="selectedPost === post"
+                (click)="selectPost(post)"
+                >{{ post }}</a
               >
             </li>
           </ul>
@@ -86,33 +88,85 @@
             class="dropdown-toggle btn btn-white d-inline-flex align-items-center"
             data-bs-toggle="dropdown"
           >
-            Sélectionner le statut
+            {{
+              selectedStatus
+                ? selectedStatus === "ACTIVE"
+                  ? "Actif"
+                  : "Inactif"
+                : "Sélectionner le statut"
+            }}
           </a>
           <ul class="dropdown-menu dropdown-menu-end p-3">
             <li>
-              <a href="javascript:void(0);" class="dropdown-item rounded-1"
-                >Active</a
+              <a
+                href="javascript:void(0);"
+                class="dropdown-item rounded-1"
+                (click)="selectStatus('')"
+                >Tous</a
               >
             </li>
             <li>
-              <a href="javascript:void(0);" class="dropdown-item rounded-1"
-                >Inactive</a
+              <a
+                href="javascript:void(0);"
+                class="dropdown-item rounded-1"
+                [class.active]="selectedStatus === 'ACTIVE'"
+                (click)="selectStatus('ACTIVE')"
+                >Actif</a
+              >
+            </li>
+            <li>
+              <a
+                href="javascript:void(0);"
+                class="dropdown-item rounded-1"
+                [class.active]="selectedStatus === 'INACTIVE'"
+                (click)="selectStatus('INACTIVE')"
+                >Inactif</a
               >
             </li>
           </ul>
         </div>
+
         <div class="dropdown">
           <a
             href="javascript:void(0);"
             class="dropdown-toggle btn btn-white d-inline-flex align-items-center"
             data-bs-toggle="dropdown"
           >
-            Trier par : 7 derniers jours
+            Trier par :
+            {{
+              selectedSort === "7days"
+                ? "7 derniers jours"
+                : selectedSort === "asc"
+                ? "Ascendant"
+                : "Descendant"
+            }}
           </a>
           <ul class="dropdown-menu dropdown-menu-end p-3">
             <li>
-              <a href="javascript:void(0);" class="dropdown-item rounded-1"
-                >Ascending</a
+              <a
+                href="javascript:void(0);"
+                class="dropdown-item rounded-1"
+                [class.active]="selectedSort === '7days'"
+                (click)="selectSort('7days')"
+                >7 derniers jours</a
+              >
+            </li>
+            <li>
+              <a
+                href="javascript:void(0);"
+                class="dropdown-item rounded-1"
+                [class.active]="selectedSort === 'asc'"
+                (click)="selectSort('asc')"
+                >Ascendant</a
+              >
+            </li>
+            <li>
+              <a
+                href="javascript:void(0);"
+                class="dropdown-item rounded-1"
+                [class.active]="selectedSort === 'desc'"
+                (click)="selectSort('desc')"
+                >Descendant</a
               >
             </li>
           </ul>
@@ -166,7 +220,7 @@
             >
               <thead class="thead-light">
                 <tr>
-                  <th mat-sort-header="Name">Nom</th>
+                  <th mat-sort-header="Name">Nom Complet</th>
                   <th mat-sort-header="Email">Email</th>
                   <th mat-sort-header="Phone">Téléphone</th>
                   <th mat-sort-header="Designation">Poste</th>
@@ -185,85 +239,61 @@
                         class="avatar avatar-md border avatar-rounded"
                       >
                         <img
-                          src="assets/img/users/{{ employee?.Image }}"
+                          [src]="
+                            employee.picturePath
+                              ? employee.picturePath
+                              : 'assets/img/users/WhatsApp Image 2026-03-23 at 21.00.25 (1).jpg'
+                          "
                           class="img-fluid"
                           alt="img"
                         />
                       </a>
                       <div class="ms-2">
                         <h6 class="fw-medium">
-                          <a [routerLink]="routes.employeeDetails">{{
-                            employee?.Name
-                          }}</a>
+                          <a [routerLink]="routes.employeeDetails">
+                            {{ employee.firstName }} {{ employee.lastName }}
+                          </a>
                         </h6>
                         <span class="fs-12 fw-normal">{{
-                          employee.CurrentRole
+                          employee.postName
                         }}</span>
                       </div>
                     </div>
                   </td>
-                  <td>{{ employee.Email }}</td>
-                  <td>{{ employee.Phone }}</td>
-                  <td>
-                    <div class="dropdown me-3">
-                      <a
-                        href="javascript:void(0);"
-                        class="dropdown-toggle btn btn-white d-inline-flex align-items-center"
-                        data-bs-toggle="dropdown"
-                      >
-                        {{ employee.Designation }}
-                      </a>
-                      <ul class="dropdown-menu dropdown-menu-end p-3">
-                        <li>
-                          <a
-                            href="javascript:void(0);"
-                            class="dropdown-item rounded-1"
-                            >Developer</a
-                          >
-                        </li>
-                        <li>
-                          <a
-                            href="javascript:void(0);"
-                            class="dropdown-item rounded-1"
-                            >Executive</a
-                          >
-                        </li>
-                      </ul>
-                    </div>
-                  </td>
-                  <td>{{ employee.JoiningDate }}</td>
+                  <td>{{ employee.email }}</td>
+                  <td>{{ employee.phoneNumber }}</td>
+                  <td>{{ employee.postName }}</td>
+                  <td>{{ employee.createdAt | date:'dd/MM/yyyy'}}</td>
                   <td>
                     <span
                       class="badge d-inline-flex align-items-center badge-xs"
                       [ngClass]="
-                        employee.Status === 'Active'
+                        employee.status === 'ACTIVE'
                           ? 'badge-success'
                           : 'badge-danger'
                       "
                     >
-                      <i class="ti ti-point-filled me-1"></i
-                      >{{ employee.Status }}
+                      <i class="ti ti-point-filled me-1"></i>
+                      {{ employee.status === "ACTIVE" ? "Actif" : "Inactif" }}
                     </span>
                   </td>
                   <td>
                     <div class="action-icon d-inline-flex">
-                      <!-- Bouton Modifier -->
                       <a
                         href="javascript:void(0);"
                         class="me-2"
                         (click)="openEditModal(employee)"
                         title="Modifier l'employé"
-                        ><i class="ti ti-edit"></i
-                      ></a>
-                      <!-- Bouton Supprimer -->
+                      >
+                        <i class="ti ti-edit"></i>
+                      </a>
                       <a
                         href="javascript:void(0);"
                         (click)="prepareDelete(employee)"
-                        data-bs-toggle="modal"
-                        data-bs-target="#delete_employee_modal"
                         title="Supprimer l'employé"
-                        ><i class="ti ti-trash"></i
-                      ></a>
+                      >
+                        <i class="ti ti-trash"></i>
+                      </a>
                     </div>
                   </td>
                 </tr>
@@ -296,16 +326,19 @@
 
 <!-- Modal de confirmation de suppression -->
 <app-confirm-delete
-  modalId="delete_employee_modal"
+  [isOpen]="isDeleteModalOpen"
   title="Supprimer cet employé ?"
   [message]="
     selectedItem
       ? 'Êtes-vous sûr de vouloir supprimer ' +
-        selectedItem.Name +
+        selectedItem.firstName +
+        ' ' +
+        selectedItem.lastName +
         ' ? Cette action est irréversible.'
       : 'Êtes-vous sûr de vouloir supprimer cet employé ?'
   "
   [item]="selectedItem"
   (confirm)="deleteItem($event)"
+  (cancel)="onDeleteCancel()"
 >
 </app-confirm-delete>
