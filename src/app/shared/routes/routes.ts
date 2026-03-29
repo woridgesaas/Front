@@ -86,7 +86,7 @@ export const routes = {
   Entretient: '/entretiens',
 
   //* Settings routes
-  //changePassword: '/settings/change-password',
+  changePassword: '/settings/change-password',
   leaveSettings: '/settings/app-settings/leave-settings',
   attendanceSettings: '/settings/app-settings/attendance-settings',
   documentsTemplateSettings:
