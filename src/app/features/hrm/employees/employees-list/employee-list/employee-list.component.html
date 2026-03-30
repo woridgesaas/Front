@@ -250,7 +250,7 @@
                       </a>
                       <div class="ms-2">
                         <h6 class="fw-medium">
-                          <a [routerLink]="routes.employeeDetails">
+                          <a [routerLink]="[routes.employeeDetails, employee.id]">
                             {{ employee.firstName }} {{ employee.lastName }}
                           </a>
                         </h6>

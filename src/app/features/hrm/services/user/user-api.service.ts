@@ -6,6 +6,7 @@ import { Department } from "../../../../shared/models/models";
 import { Post } from "../../models/post/post.model";
 import { CreateUserRequest } from "../../models/user/create-user.model";
 import { GetAllUserResponse } from "../../models/user/get-all-user.model";
+import { EmployeeProfileResponse } from "../../models/user/employee-profile.model";
 
 @Injectable({
   providedIn: 'root'
@@ -37,4 +38,7 @@ export class UserApiService {
   deleteUser(id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/user/${id}`);
   }
+  getProfile(id: string): Observable<EmployeeProfileResponse> {
+  return this.http.get<EmployeeProfileResponse>(`${this.baseUrl}/user/${id}`);
+}
 }
