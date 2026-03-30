@@ -1,18 +1,25 @@
 import { Injectable } from "@angular/core";
 import { DataService } from "../data/data.service";
-import { department } from '../models/models';
+import { Department } from '../models/models';
 import { map } from "rxjs";
+import { HttpClient } from "@angular/common/http";
 @Injectable({ providedIn: 'root' })
 export class DepartmentService {
-  constructor(private dataService: DataService) {}
 
-getAll() {
-  return this.dataService.getdepartments().pipe(
-    map(res => res.data) 
-  );
+  private baseUrl = 'http://localhost:8000/api/internal-users/departments';
+
+  constructor(private http: HttpClient) {}
+
+  getAll() {
+    return this.http.get<Department[]>(this.baseUrl);
+  }
+
+  create(name: string, status: string) {
+  return this.http.post(this.baseUrl, { name, status });
 }
 
-  delete(departments: department[], item: department): department[] {
-    return departments.filter(d => d.Department !== item.Department);
-  }
+  update(id: string, name: string, status: string) {
+  return this.http.patch(`${this.baseUrl}/${id}`, { name, status });
+}
+  
 }

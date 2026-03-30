@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FormValidationService {
-
-  getErrorMessage(control: AbstractControl | null, fieldName: string): string | null {
-
+  getErrorMessage(
+    control: AbstractControl | null,
+    fieldName: string
+  ): string | null {
     if (!control || !control.errors || !control.touched) {
       return null;
     }
@@ -31,9 +32,15 @@ export class FormValidationService {
     }
 
     if (errors['pattern']) {
-
       if (fieldName.toLowerCase().includes('mot de passe')) {
         return `Doit contenir majuscule, minuscule, chiffre et caractère spécial.`;
+      }
+      if (fieldName.toLowerCase().includes('cin')) {
+        return `CIN doit contenir 4 à 10 caractères alphanumériques.`;
+      }
+
+      if (fieldName.toLowerCase().includes('téléphone')) {
+        return `Numéro de téléphone invalide.`;
       }
 
       return `Format invalide.`;
@@ -41,5 +48,4 @@ export class FormValidationService {
 
     return `Champ invalide.`;
   }
-
 }

@@ -5,11 +5,11 @@
     class="form-select"
     style="width: 150px"
     [ngModel]="type"
-    (ngModelChange)="typeChange.emit($event)"
+    (ngModelChange)="onTypeChange($event)"
   >
     <option value="all">Tous les types</option>
-    <option value="national">National</option>
-    <option value="religious">Religieux</option>
+    <option value="true">National</option>
+    <option value="false">Religieux</option>
   </select>
 
   <!-- Mois -->
@@ -17,7 +17,7 @@
     class="form-select"
     style="width: 170px"
     [ngModel]="month"
-    (ngModelChange)="monthChange.emit($event)"
+    (ngModelChange)="onMonthChange($event)"
   >
     <option value="">Tous les mois</option>
     <option *ngFor="let m of months" [value]="m.value">
@@ -38,7 +38,8 @@
                 type="text"
                 class="form-control date-range"
                 bsDaterangepicker
-                [(ngModel)]="bsRangeValue"
+                [bsValue]="range"
+                (bsValueChange)="onDateRangeChange($event)"
                 [bsConfig]="{ adaptivePosition: true }"
                 placeholder="dd/mm/yyyy - dd/mm/yyyy"
               />

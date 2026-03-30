@@ -2,12 +2,7 @@ import { SettingsTab } from '../models/settings-tab.model';
 import { routes } from '../routes/routes';
 
 export const SETTINGS_TABS: SettingsTab[] = [
-  {
-    label: 'Sécurité du compte',
-    icon: 'fas fa-user-shield',
-    link: routes.changePassword,
-    exact: true,
-  },
+ 
   {
     label: "Paramètres d'application",
     icon: 'fa-solid fa-screwdriver-wrench',

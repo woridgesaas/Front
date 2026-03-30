@@ -1,3 +1,5 @@
+import { HolidaysStatus } from "../enum/holidays-status";
+
 export interface Sondage {
   id: number;
   titre: string;
@@ -615,12 +617,11 @@ export interface employees {
   Status: string;
 }
 
-export interface department {
-  id: number;
-  Department: string;
-  NoOfEmployees: number;
-  Status: 'Actif' | 'Inactif';
-  isSelected: boolean;
+export interface Department {
+id: string;
+  name: string;
+  noOfEmployees: number; // calculé côté front
+  status: 'ACTIVE' | 'INACTIVE';
 }
 
 export interface designation {
@@ -634,11 +635,19 @@ export interface designation {
 
 export interface Holiday {
   id: number;
-  type: 'national' | 'religious';
-  nameFr: string;
-  nameAr: string;
+  labelFr: string;    
+  labelAr: string; 
   date: Date;
-  days: number;
+  duration: number;   
+  isFixed: boolean;    
+  status: HolidaysStatus
+}
+export interface HolidayRequest {
+  labelFr: string;
+  labelAr: string;
+  date: Date | string;
+  duration: number;
+  isFixed: boolean; 
 }
 
 export interface attendanceadmin {
@@ -684,18 +693,43 @@ export interface AttendanceRow {
   OvertimeDecision?: OvertimeDecision; // ⚠️ optionnel (API)
 }
 export interface Promotion {
-  sNo?: number;
-  Image?: string;
-  PromotedEmployee?: string;
-  Department?: string;
-  DesignationFrom?: string;
-  DesignationTo?: string;
-  OldSalary?: number;
-  Bonus?: number;
-  NewSalary?: number;
-  PromotionDate?: string;
-  isSelected?: boolean;
+  id?: string;
+  CIN?: string;
+
+  promotedEmployee?: string;
+  department?: string;
+
+  designationFrom?: string;
+  designationTo?: string;
+
+  oldSalary?: number;
+  bonus?: number;
+  newSalary?: number;
+
+  promotionDate?: string;
+
+  newPostId?: string;
 }
+export interface PromotionRequest {
+  cin: string;
+  bonus: number;
+  newPostId: string;
+  promotionDate: string;
+}
+export interface EmployeeInfoResponse {
+  fullName: string;
+  departmentName: string;
+  currentPost: string;
+  currentSalary: number;
+}
+
+export interface UpdatePromotionRequest {
+  promotionId: string;
+  newPostId: string;
+  bonus: number;
+  promotionDate: string;
+}
+
 
 export interface pageSizeCal {
   totalData: number;

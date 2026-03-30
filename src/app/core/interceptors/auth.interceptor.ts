@@ -7,31 +7,39 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const token = localStorage.getItem('token');
   const router = inject(Router);
 
-  if (token) {
-    const cloned = req.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`
-      }
-    });
+  const cloned = req.clone({
+    setHeaders: {
+      ...(token && { Authorization: `Bearer ${token}` })
+    }
+  });
 
-    return next(cloned).pipe(
-      catchError((error) => {
-        if (error.status === 401) {
-          // ✅ Redirige vers login SEULEMENT si c'est 
-          // une erreur d'authentification globale
-          // pas une erreur d'API métier
-          const isAuthError = error.error?.message === 'Token expired' ||
-                              error.error?.message === 'Authorization header missing' ||
-                              error.error?.message === 'Invalid token format';
+  return next(cloned).pipe(
+    catchError((error) => {
+      if (error.status === 401) {
 
-          if (isAuthError) {
-            localStorage.removeItem('token');
-            router.navigate(['/login']);
+        //  vérifie le type d'erreur
+        const isAuthError =
+          error.error?.message === 'Token expired' ||
+          error.error?.message === 'Authorization header missing' ||
+          error.error?.message === 'Invalid token format';
+
+        if (isAuthError) {
+          // 
+          const modal = document.querySelector('.modal.show');
+          if (modal) {
+            (window as any).bootstrap.Modal
+              .getInstance(modal)?.hide();
           }
+          document.body.classList.remove('modal-open');
+          const backdrops = document.querySelectorAll('.modal-backdrop');
+          backdrops.forEach(el => el.remove());
+
+          // Supprime le token et redirige
+          localStorage.removeItem('token');
+          router.navigate(['/login']);
         }
-        return throwError(() => error);
-      })
-    );
-  }
-  return next(req);
+      }
+      return throwError(() => error);
+    })
+  );
 };

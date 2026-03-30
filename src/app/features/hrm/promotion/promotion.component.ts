@@ -3,8 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Sort } from '@angular/material/sort';
 
 import { Promotion } from '../../../shared/models/models';
-import { DataService } from '../../../shared/data/data.service';
-
+import { PromotionService } from '../../../shared/services/promotion-service';
 import { BreadcrumbsComponent } from '../../common/breadcrumbs/breadcrumbs.component';
 import { FooterComponent } from '../../common/footer/footer.component';
 
@@ -28,7 +27,6 @@ import { EditPromotionModalComponent } from './components/promotions-modal/edit-
     PromotionsStatsComponent,
     PromotionsFiltersComponent,
     PromotionsTableComponent,
-    ConfirmDeleteComponent,
     AddPromotionModalComponent,
     EditPromotionModalComponent,
   ],
@@ -46,8 +44,7 @@ export class PromotionsComponent implements OnInit {
   openAddModal = false;
   openEditModal = false;
 
-  constructor(private dataService: DataService) {}
-
+constructor(private promotionService: PromotionService) {}
   ngOnInit(): void {
     this.loadPromotions();
         this.loadDepartments();
@@ -68,13 +65,31 @@ export class PromotionsComponent implements OnInit {
       { Department: 'Développement commercial' },
     ];
   }
-  loadPromotions() {
-    this.dataService.getpromotion().subscribe((res: any) => {
-      this.promotions = res.data || [];
-      this.applyFilters();
-    });
-  }
+loadPromotions() {
+  this.promotionService.getAllPromotions().subscribe({
+   next: (res: any) => {
 
+  const data = res.data;
+this.promotions = data.map((p: any) => ({
+  id: p.id,
+  CIN: p.basicUserInfo?.CIN ?? null,
+  promotedEmployee: p.basicUserInfo?.fullName ?? '—',
+  department: p.departmentName ?? '—',
+  designationFrom: p.previousPostName ?? '—',
+  designationTo: p.newPostName ?? '—',
+  oldSalary: p.previousSalary ?? 0,
+  newSalary: p.newSalary ?? 0,
+  bonus: (p.newSalary ?? 0) - (p.previousSalary ?? 0),
+  promotionDate: p.promotionDate
+}));
+
+      this.applyFilters();
+    },
+   
+  });
+}
+
+    
   filteredPromotions: Promotion[] = [];
 
   applyFilters() {
@@ -82,9 +97,9 @@ export class PromotionsComponent implements OnInit {
 
     this.filteredPromotions = this.promotions.filter((p) => {
       const bySearch =
-        !search ||
-        (p.PromotedEmployee || '').toLowerCase().includes(search) ||
-        (p.Department || '').toLowerCase().includes(search);
+  !search ||
+  (p.promotedEmployee || '').toLowerCase().includes(search) ||
+  (p.department || '').toLowerCase().includes(search);
 
       // (Optionnel) filtre dateRange si tu veux l’activer plus tard
       return bySearch;
@@ -111,36 +126,47 @@ export class PromotionsComponent implements OnInit {
  addPromotion(promotion: Promotion) {
   this.promotions.unshift(promotion);
   this.applyFilters();
+  this.openAddModal = false;
 }
 
 
   // EDIT open
   openEdit(p: Promotion) {
-    this.selectedPromotion = { ...p };
-    this.openEditModal = true;
+
+  if (!p.CIN) {
+    return;
   }
+
+  this.promotionService.getEmployeeInfo(p.CIN).subscribe((res: any) => {
+
+    this.selectedPromotion = {
+      ...p,
+    };
+
+    this.openEditModal = true;
+  });
+}
 
   // EDIT save
 updatePromotion(updated: Promotion) {
-  const index = this.promotions.findIndex(
-    p => p === this.selectedPromotion
-  );
 
-  if (index !== -1) {
-    this.promotions[index] = updated;
-    this.applyFilters();
-  }
+  if (!updated.id || !updated.newPostId) return;
+
+  const payload = {
+    promotionId: updated.id,
+    newPostId: updated.newPostId,
+    bonus: updated.bonus ?? 0,
+    promotionDate: updated.promotionDate!
+  };
+
+  this.promotionService.updatePromotion(updated.id, payload)
+    .subscribe(() => {
+      this.loadPromotions();
+      this.openEditModal = false;
+    });
 }
 
 
-  // DELETE open (set selectedItem)
- openDelete(p: Promotion) {
-  this.selectedItem = { ...p };
-}
 
-  // DELETE confirm
-  deleteItem() {
-    this.promotions = this.promotions.filter((p) => p !== this.selectedItem);
-    this.applyFilters();
-  }
+  
 }

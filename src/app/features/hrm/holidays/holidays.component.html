@@ -43,13 +43,16 @@
     <div class="card-body p-0">
       <app-holiday-table
         [holidays]="filteredHolidays"
+        (resetFilters)="resetFilters()"
+        [showResetButton]="hasActiveFilters()"
+        (openAddModal)="openHolidayModal()"
       ></app-holiday-table>
     </div>
 
   </div>
 <app-holiday-add-modal
   [open]="openHoliday"
-  (add)="addHoliday($event)"
+  (add)="onHolidayAdded($event)"
   (cancel)="openHoliday = false"
 ></app-holiday-add-modal>
 

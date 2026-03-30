@@ -37,7 +37,6 @@
       <app-departments-table
         [departments]="filteredDepartments"
         (edit)="openEdit($event)"
-        (delete)="openDelete($event)"
         (sort)="sortData($event)"
       >
       </app-departments-table>
@@ -58,19 +57,7 @@
       </app-edit-department-modal>
 
       <!-- MODAL DELETE -->
-      <app-confirm-delete
-        modalId="deleteModal"
-        title="Supprimer Département"
-        [message]="
-          selectedItem
-            ? 'Êtes-vous sûr de vouloir supprimer le département ' +
-              selectedItem.Department +
-              ' ?'
-            : ''
-        "
-        [item]="selectedItem"
-        (confirm)="deleteItem()"
-      ></app-confirm-delete>
+    
     </div>
   </div>
 </div>

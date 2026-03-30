@@ -2,7 +2,7 @@
   <table
     matSort
     (matSortChange)="sort.emit($event)"
-    class="mat-sort table datanew table-center datatable dataTable mb-0"
+    class="mat-sort table table-hover table-center mb-0"
   >
     <thead class="thead-light">
       <tr>
@@ -17,45 +17,41 @@
     </thead>
 
     <tbody>
-      <tr *ngFor="let p of promotions">
-        <td>{{ p.PromotedEmployee }}</td>
-        <td>{{ p.Department }}</td>
-        <td>{{ p.DesignationFrom }}</td>
-        <td>{{ p.DesignationTo }}</td>
-        <td>{{ p.NewSalary }} MAD</td>
-        <td>{{ p.PromotionDate }}</td>
+      <tr *ngFor="let p of promotions; trackBy: trackById">
 
-        <!-- ACTIONS -->
+        <td>{{ p.promotedEmployee || '-' }}</td>
+        <td>{{ p.department || '-' }}</td>
+        <td>{{ p.designationFrom || '-' }}</td>
+        <td>{{ p.designationTo || '-' }}</td>
+
+        <td>
+          {{ p.newSalary | number:'1.0-2' }} MAD
+        </td>
+
+        <td>
+          {{ p.promotionDate | date:'dd/MM/yyyy' }}
+        </td>
+
         <td class="text-center">
-          <div
-            class="action-icon d-inline-flex align-items-center justify-content-center gap-2"
-          >
+          <div class="d-inline-flex align-items-center gap-2">
+
             <button
               type="button"
-              class="btn btn-link p-0 text-primary"
+              class="btn btn-sm btn-link text-primary"
               (click)="edit.emit(p)"
-              aria-label="Modifier"
-            >
+              aria-label="Modifier">
               <i class="ti ti-edit"></i>
             </button>
 
-            <button
-              type="button"
-              class="btn btn-link p-0 text-danger"
-              data-bs-toggle="modal"
-              data-bs-target="#deleteModal"
-              (click)="remove.emit(p)"
-              aria-label="Supprimer"
-            >
-              <i class="ti ti-trash"></i>
-            </button>
+           
+
           </div>
         </td>
       </tr>
 
       <tr *ngIf="promotions.length === 0">
-        <td colspan="7" class="text-center py-3">
-          Aucun enregistrement trouvé
+        <td colspan="7" class="text-center py-4 text-muted">
+          Aucune promotion trouvée
         </td>
       </tr>
     </tbody>

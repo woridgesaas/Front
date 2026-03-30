@@ -1,5 +1,5 @@
 import { Component, Input, ViewChild } from '@angular/core';
-import { department } from '../../../shared/models/models';
+import { Department } from '../../../shared/models/models';
 import { DepartmentService } from '../../../shared/services/department.service';
 import { BreadcrumbsComponent } from '../../common/breadcrumbs/breadcrumbs.component';
 import { DepartmentsStatsComponent } from './components/departments-stats/departments-stats.component';
@@ -21,7 +21,6 @@ import { Sort } from '@angular/material/sort';
     DepartmentsStatsComponent,
     DepartmentsFiltersComponent,
     DepartmentsTableComponent,
-    ConfirmDeleteComponent,
     AddDepartmentModalComponent,
     EditDepartmentModalComponent,
     
@@ -29,82 +28,77 @@ import { Sort } from '@angular/material/sort';
 })
 export class DepartmentsComponent {
 
-  departments: department[] = [];
-  selectedDepartment: department | null = null;
-  selectedItem!: department;
+  departments: Department[] = [];
+  selectedDepartment: Department | null = null;
+  selectedItem!: Department;
 
-  @ViewChild(EditDepartmentModalComponent) editModal!: EditDepartmentModalComponent;
-openAddModal = false;
-  selectedStatus: 'all' | 'Actif' | 'Inactif' = 'all';
+  openAddModal = false;
+  isEditModalOpen = false;
+
+  selectedStatus: 'all' | 'ACTIVE' | 'INACTIVE' = 'all';
   searchValue = '';
 
   constructor(private departmentService: DepartmentService) {
     this.loadDepartments();
   }
-isEditModalOpen = false;
-
-openEdit(dep: department) {
-  this.selectedDepartment = { ...dep };
-  this.isEditModalOpen = true;
-}
-
 
   loadDepartments() {
-    this.departmentService.getAll().subscribe(data => {
-      this.departments = data;
-    });
-  }
-sortData(sort: Sort) {
-  const data = [...this.departments];
-
-  if (!sort.active || sort.direction === '') {
-    this.departments = data;
-    return;
+    this.departmentService.getAll()
+      .subscribe(data => {
+        this.departments = data;
+      });
   }
 
-  this.departments = data.sort((a, b) => {
-    const aValue = (a as any)[sort.active];
-    const bValue = (b as any)[sort.active];
-
-    return (aValue < bValue ? -1 : 1) *
-      (sort.direction === 'asc' ? 1 : -1);
-  });
-}
-  get filteredDepartments(): department[] {
-    return this.departments.filter(d => {
-      const byStatus =
-        this.selectedStatus === 'all' || d.Status === this.selectedStatus;
-
-      const bySearch =
-        !this.searchValue ||
-        d.Department.toLowerCase().includes(this.searchValue.toLowerCase());
-
-      return byStatus && bySearch;
-    });
+  openEdit(dep: Department) {
+    this.selectedDepartment = { ...dep };
+    this.isEditModalOpen = true;
   }
 
-  addDepartment(dep: department) {
-    this.departments = [...this.departments, dep];
+  saveEdit(payload: { id: string; name: string; status: 'ACTIVE' | 'INACTIVE' }) {
+    this.departmentService.update(payload.id, payload.name,payload.status)
+      .subscribe(() => this.loadDepartments());
   }
 
-
-closeEditModal() {
-  this.selectedDepartment = null;
-}
-
- saveEdit(updated: department) {
-  this.departments = this.departments.map(d =>
-    d.id === updated.id ? updated : d
-  );
-}
-
-  openDelete(dep: department) {
+  openDelete(dep: Department) {
     this.selectedItem = dep;
   }
 
-  deleteItem() {
-    this.departments = this.departments.filter(
-      d => d.Department !== this.selectedItem.Department
-    );
+
+
+  addDepartment(payload: { name: string; status: string }) {
+  this.departmentService.create(payload.name, payload.status)
+    .subscribe(() => this.loadDepartments());
+}
+
+  sortData(sort: Sort) {
+    const data = [...this.departments];
+
+    if (!sort.active || sort.direction === '') {
+      this.departments = data;
+      return;
+    }
+
+    this.departments = data.sort((a, b) => {
+      const aValue = (a as any)[sort.active];
+      const bValue = (b as any)[sort.active];
+
+      return (aValue < bValue ? -1 : 1) *
+        (sort.direction === 'asc' ? 1 : -1);
+    });
+  }
+
+  get filteredDepartments(): Department[] {
+    return this.departments.filter(d => {
+
+      const byStatus =
+        this.selectedStatus === 'all' ||
+        d.status === this.selectedStatus;
+
+      const bySearch =
+        !this.searchValue ||
+        d.name.toLowerCase().includes(this.searchValue.toLowerCase());
+
+      return byStatus && bySearch;
+    });
   }
 }

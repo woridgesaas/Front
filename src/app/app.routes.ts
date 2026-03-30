@@ -66,7 +66,7 @@ export const routes: Routes = [
   },
 
   //* Features routes
-  
+
   {
     path: '',
     canActivate: [AuthGuard],
@@ -193,17 +193,7 @@ export const routes: Routes = [
           ),
         data: { breadcrumb: 'Paramètres', title: 'Paramètres' },
         children: [
-          {
-            path: 'change-password',
-            loadComponent: () =>
-              import(
-                './features/settings/change-password/change-password.component'
-              ).then((m) => m.ChangePasswordComponent),
-            data: {
-              breadcrumb: 'Changer mot de passe',
-              title: 'Changer mot de passe',
-            },
-          },
+
           {
             path: 'app-settings',
             loadComponent: () =>
@@ -286,7 +276,7 @@ export const routes: Routes = [
             },
           },
           {
-            path: 'employee-details',
+            path: 'employee-details/:id',
             loadComponent: () =>
               import(
                 './features/hrm/employees/profilemployee/employee-details/employee-details.component'

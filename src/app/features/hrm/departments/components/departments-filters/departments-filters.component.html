@@ -2,15 +2,15 @@
 
   <!-- Statut -->
   <select
-    class="form-select"
-    style="width: 160px"
-    [ngModel]="status"
-    (ngModelChange)="statusChange.emit($event)"
-  >
-    <option value="all">Tous</option>
-    <option value="Actif">Actif</option>
-    <option value="Inactif">Inactif</option>
-  </select>
+  class="form-select"
+  style="width: 160px"
+  [ngModel]="status"
+  (ngModelChange)="statusChange.emit($event)"
+>
+  <option value="all">Tous</option>
+  <option value="ACTIVE">Actif</option>
+  <option value="INACTIVE">Inactif</option>
+</select>
 
   <!-- Recherche -->
   <input
