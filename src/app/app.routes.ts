@@ -457,6 +457,40 @@ export const routes: Routes = [
         data: { breadcrumb: 'Démission', title: 'Démission' },
       },
 
+      //* Payroll routes
+{
+  path: 'payroll',
+  loadComponent: () =>
+    import('./features/hrm/payroll/payroll.component').then(
+      (m) => m.PayrollComponent
+    ),
+  data: { breadcrumb: 'Fiches de paie', title: 'Fiches de paie' },
+  children: [
+    {
+      path: 'mes-fiches',
+      loadComponent: () =>
+        import('./features/hrm/payroll/components/employee-payroll/employee-payroll.component').then(
+          (m) => m.EmployeePayrollComponent
+        ),
+      data: {
+        breadcrumb: 'Mes fiches de paie',
+        title: 'Mes fiches de paie',
+      },
+    },
+    {
+      path: 'gestion-fiches',
+      loadComponent: () =>
+        import('./features/hrm/payroll/components/rh-payroll/rh-payroll.component').then(
+          (m) => m.RhPayrollComponent
+        ),
+      data: {
+        breadcrumb: 'Gestion des fiches de paie',
+        title: 'Gestion des fiches de paie',
+      },
+    },
+  ],
+},
+
       //* Validation routes
       {
         path: 'validation',

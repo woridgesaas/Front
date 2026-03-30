@@ -13,17 +13,25 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         Authorization: `Bearer ${token}`
       }
     });
+
     return next(cloned).pipe(
       catchError((error) => {
         if (error.status === 401) {
-          // Token expiré ou invalide → logout automatique
-          localStorage.removeItem('token');
-          router.navigate(['/login']);
+          // ✅ Redirige vers login SEULEMENT si c'est 
+          // une erreur d'authentification globale
+          // pas une erreur d'API métier
+          const isAuthError = error.error?.message === 'Token expired' ||
+                              error.error?.message === 'Authorization header missing' ||
+                              error.error?.message === 'Invalid token format';
+
+          if (isAuthError) {
+            localStorage.removeItem('token');
+            router.navigate(['/login']);
+          }
         }
         return throwError(() => error);
       })
     );
   }
-
   return next(req);
 };
