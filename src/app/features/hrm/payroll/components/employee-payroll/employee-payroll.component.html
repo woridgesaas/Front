@@ -1,0 +1,191 @@
+<div class="page-wrapper">
+    <div class="content">
+  
+      <!-- Breadcrumb -->
+      <div class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
+        <div class="my-auto mb-2">
+          <h2 class="mb-1">Mes Fiches de Paie</h2>
+          <nav>
+            <ol class="breadcrumb mb-0">
+              <li class="breadcrumb-item">
+                <a href="javascript:void(0);"><i class="ti ti-smart-home"></i></a>
+              </li>
+              <li class="breadcrumb-item active">Mes Fiches de Paie</li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+  
+      <!-- Stats Cards -->
+      <div class="row mb-4">
+        <div class="col-xl-3 col-sm-6">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex align-items-center justify-content-between">
+                <div>
+                  <p class="text-muted mb-1">Total fiches</p>
+                  <h4 class="mb-0">{{ totalFiches }}</h4>
+                </div>
+                <div class="avatar avatar-lg bg-primary-light rounded-circle">
+                  <i class="ti ti-file-invoice fs-20 text-primary"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex align-items-center justify-content-between">
+                <div>
+                  <p class="text-muted mb-1">Validées</p>
+                  <h4 class="mb-0 text-success">{{ fichesValidees }}</h4>
+                </div>
+                <div class="avatar avatar-lg bg-success-light rounded-circle">
+                  <i class="ti ti-circle-check fs-20 text-success"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex align-items-center justify-content-between">
+                <div>
+                  <p class="text-muted mb-1">En attente</p>
+                  <h4 class="mb-0 text-warning">{{ fichesEnAttente }}</h4>
+                </div>
+                <div class="avatar avatar-lg bg-warning-light rounded-circle">
+                  <i class="ti ti-clock fs-20 text-warning"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex align-items-center justify-content-between">
+                <div>
+                  <p class="text-muted mb-1">Net total {{ selectedYear }}</p>
+                  <h4 class="mb-0">{{ totalNet | number:'1.2-2' }} DH</h4>
+                </div>
+                <div class="avatar avatar-lg bg-info-light rounded-circle">
+                  <i class="ti ti-cash fs-20 text-info"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Alerte -->
+      <div *ngIf="errorMessage" class="alert alert-danger">
+        <i class="ti ti-alert-circle me-2"></i>{{ errorMessage }}
+      </div>
+  
+      <!-- Table Card -->
+      <div class="card">
+        <div class="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3">
+          <h5 class="mb-0">
+            <i class="ti ti-file-invoice me-2"></i>Historique des fiches
+          </h5>
+  
+          <!-- Filtres -->
+          <div class="d-flex align-items-center gap-2 flex-wrap">
+            <select class="form-select form-select-sm"
+              style="width: auto;"
+              [(ngModel)]="selectedYear"
+              (change)="applyFilters()">
+              <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+            </select>
+  
+            <select class="form-select form-select-sm"
+              style="width: auto;"
+              [(ngModel)]="selectedMonth"
+              (change)="applyFilters()">
+              <option *ngFor="let m of months" [value]="m.value">{{ m.label }}</option>
+            </select>
+  
+            <select class="form-select form-select-sm"
+              style="width: auto;"
+              [(ngModel)]="selectedStatus"
+              (change)="applyFilters()">
+              <option value="">Tous les statuts</option>
+              <option value="VALIDEE">Validée</option>
+              <option value="EN_ATTENTE">En attente</option>
+              <option value="REJETEE">Rejetée</option>
+            </select>
+          </div>
+        </div>
+  
+        <div class="card-body p-0">
+  
+          <!-- Loading -->
+          <div *ngIf="isLoading" class="text-center p-4">
+            <div class="spinner-border text-primary" role="status"></div>
+          </div>
+  
+          <div class="table-responsive" *ngIf="!isLoading">
+            <table class="table datanew table-center datatable dataTable mb-0">
+              <thead class="thead-light">
+                <tr>
+                  <th>Période</th>
+                  <th>Salaire Brut</th>
+                  <th>Net à Payer</th>
+                  <th>Statut</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let payroll of filteredPayrolls">
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <div class="avatar avatar-md bg-light rounded-circle me-2">
+                        <i class="ti ti-calendar text-primary fs-16"></i>
+                      </div>
+                      <div>
+                        <h6 class="fw-medium mb-0">
+                          {{ monthNames[payroll.month] }} {{ payroll.year }}
+                        </h6>
+                      </div>
+                    </div>
+                  </td>
+                  <td>{{ payroll.grossSalary | number:'1.2-2' }} DH</td>
+                  <td><strong>{{ payroll.netSalary | number:'1.2-2' }} DH</strong></td>
+                  <td>
+                    <span class="badge d-inline-flex align-items-center gap-1"
+                      [ngClass]="getStatusClass(payroll.status)">
+                      <i [class]="getStatusIcon(payroll.status)"></i>
+                      {{ getStatusLabel(payroll.status) }}
+                    </span>
+                  </td>
+                  <td>
+                    <button *ngIf="payroll.status === 'VALIDEE'"
+                      class="btn btn-primary btn-sm"
+                      (click)="downloadPdf(payroll)"
+                      [disabled]="downloadingId === payroll.id">
+                      <i class="ti ti-download me-1"></i>
+                      {{ downloadingId === payroll.id ? 'Chargement...' : 'Télécharger PDF' }}
+                    </button>
+                    <span *ngIf="payroll.status !== 'VALIDEE'" class="text-muted fs-12">
+                      Non disponible
+                    </span>
+                  </td>
+                </tr>
+                <tr *ngIf="filteredPayrolls.length === 0">
+                  <td colspan="5">
+                    <h5 class="no-record">Aucune fiche trouvée</h5>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+   
+    </div>
+    <!-- FOOTER -->
+   <app-footer></app-footer>
+  </div>

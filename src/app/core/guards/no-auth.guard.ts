@@ -1,18 +1,24 @@
-import { Injectable } from '@angular/core';
+import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NoAuthGuard implements CanActivate {
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   canActivate(): boolean {
-    const token = localStorage.getItem('token');
-    if (token) {
-      this.router.navigate(['/dashboard/admin']); // ← déjà connecté
-      return false;
+    if (isPlatformBrowser(this.platformId)) {
+      const token = localStorage.getItem('token');
+      if (token) {
+        this.router.navigate(['/dashboard/admin']);
+        return false;
+      }
     }
-    return true; // ← pas connecté → login s'affiche
+    return true;
   }
 }

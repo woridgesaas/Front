@@ -1,4 +1,3 @@
-
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
@@ -17,18 +16,28 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   return next(cloned).pipe(
     catchError((error) => {
       if (error.status === 401) {
-        const modal = document.querySelector('.modal.show');
-        if (modal) {
-          (window as any).bootstrap.Modal.getInstance(modal)?.hide();
+
+        //  vérifie le type d'erreur
+        const isAuthError =
+          error.error?.message === 'Token expired' ||
+          error.error?.message === 'Authorization header missing' ||
+          error.error?.message === 'Invalid token format';
+
+        if (isAuthError) {
+          // 
+          const modal = document.querySelector('.modal.show');
+          if (modal) {
+            (window as any).bootstrap.Modal
+              .getInstance(modal)?.hide();
+          }
+          document.body.classList.remove('modal-open');
+          const backdrops = document.querySelectorAll('.modal-backdrop');
+          backdrops.forEach(el => el.remove());
+
+          // Supprime le token et redirige
+          localStorage.removeItem('token');
+          router.navigate(['/login']);
         }
-
-        document.body.classList.remove('modal-open');
-
-        const backdrops = document.querySelectorAll('.modal-backdrop');
-        backdrops.forEach(el => el.remove());
-
-        localStorage.removeItem('token');
-        router.navigate(['/login']);
       }
       return throwError(() => error);
     })
