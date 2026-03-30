@@ -303,7 +303,7 @@ selectSort(sort: string): void {
     ).length;
 
     const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);//li dkhlo 3ed jdad hed cheher 
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);//li dkhlo 3ed jdad hed cheher
     const nouveaux = this.actualData.filter((e) => {
       return new Date(e.createdAt) >= thirtyDaysAgo;
     }).length;
