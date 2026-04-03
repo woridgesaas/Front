@@ -1,39 +1,95 @@
-import { Component, Renderer2 } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
 import { routes } from '../../shared/routes/routes';
 import { IllustrationComponent } from '../Common/illustration/illustration.component';
 import { LogoComponent } from '../Common/logo/logo.component';
 import { DescriptionComponent } from '../Common/description/description.component';
 import { FooterComponent } from '../Common/footer/footer.component';
+import { AuthService } from '../services/auth.service';
+import { AuthStateService } from '../services/auth-state.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
-    selector: 'app-forgot-password',
-    templateUrl: './forgot-password.component.html',
-    styleUrl: './forgot-password.component.scss',
-    imports: [
-      CommonModule,
-      RouterLink,
-      IllustrationComponent,
-      LogoComponent,
-      DescriptionComponent,
-      FooterComponent,
-    ]
+  selector: 'app-forgot-password',
+  templateUrl: './forgot-password.component.html',
+  styleUrl: './forgot-password.component.scss',
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterLink,
+    FormsModule,
+    IllustrationComponent,
+    LogoComponent,
+    DescriptionComponent,
+    FooterComponent,
+  ],
 })
-export class ForgotPasswordComponent {
+export class ForgotPasswordComponent implements OnInit, OnDestroy {
+  private emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
   public routes = routes;
+  email = '';
+  isLoading = false;
 
   constructor(
     private router: Router,
-    private renderer:Renderer2
-  ){}
-  navigation(){
-    this.router.navigate([routes.index])
+    private authService: AuthService,
+    private authStateService: AuthStateService,
+    private toastr: ToastrService,
+  ) {}
+
+  private isValidEmail(email: string): boolean {
+    return this.emailRegex.test(email.trim());
   }
+
+  onSubmit() {
+    const trimmedEmail = this.email.trim();
+
+    if (!trimmedEmail) {
+      this.toastr.warning('Veuillez entrer votre adresse email');
+      return;
+    }
+
+    if (!this.isValidEmail(trimmedEmail)) {
+      this.toastr.warning('Veuillez entrer une adresse email valide');
+      return;
+    }
+
+    this.isLoading = true;
+
+    this.authService.requestPasswordReset({ email: trimmedEmail }).subscribe({
+      next: () => {
+        this.toastr.success(
+          'Si un compte existe, un code a été envoyé à votre adresse email',
+        );
+
+        this.authStateService.email = trimmedEmail;
+
+        this.router.navigate([routes.emailVerification]);
+      },
+      error: (error: HttpErrorResponse) => {
+        if (error.status === 429) {
+          this.toastr.warning(
+            'Trop de tentatives, veuillez réessayer plus tard',
+          );
+        } else {
+          this.toastr.error(
+            'Une erreur est survenue, veuillez réessayer plus tard',
+          );
+        }
+        this.isLoading = false;
+      },
+    });
+  }
+
   ngOnInit(): void {
-    this.renderer.addClass(document.body, 'bg-white');
+    document.body.classList.add('bg-white');
+    this.authStateService.clear();
   }
+
   ngOnDestroy(): void {
-    this.renderer.removeClass(document.body, 'bg-white');
+    document.body.classList.remove('bg-white');
   }
 }
