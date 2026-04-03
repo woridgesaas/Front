@@ -1,103 +1,182 @@
-import { Component, Renderer2 } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { routes } from '../../shared/routes/routes';
-import { Router} from '@angular/router';
+import { AuthService } from '../services/auth.service';
+import { AuthStateService } from '../services/auth-state.service';
+import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { IllustrationComponent } from '../Common/illustration/illustration.component';
 import { LogoComponent } from '../Common/logo/logo.component';
 import { DescriptionComponent } from '../Common/description/description.component';
 import { FooterComponent } from '../Common/footer/footer.component';
+
 @Component({
-    selector: 'app-reset-password',
-    templateUrl: './reset-password.component.html',
-    styleUrl: './reset-password.component.scss',
-    imports: [
-      CommonModule,
-      IllustrationComponent,
-      LogoComponent,
-      DescriptionComponent,
-      FooterComponent,
-    ]
+  selector: 'app-reset-password',
+  templateUrl: './reset-password.component.html',
+  styleUrl: './reset-password.component.scss',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    IllustrationComponent,
+    LogoComponent,
+    DescriptionComponent,
+    FooterComponent,
+  ],
 })
-export class ResetPasswordComponent {
+export class ResetPasswordComponent implements OnInit, OnDestroy {
   public routes = routes;
+
+  password: boolean[] = [false, false];
+  isLoading: boolean = false;
+
+  newPassword: string = '';
+  confirmPassword: string = '';
+
+  strengthLevel: string = '';
+  passwordInfoMessage: string = '';
+  passwordInfoColor: string = '';
+
+  private passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/;
+
   constructor(
     private router: Router,
-    private renderer:Renderer2
-  ){}
-  navigation(){
-    this.router.navigate([routes.success])
+    private authService: AuthService,
+    private authStateService: AuthStateService,
+    private toastr: ToastrService,
+  ) {}
+
+  ngOnInit(): void {
+    document.body.classList.add('bg-white');
   }
 
-  password: boolean[] = [false, false]; // Add more as needed
+  ngOnDestroy(): void {
+    document.body.classList.remove('bg-white');
+  }
 
   togglePassword(index: number): void {
     this.password[index] = !this.password[index];
   }
-  ngOnInit():void{
-    this.renderer.addClass(document.body,'bg-white');
-  }
-  ngOnDestroy():void{
-    this.renderer.removeClass(document.body,'bg-white');
-  }
-  passwordValue: string = '';
-  strengthLevel: string = '';
-  passwordInfoMessage: string | null = null;
-  passwordInfoColor: string = '';
 
-  private poorRegExp = /[a-z]/;
-  private weakRegExp = /(?=.*?[0-9])/;
-  private strongRegExp = /(?=.*?[#?!@$%^&*-])/;
-  private whitespaceRegExp = /^$|\s+/;
+  onSubmit(): void {
+    if (!this.validateForm()) {
+      return;
+    }
 
+    const resetToken = this.authStateService.resetToken;
+
+    if (!resetToken) {
+      this.toastr.error('Session expirée, veuillez recommencer');
+      this.router.navigate([routes.forgotPassword]);
+      return;
+    }
+
+    this.isLoading = true;
+
+    this.authService
+      .resetPassword({
+        resetToken,
+        newPassword: this.newPassword,
+        confirmPassword: this.confirmPassword,
+      })
+      .subscribe({
+        next: () => {
+          this.toastr.success('Mot de passe modifié avec succès');
+          this.authStateService.clear();
+          this.router.navigate([routes.success]);
+        },
+        error: (error) => {
+          this.handleError(error);
+          this.isLoading = false;
+        },
+      });
+  }
+
+  //* Password Strength checker (UX)
   checkPasswordStrength(event: Event): void {
-    const inputElement = event.target as HTMLInputElement;
-    const password = inputElement.value;
-    this.passwordValue = password;
+    const password = (event.target as HTMLInputElement).value;
+    this.newPassword = password;
 
-    const passwordLength = password.length;
-    const hasPoor = this.poorRegExp.test(password);
-    const hasWeak = this.weakRegExp.test(password);
-    const hasStrong = this.strongRegExp.test(password);
-    const hasWhitespace = this.whitespaceRegExp.test(password);
-
-    if (password === '') {
+    if (!password) {
       this.resetStrength();
       return;
     }
 
-    if (hasWhitespace) {
-      this.passwordInfoMessage = 'Whitespaces are not allowed';
-      this.passwordInfoColor = 'red';
-      this.strengthLevel = '';
+    if (/\s/.test(password)) {
+      this.setStrength('', 'Espaces non autorisés', 'red');
       return;
     }
 
-    if (passwordLength < 8) {
-      this.strengthLevel = 'poor';
-      this.passwordInfoMessage = 'Weak. Must contain at least 8 characters.';
-      this.passwordInfoColor = 'red';
-    } else if (hasPoor || hasWeak || hasStrong) {
-      this.strengthLevel = 'weak';
-      this.passwordInfoMessage = 'Average. Must contain at least 1 letter or number.';
-      this.passwordInfoColor = '#FFB54A';
-    }
+    const hasLower = /[a-z]/.test(password);
+    const hasUpper = /[A-Z]/.test(password);
+    const hasDigit = /\d/.test(password);
+    const hasSymbol = /[\W_]/.test(password);
 
-    if (passwordLength >= 8 && hasPoor && (hasWeak || hasStrong)) {
-      this.strengthLevel = 'strong';
-      this.passwordInfoMessage = 'Almost strong. Must contain a special symbol.';
-      this.passwordInfoColor = '#1D9CFD';
-    }
-
-    if (passwordLength >= 8 && hasPoor && hasWeak && hasStrong) {
-      this.strengthLevel = 'heavy';
-      this.passwordInfoMessage = 'Awesome! You have a secure password.';
-      this.passwordInfoColor = '#159F46';
+    if (password.length < 8) {
+      this.setStrength('poor', 'Minimum 8 caractères', 'red');
+    } else if (!(hasLower && hasUpper && hasDigit && hasSymbol)) {
+      this.setStrength(
+        'weak',
+        'Ajoutez majuscule, chiffre ou symbole',
+        '#FFB54A',
+      );
+    } else {
+      this.setStrength('heavy', 'Mot de passe sécurisé', '#159F46');
     }
   }
 
+  //* Helpers methods
+  private validateForm(): boolean {
+    const password = this.newPassword.trim();
+    const confirm = this.confirmPassword.trim();
+
+    if (!password) {
+      this.toastr.warning('Nouveau mot de passe est obligatoire');
+      return false;
+    }
+    if (!confirm) {
+      this.toastr.warning('Confirmation du mot de passe est obligatoire');
+      return false;
+    }
+
+    if (password !== confirm) {
+      this.toastr.warning('Les mots de passe ne correspondent pas');
+      return false;
+    }
+
+    if (!this.isPasswordValid(password)) {
+      this.toastr.warning(
+        'Mot de passe invalide (minimum 8 caractères, majuscule, minuscule, chiffre et symbole)',
+      );
+      return false;
+    }
+
+    return true;
+  }
+
+  private isPasswordValid(password: string): boolean {
+    return password.length >= 8 && this.passwordPattern.test(password);
+  }
+
+  private handleError(error: any): void {
+    if (error.status === 401) {
+      this.toastr.error('Session expirée, veuillez recommencer');
+    } else if (error.status === 400) {
+      this.toastr.warning('Données invalides, veuillez vérifier votre saisie');
+    } else {
+      this.toastr.error('Une erreur est survenue, veuillez réessayer');
+    }
+  }
+
+  private setStrength(level: string, message: string, color: string): void {
+    this.strengthLevel = level;
+    this.passwordInfoMessage = message;
+    this.passwordInfoColor = color;
+  }
 
   private resetStrength(): void {
     this.strengthLevel = '';
-    this.passwordInfoMessage = null;
+    this.passwordInfoMessage = '';
   }
 }
