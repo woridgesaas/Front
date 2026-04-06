@@ -1,96 +1,144 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { DataService } from '../../../../shared/data/data.service';
+import { Observable, map } from 'rxjs';
 import { JobsInfo, ValidationResult } from '../models/jobs.model';
+import {
+  JobOfferApiService,
+  JobOfferApiDto,
+  CreateJobOfferApiDto,
+  UpdateJobOfferApiDto,
+  PublishJobOfferApiDto
+} from './job-offer-api.service';
 
-/**
- * Service pour gérer les offres d'emploi
- */
 @Injectable({
   providedIn: 'root'
 })
 export class JobsService {
-  
-  constructor(private dataService: DataService) {}
- 
-  // APPELS API
-  
-  /**
-   * Récupère toutes les offres
-   */
+
+  private readonly devUserId = '00000000-0000-0000-0000-000000000001';
+  private readonly defaultJobTypeId = '11111111-1111-1111-1111-111111111111';
+
+  constructor(private apiService: JobOfferApiService) {}
+
+  // ─────────────────────────────────────────
+  // GET ALL
+  // ─────────────────────────────────────────
   getAllJobs(): Observable<JobsInfo[]> {
-    return this.dataService.getJobList().pipe(
-      map(response => response.data),
-      // Migration automatique : ajoute Description si manquant
-      map(jobs => jobs.map(job => this.ensureJobHasDescription(job)))
+    return this.apiService.getAll().pipe(
+      map(response => response.data.map(dto => this.mapToJobsInfo(dto)))
     );
   }
 
-  /**
-   * Crée une nouvelle offre
-   */
+  // ─────────────────────────────────────────
+  // CREATE
+  // ─────────────────────────────────────────
   createJob(job: JobsInfo): Observable<JobsInfo> {
-    // return this.http.post<JobsInfo>('/api/jobs', job);
-    
-    console.log('✅ Création de l\'offre:', job);
-    return new Observable(observer => {
-      observer.next(job);
-      observer.complete();
-    });
+    const dto: CreateJobOfferApiDto = {
+      title: job.Job_Title,
+      description: job.Description || '',
+      location: job.Location,
+      salaryRange: job.Salary_Range || null,
+      yearsExperience: this.mapExperienceToNumber(job.Experience),
+      numberOfPositions: job.Number_of_Positions || 1,
+      contractType: this.mapContractType(job.Roll),
+      jobTypeId: this.defaultJobTypeId,
+      createdByUserId: this.devUserId
+    };
+
+    return this.apiService.create(dto).pipe(
+      map(response => this.mapToJobsInfo(response.data))
+    );
   }
 
-  /**
-   * Modifie une offre existante
-   */
+  // ─────────────────────────────────────────
+  // UPDATE
+  // ─────────────────────────────────────────
   updateJob(job: JobsInfo): Observable<JobsInfo> {
-    // return this.http.put<JobsInfo>(`/api/jobs/${job.Job_ID}`, job);
-    
-    console.log('✏️ Modification de l\'offre:', job);
-    return new Observable(observer => {
-      observer.next(job);
-      observer.complete();
-    });
+    const dto: UpdateJobOfferApiDto = {
+      title: job.Job_Title,
+      description: job.Description || '',
+      location: job.Location,
+      salaryRange: job.Salary_Range || null,
+      yearsExperience: this.mapExperienceToNumber(job.Experience),
+      numberOfPositions: job.Number_of_Positions || 1,
+      contractType: this.mapContractType(job.Roll),
+      jobTypeId: this.defaultJobTypeId,
+      updatedByUserId: this.devUserId
+    };
+
+    return this.apiService.update(job.Job_ID, dto).pipe(
+      map(response => this.mapToJobsInfo(response.data))
+    );
   }
 
-  /**
-   * Supprime une offre
-   */
+  // ─────────────────────────────────────────
+  // DELETE
+  // ─────────────────────────────────────────
   deleteJob(jobId: string): Observable<boolean> {
-    // return this.http.delete<boolean>(`/api/jobs/${jobId}`);
-    
-    console.log('🗑️ Suppression de l\'offre:', jobId);
-    return new Observable(observer => {
-      observer.next(true);
-      observer.complete();
-    });
+    return this.apiService.delete(jobId).pipe(
+      map(() => true)
+    );
   }
 
-  /**
-   * Publie une offre sur des plateformes
-   */
-  publishJob(jobId: string, platforms: string[]): Observable<boolean> {
-    // return this.http.post<boolean>(`/api/jobs/${jobId}/publish`, { platforms });
-    
-    console.log('📢 Publication de l\'offre:', jobId, 'sur', platforms);
-    return new Observable(observer => {
-      observer.next(true);
-      observer.complete();
-    });
+  // ─────────────────────────────────────────
+  // PUBLISH
+  // ─────────────────────────────────────────
+  publishJob(
+    jobId: string,
+    canalNames: string[],
+    notifyHr: boolean,
+    isFeatured: boolean
+  ): Observable<any> {
+    const dto: PublishJobOfferApiDto = {
+      canalNames,
+      notifyHrTeam: notifyHr,
+      isFeatured,
+      publishedByUserId: this.devUserId
+    };
+    return this.apiService.publish(jobId, dto);
   }
- 
-  // FONCTIONS UTILES
- 
-  /**
-   * Génère un ID unique
-   */
+
+  // ─────────────────────────────────────────
+  // MAPPER : API DTO → JobsInfo
+  // ─────────────────────────────────────────
+  private mapToJobsInfo(dto: JobOfferApiDto): JobsInfo {
+    return {
+      Job_ID: dto.id,
+      Job_Title: dto.title,
+      Category: dto.jobTypeName || '',
+      Location: dto.location,
+      Salary_Range: dto.salaryRange || '',
+      Posted_Date: new Date(dto.createdAt).toLocaleDateString('fr-FR'),
+      Roll: dto.contractType,
+      Image: 'briefcase.svg',
+      Experience: this.mapNumberToExperience(dto.yearsExperience),
+      Description: dto.description || '',
+      Number_of_Positions: dto.numberOfPositions,
+      isSelected: false,
+      sNo: 0
+    };
+  }
+
+  // ─────────────────────────────────────────
+  // HELPERS
+  // ─────────────────────────────────────────
+  private mapExperienceToNumber(experience: string): number {
+    const map: Record<string, number> = {
+      '0-1': 0, '1-3': 1, '3-5': 3, '5-10': 5, '10+': 10
+    };
+    return map[experience] ?? 0;
+  }
+
+  private mapContractType(roll: string): number {
+    const map: Record<string, number> = {
+      'CDI': 0, 'CDD': 1, 'Stage': 2, 'Freelance': 3, 'Alternance': 4
+    };
+    return map[roll] ?? 0;
+  }
+
   generateId(): string {
-    return 'JOB-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+    return 'JOB-' + Date.now();
   }
 
-  /**
-   * Crée une offre vide avec tous les champs initialisés
-   */
   createEmptyJob(): JobsInfo {
     return {
       Job_ID: '',
@@ -102,100 +150,36 @@ export class JobsService {
       Roll: '',
       Image: 'briefcase.svg',
       Experience: '',
-      Description: '',           // ← AJOUTÉ pour CKEditor
-      Number_of_Positions: 1,    // ← AJOUTÉ (optionnel)
+      Description: '',
+      Number_of_Positions: 1,
       isSelected: false,
       sNo: 0
     };
   }
 
-  /**
-   * S'assure qu'un job a le champ Description
-   * Utile pour la migration des données existantes
-   */
-  private ensureJobHasDescription(job: any): JobsInfo {
-    return {
-      ...job,
-      Description: job.Description || '',
-      Number_of_Positions: job.Number_of_Positions || 1
-    };
-  }
-
-  /**
-   * Clone un job (utile pour l'édition)
-   */
   cloneJob(job: JobsInfo): JobsInfo {
-    return {
-      ...job,
-      Description: job.Description || '',
-      Number_of_Positions: job.Number_of_Positions || 1
-    };
+    return { ...job, Description: job.Description || '' };
   }
 
-  /**
-   * Valide une offre avec tous les champs obligatoires
-   */
   validateJob(job: JobsInfo): ValidationResult {
     const errors: string[] = [];
-
-    // Titre du poste
-    if (!job.Job_Title || job.Job_Title.trim() === '') {
+    if (!job.Job_Title?.trim())
       errors.push('Le titre du poste est obligatoire');
-    } else if (job.Job_Title.length < 5) {
-      errors.push('Le titre doit contenir au moins 5 caractères');
-    }
-
-    // Catégorie
-    if (!job.Category || job.Category.trim() === '') {
+    if (!job.Category?.trim())
       errors.push('La catégorie est obligatoire');
-    }
-
-    // Type de contrat
-    if (!job.Roll || job.Roll.trim() === '') {
+    if (!job.Roll?.trim())
       errors.push('Le type de contrat est obligatoire');
-    }
-
-    // Localisation
-    if (!job.Location || job.Location.trim() === '') {
+    if (!job.Location?.trim())
       errors.push('La localisation est obligatoire');
-    }
-
-    // Description (optionnelle mais recommandée)
-    if (job.Description && job.Description.length > 0 && job.Description.length < 20) {
-      errors.push('La description doit contenir au moins 20 caractères si elle est renseignée');
-    }
-
-    return {
-      isValid: errors.length === 0,
-      errors
-    };
+    return { isValid: errors.length === 0, errors };
   }
 
-  /**
-   * Formate une date au format français
-   */
-  formatDate(date: Date | string): string {
-    const d = typeof date === 'string' ? new Date(date) : date;
-    return d.toLocaleDateString('fr-FR');
-  }
-
-  /**
-   * Nettoie le HTML de la description CKEditor pour l'affichage
-   */
-  stripHtmlTags(html: string): string {
-    const tmp = document.createElement('DIV');
-    tmp.innerHTML = html;
-    return tmp.textContent || tmp.innerText || '';
-  }
-
-  /**
-   * Tronque la description pour l'affichage dans la liste
-   */
-  getTruncatedDescription(description: string, maxLength: number = 150): string {
-    const plainText = this.stripHtmlTags(description);
-    if (plainText.length <= maxLength) {
-      return plainText;
-    }
-    return plainText.substring(0, maxLength) + '...';
-  }
+  private mapNumberToExperience(years: number): string {
+    if (years === 0) return '0-1';
+    if (years === 1) return '1-3';
+    if (years === 3) return '3-5';
+    if (years === 5) return '5-10';
+    if (years >= 10) return '10+';
+    return '0-1';
+}
 }
