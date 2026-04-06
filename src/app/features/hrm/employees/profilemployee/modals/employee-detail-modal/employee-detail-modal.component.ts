@@ -46,6 +46,7 @@ export class EmployeeDetailModalComponent implements OnInit {
   showCurrent = false;
   showNew = false;
   showConfirm = false;
+passwordStrength: 'faible' | 'moyenne' | 'forte' | '' = '';
 
   employee: Employee = { ...this.originalEmployee }; // Copie pour modification
   // État de soumission
@@ -79,170 +80,155 @@ export class EmployeeDetailModalComponent implements OnInit {
   ngOnInit(): void {
     this.checkPendingRequests();
   }
-
-  sendOtp(): void {
-    this.passwordError = '';
-    this.otpMessage = '';
-    this.otpMessageType = '';
-
-    if (!this.passwordData.currentPassword.trim()) {
-      this.passwordError = 'Veuillez entrer votre mot de passe actuel';
-      return;
-    }
-
-    this.isSendingOtp = true;
-
-    this.changePasswordService
-      .requestOtp({
-        currentPassword: this.passwordData.currentPassword,
-      })
-      .subscribe({
-        next: () => {
-          this.otpSent = true;
-          this.otpVerified = false;
-
-          this.otpMessage = 'Code OTP envoyé avec succès';
-          this.otpMessageType = 'success';
-        },
-
-        error: (error: any) => {
-          this.isSendingOtp = false;
-
-          this.otpMessageType = 'error';
-
-          if (error.status === 400) {
-            this.passwordError = 'Mot de passe actuel incorrect';
-            this.otpMessage = 'Veuillez vérifier votre mot de passe';
-          } else if (error.status === 401) {
-            this.otpMessage = 'Session expirée';
-          } else {
-            this.otpMessage = 'Erreur lors de l’envoi du code OTP';
-          }
-        },
-
-        complete: () => {
-          this.isSendingOtp = false;
-        },
-      });
+checkPasswordStrength(password: string) {
+  if (!password) {
+    this.passwordStrength = '';
+    return;
   }
+
+  let score = 0;
+
+  if (password.length >= 8) score++;
+  if (/[A-Z]/.test(password)) score++;
+  if (/[0-9]/.test(password)) score++;
+  if (/[^A-Za-z0-9]/.test(password)) score++;
+
+  if (score <= 1) this.passwordStrength = 'faible';
+  else if (score === 2 || score === 3) this.passwordStrength = 'moyenne';
+  else this.passwordStrength = 'forte';
+}
+  sendOtp(): void {
+  this.passwordError = '';
+  this.otpMessage = '';
+
+  if (!this.passwordData.currentPassword?.trim()) {
+    this.passwordError = 'Veuillez entrer votre mot de passe actuel';
+    return;
+  }
+
+  this.isSendingOtp = true;
+
+  this.changePasswordService
+    .requestOtp({ currentPassword: this.passwordData.currentPassword })
+    .subscribe({
+      next: () => {
+        this.otpSent = true;
+        this.otpVerified = false;
+
+        this.otpMessage = 'Code OTP envoyé avec succès';
+        this.otpMessageType = 'success';
+      },
+
+      error: (error) => {
+        this.otpMessageType = 'error';
+
+        if (error.status === 400) {
+          this.passwordError = 'Mot de passe incorrect';
+        } else if (error.status === 401) {
+          this.otpMessage = 'Session expirée';
+        } else {
+          this.otpMessage = 'Erreur lors de l’envoi OTP';
+        }
+
+        this.isSendingOtp = false;
+      },
+
+      complete: () => {
+        this.isSendingOtp = false;
+      }
+    });
+}
 
   verifyOtp(): void {
-    this.otpMessage = '';
-    this.otpMessageType = '';
-
-    if (!this.passwordData.otpCode.trim()) {
-      this.otpMessage = 'Veuillez entrer le code OTP';
-      this.otpMessageType = 'error';
-      return;
-    }
-
-    this.isVerifyingOtp = true;
-
-    this.changePasswordService
-      .verifyOtp({
-        otpCode: this.passwordData.otpCode,
-      })
-      .subscribe({
-        next: () => {
-          this.otpVerified = true;
-
-          this.otpMessage = 'Code OTP validé avec succès';
-          this.otpMessageType = 'success';
-        },
-
-        error: (error: any) => {
-          this.isVerifyingOtp = false;
-          this.otpVerified = false;
-
-          this.otpMessageType = 'error';
-
-          if (error.status === 400) {
-            this.otpMessage = 'Code OTP incorrect ou expiré';
-          } else if (error.status === 401) {
-            this.otpMessage = 'Session expirée, veuillez vous reconnecter';
-          } else {
-            this.otpMessage = 'Erreur lors de la vérification du code';
-          }
-        },
-
-        complete: () => {
-          this.isVerifyingOtp = false;
-        },
-      });
+  if (!this.passwordData.otpCode?.trim()) {
+    this.otpMessage = 'Veuillez entrer le code OTP';
+    this.otpMessageType = 'error';
+    return;
   }
+
+  this.isVerifyingOtp = true;
+
+  this.changePasswordService
+    .verifyOtp({ otpCode: this.passwordData.otpCode })
+    .subscribe({
+      next: () => {
+        this.otpVerified = true;
+        this.otpMessage = 'Code OTP validé';
+        this.otpMessageType = 'success';
+      },
+
+      error: (error) => {
+        this.otpVerified = false;
+        this.otpMessageType = 'error';
+
+        if (error.status === 400) {
+          this.otpMessage = 'OTP incorrect ou expiré';
+        } else {
+          this.otpMessage = 'Erreur validation OTP';
+        }
+
+        this.isVerifyingOtp = false;
+      },
+
+      complete: () => {
+        this.isVerifyingOtp = false;
+      }
+    });
+}
 
   changePassword(): void {
-    this.passwordChangeMessage = '';
-    this.passwordChangeType = '';
+  this.passwordChangeMessage = '';
 
-    if (!this.passwordData.currentPassword.trim()) {
-      this.passwordChangeMessage = 'Mot de passe actuel requis';
-      this.passwordChangeType = 'error';
-      return;
-    }
-
-    if (!this.passwordData.otpCode.trim()) {
-      this.passwordChangeMessage = 'Code OTP requis';
-      this.passwordChangeType = 'error';
-      return;
-    }
-
-    if (!this.otpVerified) {
-      this.passwordChangeMessage = 'Veuillez valider le code OTP';
-      this.passwordChangeType = 'error';
-      return;
-    }
-
-    if (
-      !this.passwordData.newPassword.trim() ||
-      !this.passwordData.confirmPassword.trim()
-    ) {
-      this.passwordChangeMessage = 'Veuillez remplir tous les champs';
-      this.passwordChangeType = 'error';
-      return;
-    }
-
-    if (this.passwordData.newPassword !== this.passwordData.confirmPassword) {
-      this.passwordChangeMessage = 'Les mots de passe ne correspondent pas';
-      this.passwordChangeType = 'error';
-      return;
-    }
-
-    this.isChangingPassword = true;
-
-    this.changePasswordService
-      .confirmPassword({
-        newPassword: this.passwordData.newPassword,
-        confirmPassword: this.passwordData.confirmPassword,
-      })
-      .subscribe({
-        next: () => {
-          this.passwordChangeMessage = 'Mot de passe modifié avec succès';
-          this.passwordChangeType = 'success';
-          this.resetPasswordForm();
-        },
-
-        error: (error: any) => {
-          this.isChangingPassword = false;
-
-          this.passwordChangeType = 'error';
-
-          if (error.status === 400) {
-            this.passwordChangeMessage =
-              'Les mots de passe ne correspondent pas';
-          } else if (error.status === 401) {
-            this.passwordChangeMessage = 'Session expirée';
-          } else {
-            this.passwordChangeMessage =
-              'Erreur lors du changement du mot de passe';
-          }
-        },
-
-        complete: () => {
-          this.isChangingPassword = false;
-        },
-      });
+  if (!this.otpVerified) {
+    this.passwordChangeMessage = 'Veuillez valider OTP';
+    this.passwordChangeType = 'error';
+    return;
   }
+
+  if (!this.passwordData.newPassword || !this.passwordData.confirmPassword) {
+    this.passwordChangeMessage = 'Champs requis';
+    this.passwordChangeType = 'error';
+    return;
+  }
+
+  if (this.passwordData.newPassword !== this.passwordData.confirmPassword) {
+    this.passwordChangeMessage = 'Les mots de passe ne correspondent pas';
+    this.passwordChangeType = 'error';
+    return;
+  }
+
+  this.isChangingPassword = true;
+
+  this.changePasswordService
+    .confirmPassword({
+      newPassword: this.passwordData.newPassword,
+      confirmPassword: this.passwordData.confirmPassword
+    })
+    .subscribe({
+      next: () => {
+        this.passwordChangeMessage = 'Mot de passe modifié';
+        this.passwordChangeType = 'success';
+        this.resetPasswordForm();
+         //  logout direct
+  localStorage.removeItem('token');
+
+  setTimeout(() => {
+    this.closeModal();
+    window.location.href = '/login'; // ou router.navigate
+  }, 1500);
+      },
+
+      error: () => {
+        this.passwordChangeMessage = 'Erreur changement mot de passe';
+        this.passwordChangeType = 'error';
+        this.isChangingPassword = false;
+      },
+
+      complete: () => {
+        this.isChangingPassword = false;
+      }
+    });
+}
 
   private resetPasswordForm(): void {
     this.passwordData = {

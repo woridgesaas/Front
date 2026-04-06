@@ -276,15 +276,39 @@
               <label class="form-label">Nouveau mot de passe *</label>
 
               <input
-                [type]="showNew ? 'text' : 'password'"
-                class="form-control"
-                [(ngModel)]="passwordData.newPassword"
-                name="newPassword"
-                [disabled]="!otpVerified"
-              />
-
+  [type]="showNew ? 'text' : 'password'"
+  class="form-control"
+  [(ngModel)]="passwordData.newPassword"
+  name="newPassword"
+  (input)="checkPasswordStrength(passwordData.newPassword)"
+  [disabled]="!otpVerified"
+/>
               <span class="eye-icon" (click)="showNew = !showNew">👁️</span>
             </div>
+            <div *ngIf="passwordStrength" class="mt-1">
+  <small
+    [ngClass]="{
+      'text-danger': passwordStrength === 'faible',
+      'text-warning': passwordStrength === 'moyenne',
+      'text-success': passwordStrength === 'forte'
+    }"
+  >
+    Force du mot de passe :
+    <strong class="ms-2 badge"
+  [ngClass]="{
+    'bg-danger': passwordStrength === 'faible',
+    'bg-warning': passwordStrength === 'moyenne',
+    'bg-success': passwordStrength === 'forte'
+  }"
+>
+  {{
+    passwordStrength === 'faible' ? 'Faible' :
+    passwordStrength === 'moyenne' ? 'Moyenne' :
+    'Forte'
+  }}
+</strong>
+  </small>
+</div>
             <div
               *ngIf="passwordChangeMessage"
               class="mt-3"
