@@ -1,0 +1,195 @@
+<div class="modal fade" [id]="modalId" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header border-bottom">
+          <h4 class="modal-title">
+            <i class="ti ti-star me-2"></i>Évaluer l'Entretien
+          </h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="close()"></button>
+        </div>
+  
+        <div class="modal-body" *ngIf="interview">
+          <form class="row g-3">
+  
+            <!-- Candidat info -->
+            <div class="col-12">
+              <div class="alert alert-light d-flex align-items-center">
+                <div class="avatar avatar-sm me-3">
+                  <span class="avatar-title rounded-circle bg-primary text-white fw-bold">
+                    {{ interview.candidateName.charAt(0).toUpperCase() }}
+                  </span>
+                </div>
+                <div>
+                  <strong>{{ interview.candidateName }}</strong>
+                  <small class="text-muted ms-2">{{ interview.targetPosition || '' }}</small>
+                </div>
+              </div>
+            </div>
+  
+            <!-- Résultat global -->
+            <div class="col-12">
+              <div class="p-3 bg-light rounded">
+                <label class="form-label fw-semibold">
+                  <i class="ti ti-award me-1"></i>Résultat Global <span class="text-danger">*</span>
+                </label>
+                <div class="d-flex gap-3 flex-wrap">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio"
+                           name="result" [value]="0"
+                           [(ngModel)]="result" id="enAttente">
+                    <label class="form-check-label" for="enAttente">
+                      <span class="badge bg-secondary">En attente</span>
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio"
+                           name="result" [value]="1"
+                           [(ngModel)]="result" id="retenu">
+                    <label class="form-check-label" for="retenu">
+                      <span class="badge bg-success">Retenu</span>
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio"
+                           name="result" [value]="2"
+                           [(ngModel)]="result" id="rejete">
+                    <label class="form-check-label" for="rejete">
+                      <span class="badge bg-danger">Rejeté</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <!-- Notes par compétence -->
+            <div class="col-12">
+              <div class="p-3 bg-light rounded">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <label class="form-label fw-semibold mb-0">
+                    <i class="ti ti-chart-bar me-1"></i>Notes par Compétence
+                  </label>
+                  <span class="badge bg-primary-transparent text-primary">
+                    Moyenne : <strong [class]="getScoreColor(averageScore)">{{ averageScore }}/100</strong>
+                  </span>
+                </div>
+  
+                <!-- Technique -->
+                <div class="mb-3">
+                  <div class="d-flex justify-content-between mb-1">
+                    <label class="form-label small mb-0">Technique</label>
+                    <strong [class]="getScoreColor(skillScores.Technique)">
+                      {{ skillScores.Technique }}/100
+                    </strong>
+                  </div>
+                  <input type="range" class="form-range"
+                         min="0" max="100" step="5"
+                         [(ngModel)]="skillScores.Technique"
+                         name="technique">
+                </div>
+  
+                <!-- Communication -->
+                <div class="mb-3">
+                  <div class="d-flex justify-content-between mb-1">
+                    <label class="form-label small mb-0">Communication</label>
+                    <strong [class]="getScoreColor(skillScores.Communication)">
+                      {{ skillScores.Communication }}/100
+                    </strong>
+                  </div>
+                  <input type="range" class="form-range"
+                         min="0" max="100" step="5"
+                         [(ngModel)]="skillScores.Communication"
+                         name="communication">
+                </div>
+  
+                <!-- Motivation -->
+                <div class="mb-3">
+                  <div class="d-flex justify-content-between mb-1">
+                    <label class="form-label small mb-0">Motivation</label>
+                    <strong [class]="getScoreColor(skillScores.Motivation)">
+                      {{ skillScores.Motivation }}/100
+                    </strong>
+                  </div>
+                  <input type="range" class="form-range"
+                         min="0" max="100" step="5"
+                         [(ngModel)]="skillScores.Motivation"
+                         name="motivation">
+                </div>
+  
+                <!-- Comportement -->
+                <div class="mb-3">
+                  <div class="d-flex justify-content-between mb-1">
+                    <label class="form-label small mb-0">Comportement</label>
+                    <strong [class]="getScoreColor(skillScores.Comportement)">
+                      {{ skillScores.Comportement }}/100
+                    </strong>
+                  </div>
+                  <input type="range" class="form-range"
+                         min="0" max="100" step="5"
+                         [(ngModel)]="skillScores.Comportement"
+                         name="comportement">
+                </div>
+              </div>
+            </div>
+  
+            <!-- Commentaire -->
+            <div class="col-12">
+              <label class="form-label fw-semibold">
+                <i class="ti ti-message me-1"></i>Commentaire
+              </label>
+              <textarea class="form-control" rows="3"
+                        [(ngModel)]="comment" name="comment"
+                        placeholder="Observations, points forts, points faibles...">
+              </textarea>
+            </div>
+  
+            <!-- Recommandation -->
+            <div class="col-12">
+              <div class="p-3 bg-light rounded">
+                <label class="form-label fw-semibold mb-3">
+                  <i class="ti ti-thumb-up me-1"></i>Recommandation
+                </label>
+                <div class="d-flex gap-3 flex-wrap">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio"
+                           name="recommendation" [value]="0"
+                           [(ngModel)]="recommendation" id="embaucher">
+                    <label class="form-check-label text-success fw-semibold" for="embaucher">
+                      <i class="ti ti-user-check me-1"></i>Embaucher
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio"
+                           name="recommendation" [value]="1"
+                           [(ngModel)]="recommendation" id="refuser">
+                    <label class="form-check-label text-danger fw-semibold" for="refuser">
+                      <i class="ti ti-user-x me-1"></i>Refuser
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio"
+                           name="recommendation" [value]="2"
+                           [(ngModel)]="recommendation" id="deuxieme">
+                    <label class="form-check-label text-warning fw-semibold" for="deuxieme">
+                      <i class="ti ti-refresh me-1"></i>2ème Entretien
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+          </form>
+        </div>
+  
+        <div class="modal-footer border-top">
+          <button type="button" class="btn btn-light"
+                  data-bs-dismiss="modal" (click)="close()">
+            <i class="ti ti-x me-1"></i>Annuler
+          </button>
+          <button type="button" class="btn btn-primary"
+                  (click)="submit()" data-bs-dismiss="modal">
+            <i class="ti ti-star me-1"></i>Soumettre l'Évaluation
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>

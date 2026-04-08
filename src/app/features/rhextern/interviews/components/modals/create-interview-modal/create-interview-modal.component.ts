@@ -1,8 +1,7 @@
-
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Interview, CandidatInfo, InterviewerInfo } from '../../../models/interview.model';
+import { CreateInterviewDto } from '../../../models/interview.model';
 import { Interviewer } from '../../../models/interviewer.model';
 
 @Component({
@@ -15,90 +14,81 @@ import { Interviewer } from '../../../models/interviewer.model';
 export class CreateInterviewModalComponent implements OnInit {
   @Input() modalId = 'create_interview_modal';
   @Input() interviewers: Interviewer[] = [];
-  @Input() interview: Partial<Interview> = {};
-
-  @Output() onCreate = new EventEmitter<Partial<Interview>>();
+  @Output() onCreate = new EventEmitter<CreateInterviewDto>();
   @Output() onCancel = new EventEmitter<void>();
 
-  // Initialisés pour éviter les erreurs undefined
-  candidat: CandidatInfo = {
-    nom: '',
-    email: '',
-    poste: '',
-    photo: 'default-avatar.jpg',
-    telephone: ''
-  };
-
-  interviewer: InterviewerInfo = {
-    nom: '',
-    email: '',
-    photo: 'default-avatar.jpg'
-  };
-
-  date = '';
-  heure = '';
-  duree = 60;
-  type: 'Téléphonique' | 'Visioconférence' | 'Présentiel' | 'Technique' = 'Visioconférence';
-  lienVisio = '';
-  salle = '';
-  notes = '';
+  candidateName       = '';
+  candidateEmail      = '';
+  candidatePhone      = '';
+  targetPosition      = '';
+  interviewerId       = 0;
+  interviewerName     = '';
+  interviewerEmail    = '';
+  date                = '';
+  heure               = '';
+  durationMinutes     = 60;
+  type                = 0;
+  videoConferenceLink = '';
+  location            = '';
+  phoneNumber         = '';
+  notes               = '';
 
   ngOnInit(): void {
-    // Initialiser avec les données du parent si elles existent
-    if (this.interview) {
-      this.candidat = this.interview.candidat || this.candidat;
-      this.interviewer = this.interview.interviewer || this.interviewer;
-      this.date = this.interview.date || '';
-      this.heure = this.interview.heure || '';
-      this.duree = this.interview.duree || 60;
-      this.type = this.interview.type || 'Visioconférence';
-      this.lienVisio = this.interview.lienVisio || '';
-      this.salle = this.interview.salle || '';
-      this.notes = this.interview.notes || '';
+    this.reset();
+  }
+
+  onInterviewerSelect(id: string): void {
+    const selected = this.interviewers.find(i => i.id === +id);
+    if (selected) {
+      this.interviewerId    = selected.id;
+      this.interviewerName  = selected.nom;
+      this.interviewerEmail = selected.email;
     }
   }
 
   create(): void {
-    const newInterview: Partial<Interview> = {
-      candidat: this.candidat,
-      interviewer: this.interviewer,
-      date: this.date,
-      heure: this.heure,
-      duree: this.duree,
-      type: this.type,
-      lienVisio: this.lienVisio,
-      salle: this.salle,
-      notes: this.notes
+    const startDateTime = `${this.date}T${this.heure}:00`;
+  
+    const dto: CreateInterviewDto = {
+      candidateName:       this.candidateName,
+      candidateEmail:      this.candidateEmail,
+      candidatePhone:      this.candidatePhone || undefined,
+      targetPosition:      this.targetPosition || undefined,
+      startDateTime:       startDateTime,
+      durationMinutes:     Number(this.durationMinutes), // ← cast
+      type:                Number(this.type),            // ← cast
+      videoConferenceLink: this.type == 0 ? this.videoConferenceLink : undefined,
+      location:            this.type == 1 ? this.location : undefined,
+      phoneNumber:         this.type == 2 ? this.phoneNumber : undefined,
+      notes:               this.notes || undefined,
+      interviewerId:       Number(this.interviewerId),   // ← cast
+      interviewerName:     this.interviewerName,
+      interviewerEmail:    this.interviewerEmail
     };
-
-    this.onCreate.emit(newInterview);
+  
+    this.onCreate.emit(dto);
     this.reset();
   }
-
   cancel(): void {
     this.reset();
     this.onCancel.emit();
   }
 
   private reset(): void {
-    this.candidat = {
-      nom: '',
-      email: '',
-      poste: '',
-      photo: 'default-avatar.jpg',
-      telephone: ''
-    };
-    this.interviewer = {
-      nom: '',
-      email: '',
-      photo: 'default-avatar.jpg'
-    };
-    this.date = '';
-    this.heure = '';
-    this.duree = 60;
-    this.type = 'Visioconférence';
-    this.lienVisio = '';
-    this.salle = '';
-    this.notes = '';
+    this.candidateName       = '';
+    this.candidateEmail      = '';
+    this.candidatePhone      = '';
+    this.targetPosition      = '';
+    this.interviewerId       = 0;
+    this.interviewerName     = '';
+    this.interviewerEmail    = '';
+    this.date                = '';
+    this.heure               = '';
+    this.durationMinutes     = 60;
+    this.type                = 0;
+    this.videoConferenceLink = '';
+    this.location            = '';
+    this.phoneNumber         = '';
+    this.notes               = '';
   }
 }

@@ -1,25 +1,26 @@
-
 export interface Interviewer {
-    id: string;
-    nom: string;
-    email: string;
-    photo: string;
-    specialite: string;
-    disponibilites?: string[];
-    isActive?: boolean;
-  }
-  
-  /**
-   * Créer un interviewer vide
-   */
-  export function createEmptyInterviewer(): Interviewer {
-    return {
-      id: '',
-      nom: '',
-      email: '',
-      photo: 'default-avatar.jpg',
-      specialite: '',
-      disponibilites: [],
-      isActive: true
-    };
-  }
+  id:             number;
+  externalUserId: string;
+  fullName:       string;
+  email:          string;
+  role:           string;
+  // Alias pour compatibilité avec les composants existants
+  nom:        string;
+  specialite: string;
+  photo:      string;
+  isActive?:  boolean;
+}
+
+export function createEmptyInterviewer(): Interviewer {
+  return {
+    id:             0,
+    externalUserId: '',
+    fullName:       '',
+    email:          '',
+    role:           '',
+    nom:            '',
+    specialite:     '',
+    photo:          'default-avatar.jpg',
+    isActive:       true
+  };
+}

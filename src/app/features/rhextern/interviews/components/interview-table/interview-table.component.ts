@@ -1,8 +1,17 @@
-
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Interview, getStatutClass, getTypeClass, formatDateShort } from '../../models/interview.model';
+import {
+  Interview,
+  InterviewStatut,
+  getStatutClass,
+  getStatutLabel,
+  getTypeClass,
+  getTypeLabel,
+  formatDateShort,
+  formatTime
+} from '../../models/interview.model';
 import { ConfirmDeleteComponent } from '../../../../common/delete-modal/delete-modal.component';
+import { AuthService } from '../../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-interview-table',
@@ -13,75 +22,91 @@ import { ConfirmDeleteComponent } from '../../../../common/delete-modal/delete-m
 })
 export class InterviewTableComponent {
   @Input() interviews: Interview[] = [];
-  @Output() onView = new EventEmitter<Interview>();
-  @Output() onEdit = new EventEmitter<Interview>();
-  @Output() onDelete = new EventEmitter<Interview>();
-  @Output() onCancel = new EventEmitter<Interview>();
+  @Output() onView         = new EventEmitter<Interview>();
+  @Output() onEdit         = new EventEmitter<Interview>();
+  @Output() onDelete       = new EventEmitter<Interview>();
+  @Output() onCancel       = new EventEmitter<Interview>();
   @Output() onStatusChange = new EventEmitter<{ interview: Interview; status: string }>();
-  
+  @Output() onEvaluate     = new EventEmitter<Interview>();
+
   selectedItem: Interview | null = null;
 
-  /**
-   * Voir les détails
-   */
+  constructor(private authService: AuthService) {}
+
+  // ========== PERMISSIONS ==========
+
+  get canManage(): boolean {
+    return this.authService.canManageInterviews();
+  }
+
+  get canEvaluate(): boolean {
+    return this.authService.canEvaluate();
+  }
+
+  get canChangeStatus(): boolean {
+    return this.authService.canChangeStatus();
+  }
+
+  // ========== ACTIONS ==========
+
   viewDetails(interview: Interview): void {
     this.onView.emit(interview);
   }
 
-  /**
-   * Modifier
-   */
   edit(interview: Interview): void {
     this.onEdit.emit(interview);
   }
 
-  /**
-   * Ouvrir le modal de suppression
-   */
   openDeleteModal(interview: Interview): void {
     this.selectedItem = interview;
   }
 
-  /**
-   * Confirmer la suppression
-   */
   confirmDelete(interview: Interview): void {
     this.onDelete.emit(interview);
     this.selectedItem = null;
   }
-  
-  /**
-   * Annuler
-   */
+
   cancel(interview: Interview): void {
     this.onCancel.emit(interview);
   }
 
-  /**
-   * Changer le statut
-   */
   changeStatus(interview: Interview, status: string): void {
     this.onStatusChange.emit({ interview, status });
   }
 
-  /**
-   * Formater la date
-   */
-  formatDate(date: string): string {
-    return formatDateShort(date);
+  evaluate(interview: Interview): void {
+    this.onEvaluate.emit(interview);
   }
 
-  /**
-   * Classe CSS du statut
-   */
+  // ========== HELPERS ==========
+
+  formatDate(dateTime: string): string {
+    return formatDateShort(dateTime);
+  }
+
+  formatTime(dateTime: string): string {
+    return formatTime(dateTime);
+  }
+
+  getStatutLabel(statut: any): string {
+    return getStatutLabel(statut as InterviewStatut);
+  }
+
   getStatutClass(statut: any): string {
-    return getStatutClass(statut);
+    return getStatutClass(statut as InterviewStatut);
   }
 
-  /**
-   * Classe CSS du type
-   */
+  getTypeLabel(type: any): string {
+    return getTypeLabel(type);
+  }
+
   getTypeClass(type: any): string {
     return getTypeClass(type);
+  }
+
+  getInterviewerName(interview: Interview): string {
+    if (!interview.participants || interview.participants.length === 0)
+      return '-';
+    return interview.participants[0]?.userName || '-';
   }
 }

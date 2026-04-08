@@ -3,9 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { JobsInfo, Plateforme } from '../../models/jobs.model';
 
-/**
- * Modal pour publier une offre sur des plateformes
- */
 @Component({
   selector: 'app-publish-job-modal',
   standalone: true,
@@ -20,20 +17,53 @@ export class PublishJobModalComponent {
   @Input() isVisible = false;
   @Input() job!: JobsInfo;
   @Input() plateformes: Plateforme[] = [];
-  
+
+  // Options supplémentaires
+  notifyHrTeam = true;
+  isFeatured = false;
+
   @Output() closed = new EventEmitter<void>();
-  @Output() published = new EventEmitter<JobsInfo>();
-  @Output() platformToggled = new EventEmitter<Plateforme>();
+  @Output() published = new EventEmitter<{
+    job: JobsInfo;
+    canalNames: string[];
+    notifyHrTeam: boolean;
+    isFeatured: boolean;
+  }>();
 
   close(): void {
     this.closed.emit();
   }
 
-  publish(): void {
-    this.published.emit(this.job);
+  // ← Toggle géré directement ici
+  togglePlateforme(plateforme: Plateforme): void {
+    plateforme.selectionnee = !plateforme.selectionnee;
   }
 
-  togglePlateforme(plateforme: Plateforme): void {
-    this.platformToggled.emit(plateforme);
+  publish(): void {
+    const selected = this.plateformes.filter(p => p.selectionnee);
+
+    if (selected.length === 0) {
+      alert('⚠️ Veuillez sélectionner au moins une plateforme');
+      return;
+    }
+
+    // Mapper ids → noms canaux API
+    const canalMap: Record<string, string> = {
+      'linkedin': 'LinkedIn',
+      'indeed': 'Indeed',
+      'facebook': 'Facebook',
+      'site': 'SiteEntreprise'
+    };
+
+    const canalNames = selected
+      .map(p => canalMap[p.id])
+      .filter(Boolean);
+
+    this.published.emit({
+      job: this.job,
+      canalNames,
+      notifyHrTeam: this.notifyHrTeam,
+      isFeatured: this.isFeatured
+    });
   }
 }

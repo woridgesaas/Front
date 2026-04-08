@@ -1,14 +1,9 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterOutlet } from '@angular/router';
 
 import { routes } from '../../../../../shared/routes/routes';
-import {
-  apiResultFormat,
-  pageSelection,
-} from '../../../../../shared/models/models';
-
-// ← IMPORTANT : Importer JobsInfo depuis le modèle local qui contient Description
+import { pageSelection } from '../../../../../shared/models/models';
 import { JobsInfo, Plateforme } from '../../models/jobs.model';
 
 import { MatTableDataSource } from '@angular/material/table';
@@ -16,7 +11,6 @@ import { Sort } from '@angular/material/sort';
 import { MatSortModule } from '@angular/material/sort';
 import { FormsModule } from '@angular/forms';
 
-import { DataService } from '../../../../../shared/data/data.service';
 import {
   PaginationService,
   tablePageSize,
@@ -33,8 +27,6 @@ import { EditJobModalComponent } from '../../modals/edit-job-modal/edit-job-moda
 import { PublishJobModalComponent } from '../../modals/publish-job-modal/publish-job-modal.component';
 
 import { JobsService } from '../../services/jobs.service';
-
-declare const bootstrap: any;
 
 @Component({
   selector: 'app-jobs-list',
@@ -56,14 +48,11 @@ declare const bootstrap: any;
     RouterOutlet,
   ],
 })
-export class JobsListComponent implements OnDestroy {
+export class JobsListComponent implements OnInit, OnDestroy {
   public routes = routes;
   initChecked = false;
 
-  // Données
   public jobsData: JobsInfo[] = [];
-
-  // Pagination
   public pageSize = 10;
   public tableData: JobsInfo[] = [];
   public tableDataCopy: JobsInfo[] = [];
@@ -72,55 +61,54 @@ export class JobsListComponent implements OnDestroy {
   public limit: number = this.pageSize;
   public serialNumberArray: number[] = [];
   public totalData = 0;
-  showFilter = false;
   public pageSelection: pageSelection[] = [];
   dataSource!: MatTableDataSource<JobsInfo>;
   public searchDataValue = '';
-  public password: boolean[] = [false, false, false, false];
-  public row = true;
 
-  // Modaux
   showCreateModal = false;
   showEditModal = false;
   showPublishModal = false;
   currentJob!: JobsInfo;
-
-  // Pour le modal de suppression
   selectedItem: JobsInfo | null = null;
 
-  // Plateformes
   plateformes: Plateforme[] = [
     { id: 'linkedin', nom: 'LinkedIn', icone: 'ti ti-brand-linkedin', description: 'Réseau professionnel mondial', selectionnee: false },
     { id: 'indeed', nom: 'Indeed', icone: 'ti ti-briefcase', description: "Premier site d'emploi mondial", selectionnee: false },
     { id: 'facebook', nom: 'Facebook Jobs', icone: 'ti ti-brand-facebook', description: "Offres d'emploi sur Facebook", selectionnee: false },
     { id: 'site', nom: 'Site Entreprise', icone: 'ti ti-world', description: 'Votre site carrières', selectionnee: false },
-    { id: 'apec', nom: 'APEC', icone: 'ti ti-user-check', description: 'Cadres et jeunes diplômés', selectionnee: false },
-    { id: 'pole-emploi', nom: 'Pôle Emploi', icone: 'ti ti-building', description: "Service public de l'emploi", selectionnee: false },
   ];
 
   constructor(
-    private data: DataService,
     private router: Router,
     private pagination: PaginationService,
     private jobsService: JobsService
   ) {
     this.currentJob = this.jobsService.createEmptyJob();
+  }
+
+  // ─────────────────────────────────────────
+  // LIFECYCLE
+  // ─────────────────────────────────────────
+  ngOnInit(): void {
     this.loadJobs();
   }
 
+  ngOnDestroy(): void {}
+
+  // ─────────────────────────────────────────
+  // CHARGEMENT
+  // ─────────────────────────────────────────
   private loadJobs(): void {
-    this.data.getJobList().subscribe((apiRes: apiResultFormat) => {
-      console.log('📊 Données reçues:', apiRes.data);
-      
-      // ← MIGRATION : Ajouter Description aux jobs existants
-      this.jobsData = (apiRes.data as any[]).map(job => ({
-        ...job,
-        Description: job.Description || '',
-        Number_of_Positions: job.Number_of_Positions || 1
-      }));
-      
-      this.totalData = this.jobsData.length;
-      this.getTableData({ skip: 0, limit: this.pageSize });
+    this.jobsService.getAllJobs().subscribe({
+      next: (jobs) => {
+        console.log('✅ Offres reçues:', jobs.length);
+        this.jobsData = jobs;
+        this.totalData = jobs.length;
+        this.getTableData({ skip: 0, limit: this.pageSize });
+      },
+      error: (err) => {
+        console.error('❌ Erreur chargement:', err.status, err.error);
+      }
     });
 
     this.pagination.tablePageSize.subscribe((res: tablePageSize) => {
@@ -131,11 +119,9 @@ export class JobsListComponent implements OnDestroy {
     });
   }
 
-  getDeleteMessage(): string {
-    if (!this.selectedItem) return '';
-    return `Êtes-vous sûr de vouloir supprimer l'offre "${this.selectedItem.Job_Title}" ?`;
-  }
-
+  // ─────────────────────────────────────────
+  // PAGINATION
+  // ─────────────────────────────────────────
   private getTableData(pageOption: pageSelection): void {
     this.tableData = [];
     this.tableDataCopy = [];
@@ -163,11 +149,13 @@ export class JobsListComponent implements OnDestroy {
     });
   }
 
+  // ─────────────────────────────────────────
+  // RECHERCHE + TRI
+  // ─────────────────────────────────────────
   public searchData(value: string): void {
     this.searchDataValue = value.trim().toLowerCase();
     this.dataSource.filter = this.searchDataValue;
     this.tableData = this.dataSource.filteredData;
-    this.row = this.tableData.length > 0;
 
     this.pagination.calculatePageSize.next({
       totalData: this.searchDataValue ? this.tableData.length : this.totalData,
@@ -206,10 +194,9 @@ export class JobsListComponent implements OnDestroy {
     this.tableData.forEach((f) => (f.isSelected = !initChecked));
   }
 
-  togglePassword(index: number): void {
-    this.password[index] = !this.password[index];
-  }
-
+  // ─────────────────────────────────────────
+  // MODAUX
+  // ─────────────────────────────────────────
   openCreateModal(): void {
     this.currentJob = this.jobsService.createEmptyJob();
     this.showCreateModal = true;
@@ -226,6 +213,21 @@ export class JobsListComponent implements OnDestroy {
     this.showPublishModal = true;
   }
 
+  closeCreateModal(): void { this.showCreateModal = false; }
+  closeEditModal(): void { this.showEditModal = false; }
+  closePublishModal(): void {
+    this.showPublishModal = false;
+    this.plateformes.forEach(p => p.selectionnee = false);
+  }
+
+  getDeleteMessage(): string {
+    if (!this.selectedItem) return '';
+    return `Êtes-vous sûr de vouloir supprimer l'offre "${this.selectedItem.Job_Title}" ?`;
+  }
+
+  // ─────────────────────────────────────────
+  // ACTIONS CRUD
+  // ─────────────────────────────────────────
   onJobCreated(job: JobsInfo): void {
     const validation = this.jobsService.validateJob(job);
     if (!validation.isValid) {
@@ -233,13 +235,18 @@ export class JobsListComponent implements OnDestroy {
       return;
     }
 
-    job.Job_ID = this.jobsService.generateId();
-    job.Posted_Date = new Date().toLocaleDateString('fr-FR');
-    
-    this.jobsData.unshift(job);
-    this.getTableData({ skip: 0, limit: this.pageSize });
-    this.showCreateModal = false;
-    alert(`✅ L'offre "${job.Job_Title}" créée !`);
+    this.jobsService.createJob(job).subscribe({
+      next: (created) => {
+        this.jobsData.unshift(created);
+        this.getTableData({ skip: 0, limit: this.pageSize });
+        this.showCreateModal = false;
+        alert(`✅ L'offre "${created.Job_Title}" créée avec succès !`);
+      },
+      error: (err) => {
+        console.error('❌ Erreur création:', err);
+        alert('❌ Erreur lors de la création de l\'offre');
+      }
+    });
   }
 
   onJobUpdated(job: JobsInfo): void {
@@ -249,76 +256,74 @@ export class JobsListComponent implements OnDestroy {
       return;
     }
 
-    const index = this.jobsData.findIndex(j => j.Job_ID === job.Job_ID);
-    if (index !== -1) {
-      this.jobsData[index] = job;
-      this.getTableData({ skip: this.skip, limit: this.limit });
-    }
-    this.showEditModal = false;
-    alert(`✅ L'offre "${job.Job_Title}" modifiée !`);
+    this.jobsService.updateJob(job).subscribe({
+      next: (updated) => {
+        const index = this.jobsData.findIndex(j => j.Job_ID === job.Job_ID);
+        if (index !== -1) {
+          this.jobsData[index] = updated;
+          this.getTableData({ skip: this.skip, limit: this.limit });
+        }
+        this.showEditModal = false;
+        alert(`✅ L'offre "${updated.Job_Title}" modifiée avec succès !`);
+      },
+      error: (err) => {
+        console.error('❌ Erreur modification:', err);
+        alert('❌ Erreur lors de la modification');
+      }
+    });
   }
 
-  onJobPublished(job: JobsInfo): void {
-    const selected = this.plateformes.filter(p => p.selectionnee);
-    if (selected.length === 0) {
-      alert('⚠️ Veuillez sélectionner au moins une plateforme');
-      return;
-    }
-    this.showPublishModal = false;
-    alert(`✅ L'offre "${job.Job_Title}" publiée sur ${selected.length} plateforme(s) !`);
-  }
-
-  // Ouvrir le modal de suppression
+  // ← Simple : juste setter selectedItem
   onJobDeleted(job: JobsInfo): void {
     this.selectedItem = job;
-    
-    setTimeout(() => {
-      const modalElement = document.getElementById('deleteJobModal');
-      if (modalElement) {
-        const modal = new bootstrap.Modal(modalElement);
-        modal.show();
-      } else {
-        console.error('❌ Modal deleteJobModal introuvable');
-      }
-    }, 100);
   }
 
-  // Confirmer la suppression
+  // ← Simple : appel API + reset selectedItem
   confirmDelete(job: JobsInfo): void {
-    if (!job) {
-      return;
-    }
+    if (!job) return;
 
-    this.jobsData = this.jobsData.filter(j => j.Job_ID !== job.Job_ID);
-    this.getTableData({ skip: this.skip, limit: this.limit });
-    
-    const modalElement = document.getElementById('deleteJobModal');
-    if (modalElement) {
-      const modalInstance = bootstrap.Modal.getInstance(modalElement);
-      if (modalInstance) {
-        modalInstance.hide();
+    this.jobsService.deleteJob(job.Job_ID).subscribe({
+      next: () => {
+        this.jobsData = this.jobsData.filter(j => j.Job_ID !== job.Job_ID);
+        this.getTableData({ skip: this.skip, limit: this.limit });
+        this.selectedItem = null; // ← ferme le modal
+        alert('✅ Offre supprimée avec succès !');
+      },
+      error: (err) => {
+        console.error('❌ Erreur suppression:', err);
+        alert('❌ Erreur lors de la suppression');
       }
-    }
-    
-    this.selectedItem = null;
+    });
   }
 
-  closeCreateModal(): void {
-    this.showCreateModal = false;
-  }
+  onJobPublished(event: {
+    job: JobsInfo;
+    canalNames: string[];
+    notifyHrTeam: boolean;
+    isFeatured: boolean;
+  }): void {
 
-  closeEditModal(): void {
-    this.showEditModal = false;
-  }
-
-  closePublishModal(): void {
-    this.showPublishModal = false;
-    this.plateformes.forEach(p => p.selectionnee = false);
+    this.jobsService.publishJob(
+      event.job.Job_ID,
+      event.canalNames,
+      event.notifyHrTeam,
+      event.isFeatured
+    ).subscribe({
+      next: (result) => {
+        console.log('✅ Résultat publication:', result);
+        this.showPublishModal = false;
+        this.plateformes.forEach(p => p.selectionnee = false);
+        this.loadJobs();
+        alert(`✅ Offre publiée sur ${event.canalNames.length} plateforme(s) !`);
+      },
+      error: (err) => {
+        console.error('❌ Erreur publication:', err);
+        alert('❌ Erreur lors de la publication');
+      }
+    });
   }
 
   togglePlateforme(plateforme: Plateforme): void {
     plateforme.selectionnee = !plateforme.selectionnee;
   }
-
-  ngOnDestroy(): void {}
 }

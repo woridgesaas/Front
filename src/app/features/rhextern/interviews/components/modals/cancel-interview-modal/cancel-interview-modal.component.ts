@@ -1,8 +1,7 @@
-
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Interview } from '../../../models/interview.model';
+import { Interview, formatTime } from '../../../models/interview.model';
 
 @Component({
   selector: 'app-cancel-interview-modal',
@@ -14,7 +13,6 @@ import { Interview } from '../../../models/interview.model';
 export class CancelInterviewModalComponent {
   @Input() modalId = 'cancel_interview_modal';
   @Input() interview: Interview | null = null;
-
   @Output() onConfirm = new EventEmitter<string>();
   @Output() onClose = new EventEmitter<void>();
 
@@ -30,13 +28,17 @@ export class CancelInterviewModalComponent {
     this.onClose.emit();
   }
 
-  formatDate(date: string): string {
-    const d = new Date(date);
+  formatDate(dateTime: string): string {
+    const d = new Date(dateTime);
     return d.toLocaleDateString('fr-FR', {
       weekday: 'long',
       year: 'numeric',
       month: 'long',
       day: 'numeric'
     });
+  }
+
+  formatTime(dateTime: string): string {
+    return formatTime(dateTime);
   }
 }

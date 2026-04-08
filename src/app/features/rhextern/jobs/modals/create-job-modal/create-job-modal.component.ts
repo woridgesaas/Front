@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JobsInfo } from '../../models/jobs.model';
 import { Editor, NgxEditorModule, Toolbar } from 'ngx-editor';
+import { JobOfferApiService, JobTypeApiDto } from '../../services/job-offer-api.service';
 
 @Component({
   selector: 'app-create-job-modal',
@@ -20,9 +21,9 @@ import { Editor, NgxEditorModule, Toolbar } from 'ngx-editor';
   `]
 })
 export class CreateJobModalComponent implements OnInit, OnDestroy {
+
   // NGX Editor
   editor!: Editor;
-  
   toolbar: Toolbar = [
     ['bold', 'italic'],
     ['underline', 'strike'],
@@ -34,6 +35,9 @@ export class CreateJobModalComponent implements OnInit, OnDestroy {
     ['align_left', 'align_center', 'align_right', 'align_justify'],
   ];
 
+  // JobTypes chargés depuis l'API
+  jobTypes: JobTypeApiDto[] = [];
+
   // Inputs
   @Input() isVisible = false;
   @Input() job!: JobsInfo;
@@ -42,19 +46,31 @@ export class CreateJobModalComponent implements OnInit, OnDestroy {
   @Output() closed = new EventEmitter<void>();
   @Output() saved = new EventEmitter<JobsInfo>();
 
+  constructor(private apiService: JobOfferApiService) {}
+
   ngOnInit(): void {
-    // Initialiser l'éditeur
     this.editor = new Editor();
-    
-    // S'assurer que Description existe
+    this.loadJobTypes();
+
     if (this.job && this.job.Description === undefined) {
       this.job.Description = '';
     }
   }
 
   ngOnDestroy(): void {
-    // IMPORTANT : Détruire l'éditeur pour éviter les fuites mémoire
     this.editor.destroy();
+  }
+
+  private loadJobTypes(): void {
+    this.apiService.getJobTypes().subscribe({
+      next: (response) => {
+        this.jobTypes = response.data;
+        console.log('✅ JobTypes chargés:', this.jobTypes);
+      },
+      error: (err) => {
+        console.error('❌ Erreur chargement JobTypes:', err);
+      }
+    });
   }
 
   close(): void {
