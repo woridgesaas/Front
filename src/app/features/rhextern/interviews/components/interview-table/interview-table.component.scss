@@ -1,0 +1,14 @@
+.avatar.avatar-sm {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+  
+    .avatar-title {
+      width: 36px;
+      height: 36px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }

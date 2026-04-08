@@ -1,4 +1,3 @@
-
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -16,48 +15,41 @@ export class InterviewFiltersComponent {
   @Input() filters: InterviewFilters = {
     dateDebut: '',
     dateFin: '',
-    interviewer: '',
+    interviewerId: undefined,
     candidat: '',
     statut: ''
   };
   @Input() interviewers: Interviewer[] = [];
   @Input() totalCount = 0;
-
   @Output() onFilterChange = new EventEmitter<InterviewFilters>();
   @Output() onReset = new EventEmitter<void>();
 
-  /**
-   * Applique les filtres
-   */
+  get selectedInterviewerName(): string {
+    if (!this.filters.interviewerId) return 'Interviewer';
+    const found = this.interviewers.find(i => i.id === this.filters.interviewerId);
+    return found ? found.nom : 'Interviewer';
+  }
+
   applyFilters(): void {
     this.onFilterChange.emit(this.filters);
   }
 
-  /**
-   * Réinitialise les filtres
-   */
   reset(): void {
     this.filters = {
       dateDebut: '',
       dateFin: '',
-      interviewer: '',
+      interviewerId: undefined,
       candidat: '',
       statut: ''
     };
     this.onReset.emit();
   }
 
-  /**
-   * Sélectionne un interviewer
-   */
-  selectInterviewer(nom: string): void {
-    this.filters.interviewer = nom;
+  selectInterviewer(id: number | undefined, nom: string): void {
+    this.filters.interviewerId = id;
     this.applyFilters();
   }
 
-  /**
-   * Sélectionne un statut
-   */
   selectStatut(statut: string): void {
     this.filters.statut = statut;
     this.applyFilters();

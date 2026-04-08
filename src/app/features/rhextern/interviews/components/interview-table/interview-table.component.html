@@ -1,192 +1,239 @@
 <div class="card">
-    <div class="card-body p-0">
-      <div class="table">
-        <table class="table table-hover datatable mb-0">
-          <thead class="thead-light">
+  <div class="card-body p-0">
+    <div class="table">
+      <table class="table table-hover datatable mb-0">
+        <thead class="thead-light">
+          <tr>
+            <th>Candidat</th>
+            <th>Poste</th>
+            <th>Interviewer</th>
+            <th>Date & Heure</th>
+            <th>Type</th>
+            <th>Statut</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (interview of interviews; track interview.id) {
             <tr>
-              <th>Candidat</th>
-              <th>Poste</th>
-              <th>Interviewer</th>
-              <th>Date & Heure</th>
-              <th>Type</th>
-              <th>Statut</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (interview of interviews; track interview.id) {
-              <tr>
-                <!-- Candidat -->
-                <td>
-                  <div class="d-flex align-items-center">
-                    <div class="avatar avatar-sm me-2">
-                      <img [src]="'assets/img/users/' + interview.candidat.photo" 
-                           [alt]="interview.candidat.nom" 
-                           class="rounded-circle">
-                    </div>
-                    <div>
-                      <h6 class="mb-0">{{ interview.candidat.nom }}</h6>
-                      <small class="text-muted">{{ interview.candidat.email }}</small>
-                    </div>
-                  </div>
-                </td>
-  
-                <!-- Poste -->
-                <td>{{ interview.candidat.poste }}</td>
-  
-                <!-- Interviewer -->
-                <td>
-                  <div class="d-flex align-items-center">
-                    <div class="avatar avatar-sm me-2">
-                      <img [src]="'assets/img/users/' + interview.interviewer.photo" 
-                           [alt]="interview.interviewer.nom" 
-                           class="rounded-circle">
-                    </div>
-                    <span>{{ interview.interviewer.nom }}</span>
-                  </div>
-                </td>
-  
-                <!-- Date & Heure -->
-                <td>
-                  <div>
-                    <strong>{{ formatDate(interview.date) }}</strong><br>
-                    <small class="text-muted">{{ interview.heure }} ({{ interview.duree }} min)</small>
-                  </div>
-                </td>
-  
-                <!-- Type -->
-                <td>
-                  <span [class]="'badge ' + getTypeClass(interview.type)">
-                    {{ interview.type }}
-                  </span>
-                </td>
-  
-                <!-- Statut -->
-                <td>
-                  <div class="dropdown">
-                    <button [class]="'btn btn-sm badge dropdown-toggle border-0 ' + getStatutClass(interview.statut)"
-                            data-bs-toggle="dropdown">
-                      {{ interview.statut }}
-                    </button>
-                    <ul class="dropdown-menu">
-                      <li>
-                        <a class="dropdown-item" href="javascript:void(0);" (click)="changeStatus(interview, 'Planifié')">
-                          <i class="ti ti-calendar me-2"></i>Planifié
-                        </a>
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href="javascript:void(0);" (click)="changeStatus(interview, 'Confirmé')">
-                          <i class="ti ti-check me-2"></i>Confirmé
-                        </a>
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href="javascript:void(0);" (click)="changeStatus(interview, 'En cours')">
-                          <i class="ti ti-clock me-2"></i>En cours
-                        </a>
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href="javascript:void(0);" (click)="changeStatus(interview, 'Terminé')">
-                          <i class="ti ti-circle-check me-2"></i>Terminé
-                        </a>
-                      </li>
-                      <li><hr class="dropdown-divider"></li>
-                      <li>
-                        <a class="dropdown-item text-warning" href="javascript:void(0);" (click)="changeStatus(interview, 'Reporté')">
-                          <i class="ti ti-calendar-time me-2"></i>Reporté
-                        </a>
-                      </li>
-                      <li>
-                        <a class="dropdown-item text-danger" href="javascript:void(0);" (click)="changeStatus(interview, 'Annulé')">
-                          <i class="ti ti-x me-2"></i>Annulé
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </td>
-  
-                <!-- Actions -->
-                <td>
-                  <div class="dropdown">
-                    <a href="javascript:void(0);" class="btn btn-icon btn-sm" data-bs-toggle="dropdown">
-                      <i class="ti ti-dots-vertical"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                      <li>
-                        <a class="dropdown-item" 
-                           href="javascript:void(0);"
-                           data-bs-toggle="modal"
-                           data-bs-target="#detail_interview_modal"
-                           (click)="viewDetails(interview)">
-                          <i class="ti ti-eye me-2"></i>Voir Détails
-                        </a>
-                      </li>
-                      <li><hr class="dropdown-divider"></li>
-                      <li>
-                        <a class="dropdown-item" 
-                           href="javascript:void(0);"
-                           data-bs-toggle="modal"
-                           data-bs-target="#edit_interview_modal"
-                           (click)="edit(interview)">
-                          <i class="ti ti-edit me-2"></i>Modifier
-                        </a>
-                      </li>
-                      <li>
-                        <a class="dropdown-item text-warning" 
-                           href="javascript:void(0);"
-                           data-bs-toggle="modal"
-                           data-bs-target="#cancel_interview_modal"
-                           (click)="cancel(interview)">
-                          <i class="ti ti-calendar-x me-2"></i>Annuler
-                        </a>
-                      </li>
-                      <li><hr class="dropdown-divider"></li>
-                      <li>
-                             <a class="dropdown-item text-danger"
-                        href="javascript:void(0);"
-                        
-                        data-bs-toggle="modal"
-                        data-bs-target="#deleteModal"
-                        (click)="openDeleteModal(interview)"
-                      >
-                        <i class="ti ti-trash"></i> Supprimer
-                      </a>
-                      </li>
-                    </ul>
-                  </div>
-                </td>
-              </tr>
-            }
-  
-            @if (interviews.length === 0) {
-              <tr>
-                <td colspan="7" class="text-center py-5">
-                  <div class="avatar avatar-xl bg-light rounded-circle mx-auto mb-3">
-                    <i class="ti ti-calendar-off fs-36 text-muted"></i>
-                  </div>
-                  <h6 class="mb-2">Aucun entretien planifié</h6>
-                  <p class="text-muted">Commencez par planifier votre premier entretien</p>
-                </td>
-              </tr>
-            }
 
-           
-          </tbody>
-        </table>
-      
-      </div>
+              <!-- Candidat -->
+              <td>
+                <div class="d-flex align-items-center">
+                  <div class="avatar avatar-sm me-2">
+                    <span class="avatar-title rounded-circle bg-primary text-white fw-bold">
+                      {{ interview.candidateName.charAt(0).toUpperCase() }}
+                    </span>
+                  </div>
+                  <div>
+                    <h6 class="mb-0">{{ interview.candidateName }}</h6>
+                    <small class="text-muted">{{ interview.candidateEmail }}</small>
+                  </div>
+                </div>
+              </td>
+
+              <!-- Poste -->
+              <td>{{ interview.targetPosition || '-' }}</td>
+
+              <!-- Interviewer -->
+              <td>
+                <div class="d-flex align-items-center">
+                  <div class="avatar avatar-sm me-2">
+                    <span class="avatar-title rounded-circle bg-success text-white fw-bold">
+                      {{ getInterviewerName(interview).charAt(0).toUpperCase() }}
+                    </span>
+                  </div>
+                  <div>
+                    <span>{{ getInterviewerName(interview) }}</span>
+                  </div>
+                </div>
+              </td>
+
+              <!-- Date & Heure -->
+              <td>
+                <div>
+                  <strong>{{ formatDate(interview.startDateTime) }}</strong><br>
+                  <small class="text-muted">
+                    {{ formatTime(interview.startDateTime) }}
+                    ({{ interview.durationMinutes }} min)
+                  </small>
+                </div>
+              </td>
+
+              <!-- Type -->
+              <td>
+                <span [class]="'badge ' + getTypeClass(interview.type)">
+                  {{ getTypeLabel(interview.type) }}
+                </span>
+              </td>
+
+              <!-- Statut -->
+<td>
+  <div class="dropdown">
+    @if(interview.status === 'Termine') {
+      <span class="btn btn-sm bg-success text-white">
+        <i class="ti ti-circle-check me-1"></i>Terminé
+      </span>
+    } @else if(interview.status === 'Annule') {
+      <span class="btn btn-sm bg-danger text-white">
+        <i class="ti ti-x me-1"></i>Annulé
+      </span>
+    } @else if(canChangeStatus) {
+      <button
+        [class]="'btn btn-sm dropdown-toggle ' + getStatutClass(interview.status)"
+        data-bs-toggle="dropdown">
+        {{ getStatutLabel(interview.status) }}
+      </button>
+      <ul class="dropdown-menu">
+        <li>
+          <a class="dropdown-item" href="javascript:void(0);"
+             (click)="changeStatus(interview, 'Planifie')">
+            <i class="ti ti-calendar me-2"></i>Planifié
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="javascript:void(0);"
+             (click)="changeStatus(interview, 'Confirme')">
+            <i class="ti ti-check me-2"></i>Confirmé
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="javascript:void(0);"
+             (click)="changeStatus(interview, 'EnCours')">
+            <i class="ti ti-clock me-2"></i>En cours
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="javascript:void(0);"
+             (click)="changeStatus(interview, 'Termine')">
+            <i class="ti ti-circle-check me-2"></i>Terminé
+          </a>
+        </li>
+        <li><hr class="dropdown-divider"></li>
+        <li>
+          <a class="dropdown-item text-warning" href="javascript:void(0);"
+             (click)="changeStatus(interview, 'Reporte')">
+            <i class="ti ti-calendar-time me-2"></i>Reporté
+          </a>
+        </li>
+        @if(canManage) {
+          <li>
+            <a class="dropdown-item text-danger" href="javascript:void(0);"
+               (click)="changeStatus(interview, 'Annule')">
+              <i class="ti ti-x me-2"></i>Annulé
+            </a>
+          </li>
+        }
+      </ul>
+    } @else {
+      <span [class]="'badge ' + getStatutClass(interview.status)">
+        {{ getStatutLabel(interview.status) }}
+      </span>
+    }
+  </div>
+</td>
+
+<!-- Actions -->
+<td>
+  <div class="dropdown">
+    <a href="javascript:void(0);" class="btn btn-icon btn-sm"
+       data-bs-toggle="dropdown">
+      <i class="ti ti-dots-vertical"></i>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end">
+
+      <!-- Voir Détails — tout le monde -->
+      <li>
+        <a class="dropdown-item"
+           href="javascript:void(0);"
+           data-bs-toggle="modal"
+           data-bs-target="#detail_interview_modal"
+           (click)="viewDetails(interview)">
+          <i class="ti ti-eye me-2"></i>Voir Détails
+        </a>
+      </li>
+      <li><hr class="dropdown-divider"></li>
+
+      <!-- Évaluer — Manager/RH/CEO si Terminé et pas encore évalué -->
+      @if(canEvaluate && interview.status === 'Termine' && !interview.evaluation) {
+        <li>
+          <a class="dropdown-item text-primary"
+             href="javascript:void(0);"
+             data-bs-toggle="modal"
+             data-bs-target="#evaluate_interview_modal"
+             (click)="evaluate(interview)">
+            <i class="ti ti-star me-2"></i>Évaluer
+          </a>
+        </li>
+        <li><hr class="dropdown-divider"></li>
+      }
+
+      <!-- Modifier/Annuler — RH/CEO seulement -->
+      @if(canManage && interview.status !== 'Termine' && interview.status !== 'Annule') {
+        <li>
+          <a class="dropdown-item"
+             href="javascript:void(0);"
+             data-bs-toggle="modal"
+             data-bs-target="#edit_interview_modal"
+             (click)="edit(interview)">
+            <i class="ti ti-edit me-2"></i>Modifier
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item text-warning"
+             href="javascript:void(0);"
+             data-bs-toggle="modal"
+             data-bs-target="#cancel_interview_modal"
+             (click)="cancel(interview)">
+            <i class="ti ti-calendar-x me-2"></i>Annuler
+          </a>
+        </li>
+        <li><hr class="dropdown-divider"></li>
+      }
+
+      <!-- Supprimer — RH/CEO seulement -->
+      @if(canManage) {
+        <li>
+          <a class="dropdown-item text-danger"
+             href="javascript:void(0);"
+             data-bs-toggle="modal"
+             data-bs-target="#deleteModal"
+             (click)="openDeleteModal(interview)">
+            <i class="ti ti-trash me-2"></i>Supprimer
+          </a>
+        </li>
+      }
+
+    </ul>
+  </div>
+</td>
+            </tr>
+          }
+
+          @if (interviews.length === 0) {
+            <tr>
+              <td colspan="7" class="text-center py-5">
+                <div class="avatar avatar-xl bg-light rounded-circle mx-auto mb-3">
+                  <i class="ti ti-calendar-off fs-36 text-muted"></i>
+                </div>
+                <h6 class="mb-2">Aucun entretien planifié</h6>
+                <p class="text-muted">Commencez par planifier votre premier entretien</p>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
     </div>
   </div>
-  <app-confirm-delete
+</div>
+
+<!-- Modal Suppression -->
+<app-confirm-delete
   modalId="deleteModal"
   title="Supprimer Entretien"
-  [message]="
-    selectedItem
-      ? 'Êtes-vous sûr de vouloir supprimer l’entretien de ' +
-        selectedItem.candidat.nom +
-        ' ?'
-      : ''
-  "
+  [message]="selectedItem
+    ? 'Êtes-vous sûr de vouloir supprimer l\'entretien de ' + selectedItem.candidateName + ' ?'
+    : ''"
   [item]="selectedItem"
-  (confirm)="confirmDelete($event)"
->
+  (confirm)="confirmDelete($event)">
 </app-confirm-delete>
