@@ -7,21 +7,18 @@
       <app-breadcrumbs></app-breadcrumbs>
     </div>
 
-   <!-- Cards statistiques (COMMON KPI) -->
-<div class="row mb-4 g-3">
-  <div
-    class="col-lg-3 col-md-6"
-    *ngFor="let kpi of kpis"
-  >
-    <app-kpi-card
-      [title]="kpi.title"
-      [value]="kpi.value"
-      [icon]="kpi.icon"
-      [color]="kpi.color"
-    >
-    </app-kpi-card>
-  </div>
-</div>
+    <!-- Cards statistiques (COMMON KPI) -->
+    <div class="row mb-4 g-3">
+      <div class="col-lg-3 col-md-6" *ngFor="let kpi of kpis">
+        <app-kpi-card
+          [title]="kpi.title"
+          [value]="kpi.value"
+          [icon]="kpi.icon"
+          [color]="kpi.color"
+        >
+        </app-kpi-card>
+      </div>
+    </div>
 
     <!-- Tableau -->
     <div class="card">
@@ -126,6 +123,9 @@
             </thead>
 
             <tbody>
+              <tr *ngIf="isLoading">
+                <td colspan="6" class="text-center py-4">Chargement...</td>
+              </tr>
               <tr *ngFor="let req of filteredRequests">
                 <td>
                   <div class="d-flex align-items-center gap-3">
@@ -151,29 +151,18 @@
                   </div>
                 </td>
 
-                <td>{{ req.requestDate | date : "dd/MM/yyyy" }}</td>
+                <td>{{ req.requestDate | date: "dd/MM/yyyy" }}</td>
                 <td>
                   <span class="fw-medium">{{ req.leaveType }}</span>
                 </td>
                 <td>
-                  <ng-container
-                    *ngIf="
-                      requiresJustification(req.leaveType);
-                      else noJustification
-                    "
-                  >
-                    <button
-                      class="btn btn-link p-0 fw-medium text-gray"
-                      (click)="viewJustification(req)"
-                    >
-                      Voir justification
-                    </button>
-                  </ng-container>
-
-                  <ng-template #noJustification>
-                    <span class="text-muted">—</span>
-                  </ng-template>
-                </td>
+  <button
+    class="btn btn-link p-0 fw-medium text-gray"
+    (click)="viewJustification(req)"
+  >
+    Voir justification
+  </button>
+</td>
 
                 <td>
                   <span
@@ -181,7 +170,7 @@
                     [ngClass]="{
                       pending: req.status === 'En attente',
                       accepted: req.status === 'Acceptée',
-                      refused: req.status === 'Refusée'
+                      refused: req.status === 'Refusée',
                     }"
                   >
                     {{ req.status }}
