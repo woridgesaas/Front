@@ -26,4 +26,11 @@ export class LeaveApiService {
       map(res => res.data)
     );
   }
+  rejectLeave(id: string) {
+  return this.http.post(
+    `${this.baseUrl}/${id}/reject`,
+    {}
+  );
+
+}
 }
