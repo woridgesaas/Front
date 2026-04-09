@@ -5,11 +5,12 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { BreadcrumbsComponent } from '../../../common/breadcrumbs/breadcrumbs.component';
 import { FooterComponent } from '../../../common/footer/footer.component';
 import { KpisComponent } from '../../../common/kpis/kpis.component';
+import { LeaveApiService } from '../../../../shared/services/leave-api.service';
 
 type LeaveStatus = 'En attente' | 'Acceptée' | 'Refusée';
 
 interface LeaveRequest {
-  id: number;
+  id: string;
   employeeName: string;
   requestDate: string;
   employeeRole: string;
@@ -35,56 +36,54 @@ interface LeaveRequest {
 })
 export class ValidateLeaveComponent implements OnInit {
 
+  constructor(private leaveApi: LeaveApiService) {}
+
   /* ================== DONNÉES ================== */
 
-  leaveRequests: LeaveRequest[] = [
-    {
-      id: 1,
-      employeeName: 'Anthony Lewis',
-      employeeRole: 'Finance',
-      employeeImage: 'assets/img/users/user-01.jpg',
-      requestDate: '2025-01-10',
-      leaveType: 'Congé annuel',
-      status: 'En attente',
-    },
-    {
-      id: 2,
-      employeeName: 'Brian Villalobos',
-      employeeRole: 'Developer',
-      employeeImage: 'assets/img/users/user-02.jpg',
-      requestDate: '2025-01-11',
-      leaveType: 'Congé maladie',
-      status: 'Acceptée',
-    },
-    {
-      id: 3,
-      employeeName: 'Linda Ray',
-      employeeRole: 'Finance',
-      employeeImage: 'assets/img/users/user-03.jpg',
-      requestDate: '2025-01-12',
-      leaveType: 'Congé exceptionnel',
-      status: 'Refusée',
-    },
-    {
-      id: 4,
-      employeeName: 'Doglas Martini',
-      employeeRole: 'Manager',
-      employeeImage: '', // pas d’image → avatar gris
-      requestDate: '2025-01-13',
-      leaveType: 'Congé annuel',
-      status: 'En attente',
-    },
-  ];
+  isLoading = true;
+
+  leaveRequests: LeaveRequest[] = [];
+  filteredRequests: LeaveRequest[] = [];
 
   selectedDateRange: Date[] | null = null;
+
+  /* ================== FORMAT ================== */
+
+  mapLeaveType(type: string): string {
+    switch (type) {
+      case 'ANNUEL': return 'Congé annuel';
+      case 'MALADIE': return 'Congé maladie';
+      case 'EXCEPTIONNEL': return 'Congé exceptionnel';
+      default: return type;
+    }
+  }
+
+  mapStatus(status: string): LeaveStatus {
+    switch (status) {
+      case 'PENDING':
+      case 'NEW':
+        return 'En attente';
+      case 'APPROVED':
+        return 'Acceptée';
+      case 'REJECTED':
+        return 'Refusée';
+      default:
+        return 'En attente';
+    }
+  }
+
+  formatRole(role: string): string {
+    switch (role) {
+      case 'EMPLOYEE': return 'Employé';
+      case 'MANAGER': return 'Manager';
+      default: return role;
+    }
+  }
 
   bsConfig = {
     adaptivePosition: true,
     dateInputFormat: 'DD/MM/YYYY',
   };
-
-  // 👉 liste affichée dans le tableau
-  filteredRequests: LeaveRequest[] = [];
 
   /* ================== FILTRES ================== */
 
@@ -92,8 +91,41 @@ export class ValidateLeaveComponent implements OnInit {
   selectedLeaveType = '';
   sortMode: 'recent' | 'asc' | 'desc' | '' = '';
 
+  /* ================== INIT ================== */
+
   ngOnInit(): void {
-    this.applyFilters();
+    this.loadLeaves();
+  }
+
+  /* ================== API ================== */
+
+  loadLeaves() {
+    this.isLoading = true;
+
+    this.leaveApi.getPendingLeaves().subscribe({
+      next: (data: any[]) => {
+
+        this.leaveRequests = data.map((l) => ({
+          id: l.id,
+
+          employeeName: l.employeeName || '—',
+          employeeRole: this.formatRole(l.employeeRole),
+
+          requestDate: l.startDate,
+
+          leaveType: this.mapLeaveType(l.leaveType),
+          status: this.mapStatus(l.status),
+
+          employeeImage: ''
+        }));
+
+        this.applyFilters();
+        this.isLoading = false;
+      },
+      error: () => {
+        this.isLoading = false;
+      }
+    });
   }
 
   /* ================== ACTIONS ================== */
@@ -107,21 +139,16 @@ export class ValidateLeaveComponent implements OnInit {
     req.status = 'Refusée';
     this.applyFilters();
   }
+
   requiresJustification(type: string): boolean {
     return type === 'Congé maladie' || type === 'Congé exceptionnel';
   }
 
   viewJustification(req: LeaveRequest) {
-    // POUR L’INSTANT : placeholder
     console.log('Voir justification de :', req);
-
-    // PLUS TARD :
-    // - ouvrir un modal
-    // - router vers une page
-    // - appeler une API
   }
 
-  /* ================== FILTRAGE CENTRAL ================== */
+  /* ================== FILTRAGE ================== */
 
   private startOfDay(d: Date): Date {
     return new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0, 0);
@@ -144,33 +171,31 @@ export class ValidateLeaveComponent implements OnInit {
 
     // 🔍 Search
     if (this.searchTerm?.trim()) {
-      const term = this.searchTerm.trim().toLowerCase();
-      data = data.filter(
-        (r) =>
-          r.employeeName.toLowerCase().includes(term) ||
-          r.leaveType.toLowerCase().includes(term) ||
-          r.status.toLowerCase().includes(term)
+      const term = this.searchTerm.toLowerCase();
+      data = data.filter(r =>
+        r.employeeName.toLowerCase().includes(term) ||
+        r.leaveType.toLowerCase().includes(term) ||
+        r.status.toLowerCase().includes(term)
       );
     }
 
-    // 🎯 Type de congé
+    // 🎯 Type
     if (this.selectedLeaveType) {
-      data = data.filter((r) => r.leaveType === this.selectedLeaveType);
+      data = data.filter(r => r.leaveType === this.selectedLeaveType);
     }
 
-    // 📅 Date range (FIX)
-    if (this.selectedDateRange && this.selectedDateRange.length === 2) {
+    // 📅 Date
+    if (this.selectedDateRange?.length === 2) {
       const start = this.startOfDay(this.selectedDateRange[0]);
       const end = this.endOfDay(this.selectedDateRange[1]);
 
-      data = data.filter((r) => {
-        // r.requestDate est "YYYY-MM-DD" -> on force 00:00 local pour éviter soucis timezone
+      data = data.filter(r => {
         const reqDate = new Date(`${r.requestDate}T00:00:00`);
         return reqDate >= start && reqDate <= end;
       });
     }
 
-    // 🔃 Tri
+    // 🔃 Sort
     if (this.sortMode === 'asc') {
       data.sort((a, b) => a.employeeName.localeCompare(b.employeeName));
     } else if (this.sortMode === 'desc') {
@@ -186,7 +211,7 @@ export class ValidateLeaveComponent implements OnInit {
     this.filteredRequests = data;
   }
 
-  /* ================== HANDLERS UI ================== */
+  /* ================== UI ================== */
 
   selectLeaveType(type: string) {
     this.selectedLeaveType = type;
@@ -205,41 +230,23 @@ export class ValidateLeaveComponent implements OnInit {
   }
 
   get pending() {
-    return this.leaveRequests.filter((r) => r.status === 'En attente').length;
+    return this.leaveRequests.filter(r => r.status === 'En attente').length;
   }
 
   get accepted() {
-    return this.leaveRequests.filter((r) => r.status === 'Acceptée').length;
+    return this.leaveRequests.filter(r => r.status === 'Acceptée').length;
   }
 
   get refused() {
-    return this.leaveRequests.filter((r) => r.status === 'Refusée').length;
+    return this.leaveRequests.filter(r => r.status === 'Refusée').length;
   }
-  kpis = [
-  {
-    title: 'Total des demandes',
-    value: this.total,
-    icon: 'fa-solid fa-file-lines',
-    color: 'primary',
-  },
-  {
-    title: 'En attente',
-    value: this.pending,
-    icon: 'fa-solid fa-clock',
-    color: 'warning',
-  },
-  {
-    title: 'Acceptées',
-    value: this.accepted,
-    icon: 'fa-solid fa-check',
-    color: 'success',
-  },
-  {
-    title: 'Refusées',
-    value: this.refused,
-    icon: 'fa-solid fa-xmark',
-    color: 'danger',
-  },
-];
 
+  get kpis() {
+    return [
+      { title: 'Total des demandes', value: this.total, icon: 'fa-solid fa-file-lines', color: 'primary' },
+      { title: 'En attente', value: this.pending, icon: 'fa-solid fa-clock', color: 'warning' },
+      { title: 'Acceptées', value: this.accepted, icon: 'fa-solid fa-check', color: 'success' },
+      { title: 'Refusées', value: this.refused, icon: 'fa-solid fa-xmark', color: 'danger' },
+    ];
+  }
 }
