@@ -135,11 +135,17 @@ export class ValidateLeaveComponent implements OnInit {
     this.applyFilters();
   }
 
-  refuse(req: LeaveRequest) {
-    req.status = 'Refusée';
-    this.applyFilters();
-  }
-
+ refuse(req: LeaveRequest) {
+  this.leaveApi.rejectLeave(req.id).subscribe({
+    next: () => {
+      req.status = 'Refusée'; // update UI
+      this.applyFilters();
+    },
+    error: (err) => {
+      console.error('Error rejecting leave', err);
+    }
+  });
+}
   requiresJustification(type: string): boolean {
     return type === 'Congé maladie' || type === 'Congé exceptionnel';
   }
