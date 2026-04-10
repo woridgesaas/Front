@@ -155,26 +155,47 @@
                     <td>{{data.Posted_Date}}</td>
                     <td>
                       <div class="action-icon d-inline-flex">
-                        <!-- Publier -->
+                    
+                        <!-- Publier → seulement si Draft -->
                         <button type="button"
+                                *ngIf="data.Status === 'Draft'"
                                 class="btn btn-success btn-sm me-2"
                                 (click)="openPublishModal(data)"
                                 title="Publier">
                           <i class="ti ti-send"></i>
                         </button>
-                        <!-- Modifier -->
+                    
+                        <!-- Fermer → seulement si Published -->
+                        <button type="button"
+                                *ngIf="data.Status === 'Published'"
+                                class="btn btn-warning btn-sm me-2"
+                                (click)="closeOffer(data)"
+                                title="Fermer l'offre">
+                          <i class="ti ti-lock"></i>
+                        </button>
+                    
+                        <!-- Badge statut Closed -->
+                        <span *ngIf="data.Status === 'Closed'"
+                              class="badge bg-secondary me-2">
+                          Fermée
+                        </span>
+                    
+                        <!-- Modifier → seulement si Draft -->
                         <a href="javascript:void(0);"
+                           *ngIf="data.Status === 'Draft'"
                            class="me-2"
                            (click)="openEditModal(data)"
                            title="Modifier">
                           <i class="ti ti-edit"></i>
                         </a>
-                        <!-- Supprimer -->
+                    
+                        <!-- Supprimer → toujours visible -->
                         <a href="javascript:void(0);"
                            (click)="onJobDeleted(data)"
                            title="Supprimer">
                           <i class="ti ti-trash"></i>
                         </a>
+                    
                       </div>
                     </td>
                   </tr>

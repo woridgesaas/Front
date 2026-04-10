@@ -98,6 +98,13 @@ export class JobsService {
   }
 
   // ─────────────────────────────────────────
+  // CLOSE
+  // ─────────────────────────────────────────
+  closeJob(jobId: string): Observable<any> {
+    return this.apiService.close(jobId, this.devUserId);
+  }
+
+  // ─────────────────────────────────────────
   // MAPPER : API DTO → JobsInfo
   // ─────────────────────────────────────────
   private mapToJobsInfo(dto: JobOfferApiDto): JobsInfo {
@@ -108,7 +115,8 @@ export class JobsService {
       Location: dto.location,
       Salary_Range: dto.salaryRange || '',
       Posted_Date: new Date(dto.createdAt).toLocaleDateString('fr-FR'),
-      Roll: dto.contractType,
+      Roll: dto.contractType,       // CDI, CDD...
+      Status: dto.status,           // Draft, Published, Closed
       Image: 'briefcase.svg',
       Experience: this.mapNumberToExperience(dto.yearsExperience),
       Description: dto.description || '',
@@ -126,6 +134,15 @@ export class JobsService {
       '0-1': 0, '1-3': 1, '3-5': 3, '5-10': 5, '10+': 10
     };
     return map[experience] ?? 0;
+  }
+
+  private mapNumberToExperience(years: number): string {
+    if (years === 0) return '0-1';
+    if (years === 1) return '1-3';
+    if (years === 3) return '3-5';
+    if (years === 5) return '5-10';
+    if (years >= 10) return '10+';
+    return '0-1';
   }
 
   private mapContractType(roll: string): number {
@@ -152,6 +169,7 @@ export class JobsService {
       Experience: '',
       Description: '',
       Number_of_Positions: 1,
+      Status: 'Draft',
       isSelected: false,
       sNo: 0
     };
@@ -173,13 +191,4 @@ export class JobsService {
       errors.push('La localisation est obligatoire');
     return { isValid: errors.length === 0, errors };
   }
-
-  private mapNumberToExperience(years: number): string {
-    if (years === 0) return '0-1';
-    if (years === 1) return '1-3';
-    if (years === 3) return '3-5';
-    if (years === 5) return '5-10';
-    if (years >= 10) return '10+';
-    return '0-1';
-}
 }
