@@ -196,8 +196,6 @@
         <li>
           <a class="dropdown-item text-danger"
              href="javascript:void(0);"
-             data-bs-toggle="modal"
-             data-bs-target="#deleteModal"
              (click)="openDeleteModal(interview)">
             <i class="ti ti-trash me-2"></i>Supprimer
           </a>
@@ -229,11 +227,12 @@
 
 <!-- Modal Suppression -->
 <app-confirm-delete
-  modalId="deleteModal"
+  [isOpen]="selectedItem !== null"
   title="Supprimer Entretien"
   [message]="selectedItem
     ? 'Êtes-vous sûr de vouloir supprimer l\'entretien de ' + selectedItem.candidateName + ' ?'
     : ''"
   [item]="selectedItem"
-  (confirm)="confirmDelete($event)">
+  (confirm)="confirmDelete($event)"
+  (cancel)="cancelDelete()">
 </app-confirm-delete>

@@ -66,6 +66,10 @@ export class InterviewTableComponent {
     this.selectedItem = null;
   }
 
+  cancelDelete(): void {
+    this.selectedItem = null;
+  }
+
   cancel(interview: Interview): void {
     this.onCancel.emit(interview);
   }

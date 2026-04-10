@@ -86,9 +86,6 @@ export class JobsListComponent implements OnInit, OnDestroy {
     this.currentJob = this.jobsService.createEmptyJob();
   }
 
-  // ─────────────────────────────────────────
-  // LIFECYCLE
-  // ─────────────────────────────────────────
   ngOnInit(): void {
     this.loadJobs();
   }
@@ -273,12 +270,10 @@ export class JobsListComponent implements OnInit, OnDestroy {
     });
   }
 
-  // ← Simple : juste setter selectedItem
   onJobDeleted(job: JobsInfo): void {
     this.selectedItem = job;
   }
 
-  // ← Simple : appel API + reset selectedItem
   confirmDelete(job: JobsInfo): void {
     if (!job) return;
 
@@ -286,12 +281,28 @@ export class JobsListComponent implements OnInit, OnDestroy {
       next: () => {
         this.jobsData = this.jobsData.filter(j => j.Job_ID !== job.Job_ID);
         this.getTableData({ skip: this.skip, limit: this.limit });
-        this.selectedItem = null; // ← ferme le modal
+        this.selectedItem = null;
         alert('✅ Offre supprimée avec succès !');
       },
       error: (err) => {
         console.error('❌ Erreur suppression:', err);
         alert('❌ Erreur lors de la suppression');
+      }
+    });
+  }
+
+  // ← NOUVEAU
+  closeOffer(job: JobsInfo): void {
+    if (!confirm(`Fermer l'offre "${job.Job_Title}" ?`)) return;
+
+    this.jobsService.closeJob(job.Job_ID).subscribe({
+      next: () => {
+        this.loadJobs();
+        alert(`✅ Offre "${job.Job_Title}" fermée avec succès !`);
+      },
+      error: (err) => {
+        console.error('❌ Erreur fermeture:', err);
+        alert('❌ Erreur lors de la fermeture');
       }
     });
   }
@@ -302,7 +313,6 @@ export class JobsListComponent implements OnInit, OnDestroy {
     notifyHrTeam: boolean;
     isFeatured: boolean;
   }): void {
-
     this.jobsService.publishJob(
       event.job.Job_ID,
       event.canalNames,

@@ -14,6 +14,7 @@ export interface JobsInfo {
   Description: string;        // ← AJOUTÉ pour CKEditor
   Number_of_Positions?: number;  // ← OPTIONNEL pour le nombre de postes
   isSelected: boolean;
+  Status?: string; 
   sNo?: number;
 }
 
