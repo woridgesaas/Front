@@ -1,5 +1,20 @@
 import { HolidaysStatus } from "../enum/holidays-status";
+export interface NotificationItem {
+  id: number;
 
+  title: string;
+  description: string;
+
+  isRead: boolean;
+
+  priority: 'LOW' | 'MEDIUM' | 'HIGH';
+  type: string;
+
+  channel?: string;   // optionnel
+  status?: string;    // optionnel
+
+  createdAt: string;  // ISO string backend
+}
 export interface Sondage {
   id: number;
   titre: string;
@@ -215,7 +230,7 @@ export interface AuditLog {
   isSelected?: boolean;
 }
 export interface DocumentDemande {
-  id: number;
+  id: string;
   documentCode: string;
   documentName: string;
   description: string;
@@ -226,7 +241,7 @@ export interface DocumentDemande {
   notes?: string;
   isSelected?: boolean;
   sNo?: number;
-}
+} 
 export interface RhDocumentDemande {
 
   id: number;

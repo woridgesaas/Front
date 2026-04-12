@@ -1,99 +1,86 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { DocumentTemplate } from '../../../../../shared/models/document-template.model';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
-import { DocumentCategory } from '../../../../../shared/enum/document-category.enum';
 import { ModalHeaderComponent } from '../../../../common/modal-header/modal-header.component';
+import {
+  DocumentsApiService,
+  CreateDocumentRequestResponse
+} from '../../../../../shared/services/documents-api.service';
+
+interface DocumentTemplateUi {
+  category: string;
+  name: string;
+  description: string;
+  group: string;
+}
 
 @Component({
   selector: 'app-demande-document-modal',
-  imports: [MatSelectModule , CommonModule ,FormsModule,ModalHeaderComponent],
+  standalone: true,
+  imports: [MatSelectModule, CommonModule, FormsModule, ModalHeaderComponent],
   templateUrl: './demande-document-modal.component.html',
   styleUrl: './demande-document-modal.component.scss',
 })
-export class DemandeDocumentModalComponent implements OnInit{
-  // Input: Liste des documents disponibles depuis le parent
-  @Input() documentTemplates: DocumentTemplate[] = [];
+export class DemandeDocumentModalComponent {
+
+  @Input() documentTemplates: DocumentTemplateUi[] = [];
   @Output() close = new EventEmitter<void>();
-  @Output() demandCreated = new EventEmitter<{
-    documentCode: string;
-    notes?: string;
-    urgent: boolean;
-  }>();
-  //Variables de formauliare binder :)
-  selectedDocumentCode: string = '';
-  demandNotes: string = '';
-  isUrgent: boolean = false;
-  submitting: boolean = false;
+  @Output() demandCreated = new EventEmitter<CreateDocumentRequestResponse>();
 
-  // Filtre pour les documents
-  searchTerm: string = '';
+  selectedCategory = '';
+  submitting = false;
+  searchTerm = '';
 
-  ngOnInit(): void {
+  constructor(private api: DocumentsApiService) {}
 
-  }
-   get selectedDocument(): DocumentTemplate | undefined {
-    return this.documentTemplates.find(doc => doc.code === this.selectedDocumentCode);
+  get selectedDocument(): DocumentTemplateUi | undefined {
+    return this.documentTemplates.find(doc => doc.category === this.selectedCategory);
   }
 
-  // Getter pour les categorie uniques
-  get documentCategories(): DocumentCategory[] {
-    const categories = new Set(this.documentTemplates.map(doc => doc.category));
-    return Array.from(categories) as DocumentCategory[];
+  get documentGroups(): string[] {
+    const groups = new Set(this.filteredDocuments.map(doc => doc.group));
+    return Array.from(groups);
   }
 
-  // Getter pour les documents
-  get filteredDocuments(): DocumentTemplate[] {
-    if (!this.searchTerm) {
-      return this.documentTemplates;
-    }
+  get filteredDocuments(): DocumentTemplateUi[] {
+    if (!this.searchTerm) return this.documentTemplates;
 
     const term = this.searchTerm.toLowerCase();
     return this.documentTemplates.filter(doc =>
       doc.name.toLowerCase().includes(term) ||
       doc.description.toLowerCase().includes(term) ||
-      doc.category.toLowerCase().includes(term)
+      doc.category.toLowerCase().includes(term) ||
+      doc.group.toLowerCase().includes(term)
     );
   }
 
-  // methods pour obtenir les documents par catégorie
-  getDocumentsByCategory(category: DocumentCategory): DocumentTemplate[] {
-    return this.documentTemplates.filter(doc => doc.category === category);
+  getDocumentsByGroup(group: string): DocumentTemplateUi[] {
+    return this.filteredDocuments.filter(doc => doc.group === group);
   }
-  // Soumission du formulaire
+
   submitDemand(form: NgForm): void {
-    if (form.invalid || !this.selectedDocumentCode) {
-      return;
-    }
+    if (form.invalid || !this.selectedCategory) return;
 
     this.submitting = true;
 
-    // Simuler
-    setTimeout(() => {
-      const newDemand = {
-        documentCode: this.selectedDocumentCode,
-        notes: this.demandNotes.trim() || undefined,
-        urgent: this.isUrgent
-      };
-
-      // sift l parent heeho demande created :)
-      this.demandCreated.emit(newDemand);
-
-      // reset de form
-      this.resetForm(form);
-      this.submitting = false;
-
-    }, 1500);
+    this.api.createDocumentRequest(this.selectedCategory).subscribe({
+      next: (res) => {
+        this.demandCreated.emit(res);
+        this.resetForm(form);
+        this.submitting = false;
+      },
+      error: (err) => {
+        console.error(err);
+        this.submitting = false;
+      }
+    });
   }
-   resetForm(form: any): void {
-    this.selectedDocumentCode = '';
-    this.demandNotes = '';
-    this.isUrgent = false;
+
+  resetForm(form?: NgForm): void {
+    this.selectedCategory = '';
     this.searchTerm = '';
 
-    if (form) {
-      form.resetForm();
-    }
+    if (form) form.resetForm();
   }
 }

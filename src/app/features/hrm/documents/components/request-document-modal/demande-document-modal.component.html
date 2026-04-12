@@ -1,100 +1,134 @@
-<div class="modal fade" id="newDocumentDemand" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="newDocumentDemand" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
-      <app-modal-header (close)="close.emit()" [icon]="'ti ti-file-plus'" [title]="'Nouvelle demande de document'"></app-modal-header>      
+      <app-modal-header
+        (close)="close.emit()"
+        [icon]="'ti ti-file-plus'"
+        [title]="'Nouvelle demande de document'"
+      >
+      </app-modal-header>
+
       <form #demandForm="ngForm" (ngSubmit)="submitDemand(demandForm)">
         <div class="modal-body">
-          
-          <!-- Sélection du document -->
+          <!-- SELECT -->
           <div class="mb-4">
             <label class="form-label">Type de document *</label>
-            <mat-select
-              placeholder="Sélectionner un document"
-              class="custom-mat-select w-100"
-              name="documentType"
-              [(ngModel)]="selectedDocumentCode"
-              required>
-              @if (filteredDocuments.length > 0) {
-                @for (category of documentCategories; track category) {
-                  <mat-optgroup [label]="category" style="color: #02a8b5;">
-                    @for (doc of getDocumentsByCategory(category); track doc.code) {
-                      <mat-option [value]="doc.code">
-                        <div class="d-flex flex-column">
-                          <span class="fw-medium">{{ doc.name }}</span>
-                          <small class="text-muted">{{ doc.description }}</small>
+
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-select
+                [(ngModel)]="selectedCategory"
+                name="documentType"
+                required
+              >
+                <mat-select-trigger>
+                  {{ selectedDocument?.name || "Sélectionner un document" }}
+                </mat-select-trigger>
+
+                @for (group of documentGroups; track group) {
+                  <mat-optgroup [label]="group">
+                    @for (
+                      doc of getDocumentsByGroup(group);
+                      track doc.category
+                    ) {
+                      <mat-option [value]="doc.category" class="custom-option">
+                        <div class="option-container">
+                          <div class="option-title">
+                            {{ doc.name }}
+                          </div>
+
+                          <div class="option-desc">
+                            {{ doc.description }}
+                          </div>
+
+                          <div class="option-meta">
+                            <span class="badge bg-light text-dark">
+                              {{ doc.group }}
+                            </span>
+                          </div>
                         </div>
                       </mat-option>
                     }
                   </mat-optgroup>
                 }
-              } @else {
-                <mat-option disabled>Aucun document disponible</mat-option>
-              }
-            </mat-select>
-            
-            @if (demandForm.controls['documentType']?.invalid) {
-              <div class="text-danger small mt-1">Veuillez sélectionner un document</div>
+              </mat-select>
+            </mat-form-field>
+
+            @if (demandForm.controls["documentType"]?.invalid) {
+              <div class="text-danger small mt-1">
+                Veuillez sélectionner un document
+              </div>
             }
           </div>
-          
-          <!-- Document sélectionné - Détails -->
+
+          <!-- CARD -->
           @if (selectedDocument) {
-            <div class="card border-primary mb-3">
+            <div class="card border-0 shadow-sm mb-3">
               <div class="card-body p-3">
                 <div class="d-flex align-items-start">
                   <div class="rounded-circle bg-primary bg-opacity-10 p-2 me-3">
                     <i class="ti ti-file-text text-primary"></i>
                   </div>
+
                   <div class="flex-grow-1">
-                    <h6 class="mb-1">{{ selectedDocument.name }}</h6>
-                    <p class="text-muted small mb-2">{{ selectedDocument.description }}</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                      <span class="badge bg-light text-dark">{{ selectedDocument.category }}</span>
-                      <small class="text-muted">Code: {{ selectedDocument.code }}</small>
+                    <h6 class="fw-bold mb-1">
+                      {{ selectedDocument.name }}
+                    </h6>
+
+                    <p class="text-muted small mb-2">
+                      {{ selectedDocument.description }}
+                    </p>
+
+                    <div class="d-flex gap-2 align-items-center">
+                      <span class="badge bg-primary-subtle text-primary">
+                        {{ selectedDocument.group }}
+                      </span>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           }
-          
-          <!-- Informations importantes -->
-          <div class="alert alert-info mb-0">
+
+          <!-- INFO -->
+          <div class="alert alert-info border-0 shadow-sm mb-0">
             <div class="d-flex">
               <i class="ti ti-info-circle me-2 mt-1"></i>
+
               <div>
-                <strong>À savoir :</strong>
-                <ul class="mb-0 mt-1 small">
-                  <li>Délai de traitement standard : 24h à 48h ouvrables</li>
-                  <li>Vous serez notifié par email du statut de votre demande</li>
+                <strong>À savoir</strong>
+                <ul class="mb-0 mt-1 small ps-3">
+                  <li>Délai : 24h à 48h</li>
+                  <li>Notification par email</li>
                   <li>Merci pour votre patience</li>
                 </ul>
               </div>
             </div>
           </div>
-          
         </div>
-        
+
+        <!-- FOOTER -->
         <div class="modal-footer">
-          <button type="button" 
-                  class="btn btn-secondary" 
-                  data-bs-dismiss="modal"
-                  (click)="resetForm(demandForm)">
+          <button
+            type="button"
+            class="btn btn-secondary me-2"
+            data-bs-dismiss="modal"
+            (click)="resetForm(demandForm)"
+          >
             Annuler
           </button>
-          <button type="submit" 
-                  class="btn btn-primary" 
-                  [disabled]="demandForm.invalid || submitting">
+          <button
+            type="submit"
+            class="btn btn-primary d-flex align-items-center gap-2"
+            [disabled]="demandForm.invalid || submitting"
+          >
             @if (submitting) {
-              <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-              Envoi en cours...
+              <span class="spinner-border spinner-border-sm"></span> Envoi...
             } @else {
-              <i class="ti ti-send me-2"></i>Soumettre la demande
+              <i class="ti ti-send"></i> Soumettre
             }
           </button>
         </div>
       </form>
-      
     </div>
   </div>
 </div>

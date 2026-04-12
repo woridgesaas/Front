@@ -1,22 +1,52 @@
 <div class="content">
+
   <!-- Breadcrums -->
   <div
     class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3"
   >
     <app-breadcrumbs></app-breadcrumbs>
 
-    <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
-      <div class="mb-2">
-        <a
-          href="javascript:void(0);"
-          data-bs-toggle="modal"
-          data-bs-target="#newDocumentDemand"
-          (click)="openNewDemandModal()"
-          class="btn btn-primary d-flex align-items-center"
-        >
-          <i class="ti ti-circle-plus me-2"></i>Nouvelle demande
-        </a>
-      </div>
+    <div class="mb-2">
+      <a
+        href="javascript:void(0);"
+        data-bs-toggle="modal"
+        data-bs-target="#newDocumentDemand"
+        (click)="openNewDemandModal()"
+        class="btn btn-primary d-flex align-items-center"
+      >
+        <i class="ti ti-circle-plus me-2"></i>Nouvelle demande
+      </a>
+    </div>
+  </div>
+
+  <!-- 🔥 KPI SECTION (ICI PROPRE) -->
+  <div class="row mb-4 g-3">
+
+    <div class="col-lg-4 col-md-6">
+      <app-kpi-card
+        title="Total des demandes"
+        [value]="totalDemandes"
+        icon="ti ti-file"
+        color="primary">
+      </app-kpi-card>
+    </div>
+
+    <div class="col-lg-4 col-md-6">
+      <app-kpi-card
+        title="En attente"
+        [value]="pendingDemandes"
+        icon="ti ti-hourglass"
+        color="warning">
+      </app-kpi-card>
+    </div>
+
+    <div class="col-lg-4 col-md-6">
+      <app-kpi-card
+        title="Prêtes"
+        [value]="readyDemandes"
+        icon="ti ti-check"
+        color="success">
+      </app-kpi-card>
     </div>
   </div>
   <!-- /Fil d'ariane -->
@@ -190,7 +220,6 @@
   title="Annuler la demande"
   message="Voulez-vous vraiment annuler cette demande ?"
   [item]="selectedDemande"
-  (confirm)="cancelDemande($event)"
 >
 </app-cancel-modal>
 <!--Modal delete confirmation -->
@@ -199,5 +228,5 @@
 <app-demande-document-modal
   [documentTemplates]="documentTemplates"
   (close)="closeModal()"
-  (demandCreated)="onDemandeCreated($event)"
+  (demandCreated)="onDemandeCreated()"
 ></app-demande-document-modal>

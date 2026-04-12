@@ -7,7 +7,7 @@ import { DocumentDemande, RhDocumentDemande } from '../models/models';
 export class DocumentsService {
   private mockedData : DocumentDemande[]=[
       {
-        id: 1,
+        id: '1',
         documentCode: 'ATTESTATION_TRAVAIL',
         documentName: 'Attestation de travail',
         description:
@@ -18,7 +18,7 @@ export class DocumentsService {
         status: 'ready',
       },
       {
-        id: 3,
+        id: '3',
         documentCode: 'ATTESTATION_SALAIRE',
         documentName: 'Attestation de salaire',
         description: 'Document précisant votre rémunération',
@@ -28,7 +28,7 @@ export class DocumentsService {
         status: 'pending',
       },
       {
-        id: 5,
+        id: '5',
         documentCode: 'CERTIFICAT_TRAVAIL',
         documentName: 'Certificat de travail',
         description: 'Document obligatoire remis à la fin du contrat',
@@ -38,7 +38,7 @@ export class DocumentsService {
         status: 'ready',
       },
       {
-        id: 6,
+        id: '6',
         documentCode: 'DECISION_PROMOTION',
         documentName: 'Décision de promotion',
         description: 'Acte officialisant votre évolution professionnelle',
