@@ -1,0 +1,121 @@
+<!-- Bouton flottant -->
+<button
+  class="chat-fab"
+  (click)="toggleChat()"
+  [class.active]="isOpen"
+  title="Assistant RH Woridge">
+  <i class="ti ti-message-chatbot" *ngIf="!isOpen"></i>
+  <i class="ti ti-x"              *ngIf="isOpen"></i>
+</button>
+
+<!-- Panel -->
+<div class="chat-panel" [class.open]="isOpen">
+
+  <!-- Header -->
+  <div class="chat-header">
+    <div class="chat-header-info">
+      <div class="chat-avatar">
+        <i class="ti ti-robot"></i>
+      </div>
+      <div>
+        <h6 class="mb-0">Assistant RH</h6>
+        <small>En ligne</small>
+      </div>
+    </div>
+    <div class="chat-header-actions">
+      <button
+        class="btn-icon-header"
+        (click)="clearChat()"
+        title="Nouvelle conversation">
+        <i class="ti ti-refresh"></i>
+      </button>
+      <button
+        class="btn-icon-header"
+        (click)="closeChat()"
+        title="Fermer">
+        <i class="ti ti-x"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Messages -->
+  <div class="chat-messages" #messagesContainer>
+
+    <div
+      *ngFor="let msg of messages"
+      class="message-wrapper"
+      [class.user-wrapper]="msg.sender === 'user'"
+      [class.bot-wrapper]="msg.sender === 'bot'">
+
+      <!-- Avatar bot -->
+      <div class="bot-avatar" *ngIf="msg.sender === 'bot'">
+        <i class="ti ti-robot"></i>
+      </div>
+
+      <!-- Bulle -->
+      <div
+        class="message-bubble"
+        [class.user-bubble]="msg.sender === 'user'"
+        [class.bot-bubble]="msg.sender === 'bot'">
+        <p class="mb-0">{{ msg.content }}</p>
+        <small class="msg-time">
+          {{ msg.timestamp | date:'HH:mm' }}
+        </small>
+      </div>
+
+    </div>
+
+    <!-- Typing indicator -->
+    <div
+      class="message-wrapper bot-wrapper"
+      *ngIf="isLoading">
+      <div class="bot-avatar">
+        <i class="ti ti-robot"></i>
+      </div>
+      <div class="message-bubble bot-bubble typing-bubble">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Suggestions -->
+  <div
+    class="chat-suggestions"
+    *ngIf="messages.length <= 1 && !isLoading">
+    <button
+      *ngFor="let s of suggestions"
+      class="suggestion-chip"
+      (click)="useSuggestion(s)">
+      {{ s }}
+    </button>
+  </div>
+
+  <!-- Input -->
+  <div class="chat-input-zone">
+    <div class="chat-input-wrapper">
+      <textarea
+        [(ngModel)]="userInput"
+        (keydown)="onKeyDown($event)"
+        placeholder="Posez votre question..."
+        rows="1"
+        class="chat-textarea"
+        [disabled]="isLoading">
+      </textarea>
+      <button
+        class="send-btn"
+        (click)="sendMessage()"
+        [disabled]="!userInput.trim() || isLoading">
+        <i class="ti ti-send"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="chat-footer">
+    Propulsé par <strong>Woridge AI</strong>
+  </div>
+
+</div>

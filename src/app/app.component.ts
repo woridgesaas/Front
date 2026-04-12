@@ -4,11 +4,12 @@ import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { RouterOutlet } from '@angular/router';
 import { Subscription, timer } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { ChatbotComponent } from './features/common/chat/chatbot.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule],
+  imports: [RouterOutlet, CommonModule,ChatbotComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
@@ -20,10 +21,30 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
 
-  ngOnInit(): void {
-    this.listenToRouteTitles();
-    this.resetTimer();
-  }
+
+  showChatbot = false;
+
+ngOnInit(): void {
+  this.listenToRouteTitles();
+  this.resetTimer();
+
+  // Cacher chatbot sur pages auth
+  this.router.events
+    .pipe(filter(e => e instanceof NavigationEnd))
+    .subscribe((e: any) => {
+      const authRoutes = [
+        '/login',
+        '/forgot-password',
+        '/reset-password',
+        '/email-verification',
+        '/lock-screen',
+        '/onboarding'
+      ];
+      this.showChatbot = !authRoutes.some(
+        r => e.url.startsWith(r)
+      );
+    });
+}
 
   ngOnDestroy(): void {
     this.inactivityTimer?.unsubscribe();
