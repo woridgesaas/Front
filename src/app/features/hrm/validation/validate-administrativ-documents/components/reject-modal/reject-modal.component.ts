@@ -4,46 +4,43 @@ import { FormsModule, NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-reject-modal',
-  imports: [FormsModule,CommonModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './reject-modal.component.html',
 })
 export class RejectModalComponent {
-  @Input() data:any;
+  @Input() data: any;
   @Output() refused = new EventEmitter<any>();
   @Output() cancelled = new EventEmitter<void>();
 
-  // Form data
-  refuseForm:any={
-    demande:null,
+  refuseForm: any = {
+    demande: null,
     motif: {
-        raison:'',
-        dateRefus: new Date(),
-        refusePar: 'Nom du RH'
-      }
+      raison: '',
+      dateRefus: new Date(),
+      refusePar: 'Nom du RH'
+    }
+  };
 
-  }
   currentDate = new Date();
 
-  // Réinitialiser le formulaire
   resetForm(): void {
-
-    this.refuseForm = { demande: null, motif: { raison: '', dateRefus: new Date(), refusePar: 'Nom du RH' } };
-
+    this.refuseForm = {
+      demande: null,
+      motif: { raison: '', dateRefus: new Date(), refusePar: 'Nom du RH' }
+    };
   }
 
-  // sumbitedForm
-  confirmRefusal(form:NgForm): void {
-    if(form.valid && form.submitted){
-      this.refuseForm={
-        demande:this.data,
-        motif:{
-          raison:form.value.refusalReason
+  // ✅ Fix — on vérifie juste que la raison est remplie
+  confirmRefusal(form: NgForm): void {
+    if (this.refuseForm.motif.raison && this.refuseForm.motif.raison.trim() !== '') {
+      this.refuseForm = {
+        demande: this.data,
+        motif: {
+          raison: this.refuseForm.motif.raison
         }
-
-      }
+      };
       this.refused.emit(this.refuseForm);
       this.closeModal();
-      
     }
   }
 
@@ -58,5 +55,4 @@ export class RejectModalComponent {
     this.resetForm();
     this.cancelled.emit();
   }
-
 }

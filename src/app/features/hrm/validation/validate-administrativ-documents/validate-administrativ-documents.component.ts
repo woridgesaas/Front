@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BreadcrumbsComponent } from '../../../common/breadcrumbs/breadcrumbs.component';
-import { DocumentDemande, RhDocumentDemande } from '../../../../shared/models/models';
-import { DocumentsService } from '../../../../shared/services/documents-service';
+import { RhDocumentDemande } from '../../../../shared/models/models';
+import { DocumentsApiService } from '../../../../shared/services/documents-api.service';
 import { DocumentsKpisComponent } from './components/documents-kpis/documents-kpis.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { CommonModule } from '@angular/common';
@@ -14,91 +14,125 @@ import { DetailsModalComponent } from './components/details-modal/details-modal.
 
 @Component({
   selector: 'app-validate-administrativ-documents',
-  imports: [DetailsModalComponent,AcceptModalComponent, RejectModalComponent,BreadcrumbsComponent,DocumentsKpisComponent,BsDatepickerModule,CommonModule,FormsModule,DocumentsListComponent,CustomPaginationComponent],
+  imports: [
+    DetailsModalComponent,
+    AcceptModalComponent,
+    RejectModalComponent,
+    BreadcrumbsComponent,
+    DocumentsKpisComponent,
+    BsDatepickerModule,
+    CommonModule,
+    FormsModule,
+    DocumentsListComponent,
+    CustomPaginationComponent
+  ],
   templateUrl: './validate-administrativ-documents.component.html',
   styleUrl: './validate-administrativ-documents.component.scss',
 })
-export class ValidateAdministrativDocumentsComponent {
-   // Data
+export class ValidateAdministrativDocumentsComponent implements OnInit {
+
+  // Data
   allDemandes: RhDocumentDemande[] = [];
   filteredDemandes: RhDocumentDemande[] = [];
-  kpiData:any=[];
+  kpiData: any[] = [];
+  isLoading: boolean = false;
+  errorMessage: string = '';
+
   // Filtres
   searchText: string = '';
   dateRange: Date[] = [];
   selectedType: string = '';
   selectedStatus: string = '';
-  selectedUrgency: string = '';
-  
-  // Liste des filtres disponibles
+
+  // Filtres disponibles
   documentTypes: string[] = [];
-  
+
   // Pagination
   currentPage: number = 1;
   pageSize: number = 10;
   totalItems: number = 0;
-  
+
   // Modal
   selectedDemande: RhDocumentDemande | null = null;
-  showAcceptModal:boolean=false;
-  showRejectModal:boolean=false;
-  showDetailsModal:boolean=false;
-  constructor(private documentsService: DocumentsService) {}
+
+  constructor(private documentsApiService: DocumentsApiService) {}
 
   ngOnInit(): void {
     this.loadData();
-    this.loadKpisFromService();
   }
 
-  // data render
+  // ============================================================
+  // Chargement
+  // ============================================================
+
   loadData(): void {
-    this.allDemandes = this.documentsService.getAllDocumentsForRH();
-    this.documentTypes = this.getUniqueDocumentTypes();
-    this.applyFilters();
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    this.documentsApiService.getAllRequests().subscribe({
+      next: (data) => {
+        this.allDemandes = data;
+        this.documentTypes = this.getUniqueDocumentTypes();
+        this.applyFilters();
+        this.loadKpis();
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Erreur chargement:', err);
+        this.errorMessage = 'Impossible de charger les demandes.';
+        this.isLoading = false;
+      }
+    });
   }
-  //kpis render
-  loadKpisFromService():any{
-    this.kpiData = this.documentsService.getAllStatistics();
+
+  loadKpis(): void {
+    const total    = this.allDemandes.length;
+    const pending  = this.allDemandes.filter(d => d.status === 'pending').length;
+    const accepted = this.allDemandes.filter(d => d.status === 'accepted').length;
+    const rejected = this.allDemandes.filter(d => d.status === 'rejected').length;
+
+    this.kpiData = [
+      { title: 'Total Demandes', value: total,    icon: 'ti ti-list-details', color: 'primary' },
+      { title: 'En attente',     value: pending,  icon: 'ti ti-hourglass',    color: 'warning' },
+      { title: 'Acceptées',      value: accepted, icon: 'ti ti-check',        color: 'success' },
+      { title: 'Refusées',       value: rejected, icon: 'ti ti-x',            color: 'danger'  },
+    ];
   }
-  
+
+  // ============================================================
+  // Filtres
+  // ============================================================
+
   private getUniqueDocumentTypes(): string[] {
     const types = new Set(this.allDemandes.map(d => d.documentType || d.category));
     return Array.from(types);
   }
 
-  // Filters
   applyFilters(): void {
     let result = [...this.allDemandes];
 
-    // Filtre par période
     if (this.dateRange && this.dateRange.length === 2) {
       const start = new Date(this.dateRange[0]);
-      const end = new Date(this.dateRange[1]);
+      const end   = new Date(this.dateRange[1]);
       result = result.filter(d => {
         const date = new Date(d.requestDate);
         return date >= start && date <= end;
       });
     }
 
-    // Filtre par type
     if (this.selectedType) {
-      result = result.filter(d => (d.documentType || d.category) === this.selectedType);
+      result = result.filter(d =>
+        (d.documentType || d.category) === this.selectedType
+      );
     }
 
-    // Filtre par statut
     if (this.selectedStatus) {
       result = result.filter(d => d.status === this.selectedStatus);
     }
 
-    // Filtre par urgence
-    if (this.selectedUrgency) {
-      result = result.filter(d => d.urgency === this.selectedUrgency);
-    }
-
-    // Filtre par recherche
     if (this.searchText) {
       const term = this.searchText.toLowerCase();
-      result = result.filter(d => 
+      result = result.filter(d =>
         d.employeeName.toLowerCase().includes(term) ||
         d.documentName.toLowerCase().includes(term) ||
         d.description.toLowerCase().includes(term)
@@ -110,96 +144,111 @@ export class ValidateAdministrativDocumentsComponent {
     this.currentPage = 1;
   }
 
-
   resetFilters(): void {
-    this.searchText = '';
-    this.dateRange = [];
-    this.selectedType = '';
+    this.searchText     = '';
+    this.dateRange      = [];
+    this.selectedType   = '';
     this.selectedStatus = '';
-    this.selectedUrgency = '';
     this.applyFilters();
   }
+
   getCurrentPageData(): RhDocumentDemande[] {
-    return this.filteredDemandes;
+    const start = (this.currentPage - 1) * this.pageSize;
+    return this.filteredDemandes.slice(start, start + this.pageSize);
   }
 
-  // Changer de page
   onPageChange(page: any): void {
     this.currentPage = page;
   }
-  /** ============================= events emited ============================ */
-  //open accept request modal go
+
+  // ============================================================
+  // Ouverture modals
+  // ============================================================
+
   onAcceptDemande(demande: RhDocumentDemande): void {
     this.selectedDemande = demande;
-    this.showAcceptModal=true;
-    const modalEl = document.getElementById("acceptDemandModal");
-    if(modalEl){
-      const modal = new(window as any).bootstrap.Modal(modalEl);
-      modal.show();
-
+    const modalEl = document.getElementById('acceptDemandModal');
+    if (modalEl) {
+      new (window as any).bootstrap.Modal(modalEl).show();
     }
   }
-  //open refuse modal go
+
   onRefuseDemande(demande: RhDocumentDemande): void {
     this.selectedDemande = demande;
-    this.showRejectModal =true;
-    const modalEl = document.getElementById("refuseDemandModal");
-    if(modalEl){
-      const modal = new(window as any).bootstrap.Modal(modalEl);
-      modal.show();
+    const modalEl = document.getElementById('refuseDemandModal');
+    if (modalEl) {
+      new (window as any).bootstrap.Modal(modalEl).show();
     }
   }
-  //child send data after rejected succefully
-  rejectRequest(event:any):void{
-    alert("Emited succefuly request rejected iwth raison : "+event.motif.raison);
-  }
-  //refresh selectedDemande after reject
-  handlleRejectModalClosed():void{
-    this.selectedDemande =null;
-  }
-  //open details model go
+
   onViewJustification(demande: RhDocumentDemande): void {
     this.selectedDemande = demande;
-    this.showDetailsModal=true;
-     const modalEl = document.getElementById("demandDetailsModal");
-    if(modalEl){
-      const modal = new(window as any).bootstrap.Modal(modalEl);
-      modal.show();
+    const modalEl = document.getElementById('demandDetailsModal');
+    if (modalEl) {
+      new (window as any).bootstrap.Modal(modalEl).show();
     }
   }
-  //reset selectedRequest after closed modal
-  public handlleDetailsModalClosed():void{
-    this.selectedDemande=null;
-  }
-  // Helpers pour l'affichage
-  getStatusText(status: string): string {
-    const map: Record<string, string> = {
-      'pending': 'En attente',
-      'in_progress': 'En traitement',
-      'ready': 'Prêt',
-      'accepted': 'Acceptée',
-      'rejected': 'Refusée',
-      'cancelled': 'Annulée'
-    };
-    return map[status] || status;
+
+  // ============================================================
+  // Appels API — approve / reject
+  // ============================================================
+
+  // Reçoit { demande, traitement } depuis accept-modal
+  confirmApprove(event: any): void {
+    const demande = event.demande as RhDocumentDemande;
+    const uuid = demande.uuid!;   // ← UUID propre
+
+    this.documentsApiService.approveRequest(uuid).subscribe({
+      next: () => {
+        this.updateLocalStatus(demande, 'accepted');
+      },
+      error: (err) => {
+        console.error('Erreur approbation:', err);
+        alert('Erreur lors de l\'approbation. Veuillez réessayer.');
+      }
+    });
   }
 
-  getUrgencyText(urgency: string): string {
-    const map: Record<string, string> = {
-      'high': 'Urgent',
-      'medium': 'Moyen',
-      'low': 'Faible'
-    };
-    return map[urgency] || urgency;
+  // Reçoit { demande, motif } depuis reject-modal
+  rejectRequest(event: any): void {
+    const demande = event.demande as RhDocumentDemande;
+    const uuid = demande.uuid!;   // ← UUID propre
+
+    this.documentsApiService.rejectRequest(uuid).subscribe({
+      next: () => {
+        this.updateLocalStatus(demande, 'rejected');
+      },
+      error: (err) => {
+        console.error('Erreur rejet:', err);
+        alert('Erreur lors du rejet. Veuillez réessayer.');
+      }
+    });
   }
 
-  // Pour le calcul d'affichage
-  getDisplayRangeStart(): number {
-    return (this.currentPage - 1) * this.pageSize + 1;
+  // Mise à jour locale sans rechargement
+  private updateLocalStatus(
+    demande: RhDocumentDemande,
+    newStatus: RhDocumentDemande['status']
+  ): void {
+    const found = this.allDemandes.find(d => d.uuid === demande.uuid);
+    if (found) {
+      found.status = newStatus;
+      found.processedDate = new Date();
+    }
+    this.applyFilters();
+    this.loadKpis();
+    this.selectedDemande = null;
   }
 
-  getDisplayRangeEnd(): number {
-    const end = this.currentPage * this.pageSize;
-    return Math.min(end, this.totalItems);
+  // ============================================================
+  // Reset modals
+  // ============================================================
+
+  handlleRejectModalClosed(): void {
+    this.selectedDemande = null;
+  }
+
+  handlleDetailsModalClosed(): void {
+    this.selectedDemande = null;
   }
 }
