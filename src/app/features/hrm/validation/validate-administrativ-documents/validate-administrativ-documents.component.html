@@ -1,115 +1,142 @@
 <div class="page-wrapper">
-  <div class="content">
-    <!-- Breadcrumb -->
-    <div class="d-md-flex d-block align-items-center justify-content-between mb-3">
-      <app-breadcrumbs></app-breadcrumbs>
-    </div>
-
-    <!-- ============ KPIS ===================-->  
-    <app-documents-kpis [kpiData]="kpiData"></app-documents-kpis>
-
-
-    <!-- ============ TABLEAU ===================-->
-    <div class="card">
-        <!-- En-tête avec titre et filtres -->
-        <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-3">
+    <div class="content">
+      <!-- Breadcrumb -->
+      <div class="d-md-flex d-block align-items-center justify-content-between mb-3">
+        <app-breadcrumbs></app-breadcrumbs>
+      </div>
+  
+      <!-- Loading -->
+      @if (isLoading) {
+        <div class="text-center py-5">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Chargement...</span>
+          </div>
+        </div>
+      }
+  
+      <!-- Erreur -->
+      @if (errorMessage) {
+        <div class="alert alert-danger">
+          <i class="ti ti-alert-triangle me-2"></i>{{ errorMessage }}
+        </div>
+      }
+  
+      @if (!isLoading) {
+        <!-- KPIs -->
+        <app-documents-kpis [kpiData]="kpiData"></app-documents-kpis>
+  
+        <!-- Tableau -->
+        <div class="card">
+          <!-- En-tête -->
+          <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-3">
             <div>
-            <h5 class="mb-0">
+              <h5 class="mb-0">
                 <i class="ti ti-file-text me-2"></i>
                 Demandes de documents
                 <small class="text-muted ms-2">({{ totalItems }} résultats)</small>
-            </h5>
+              </h5>
             </div>
-        </div>
-
-        <!-- ============ FILTRES ===================-->
-        <div class="card-body border-bottom">
+          </div>
+  
+          <!-- Filtres -->
+          <div class="card-body border-bottom">
             <div class="filters-bar d-flex align-items-center flex-wrap gap-3 mb-2">
-            <!-- Type document -->
-            <div style="width: 180px;">
-                <select 
-                class="form-select form-select-sm" 
-                [(ngModel)]="selectedType" 
-                (ngModelChange)="applyFilters()">
-                <option value="">Type de document</option>
-                @for (type of documentTypes; track type) {
+              <!-- Type document -->
+              <div style="width: 180px;">
+                <select
+                  class="form-select form-select-sm"
+                  [(ngModel)]="selectedType"
+                  (ngModelChange)="applyFilters()">
+                  <option value="">Type de document</option>
+                  @for (type of documentTypes; track type) {
                     <option [value]="type">{{ type }}</option>
-                }
+                  }
                 </select>
-            </div>
-             <!-- Date Range -->
-            <div class="input-icon" style="width: 220px;">
+              </div>
+  
+              <!-- Date Range -->
+              <div class="input-icon" style="width: 220px;">
                 <i class="ti ti-calendar"></i>
-                <input 
-                type="text" 
-                class="form-control form-control-sm" 
-                bsDaterangepicker 
-                [(ngModel)]="dateRange" 
-                (ngModelChange)="applyFilters()"
-                placeholder="Période">
-            </div>
-            
-            <!-- Statut -->
-            <div style="width: 160px;">
-                <select 
-                class="form-select form-select-sm" 
-                [(ngModel)]="selectedStatus" 
-                (ngModelChange)="applyFilters()">
-                <option value="">Statut</option>
-                <option value="pending">En attente</option>
-                <option value="in_progress">En traitement</option>
-                <option value="ready">Prêt</option>
-                <option value="accepted">Acceptée</option>
-                <option value="rejected">Refusée</option>
+                <input
+                  type="text"
+                  class="form-control form-control-sm"
+                  bsDaterangepicker
+                  [(ngModel)]="dateRange"
+                  (ngModelChange)="applyFilters()"
+                  placeholder="Période">
+              </div>
+  
+              <!-- Statut -->
+              <div style="width: 160px;">
+                <select
+                  class="form-select form-select-sm"
+                  [(ngModel)]="selectedStatus"
+                  (ngModelChange)="applyFilters()">
+                  <option value="">Statut</option>
+                  <option value="pending">En attente</option>
+                  <option value="accepted">Acceptée</option>
+                  <option value="rejected">Refusée</option>
                 </select>
-            </div>
-            
-            <!-- Recherche-->
-            <div class="input-icon flex-grow-1" style="min-width: 200px; max-width: 300px;">
+              </div>
+  
+              <!-- Recherche -->
+              <div class="input-icon flex-grow-1" style="min-width: 200px; max-width: 300px;">
                 <i class="ti ti-search"></i>
-                <input 
-                type="search" 
-                class="form-control form-control-sm" 
-                [(ngModel)]="searchText" 
-                (ngModelChange)="applyFilters()"
-                placeholder="Rechercher employé, document...">
-            </div>
-            
-            <!-- Reset -->
-            <button class="btn btn-sm btn-outline-secondary" (click)="resetFilters()" title="Réinitialiser les filtres">
+                <input
+                  type="search"
+                  class="form-control form-control-sm"
+                  [(ngModel)]="searchText"
+                  (ngModelChange)="applyFilters()"
+                  placeholder="Rechercher employé, document...">
+              </div>
+  
+              <!-- Reset -->
+              <button
+                class="btn btn-sm btn-outline-secondary"
+                (click)="resetFilters()"
+                title="Réinitialiser les filtres">
                 <i class="ti ti-x me-1"></i>Reset
-            </button>
+              </button>
             </div>
-        </div>
-
-        <!-- Tableau -->
-        <div class="card-body p-0">
+          </div>
+  
+          <!-- Tableau -->
+          <div class="card-body p-0">
             <div class="table-responsive">
-            <app-documents-list 
+              <app-documents-list
                 [data]="getCurrentPageData()"
                 (accept)="onAcceptDemande($event)"
                 (refuse)="onRefuseDemande($event)"
                 (viewJustification)="onViewJustification($event)">
-            </app-documents-list>
+              </app-documents-list>
             </div>
+          </div>
+  
+          <!-- Pagination -->
+          @if (totalItems > 0) {
+            <app-custom-pagination
+              (pageChanged)="onPageChange($event)">
+            </app-custom-pagination>
+          }
         </div>
-
-        <!-- Pagination -->
-        @if (totalItems > 0) {
-                <app-custom-pagination
-                (pageChanged)="onPageChange($event)">
-                </app-custom-pagination>
-        }
-        </div>
-    
-    
+      }
+    </div>
+  
+    <!-- Modals -->
+    <app-accept-modal
+      [data]="selectedDemande"
+      (accepted)="confirmApprove($event)"
+      (cancelled)="handlleDetailsModalClosed()">
+    </app-accept-modal>
+  
+    <app-reject-modal
+      (cancelled)="handlleRejectModalClosed()"
+      (refused)="rejectRequest($event)"
+      [data]="selectedDemande">
+    </app-reject-modal>
+  
+    <app-details-modal
+      (close)="handlleDetailsModalClosed()"
+      [data]="selectedDemande">
+    </app-details-modal>
   </div>
-  <!-- ============ MODALS ===================-->
-    <!-- Modal acceptation request -->
-        <app-accept-modal [data]="selectedDemande"></app-accept-modal>
-    <!-- Modal reject request -->
-        <app-reject-modal  (cancelled)="handlleRejectModalClosed()" (refused)="rejectRequest($event)" [data]="selectedDemande"></app-reject-modal>
-    <!-- Modal details request -->
-        <app-details-modal  (close)="handlleDetailsModalClosed()" [data]="selectedDemande"></app-details-modal>
-    
-</div>

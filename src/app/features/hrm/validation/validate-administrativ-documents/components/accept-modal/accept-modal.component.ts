@@ -2,11 +2,11 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RhDocumentDemande } from '../../../../../../shared/models/models';
 import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
-import { ModalFooterComponent } from '../../../../../common/modal-footer/modal-footer.component';
+
 
 @Component({
   selector: 'app-accept-modal',
-  imports: [FormsModule,DatePipe,ModalFooterComponent],
+  imports: [FormsModule,DatePipe],
   templateUrl: './accept-modal.component.html',
   styleUrl: './accept-modal.component.scss',
 })

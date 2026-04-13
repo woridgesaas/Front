@@ -1,4 +1,3 @@
-<!-- accept-demand-modal.component.html -->
 <div class="modal fade" id="acceptDemandModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -27,14 +26,14 @@
       </div>
 
       <div class="modal-body">
-        <!-- Section: Récapitulatif -->
+        <!-- Récapitulatif -->
         <div class="alert alert-success border mb-4">
           <div class="d-flex align-items-center">
             <i class="ti ti-info-circle fs-4 me-3"></i>
             <div>
               <h6 class="mb-1">Demande à valider</h6>
               <p class="mb-0">
-                Vous êtes sur le point d'accepter la demande de document de 
+                Vous êtes sur le point d'accepter la demande de document de
                 <strong>{{ data?.employeeName }}</strong>
               </p>
             </div>
@@ -53,9 +52,10 @@
               <div class="card-body">
                 <div class="d-flex align-items-center mb-3">
                   <div class="avatar avatar-xl avatar-rounded me-3">
-                    <img [src]="data?.employeeAvatar || 'assets/images/default-avatar.png'" 
-                         [alt]="data?.employeeName"
-                         class="rounded-circle border">
+                    <img
+                      [src]="data?.employeeAvatar || 'assets/images/default-avatar.png'"
+                      [alt]="data?.employeeName"
+                      class="rounded-circle border">
                   </div>
                   <div>
                     <h6 class="mb-1">{{ data?.employeeName }}</h6>
@@ -70,7 +70,7 @@
             </div>
           </div>
 
-          <!-- Right column details employe -->
+          <!-- Colonne droite: Détails document -->
           <div class="col-md-6">
             <div class="card border mb-3">
               <div class="card-header bg-light py-2">
@@ -84,18 +84,15 @@
                   <h5 class="mb-1">{{ data?.documentName }}</h5>
                   <p class="text-muted mb-0 small">{{ data?.description }}</p>
                 </div>
-
                 <div class="row g-3">
                   <div class="col-6">
                     <small class="text-muted d-block">Type</small>
                     <div class="fw-medium">{{ data?.documentType || data?.category }}</div>
                   </div>
-                  
                   <div class="col-6">
                     <small class="text-muted d-block">Demandé le</small>
                     <div class="fw-medium">{{ data?.requestDate | date:'dd/MM/yyyy' }}</div>
                   </div>
-                  
                   <div class="col-12">
                     <small class="text-muted d-block">Justification</small>
                     <div class="bg-light p-2 rounded">
@@ -108,7 +105,6 @@
           </div>
         </div>
 
-
         <!-- Confirmation finale -->
         <div class="alert alert-warning border mt-4">
           <div class="d-flex align-items-center">
@@ -116,7 +112,7 @@
             <div>
               <h6 class="mb-1">Confirmation requise</h6>
               <p class="mb-0">
-                En acceptant, vous confirmez que toutes les informations sont correctes 
+                En acceptant, vous confirmez que toutes les informations sont correctes
                 et que vous prenez la responsabilité de traiter cette demande.
               </p>
             </div>
@@ -124,8 +120,22 @@
         </div>
       </div>
 
-      <!-- Footer -->
-       <app-modal-footer (cancel)="closeModal()" [submitIcon]="'ti ti-check'" [submitText]="'accepter la demande'"></app-modal-footer>
+      <!-- ✅ Footer corrigé — boutons directs sans app-modal-footer -->
+      <div class="modal-footer border-0 border-top">
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          (click)="closeModal()">
+          Annuler
+        </button>
+        <button
+          type="button"
+          class="btn btn-success"
+          (click)="confirmAcceptance()">
+          <i class="ti ti-check me-1"></i> Accepter la demande
+        </button>
+      </div>
+
     </div>
   </div>
 </div>

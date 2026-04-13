@@ -34,7 +34,7 @@ export class ChatbotComponent
 
   userId = '';
   role   = 'EMPLOYEE';
-  tenant = '';
+  tenant = 'dev-local';
 
   private shouldScroll = false;
 
@@ -54,39 +54,36 @@ export class ChatbotComponent
 
   ngOnDestroy(): void {}
 
-  // ── Charger infos depuis JWT ──
+  //  Charger infos depuis JWT 
+
+  // tenant géré par Kong X-Subdomain
   private loadUserInfo(): void {
     try {
       const token = localStorage.getItem('token');
-      if (token) {
-        const payload = JSON.parse(
-          atob(token.split('.')[1])
-        );
-        console.log('JWT payload Woridge:', payload);
+      if (!token) return;
 
-        this.userId = payload.sub
-                   || payload.id
-                   || payload.userId
-                   || '';
+      const payload = JSON.parse(
+        atob(token.split('.')[1])
+      );
 
-        this.role = payload.role
-                 || payload.roles?.[0]
-                 || payload.authorities?.[0]
-                 || 'EMPLOYEE';
+      // sub = userId
+      this.userId = payload.sub || '';
 
-         this.tenant = payload.tenant
-                 || payload.subdomain
-                 || 'dev-local';
-      }
+      
+      this.role = payload.role || 'EMPLOYEE';
+
+      // tenant = injecté par Kong X-Subdomain
+     
+      this.tenant = 'dev-local';
+
     } catch (e) {
-      console.error('Erreur lecture JWT:', e);
       this.userId = '';
       this.role   = 'EMPLOYEE';
-      this.tenant = 'default';
+      this.tenant = 'dev-local';
     }
   }
 
-  // ── Message de bienvenue ──
+  // ── Message de bienvenue selon rôle ──
   private addWelcomeMessage(): void {
     const isRh = this.role === 'HR'
               || this.role === 'ADMIN'
@@ -156,8 +153,7 @@ export class ChatbotComponent
         this.isLoading    = false;
         this.shouldScroll = true;
       },
-      error: (err) => {
-        console.error('Erreur chatbot:', err);
+      error: () => {
         this.messages.push({
           id:        this.generateId(),
           content:   'Désolé, une erreur s\'est produite. ' +
