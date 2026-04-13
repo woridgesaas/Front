@@ -3,16 +3,19 @@ import { AuditLog } from '../../../../../shared/models/models';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatSortModule } from '@angular/material/sort';
+import { EmptyStateComponent } from '../../../../common/empty-state/empty-state.component';
 
 @Component({
   selector: 'app-audit-list',
-  imports: [FormsModule,CommonModule,MatSortModule],
+  imports: [FormsModule,CommonModule,MatSortModule,EmptyStateComponent],
   templateUrl: './audit-list.component.html',
+  styleUrl: './audit-list.component.scss'
 })
 export class AuditListComponent {
   @Input() tableData:AuditLog[]=[];
   @Output() onViewItem = new EventEmitter<AuditLog>();
-
+  @Input() showResetButton: boolean = false;
+  @Output() resetFilters = new EventEmitter<void>();
   selectAll: boolean = false;
   //Methods hellpers:
   getActionBadge(action: string): string {
@@ -46,7 +49,7 @@ export class AuditListComponent {
   }
   getActionIcon(action: string): string {
     const icons: Record<string, string> = {
-      'create': 'ti-plus',
+      ' USER_CREATED': 'ti-plus',
       'update': 'ti-edit',
       'delete': 'ti-trash',
       'view': 'ti-eye',
@@ -63,10 +66,11 @@ export class AuditListComponent {
     return badges[status] || 'bg-secondary';
   }
     getStatusLabel(status: string): string {
+      
     const labels: Record<string, string> = {
-      'success': 'Success',
-      'error': 'Error',
-      'warning': 'Warning'
+      'success': 'success',
+      'error': 'srror',
+      'warning': 'sarning'
     };
     return labels[status] || status;
   }
@@ -82,10 +86,10 @@ export class AuditListComponent {
   getSortValue(item: AuditLog, column: string): any {
     switch (column) {
       case 'timestamp': return new Date(item.timestamp);
-      case 'user': return item.user.name.toLowerCase();
+      case 'user': return item.userMatricule.toLowerCase();
       case 'action': return item.action;
-      case 'module': return item.module;
-      case 'object': return item.objectName.toLowerCase();
+      case 'module': return item.serviceName;
+      case 'object': return item.targetId.toLowerCase();
       case 'status': return item.status;
       default: return '';
     }

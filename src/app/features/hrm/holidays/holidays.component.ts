@@ -44,7 +44,6 @@ loadHolidays() {
     this.holidayService.getHolidays().subscribe({
       next: (data) => {
         this.holidays = data;
-        console.log(data);
       },
       error: (err) => console.error('Error while charging data', err)
     });

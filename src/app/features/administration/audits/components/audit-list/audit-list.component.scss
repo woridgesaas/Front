@@ -1,0 +1,19 @@
+.equal-table {
+  table-layout: fixed;
+}
+.badge.position-absolute {
+  animation: gentlePulse 2s infinite;
+}
+
+@keyframes gentlePulse {
+  0% { opacity: 0.9; }
+  50% { opacity: 1; background-color: #ffc107; }
+  100% { opacity: 0.9; }
+}
+.table-warning {
+  transition: background-color 0.3s ease;
+  
+  &:hover {
+    background-color: darken(#fff3cd, 5%) !important;
+  }
+}

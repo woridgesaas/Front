@@ -209,25 +209,30 @@ export interface ChartOptions {
   fill?: ApexFill;
 }
 export interface AuditLog {
-  id: number;
-  timestamp: Date;
-  user: {
-    id: number;
-    name: string;
-    avatar: string;
-    role: string;
-    department: string;
-  };
-  action: string;
-  module: string;
-  objectName: string;
-  objectType?: string;
-  objectLink?: string;
-  details?: any;
-  ipAddress?: string;
-  status: string;
-  duration?: number;
+  id: string;            
+  timestamp: Date;      
+  tenantId: string;      
+  action: string;     
+  status: string;          
+  userMatricule: string; 
+  userRole: string;     
+  targetId: string;      
+  service: string;         
+  serviceName: string;   
+  logType: string;  
   isSelected?: boolean;
+}
+export interface AuditLogMetadata {
+  count: number;
+  limit: number;
+  period: {
+    start: string;
+    end: string;
+  };
+}
+export interface AuditLogResponse {
+  metadata: AuditLogMetadata;
+  data: AuditLog[];
 }
 export interface DocumentDemande {
   id: string;
