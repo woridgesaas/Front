@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Holiday } from '../../../../../shared/models/models';
 import { ModalHeaderComponent } from '../../../../common/modal-header/modal-header.component';
 import { ModalFooterComponent } from '../../../../common/modal-footer/modal-footer.component';
+import { EmptyStateComponent } from '../../../../common/empty-state/empty-state.component';
 
 @Component({
   selector: 'app-holiday-table',
@@ -11,7 +12,7 @@ import { ModalFooterComponent } from '../../../../common/modal-footer/modal-foot
   imports: [
     CommonModule,
     FormsModule,
-    
+    EmptyStateComponent
   ],
   templateUrl: './holiday-table.component.html',
   styleUrl: './holiday-table.component.scss',

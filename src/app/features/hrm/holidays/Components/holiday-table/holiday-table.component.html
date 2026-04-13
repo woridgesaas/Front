@@ -6,7 +6,7 @@
   </div>
 
 
-  <div class="row g-3" *ngIf="holidays.length > 0; else emptyState">
+  <div class="row g-3" *ngIf="holidays.length > 0; else showEmptyState">
     <div *ngFor="let h of holidays" class="col-12 col-sm-6 col-md-4 col-lg-3">
       <div class="card h-100 shadow-sm border-0" 
            [class.border-warning]="h.status === 'TO_BE_CONFIRMED'"
@@ -46,42 +46,14 @@
   </div>
 
 
-<ng-template #emptyState>
-  <div class="text-center py-5 my-5">
-    <!-- Illustration -->
-    <div class="mb-4">
-      <svg width="120" height="120" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.5;">
-        <path d="M8 2V6" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"/>
-        <path d="M16 2V6" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"/>
-        <rect x="3" y="4" width="18" height="18" rx="3" stroke="#6B7280" stroke-width="1.5"/>
-        <path d="M3 10H21" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"/>
-        <circle cx="12" cy="15" r="1.5" fill="#6B7280"/>
-        <circle cx="16" cy="15" r="1.5" fill="#6B7280"/>
-        <circle cx="8" cy="15" r="1.5" fill="#6B7280"/>
-      </svg>
-    </div>
-    
-
-    <h5 class="text-muted mb-3">Aucun jour férié trouvé</h5>
-    
-
-    <p class="text-muted mb-4" style="max-width: 400px; margin-left: auto; margin-right: auto;">
-      <ng-container *ngIf="showResetButton; else noFilters">
-        Aucun résultat ne correspond à vos filtres. Essayez d'autres critères.
-      </ng-container>
-      <ng-template #noFilters>
-        Aucun jour férié n'est disponible pour le moment.
-      </ng-template>
-    </p>
-    
-    <!-- Boutons d'action -->
-    <div class="d-flex gap-2 justify-content-center">
-      <button *ngIf="showResetButton" 
-              class="btn btn-outline-secondary" 
-              (click)="resetFilters.emit()">
-        <i class="bi bi-x-circle me-2"></i>Effacer les filtres
-      </button>
-    </div>
-  </div>
+<ng-template #showEmptyState>
+  <app-empty-state
+    [title]="'Aucun jour férié trouvé'"
+    [messageWithFilters]="'Aucun résultat ne correspond à vos filtres. Essayez d\'autres critères.'"
+    [messageWithoutFilters]="'Aucun jour férié n\'est disponible pour le moment.'"
+    [showResetButton]="true"
+    [resetButtonLabel]="'Effacer les filtres'"
+    (resetFilters)="resetFilters.emit()">
+  </app-empty-state>
 </ng-template>
 </div>

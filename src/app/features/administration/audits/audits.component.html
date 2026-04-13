@@ -91,11 +91,11 @@
                 <div class="dataTables_length">
                   <label>
                     Montrer
-                    <select [(ngModel)]="pageSize" (ngModelChange)="changePageSize(pageSize)" class="form-select form-select-sm">
-                      <option value="10">10</option>
-                      <option value="25">25</option>
-                      <option value="50">50</option>
-                    </select>
+                   <select [(ngModel)]="pageSize" (change)="onPageSizeChange()" class="form-select form-select-sm">
+                    <option [value]=10>10</option>
+                    <option [value]=25>25</option>
+                    <option [value]=50>50</option>
+                  </select>
                     entrées
                   </label>
                 </div>
@@ -117,14 +117,11 @@
 
             <!-- Table -->
             <div class="table-responsive">
-                <app-audit-list [tableData]="tableData" (onViewItem)="itemDetails($event)"></app-audit-list>
+                <app-audit-list [tableData]="tableData" (resetFilters)="clearFilters()"  [showResetButton]="hasActiveFilters()"></app-audit-list>
             </div>
 
             <!-- Pagination -->
-            <app-custom-pagination
-            
-              (pageChanged)="changePage($event)"
-            ></app-custom-pagination>
+            <app-custom-pagination></app-custom-pagination>
           </div>
         </div>
       </div>
@@ -135,12 +132,4 @@
     </div>
   </div>
 </div>
-<!--===========================Details modal=====================================-->
-<app-audit-details-modal (onCloseModal)="handlleCloseModal()" [showAuditDetailsModal]="showAuditDetailsModal" [data]="selectedItem"></app-audit-details-modal>
-<!-- Backdrop effect si true we add this div to dom -->
-@if(showAuditDetailsModal){
-  <ng-container>
-    <div (click)="handlleCloseModal()" (keyup)="handlleCloseModal()" tabindex="1" class="modal-backdrop fade show"></div>
-  </ng-container>
- }
 
