@@ -24,21 +24,21 @@ export class DataService {
     return this.http.get<apiResultFormat>('assets/json/data-tables.json').pipe(
       map((res: apiResultFormat) => {
         return res;
-      })
+      }),
     );
   }
   public getApiData(): Observable<apiResultFormat> {
     return this.http.get<apiResultFormat>('assets/json/api-data.json').pipe(
       map((res: apiResultFormat) => {
         return res;
-      })
+      }),
     );
   }
   public getCandidatesList(): Observable<apiResultFormat> {
     return this.http.get<apiResultFormat>('assets/json/candidates.json').pipe(
       map((res: apiResultFormat) => {
         return res;
-      })
+      }),
     );
   }
 
@@ -46,7 +46,7 @@ export class DataService {
     return this.http.get<apiResultFormat>('assets/json/job-list.json').pipe(
       map((res: apiResultFormat) => {
         return res;
-      })
+      }),
     );
   }
 
@@ -54,7 +54,7 @@ export class DataService {
     return this.http.get<apiResultFormat>('assets/json/contact-list.json').pipe(
       map((res: apiResultFormat) => {
         return res;
-      })
+      }),
     );
   }
 
@@ -62,14 +62,14 @@ export class DataService {
     return this.http.get<apiResultFormat>('assets/json/chat.json').pipe(
       map((res: apiResultFormat) => {
         return res;
-      })
+      }),
     );
   }
   public getReportUser(): Observable<apiResultFormat> {
     return this.http.get<apiResultFormat>('assets/json/report-user.json').pipe(
       map((res: apiResultFormat) => {
         return res;
-      })
+      }),
     );
   }
 
@@ -79,14 +79,14 @@ export class DataService {
       .pipe(
         map((res: apiResultFormat) => {
           return res;
-        })
+        }),
       );
   }
   public getLanguageWeb(): Observable<apiResultFormat> {
     return this.http.get<apiResultFormat>('assets/json/language-web.json').pipe(
       map((res: apiResultFormat) => {
         return res;
-      })
+      }),
     );
   }
 
@@ -94,35 +94,35 @@ export class DataService {
     return this.http.get<apiResultFormat>('assets/json/stories.json').pipe(
       map((res: apiResultFormat) => {
         return res;
-      })
+      }),
     );
   }
   public getBlockUser(): Observable<apiResultFormat> {
     return this.http.get<apiResultFormat>('assets/json/block-user.json').pipe(
       map((res: apiResultFormat) => {
         return res;
-      })
+      }),
     );
   }
   public getBackup(): Observable<apiResultFormat> {
     return this.http.get<apiResultFormat>('assets/json/backup.json').pipe(
       map((res: apiResultFormat) => {
         return res;
-      })
+      }),
     );
   }
   public getUserList(): Observable<apiResultFormat> {
     return this.http.get<apiResultFormat>('assets/json/user-list.json').pipe(
       map((res: apiResultFormat) => {
         return res;
-      })
+      }),
     );
   }
   public getInviteUser(): Observable<apiResultFormat> {
     return this.http.get<apiResultFormat>('assets/json/invite-user.json').pipe(
       map((res: apiResultFormat) => {
         return res;
-      })
+      }),
     );
   }
   public getAbuseMessage(): Observable<apiResultFormat> {
@@ -131,7 +131,7 @@ export class DataService {
       .pipe(
         map((res: apiResultFormat) => {
           return res;
-        })
+        }),
       );
   }
 
@@ -141,14 +141,14 @@ export class DataService {
       .pipe(
         map((res: apiResultFormat) => {
           return res;
-        })
+        }),
       );
   }
   public getdepartments(): Observable<apiResultFormat> {
     return this.http.get<apiResultFormat>('assets/json/department.json').pipe(
       map((res: apiResultFormat) => {
         return res;
-      })
+      }),
     );
   }
 
@@ -158,7 +158,7 @@ export class DataService {
       .pipe(
         map((res: apiResultFormat) => {
           return res;
-        })
+        }),
       );
   }
 
@@ -168,7 +168,7 @@ export class DataService {
       .pipe(
         map((res: apiResultFormat) => {
           return res;
-        })
+        }),
       );
   }
 
@@ -176,7 +176,7 @@ export class DataService {
     return this.http.get<apiResultFormat>('assets/json/promotion.json').pipe(
       map((res: apiResultFormat) => {
         return res;
-      })
+      }),
     );
   }
 
@@ -184,7 +184,7 @@ export class DataService {
     return this.http.get<apiResultFormat>('assets/json/resignation.json').pipe(
       map((res: apiResultFormat) => {
         return res;
-      })
+      }),
     );
   }
 
@@ -192,7 +192,7 @@ export class DataService {
     return this.http.get<apiResultFormat>('assets/json/leave-admin.json').pipe(
       map((res: apiResultFormat) => {
         return res;
-      })
+      }),
     );
   }
   public getleaveEmployee(): Observable<apiResultFormat> {
@@ -201,7 +201,7 @@ export class DataService {
       .pipe(
         map((res: apiResultFormat) => {
           return res;
-        })
+        }),
       );
   }
 
@@ -211,7 +211,7 @@ export class DataService {
       .pipe(
         map((res: apiResultFormat) => {
           return res;
-        })
+        }),
       );
   }
 
@@ -221,7 +221,7 @@ export class DataService {
       .pipe(
         map((res: apiResultFormat) => {
           return res;
-        })
+        }),
       );
   }
 
@@ -229,7 +229,7 @@ export class DataService {
     return this.http.get<apiResultFormat>('assets/json/daily-report.json').pipe(
       map((res: apiResultFormat) => {
         return res;
-      })
+      }),
     );
   }
 
@@ -239,7 +239,7 @@ export class DataService {
       .pipe(
         map((res: apiResultFormat) => {
           return res;
-        })
+        }),
       );
   }
 
@@ -247,7 +247,7 @@ export class DataService {
     return this.http.get<apiResultFormat>('assets/json/leave-report.json').pipe(
       map((res: apiResultFormat) => {
         return res;
-      })
+      }),
     );
   }
 
@@ -257,7 +257,7 @@ export class DataService {
       .pipe(
         map((res: apiResultFormat) => {
           return res;
-        })
+        }),
       );
   }
 
@@ -265,7 +265,7 @@ export class DataService {
     return this.http.get<apiResultFormat>('assets/json/page.json').pipe(
       map((res: apiResultFormat) => {
         return res;
-      })
+      }),
     );
   }
 
@@ -512,11 +512,11 @@ export class DataService {
               base: 'validate-leave',
             },
             {
-              menuValue: 'Valider Info Personnel',
-              route: routes.validatePersonalInfo,
+              menuValue: 'Informations personnelles',
+              route: routes.validatePersonalInformation,
               hasSubRoute: false,
               showSubRoute: false,
-              base: 'validate-personal-info',
+              base: 'validate-personal-information',
             },
             {
               menuValue: 'Valider doc administratif',
@@ -647,8 +647,6 @@ export class DataService {
       showAsTab: false,
       separateRoute: false,
       menu: [
-      
-
         {
           menuValue: "Paramètres d'applications",
           hasSubRoute: true,
@@ -888,9 +886,9 @@ export class DataService {
                   showSubRoute: false,
                 },
                 {
-                  menuValue: 'Valider info personnel',
-                  route: routes.validatePersonalInfo,
-                  base: 'validate-personal-info',
+                  menuValue: 'Informations personnelles',
+                  route: routes.validatePersonalInformation,
+                  base: 'validate-personal-information',
                   hasSubRoute: false,
                   showSubRoute: false,
                 },
@@ -992,7 +990,6 @@ export class DataService {
           icon: 'settings',
           base: 'settings',
           subMenus: [
-           
             {
               menuValue: "Paramètres d'applications",
               customSubmenuTwo: true,

@@ -6,10 +6,10 @@ import { AuthStateService } from '../services/auth-state.service';
 import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IllustrationComponent } from '../Common/illustration/illustration.component';
-import { LogoComponent } from '../Common/logo/logo.component';
-import { DescriptionComponent } from '../Common/description/description.component';
-import { FooterComponent } from '../Common/footer/footer.component';
+import { IllustrationComponent } from '../common/illustration/illustration.component';
+import { LogoComponent } from '../common/logo/logo.component';
+import { DescriptionComponent } from '../common/description/description.component';
+import { FooterComponent } from '../common/footer/footer.component';
 
 @Component({
   selector: 'app-reset-password',

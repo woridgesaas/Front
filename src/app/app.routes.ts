@@ -3,6 +3,7 @@ import { AuthGuard } from './core/guards/auth.guard';
 import { NoAuthGuard } from './core/guards/no-auth.guard';
 import { emailVerificationGuard } from './core/guards/email-verification.guard';
 import { resetPasswordGuard } from './core/guards/reset-password.guard';
+import { roleGuard } from './core/guards/role-guard.guard';
 
 export const routes: Routes = [
   {
@@ -274,9 +275,11 @@ export const routes: Routes = [
               import('./features/hrm/employees/employees-list/employee-list/employee-list.component').then(
                 (m) => m.EmployeeListComponent,
               ),
+            canActivate: [roleGuard],
             data: {
               breadcrumb: 'Liste des employés',
               title: 'Liste des employés',
+              roles: ['HR', 'CEO'],
             },
           },
           {
@@ -513,14 +516,16 @@ export const routes: Routes = [
             },
           },
           {
-            path: 'validate-personal-info',
+            path: 'validate-personal-information',
             loadComponent: () =>
-              import('./features/hrm/validation/validate-personal-info/validate-personal-info.component').then(
-                (m) => m.ValidateInfoPersonnelComponent,
+              import('./features/hrm/validation/validate-personal-information/validate-personal-information.component').then(
+                (m) => m.ValidatePersonalInformationComponent,
               ),
+            canActivate: [roleGuard],
             data: {
               breadcrumb: 'Validation des informations personnelles',
               title: 'Validation des informations personnelles',
+              roles: ['HR', 'CEO'],
             },
           },
           {

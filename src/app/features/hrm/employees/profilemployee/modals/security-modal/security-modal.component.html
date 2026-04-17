@@ -1,0 +1,160 @@
+<div class="pt-2">
+
+  <!--* Information alert -->
+  <div class="alert alert-info d-flex align-items-end gap-2 mb-3">
+    <i class="fa fa-info-circle mt-1"></i>
+    <span>
+      Le mot de passe est modifié immédiatement, sans intervention ni validation du service des ressources humaines.
+    </span>
+  </div>
+
+  <!--* Warning alert -->
+  <div class="alert alert-warning d-flex align-items-end gap-2 mb-4">
+    <i class="fa fa-exclamation-triangle mt-1"></i>
+    <span>
+      Si le mot de passe actuel est incorrect, votre session sera automatiquement fermée.
+    </span>
+  </div>
+
+  <!--* Current password -->
+  <div class="mb-4">
+    <label class="form-label fw-semibold">Mot de passe actuel</label>
+
+    <div class="pass-group">
+      <input
+        [type]="showCurrent ? 'text' : 'password'"
+        class="form-control pass-input"
+        [(ngModel)]="passwordData.currentPassword"
+        name="currentPassword"
+        placeholder="Entrer votre mot de passe actuel"
+      />
+
+      <span
+        class="ti toggle-password"
+        [ngClass]="showCurrent ? 'ti-eye' : 'ti-eye-off'"
+        (click)="showCurrent = !showCurrent"
+        tabindex="0"
+      ></span>
+    </div>
+  </div>
+
+  <div class="mb-4">
+
+    <h6 class="fw-semibold mb-1">Vérification par code</h6>
+
+    <p class="text-muted small mb-3">
+      Cliquez sur <strong> "Envoyer le code" </strong> pour recevoir un code sur votre adresse email,
+       puis saisissez-le ci-dessous et cliquez sur "Vérifier" pour déverrouiller les champs du nouveau mot de passe.
+    </p>
+
+    <!--* Send OTP code button -->
+    <button type="button" class="btn btn-outline-primary mb-3" (click)="sendOtp()" [disabled]="isSendingOtp">
+      <span *ngIf="isSendingOtp" class="spinner-border spinner-border-sm me-2"></span>
+      <i class="fa fa-paper-plane me-2"></i>
+      Envoyer le code
+    </button>
+
+    <!--* OTP code input + verify button -->
+    <div class="input-group">
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="passwordData.otpCode"
+        name="otpCode"
+        placeholder="Entrer le code"
+      />
+
+      <button type="button" class="btn btn-primary" (click)="verifyOtp()" [disabled]="isVerifyingOtp || !otpSent">
+        <span *ngIf="isVerifyingOtp" class="spinner-border spinner-border-sm me-2"></span>
+        <i class="fa fa-check me-2"></i>
+        Vérifier
+      </button>
+    </div>
+
+    <!--* Message for error/success -->
+    <div *ngIf="otpMessage" class="mt-2 alert" [ngClass]="{ 'alert-success': otpMessageType === 'success', 'alert-danger': otpMessageType === 'error' }">
+      {{ otpMessage }}
+    </div>
+
+  </div>
+
+  <!--* New password -->
+  <div class="mb-4">
+    <label class="form-label fw-semibold">Nouveau mot de passe</label>
+
+    <div class="pass-group">
+      <input
+        [type]="showNew ? 'text' : 'password'"
+        class="form-control pass-input"
+        [(ngModel)]="passwordData.newPassword"
+        name="newPassword"
+        placeholder="Entrer un nouveau mot de passe"
+        (input)="checkPasswordStrength(passwordData.newPassword)"
+        [disabled]="!otpVerified"
+      />
+
+      <span
+        class="ti toggle-password"
+        [ngClass]="showNew ? 'ti-eye' : 'ti-eye-off'"
+        (click)="showNew = !showNew"
+        tabindex="0"
+      ></span>
+    </div>
+  </div>
+
+  <!--* Password strength bar -->
+  <div
+  class="strength-meter mb-2"
+  [ngClass]="{
+    'poor-active': strengthLevel === 'poor',
+    'avg-active': strengthLevel === 'weak',
+    'heavy-active': strengthLevel === 'heavy'
+  }"
+>
+  <span [class.active]="strengthLevel === 'poor' || strengthLevel === 'weak' || strengthLevel === 'heavy'"></span>
+  <span [class.active]="strengthLevel === 'weak' || strengthLevel === 'heavy'"></span>
+  <span [class.active]="strengthLevel === 'heavy'"></span>
+  <span [class.active]="strengthLevel === 'heavy'"></span>
+</div>
+
+<p class="text-center fs-12" [style.color]="passwordInfoColor">
+  {{ passwordInfoMessage || "8+ caractères avec majuscule, minuscule, chiffre et symbole" }}
+</p>
+
+  <!--* Confirm password -->
+  <div class="mb-4">
+    <label class="form-label fw-semibold">Confirmer le mot de passe</label>
+
+    <div class="pass-group">
+      <input
+        [type]="showConfirm ? 'text' : 'password'"
+        class="form-control pass-input"
+        [(ngModel)]="passwordData.confirmPassword"
+        name="confirmPassword"
+        placeholder="Confirmer le mot de passe"
+        [disabled]="!otpVerified"
+      />
+
+      <span
+        class="ti toggle-password"
+        [ngClass]="showConfirm ? 'ti-eye' : 'ti-eye-off'"
+        (click)="showConfirm = !showConfirm"
+        tabindex="0"
+      ></span>
+    </div>
+  </div>
+
+  <!--* Password change message -->
+  <div *ngIf="passwordChangeMessage" class="mt-2 alert" [ngClass]="{ 'alert-success': passwordChangeType === 'success', 'alert-danger': passwordChangeType === 'error' }">
+    {{ passwordChangeMessage }}
+  </div>
+
+  <!--* Change password button -->
+  <div class="d-flex justify-content-end mt-4 mb-3">
+    <button type="button" class="btn btn-primary px-4" (click)="changePassword()" [disabled]="isChangingPassword || !otpVerified">
+      <span *ngIf="isChangingPassword" class="spinner-border spinner-border-sm me-2"></span>
+      <i class="fa fa-lock me-2"></i>
+      Changer le mot de passe
+    </button>
+  </div>
+</div>

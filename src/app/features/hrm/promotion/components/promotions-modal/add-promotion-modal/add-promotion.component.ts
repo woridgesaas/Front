@@ -10,7 +10,7 @@ import { Department } from '../../../../../../shared/models/models';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ModalHeaderComponent } from '../../../../../common/modal-header/modal-header.component';
 import { ModalFooterComponent } from '../../../../../common/modal-footer/modal-footer.component';
-import { UserApiService } from '../../../../services/user/user-api.service';
+import { UserService } from '../../../../services/user/user.service';
 
 @Component({
   selector: 'app-add-promotion-modal',
@@ -64,7 +64,7 @@ export class AddPromotionModalComponent implements OnInit {
 
   constructor(
     private promotionService: PromotionService,
-    private userApi: UserApiService
+    private userApi: UserService
   ) {}
 
   ngOnInit() {
@@ -179,7 +179,7 @@ if (!finalPost) {
 }
     this.loading = true;
 const payload = {
-  CIN: this.cin, 
+  CIN: this.cin,
   bonus: this.model.bonus || 0,
   newPostId: finalPost.id,
   promotionDate: this.promotionDate
@@ -190,11 +190,11 @@ const payload = {
 
       next: (res: any) => {
 
-  const data = res.data; 
+  const data = res.data;
 
   const promotion: Promotion = {
     id: data.id,
-    promotedEmployee: this.model.promotedEmployee, 
+    promotedEmployee: this.model.promotedEmployee,
     department: this.model.department,
     designationFrom: data.previousPostName,
     designationTo: data.newPostName,

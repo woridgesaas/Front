@@ -15,7 +15,7 @@ import {
   providedIn: 'root',
 })
 export class AuthService {
-  private gatewayUrl = `${process.env['NG_APP_GATEWAY_URL']}/api/auth`;
+  private baseUrl = `${process.env['NG_APP_GATEWAY_URL']}/api/auth`;
 
   constructor(
     private http: HttpClient,
@@ -23,21 +23,21 @@ export class AuthService {
   ) {}
 
   login(data: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.gatewayUrl}`, data);
+    return this.http.post<LoginResponse>(`${this.baseUrl}`, data);
   }
 
   requestPasswordReset(request: ForgotPasswordRequest): Observable<void> {
-    return this.http.post<void>(`${this.gatewayUrl}/request`, request);
+    return this.http.post<void>(`${this.baseUrl}/request`, request);
   }
 
   verifyOtpCode(verifyOtpRequest: VerifyOtpRequest): Observable<string> {
     return this.http
-      .post<VerifyOtpResponse>(`${this.gatewayUrl}/verify`, verifyOtpRequest)
+      .post<VerifyOtpResponse>(`${this.baseUrl}/verify`, verifyOtpRequest)
       .pipe(map((response) => response.data));
   }
 
   resetPassword(resetPasswordRequest: ResetPasswordRequest): Observable<void> {
-    return this.http.post<void>(`${this.gatewayUrl}/reset`, resetPasswordRequest);
+    return this.http.post<void>(`${this.baseUrl}/reset`, resetPasswordRequest);
   }
 
   saveToken(token: string) {
@@ -56,7 +56,7 @@ export class AuthService {
     const token = this.getToken();
     this.http
       .post(
-        `${this.gatewayUrl}/logout`,
+        `${this.baseUrl}/logout`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` },

@@ -46,7 +46,7 @@ export const routes = {
   //* Validation routes
   validateLeave: '/validation/validate-leave',
   justifyValidation: '/validation/justify-validation',
-  validatePersonalInfo: '/validation/validate-personal-info',
+  validatePersonalInformation: '/validation/validate-personal-information',
   validateAdministrativDocuments : '/validation/validate-documents',
   //* Holidays routes
   holidays: '/employees/holidays',

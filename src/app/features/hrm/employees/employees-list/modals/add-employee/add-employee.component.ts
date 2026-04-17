@@ -12,7 +12,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { Department } from '../../../../../../shared/models/models';
 import { Post } from '../../../../models/post/post.model';
 import { Role } from '../../../../models/role.enum';
-import { UserApiService } from '../../../../services/user/user-api.service';
+import { UserService } from '../../../../services/user/user.service';
 import { ToastService } from '../../../../../../shared/services/toast.service';
 import { FormValidationService } from '../../../../../../core/services/form-validation.service';
 
@@ -41,7 +41,7 @@ export class AddEmployeeComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private userApi: UserApiService,
+    private userApi: UserService,
     private toastService: ToastService,
     public validationService: FormValidationService
   ) {}

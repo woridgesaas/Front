@@ -1,0 +1,178 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h6 class="text-muted text-uppercase fs-11 fw-semibold mb-0 letter-spacing-1">Parcours de formation</h6>
+
+  <!--* Add button for HR/CEO only -->
+  <button *ngIf="canEdit" type="button" class="btn btn-sm btn-outline-primary" (click)="addEntry()">
+    <i class="ti ti-plus me-1"></i>Ajouter
+  </button>
+</div>
+
+<div class="alert alert-warning d-flex align-items-center gap-2 py-2 mb-3" *ngIf="controls.length === 0">
+  <i class="ti ti-info-circle fs-14 flex-shrink-0"></i>
+  <small>Aucune formation renseignée</small>
+</div>
+
+<div *ngFor="let group of controls; let i = index" [formGroup]="group" class="border rounded p-3 mb-3 bg-light-subtle">
+  <div class="d-flex justify-content-between align-items-start mb-3">
+    <div>
+      <span class="fw-semibold text-primary fs-13">
+        <i class="ti ti-school me-1"></i>
+        {{ group.get("title")?.value || "Nouvelle formation" }}
+      </span>
+      <div class="text-muted fs-11 mt-1" *ngIf="group.get('institution')?.value"> {{ group.get("institution")?.value }}</div>
+    </div>
+
+    <!--* Delete button for HR/CEO only -->
+    <button *ngIf="canEdit" type="button" class="btn btn-sm btn-ghost-danger" (click)="removeEntry(i)" title="Supprimer">
+      <i class="ti ti-trash fs-14"></i>
+    </button>
+  </div>
+
+  <!--* Form fields -->
+  <div class="row g-3">
+
+    <!--* Education Type -->
+    <div class="col-md-6">
+      <label class="form-label">Type</label>
+
+      <select class="form-select" formControlName="type" [class.is-invalid]="group.get('type')?.invalid && group.get('type')?.touched">
+        <option value="" disabled>Sélectionner</option>
+        <option *ngFor="let type of educationTypeOptions" [value]="type[0]">{{ type[1] }}</option>
+      </select>
+
+      <div class="invalid-feedback">Le type est requis</div>
+    </div>
+
+    <!--* Education Title -->
+    <div class="col-md-6">
+      <label class="form-label">Titre / Diplôme</label>
+
+      <input
+        type="text"
+        class="form-control"
+        formControlName="title"
+        maxlength="50"
+        [class.is-invalid]="group.get('title')?.invalid && group.get('title')?.touched"
+      />
+
+      <div class="invalid-feedback" *ngIf="group.get('title')?.errors?.['required']"> Le titre est requis </div>
+      <div class="invalid-feedback" *ngIf="group.get('title')?.errors?.['maxlength']"> La longueur maximale du titre est de 50 caractères </div>
+    </div>
+
+    <!--* Field of Study -->
+    <div class="col-md-6">
+      <label class="form-label">Spécialité</label>
+
+      <input
+        type="text"
+        class="form-control"
+        formControlName="fieldOfStudy"
+        maxlength="50"
+        placeholder="Ex: Génie logiciel"
+        [class.is-invalid]="group.get('fieldOfStudy')?.invalid && group.get('fieldOfStudy')?.touched"
+      />
+
+        <div class="invalid-feedback" *ngIf="group.get('fieldOfStudy')?.errors?.['required']">
+          La spécialité est requise
+        </div>
+
+        <div class="invalid-feedback" *ngIf="group.get('fieldOfStudy')?.errors?.['maxlength']">
+          La longueur maximale de la spécialité est de 50 caractères
+        </div>
+    </div>
+
+    <!--* Institution -->
+    <div class="col-md-6">
+      <label class="form-label">Établissement</label>
+
+      <input
+        type="text"
+        class="form-control"
+        formControlName="institution"
+        maxlength="50"
+        placeholder="Ex: Université Mohammed V"
+        [class.is-invalid]="group.get('institution')?.invalid && group.get('institution')?.touched"
+      />
+
+      <div class="invalid-feedback" *ngIf="group.get('institution')?.errors?.['required']">
+        L'établissement est requis
+      </div>
+
+      <div class="invalid-feedback" *ngIf="group.get('institution')?.errors?.['maxlength']">
+        La longueur maximale de l'établissement est de 50 caractères
+      </div>
+    </div>
+
+    <!--* Start date -->
+    <div class="col-md-6">
+      <label class="form-label">Date de début</label>
+
+      <div class="input-icon-end position-relative" [class]="'ngx-date-edu-start-' + i">
+        <input
+          type="text"
+          class="form-control datetimepicker"
+          formControlName="startDate"
+          bsDatepicker
+          [attr.container]="'.ngx-date-edu-start-' + i"
+          [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD/MM/YYYY' }"
+          placeholder="JJ/MM/AAAA"
+          [class.is-invalid]="group.get('startDate')?.invalid && group.get('startDate')?.touched"
+        />
+
+        <span class="input-icon-addon">
+          <i class="ti ti-calendar text-gray-7"></i>
+        </span>
+      </div>
+
+      <div class="invalid-feedback d-block" *ngIf="group.get('startDate')?.errors?.['required'] && group.get('startDate')?.touched">
+        La date de début est requise
+      </div>
+
+      <div class="invalid-feedback d-block" *ngIf="group.get('startDate')?.errors?.['futureDate'] && group.get('startDate')?.touched">
+        La date de début ne doit pas être dans le futur
+      </div>
+    </div>
+
+    <!--* End date -->
+    <div class="col-md-6">
+      <label class="form-label">Date de fin</label>
+
+      <div class="input-icon-end position-relative" [class]="'ngx-date-edu-end-' + i">
+        <input
+          type="text"
+          class="form-control datetimepicker"
+          formControlName="endDate"
+          bsDatepicker
+          [attr.container]="'.ngx-date-edu-end-' + i"
+          [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD/MM/YYYY' }"
+          placeholder="JJ/MM/AAAA (optionnel)"
+        />
+
+        <span class="input-icon-addon">
+          <i class="ti ti-calendar text-gray-7"></i>
+        </span>
+      </div>
+    </div>
+
+    <!--* Description -->
+    <div class="col-12">
+      <label class="form-label">Description</label>
+
+      <textarea
+        class="form-control"
+        formControlName="description"
+        rows="2"
+        placeholder="Informations complémentaires (optionnel)">
+      </textarea>
+    </div>
+  </div>
+
+  <!--* Save button -->
+  <div class="d-flex justify-content-end mt-3 pt-2 border-top">
+    <button type="button" class="btn btn-sm btn-primary" (click)="save(i)" [disabled]="savingIndex === i">
+      <span class="spinner-border spinner-border-sm me-1" *ngIf="savingIndex === i"></span>
+      <i class="ti ti-device-floppy me-1" *ngIf="savingIndex !== i"></i>
+      {{ group.get("_id")?.value ? "Enregistrer" : "Ajouter" }}
+    </button>
+  </div>
+</div>

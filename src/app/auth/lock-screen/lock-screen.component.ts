@@ -2,8 +2,8 @@ import { Component, Renderer2 } from '@angular/core';
 import { routes } from '../../shared/routes/routes';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { LogoComponent } from '../Common/logo/logo.component';
-import { FooterComponent } from '../Common/footer/footer.component';
+import { LogoComponent } from '../common/logo/logo.component';
+import { FooterComponent } from '../common/footer/footer.component';
 
 @Component({
     selector: 'app-lock-screen',

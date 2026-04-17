@@ -1,33 +1,46 @@
-export interface BankInformationDTO {
-  bankName: string;
-  accountNumber: string;
-  iban: string;
-  agency: string;
+//* Bank informatrion summary
+export interface BankInformationSummary {
+  id: string;
+  name: string;
+  accountHolderName: string;
+  RIB: string;
+  IBAN: string;
+  agencyName: string;
+  agencyCity: string;
 }
 
-export interface EducationDTO {
-  university: string;
+//* Education summary
+export interface EducationSummary {
+  id: string;
+  type: string;
+  title: string;
+  startDate: string;
+  endDate: string | null;
+  description: string;
   fieldOfStudy: string;
-  degree: string;
-  startFinalYear: string;
+  institution: string;
 }
 
-export interface ProfessionalExperienceDTO {
-  companyName: string;
-  jobTitle: string;
+//* Professional experience
+export interface ProfessionalExperienceSummary {
+  id: string;
   employmentType: string;
-  location: string;
+  experienceLevel: string;
+  companyName: string;
+  companyLocation: string;
+  jobTitle: string;
   startDate: string;
   endDate: string | null;
   isCurrent: boolean;
   description: string;
-  logoPath: string | null;
 }
 
+//* Employee profile
 export interface EmployeeProfileResponse {
   id: string;
   firstName: string;
   lastName: string;
+  CIN: string;
   email: string;
   phoneNumber: string;
   address: string | null;
@@ -37,7 +50,7 @@ export interface EmployeeProfileResponse {
   postName: string;
   createdAt: string;
   birthDate: string | null;
-  bankInformation: BankInformationDTO | null;
-  educations: EducationDTO[];
-  experiences: ProfessionalExperienceDTO[];
+  bankInformationSummary: BankInformationSummary | null;
+  educationSummaries: EducationSummary[];
+  experienceSummaries: ProfessionalExperienceSummary[];
 }

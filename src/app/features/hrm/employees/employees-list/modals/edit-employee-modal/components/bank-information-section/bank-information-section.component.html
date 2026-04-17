@@ -1,0 +1,124 @@
+<div *ngIf="!form" class="text-center py-3">Loading...</div>
+
+<div *ngIf="form" [formGroup]="form">
+  <h6 class="text-muted text-uppercase fs-11 fw-semibold mb-1 letter-spacing-1"> Informations bancaires </h6>
+
+  <div class="alert alert-info d-flex align-items-center gap-2 py-2 mb-3">
+    <i class="ti ti-lock fs-14 flex-shrink-0"></i>
+    <small>
+      Ces informations sont confidentielles et utilisées uniquement pour le traitement de la paie
+    </small>
+  </div>
+
+  <div class="alert alert-warning d-flex align-items-center gap-2 py-2 mb-3" *ngIf="isNew">
+    <i class="ti ti-info-circle fs-14 flex-shrink-0"></i>
+    <small>
+      Aucune information bancaire renseignée. Remplissez le formulaire pour en ajouter une
+    </small>
+  </div>
+
+  <div class="alert alert-danger d-flex align-items-center gap-2 py-2 mb-3" *ngIf="isNew && !canEditDirectly">
+    <i class="ti ti-lock fs-14 flex-shrink-0"></i>
+    <small>
+      Vous n'avez pas la permission d'ajouter des informations bancaires
+    </small>
+  </div>
+
+  <div class="row g-3 mb-3">
+
+    <!--* Banque name -->
+    <div class="col-12">
+      <label class="form-label">Banque</label>
+
+      <select
+        class="form-select"
+        formControlName="name"
+        [class.is-invalid]="isInvalid('name')"
+      >
+        <option value="" disabled>Sélectionner une banque</option>
+        <option *ngFor="let bank of bankOptions" [value]="bank[0]">
+          {{ bank[1] }}
+        </option>
+      </select>
+
+      <div class="invalid-feedback">La banque est requise</div>
+    </div>
+
+    <!--* Account holder name -->
+    <div class="col-12">
+      <label class="form-label">Titulaire du compte</label>
+
+      <input
+        type="text"
+        class="form-control"
+        formControlName="accountHolderName"
+        placeholder="Nom complet tel qu'il apparaît sur le RIB"
+        [class.is-invalid]="isInvalid('accountHolderName')"
+      />
+
+      <div class="invalid-feedback">Le titulaire du compte doit contenir entre 3 et 50 caractères</div>
+    </div>
+
+    <!--* RIB -->
+    <div class="col-md-6">
+      <label class="form-label">RIB</label>
+
+      <input
+        type="text"
+        class="form-control font-monospace"
+        formControlName="RIB"
+        placeholder="24 chiffres"
+        maxlength="24"
+        [class.is-invalid]="isInvalid('RIB')"
+      />
+
+      <div class="invalid-feedback"> RIB doit contenir exactement 24 chiffres </div>
+    </div>
+
+    <!--* IBAN -->
+    <div class="col-md-6">
+      <label class="form-label">IBAN</label>
+
+      <input
+        type="text"
+        class="form-control font-monospace"
+        formControlName="IBAN"
+        placeholder="MA64..."
+        maxlength="28"
+        [class.is-invalid]="isInvalid('IBAN')"
+      />
+
+      <div class="invalid-feedback"> IBAN doit commencer par MA et contenir 28 caractères </div>
+    </div>
+
+    <!--* Agency name -->
+    <div class="col-md-6">
+      <label class="form-label">Nom de l'agence</label>
+
+      <input
+        type="text"
+        class="form-control"
+        formControlName="agencyName"
+        placeholder="Ex: Agence Hassan II"
+        [class.is-invalid]="isInvalid('agencyName')"
+      />
+
+      <div class="invalid-feedback"> Le nom de l'agence doit contenir entre 5 et 50 caractères </div>
+    </div>
+
+    <!--* Agency city -->
+    <div class="col-md-6">
+      <label class="form-label">Ville de l'agence</label>
+
+      <input
+        type="text"
+        class="form-control"
+        formControlName="agencyCity"
+        placeholder="Ex: Casablanca"
+        [class.is-invalid]="isInvalid('agencyCity')"
+      />
+
+      <div class="invalid-feedback"> La ville de l'agence doit contenir entre 3 et 50 caractères </div>
+    </div>
+  </div>
+</div>

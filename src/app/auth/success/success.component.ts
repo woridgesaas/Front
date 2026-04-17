@@ -2,9 +2,9 @@ import { Component, Renderer2 } from '@angular/core';
 import { routes } from '../../shared/routes/routes';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { LogoComponent } from '../Common/logo/logo.component';
-import { DescriptionComponent } from '../Common/description/description.component';
-import { FooterComponent } from '../Common/footer/footer.component';
+import { LogoComponent } from '../common/logo/logo.component';
+import { DescriptionComponent } from '../common/description/description.component';
+import { FooterComponent } from '../common/footer/footer.component';
 
 @Component({
   selector: 'app-success',

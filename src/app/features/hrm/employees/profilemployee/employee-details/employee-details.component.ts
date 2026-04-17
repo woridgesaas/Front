@@ -3,8 +3,12 @@ import { routes } from '../../../../../shared/routes/routes';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterModule, ActivatedRoute } from '@angular/router';
 import { EmployeeDetailModalComponent } from '../modals/employee-detail-modal/employee-detail-modal.component';
-import { UserApiService } from '../../../services/user/user-api.service';
+import { UserService } from '../../../services/user/user.service';
 import { EmployeeProfileResponse } from '../../../models/user/employee-profile.model';
+import { BankNamePipe } from '../../../../../shared/pipe/bank-name.pipe';
+import { ExperienceLevelPipe } from '../../../../../shared/pipe/experience-level.pipe';
+import { EmploymentTypePipe } from '../../../../../shared/pipe/employment-type.pipe';
+import { EducationTypePipe } from '../../../../../shared/pipe/education-type.pipe';
 
 @Component({
   selector: 'app-employee-details',
@@ -15,6 +19,10 @@ import { EmployeeProfileResponse } from '../../../models/user/employee-profile.m
     RouterModule,
     RouterLink,
     EmployeeDetailModalComponent,
+    BankNamePipe,
+    EducationTypePipe,
+    EmploymentTypePipe,
+    ExperienceLevelPipe,
   ],
 })
 export class EmployeeDetailsComponent implements OnInit {
@@ -24,11 +32,12 @@ export class EmployeeDetailsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private userApi: UserApiService
+    private userApi: UserService,
   ) {}
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
+
     if (id) {
       this.userApi.getProfile(id).subscribe({
         next: (data) => {
@@ -36,9 +45,9 @@ export class EmployeeDetailsComponent implements OnInit {
           this.isLoading = false;
         },
         error: (err) => {
-          console.error('❌ Erreur chargement profil:', err);
+          console.error('Erreur lors du chargement du profil');
           this.isLoading = false;
-        }
+        },
       });
     }
   }

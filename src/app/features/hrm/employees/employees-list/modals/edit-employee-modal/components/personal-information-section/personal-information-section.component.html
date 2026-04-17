@@ -1,0 +1,134 @@
+<div *ngIf="!form" class="text-center py-3">Loading...</div>
+
+<div *ngIf="form" [formGroup]="form">
+  <h6 class="text-muted text-uppercase fs-11 fw-semibold mb-3 letter-spacing-1">Informations personnelles</h6>
+
+  <div class="row g-3 mb-3">
+
+    <!--* First Name -->
+    <div class="col-md-6">
+      <label class="form-label">Prénom</label>
+
+      <input
+        type="text"
+        class="form-control"
+        formControlName="firstName"
+        maxlength="50"
+        placeholder="Prénom"
+        [class.is-invalid]="isInvalid('firstName')"
+      />
+
+      <div class="invalid-feedback" *ngIf="form.get('firstName')?.errors?.['required']"> Le prénom est requis </div>
+      <div class="invalid-feedback" *ngIf="form.get('firstName')?.errors?.['maxlength']"> La longueur maximale du prénom est de 50 caractères </div>
+    </div>
+
+    <!--* Last Name -->
+    <div class="col-md-6">
+      <label class="form-label"> Nom</label>
+
+      <input
+        type="text"
+        class="form-control"
+        formControlName="lastName"
+        maxlength="50"
+        placeholder="Nom de famille"
+        [class.is-invalid]="isInvalid('lastName')"
+      />
+
+      <div class="invalid-feedback" *ngIf="form.get('lastName')?.errors?.['required']"> Le nom est requis </div>
+      <div class="invalid-feedback" *ngIf="form.get('lastName')?.errors?.['maxlength']"> La longeur maximale du nom est de 50 caractères </div>
+    </div>
+
+    <!--* CIN-->
+    <div class="col-md-6">
+      <label class="form-label"> CIN </label>
+
+      <input
+        type="text"
+        class="form-control"
+        formControlName="cin"
+        maxlength="8"
+        placeholder="Ex: F123456"
+        [class.is-invalid]="isInvalid('cin')"
+      />
+
+      <div class="invalid-feedback" *ngIf="form.get('cin')?.errors?.['required']"> CIN est requis </div>
+      <div class="invalid-feedback" *ngIf="form.get('cin')?.errors?.['pattern']"> Format invalide </div>
+    </div>
+
+    <!--* Birth Date -->
+    <div class="col-md-6">
+      <label class="form-label">Date de naissance</label>
+
+      <div class="input-icon-end position-relative ngx-date-personal-birth">
+        <input
+          type="text"
+          class="form-control datetimepicker"
+          formControlName="birthDate"
+          bsDatepicker
+          container=".ngx-date-personal-birth"
+          [bsConfig]="{
+            adaptivePosition: true,
+            dateInputFormat: 'DD/MM/YYYY',
+          }"
+          placeholder="JJ/MM/AAAA"
+          [class.is-invalid]="isInvalid('birthDate')"
+        />
+        <span class="input-icon-addon">
+          <i class="ti ti-calendar text-gray-7"></i>
+        </span>
+      </div>
+
+      <div class="invalid-feedback d-block" *ngIf="form.get('birthDate')?.errors?.['futureOrToday'] && form.get('birthDate')?.touched"> La date de naissance doit être dans le passé uniquement </div>
+      <div class="invalid-feedback d-block" *ngIf="form.get('birthDate')?.errors?.['invalidDate']"> Format de date de naissance invalide </div>
+    </div>
+
+    <!--* Email -->
+    <div class="col-md-6">
+      <label class="form-label">Adresse email</label>
+
+      <input
+        type="email"
+        class="form-control"
+        formControlName="email"
+        placeholder="exemple@entreprise.ma"
+        [class.is-invalid]="isInvalid('email')"
+      />
+
+      <div class="invalid-feedback" *ngIf="form.get('email')?.errors?.['required']"> Adresse email requis </div>
+      <div class="invalid-feedback" *ngIf="form.get('email')?.errors?.['pattern']"> Adresse email invalide </div>
+      <div class="invalid-feedback" *ngIf="form.get('email')?.errors?.['maxlength']"> La longueur maximale de l'adresse email est de 50 caractères </div>
+    </div>
+
+    <!--* Phone number -->
+    <div class="col-md-6">
+      <label class="form-label"> Téléphone </label>
+
+      <input
+        type="tel"
+        class="form-control"
+        formControlName="phone"
+        placeholder="0612345678"
+        maxlength="10"
+        [class.is-invalid]="isInvalid('phone')"
+      />
+
+      <div class="invalid-feedback" *ngIf="form.get('phone')?.errors?.['required']"> Téléphone requis </div>
+      <div class="invalid-feedback" *ngIf="form.get('phone')?.errors?.['pattern']"> Numéro marocain invalide </div>
+    </div>
+
+    <!--* Address -->
+    <div class="col-12">
+      <label class="form-label">Adresse complète</label>
+
+      <textarea
+        class="form-control"
+        formControlName="address"
+        rows="2"
+        placeholder="Numéro, rue, quartier, ville"
+      ></textarea>
+
+      <div class="invalid-feedback" *ngIf="form.get('address')?.errors?.['maxlength']"> La longueur maximale de l'adresse est de 500 caractères </div>
+    </div>
+  </div>
+</div>
