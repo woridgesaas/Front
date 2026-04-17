@@ -8,8 +8,12 @@ import { CommonModule } from '@angular/common';
   templateUrl: './modal-footer.component.html',
 })
 export class ModalFooterComponent {
-  @Output() cancel = new EventEmitter<void>();
   @Input() disabled = false;
+  @Input() loading = false;
   @Input() submitText = 'Enregistrer';
   @Input() submitIcon?: string;
+  @Input() cancelText = 'Annuler';
+
+  @Output() cancel = new EventEmitter<void>();
+  @Output() submit = new EventEmitter<void>();
 }

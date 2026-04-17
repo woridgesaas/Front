@@ -1,354 +1,475 @@
 <div class="content">
-  <!-- Fil d'ariane -->
-  <div
-    class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-4"
-  >
-    <div class="my-auto">
-      <h6 class="fw-medium d-inline-flex align-items-center mb-0">
-        <a [routerLink]="routes.employeeList" class="text-decoration-none">
-          <i class="ti ti-arrow-left me-2"></i>Détail de l'employé
-        </a>
-      </h6>
+
+  <!--* Loading state -->
+  @if (isLoading) {
+    <div class="d-flex justify-content-center align-items-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Chargement...</span>
+      </div>
     </div>
-  </div>
-  <!-- /Fil d'ariane -->
+  }
 
-  <div class="row g-3">
-    <!-- Sidebar gauche -->
-    <div class="col-xl-4">
-      <!-- Carte profil principal -->
-      <div class="card shadow-sm mb-3">
-        <div class="card-body text-center p-4">
-          <!-- Photo de profil -->
-          <img
-            [src]="
-              employee?.picturePath
-                ? employee?.picturePath
-                : 'assets/img/users/user-01.jpg'
-            "
-            class="rounded-circle border border-3 border-white shadow-sm"
-            width="120"
-            height="120"
-            alt="Photo de profil"
-          />
-          <h5 class="mb-2">
-            {{ employee?.firstName }} {{ employee?.lastName }}
-          </h5>
-          <div class="mb-3">
-            <span class="badge text-bg-light text-dark me-2">
-              <i class="ti ti-point-filled me-1"></i>{{ employee?.postName }}
-            </span>
-          </div>
-          <!-- Informations rapides -->
-          <div class="border-top pt-3">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <span class="text-muted"
-                ><i class="ti ti-users me-1"></i>Équipe</span
-              >
-              <span class="fw-semibold">{{ employee?.departmentName }}</span>
-            </div>
+  @if (!isLoading) {
 
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <span class="text-muted">
-                <i class="ti ti-calendar-check me-1"></i>Embauche
+    <div class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-4">
+      <div class="my-auto">
+        <h6 class="fw-medium d-inline-flex align-items-center mb-0">
+          <a [routerLink]="routes.employeeList" class="text-decoration-none">
+            <i class="ti ti-arrow-left me-2"></i>Détail de l'employé
+          </a>
+        </h6>
+      </div>
+    </div>
+
+    <div class="row g-3">
+
+      <!--* Left sidebar -->
+      <div class="col-xl-4">
+
+        <!--* Personal information -->
+        <div class="card shadow-sm mb-3">
+          <div class="card-body text-center p-4">
+
+            <!--* Profile picture -->
+            <img
+              [src]="employee?.picturePath ?? 'assets/img/users/user-01.jpg'"
+              class="rounded-circle border border-3 border-white shadow-sm mb-3"
+              width="120"
+              height="120"
+              alt="Photo de profil"
+            />
+
+            <h5 class="mb-1">
+              {{ employee?.firstName }} {{ employee?.lastName }}
+            </h5>
+
+            <div class="mb-3">
+              <span class="badge text-bg-light text-dark">
+                <i class="ti ti-point-filled me-1"></i>{{ employee?.postName || "—" }}
               </span>
-              <span class="fw-semibold">{{
-                employee?.createdAt | date : "dd MMM yyyy"
-              }}</span>
             </div>
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <span class="text-muted">
-                <i class="ti ti-calendar-check me-1"></i>
-                Rôle</span
-              >
-              <span class="fw-semibold">{{
-                employee?.role?.replace("ROLE_", "")
-              }}</span>
-            </div>
-          </div>
 
-          <!-- Bouton modifier -->
-          <div class="mt-3">
-            <a
-              href="javascript:void(0);"
-              class="btn btn-primary w-100"
-              data-bs-toggle="modal"
-              data-bs-target="#edit_employee_detail"
-            >
-              <i class="ti ti-edit me-2"></i>Modifier les informations
-            </a>
+            <div class="border-top pt-3 text-start">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="text-muted small">
+                  <i class="ti ti-users me-1"></i>Équipe
+                </span>
+                <span class="fw-semibold small">
+                  {{ employee?.departmentName || "—" }}
+                </span>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="text-muted small">
+                  <i class="ti ti-calendar-check me-1"></i>Embauche
+                </span>
+                <span class="fw-semibold small">
+                  {{ employee?.createdAt | date: "dd MMM yyyy" }}
+                </span>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="text-muted small">
+                  <i class="ti ti-shield me-1"></i>Rôle
+                </span>
+                <span class="fw-semibold small">
+                  {{ employee?.role?.replace("ROLE_", "") || "—" }}
+                </span>
+              </div>
+            </div>
+
+            <!--* Update personal information button -->
+            <div class="mt-3">
+              <button
+                type="button"
+                class="btn btn-primary w-100"
+                data-bs-toggle="modal"
+                data-bs-target="#edit_employee_detail"
+              >
+                <i class="ti ti-edit me-2"></i>Modifier les informations
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <!--* Contact information -->
+        <div class="card shadow-sm mb-3">
+          <div class="card-header bg-white">
+            <h6 class="mb-0">
+              <i class="ti ti-address-book me-2 text-primary"></i>Informations de contact
+            </h6>
+          </div>
+          <div class="card-body">
+
+            <div class="mb-3">
+              <small class="text-muted d-block mb-1">
+                <i class="ti ti-phone me-1"></i>Téléphone
+              </small>
+              <span class="fw-semibold">{{ employee?.phoneNumber || "—" }}</span>
+            </div>
+
+            <div class="mb-3">
+              <small class="text-muted d-block mb-1">
+                <i class="ti ti-mail me-1"></i>Email
+              </small>
+              <a href="mailto:{{ employee?.email }}" class="text-primary text-decoration-none fw-semibold">
+                {{ employee?.email || "—" }}
+                <i class="ti ti-copy ms-2"></i>
+              </a>
+            </div>
+
+            <div class="mb-3">
+              <small class="text-muted d-block mb-1">
+                <i class="ti ti-cake me-1"></i>Date de naissance
+              </small>
+              <span class="fw-semibold">
+                {{ employee?.birthDate ? (employee?.birthDate | date: "dd MMMM yyyy") : "—" }}
+              </span>
+            </div>
+
+            <div>
+              <small class="text-muted d-block mb-1">
+                <i class="ti ti-map-pin me-1"></i>Adresse
+              </small>
+              <span class="fw-semibold">{{ employee?.address || "—" }}</span>
+            </div>
+
           </div>
         </div>
       </div>
 
-      <!-- Informations de contact -->
-      <div class="card shadow-sm mb-3">
-        <div class="card-header bg-white">
-          <h6 class="mb-0">Informations de contact</h6>
-        </div>
-        <div class="card-body">
-          <div class="mb-3">
-            <small class="text-muted d-block mb-1">
-              <i class="ti ti-phone me-1"></i>Téléphone
-            </small>
-            <span class="fw-semibold">{{ employee?.phoneNumber }}</span>
-          </div>
-          <div class="mb-3">
-            <small class="text-muted d-block mb-1">
-              <i class="ti ti-mail me-1"></i>Email
-            </small>
-            <a
-              href="mailto:{{ employee?.email }}"
-              class="text-primary text-decoration-none fw-semibold"
+      <!--* Right sidebar -->
+      <div class="col-xl-8">
+        <div class="accordion" id="employeeDetailsAccordion">
+
+          <!--* Bank information -->
+          <div class="card shadow-sm mb-3">
+            <div class="card-header bg-white" id="headingBank">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                  <div class="section-icon section-icon--success me-3">
+                    <i class="ti ti-building-bank text-success"></i>
+                  </div>
+                  <h5 class="mb-0">Informations Bancaires</h5>
+                </div>
+                <button
+                  class="btn btn-sm btn-light"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#bankDetails"
+                  aria-expanded="true"
+                  aria-controls="bankDetails"
+                >
+                  <i class="ti ti-chevron-down"></i>
+                </button>
+              </div>
+            </div>
+
+            <div
+              id="bankDetails"
+              class="collapse show"
+              aria-labelledby="headingBank"
+              data-bs-parent="#employeeDetailsAccordion"
             >
-              {{ employee?.email }}
-              <i class="ti ti-copy ms-2"></i>
-            </a>
-          </div>
-          <div class="mb-3">
-            <small class="text-muted d-block mb-1">
-              <i class="ti ti-cake me-1"></i>Date de naissance
-            </small>
-            <span class="fw-semibold">{{
-              employee?.birthDate | date : "dd MMMM yyyy"
-            }}</span>
-          </div>
-          <div>
-            <small class="text-muted d-block mb-1">
-              <i class="ti ti-map-pin me-1"></i>Adresse
-            </small>
-            <span class="fw-semibold">{{ employee?.address || "—" }}</span>
-          </div>
-        </div>
-      </div>
-    </div>
+              <div class="card-body">
+                @if (employee?.bankInformationSummary) {
+                  <div class="row g-3">
 
-    <!-- Contenu principal -->
-    <div class="col-xl-8">
-      <!-- Accordion avec fermeture automatique -->
-      <div class="accordion" id="employeeDetailsAccordion">
-        <!-- Informations Bancaires -->
-        <div class="card shadow-sm mb-3">
-          <div class="card-header bg-white" id="headingBank">
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="d-flex align-items-center">
-                <div
-                  class="rounded-circle bg-success bg-opacity-10 d-flex align-items-center justify-content-center me-3"
-                  style="width: 40px; height: 40px"
-                >
-                  <i class="ti ti-building-bank text-success"></i>
-                </div>
-                <h5 class="mb-0">Informations Bancaires</h5>
-              </div>
-              <button
-                class="btn btn-sm btn-light"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#bankDetails"
-                aria-expanded="true"
-                aria-controls="bankDetails"
-              >
-                <i class="ti ti-chevron-down"></i>
-              </button>
-            </div>
-          </div>
-          <div
-            id="bankDetails"
-            class="collapse show"
-            aria-labelledby="headingBank"
-            data-bs-parent="#employeeDetailsAccordion"
-          >
-            <div class="card-body">
-              <div class="row g-3">
-                <div class="col-md-6">
-                  <div class="border rounded p-3 h-100">
-                    <small class="text-muted d-block mb-2">
-                      <i class="ti ti-building me-1"></i>Nom de la banque
-                    </small>
-                    <h6 class="mb-0">
-                      {{ employee?.bankInformation?.bankName || "—" }}
-                    </h6>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="border rounded p-3 h-100">
-                    <small class="text-muted d-block mb-2">
-                      <i class="ti ti-hash me-1"></i>Numéro de compte
-                    </small>
-                    <h6 class="mb-0">
-                      {{ employee?.bankInformation?.accountNumber || "—" }}
-                    </h6>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="border rounded p-3 h-100">
-                    <small class="text-muted d-block mb-2">
-                      <i class="ti ti-code me-1"></i>Code IBAN
-                    </small>
-                    <h6 class="mb-0">
-                      {{ employee?.bankInformation?.iban || "—" }}
-                    </h6>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="border rounded p-3 h-100">
-                    <small class="text-muted d-block mb-2">
-                      <i class="ti ti-map-pin me-1"></i>Agence
-                    </small>
-                    <h6 class="mb-0">
-                      {{ employee?.bankInformation?.agency || "—" }}
-                    </h6>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Détails de Formation -->
-        <div class="card shadow-sm mb-3">
-          <div class="card-header bg-white" id="headingEducation">
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="d-flex align-items-center">
-                <div
-                  class="rounded-circle bg-info bg-opacity-10 d-flex align-items-center justify-content-center me-3"
-                  style="width: 40px; height: 40px"
-                >
-                  <i class="ti ti-school text-info"></i>
-                </div>
-                <h5 class="mb-0">Détails de Formation</h5>
-              </div>
-              <button
-                class="btn btn-sm btn-light"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#educationDetails"
-                aria-expanded="false"
-                aria-controls="educationDetails"
-              >
-                <i class="ti ti-chevron-down"></i>
-              </button>
-            </div>
-          </div>
-          <div
-            id="educationDetails"
-            class="collapse"
-            aria-labelledby="headingEducation"
-            data-bs-parent="#employeeDetailsAccordion"
-          >
-            <div class="card-body">
-              @for (edu of employee?.educations; track edu) {
-              <div class="d-flex mb-4 pb-3 border-bottom">
-                <div class="flex-shrink-0 me-3">
-                  <div
-                    class="rounded-circle bg-primary bg-opacity-10 d-flex align-items-center justify-content-center"
-                    style="width: 40px; height: 40px"
-                  >
-                    <i class="ti ti-book text-primary"></i>
-                  </div>
-                </div>
-                <div class="flex-grow-1">
-                  <div
-                    class="d-flex justify-content-between align-items-start mb-2"
-                  >
-                    <div>
-                      <h6 class="mb-1">{{ edu.university }}</h6>
-                      <span class="badge text-bg-light text-dark">{{
-                        edu.fieldOfStudy
-                      }}</span>
+                    <!--* Bank name -->
+                    <div class="col-md-6">
+                      <div class="info-tile">
+                        <small class="text-muted">
+                          <i class="ti ti-building me-1"></i>Nom de la banque
+                        </small>
+                        <h6 class="mb-0">
+                          {{ employee?.bankInformationSummary?.name | bankName }}
+                        </h6>
+                      </div>
                     </div>
-                    <span class="badge text-bg-light text-dark">{{
-                      edu.startFinalYear
-                    }}</span>
-                  </div>
-                  <p class="text-muted small mb-0">{{ edu.degree }}</p>
-                </div>
-              </div>
-              } @if (!employee?.educations?.length) {
-              <p class="text-muted">Aucune formation renseignée</p>
-              }
-            </div>
-          </div>
-        </div>
 
-        <!-- Expérience Professionnelle -->
-        <div class="card shadow-sm">
-          <div class="card-header bg-white" id="headingExperience">
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="d-flex align-items-center">
-                <div
-                  class="rounded-circle bg-warning bg-opacity-10 d-flex align-items-center justify-content-center me-3"
-                  style="width: 40px; height: 40px"
-                >
-                  <i class="ti ti-briefcase text-warning"></i>
-                </div>
-                <h5 class="mb-0">Expérience Professionnelle</h5>
+                    <!--* Account holder -->
+                    <div class="col-md-6">
+                      <div class="info-tile">
+                        <small class="text-muted">
+                          <i class="ti ti-user me-1"></i>Titulaire du compte
+                        </small>
+                        <h6 class="mb-0">
+                          {{ employee?.bankInformationSummary?.accountHolderName || "—" }}
+                        </h6>
+                      </div>
+                    </div>
+
+                    <!--* RIB -->
+                    <div class="col-md-6">
+                      <div class="info-tile">
+                        <small class="text-muted">
+                          <i class="ti ti-hash me-1"></i>RIB
+                        </small>
+                        <h6 class="mb-0 font-monospace small">
+                          {{ employee?.bankInformationSummary?.RIB || "—" }}
+                        </h6>
+                      </div>
+                    </div>
+
+                    <!--* IBAN -->
+                    <div class="col-md-6">
+                      <div class="info-tile">
+                        <small class="text-muted">
+                          <i class="ti ti-code me-1"></i>IBAN
+                        </small>
+                        <h6 class="mb-0 font-monospace small">
+                          {{ employee?.bankInformationSummary?.IBAN || "—" }}
+                        </h6>
+                      </div>
+                    </div>
+
+                    <!--* Agency name -->
+                    <div class="col-md-6">
+                      <div class="info-tile">
+                        <small class="text-muted">
+                          <i class="ti ti-map-pin me-1"></i>Agence
+                        </small>
+                        <h6 class="mb-0">
+                          {{ employee?.bankInformationSummary?.agencyName || "—" }}
+                        </h6>
+                      </div>
+                    </div>
+
+                    <!--* Agency city -->
+                    <div class="col-md-6">
+                      <div class="info-tile">
+                        <small class="text-muted">
+                          <i class="ti ti-building-community me-1"></i>Ville de l'agence
+                        </small>
+                        <h6 class="mb-0">
+                          {{ employee?.bankInformationSummary?.agencyCity || "—" }}
+                        </h6>
+                      </div>
+                    </div>
+
+                  </div>
+                } @else {
+                  <p class="text-muted mb-0">
+                    <i class="ti ti-info-circle me-1"></i>
+                    Aucune information bancaire renseignée
+                  </p>
+                }
               </div>
-              <button
-                class="btn btn-sm btn-light"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#experienceDetails"
-                aria-expanded="false"
-                aria-controls="experienceDetails"
-              >
-                <i class="ti ti-chevron-down"></i>
-              </button>
             </div>
           </div>
-          <div
-            id="experienceDetails"
-            class="collapse"
-            aria-labelledby="headingExperience"
-            data-bs-parent="#employeeDetailsAccordion"
-          >
-            <div class="card-body">
-              @for (exp of employee?.experiences; track exp) {
-              <div class="d-flex mb-4 pb-3 border-bottom">
-                <div class="flex-shrink-0 me-3">
-                  <div
-                    class="rounded-circle bg-primary d-flex align-items-center justify-content-center"
-                    style="width: 40px; height: 40px"
-                  >
-                    <i class="ti ti-briefcase text-white"></i>
+
+          <!--* Education -->
+          <div class="card shadow-sm mb-3">
+            <div class="card-header bg-white" id="headingEducation">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                  <div class="section-icon section-icon--info me-3">
+                    <i class="ti ti-school text-info"></i>
                   </div>
-                </div>
-                <div class="flex-grow-1">
-                  <div
-                    class="d-flex justify-content-between align-items-start mb-2"
-                  >
-                    <div>
-                      <h6 class="mb-1">{{ exp.companyName }}</h6>
-                      <span class="badge text-bg-light text-dark mb-2">
-                        <i class="ti ti-point-filled me-1"></i
-                        >{{ exp.jobTitle }}
+                  <h5 class="mb-0">
+                    Formations
+                    @if (employee?.educationSummaries?.length) {
+                      <span class="badge bg-info bg-opacity-10 text-info ms-2 fs-12">
+                        {{ employee?.educationSummaries?.length }}
                       </span>
-                      <p class="text-secondary small mb-0">
-                        <i class="ti ti-calendar me-1"></i>
-                        {{ exp.startDate | date : "MMM yyyy" }} —
-                        {{
-                          exp.isCurrent
-                            ? "Présent"
-                            : (exp.endDate | date : "MMM yyyy")
-                        }}
-                      </p>
-                    </div>
-                    <span *ngIf="exp.isCurrent" class="badge bg-success"
-                      >En cours</span
-                    >
-                  </div>
+                    }
+                  </h5>
                 </div>
+                <button
+                  class="btn btn-sm btn-light"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#educationDetails"
+                  aria-expanded="false"
+                  aria-controls="educationDetails"
+                >
+                  <i class="ti ti-chevron-down"></i>
+                </button>
               </div>
-              } @if (!employee?.experiences?.length) {
-              <p class="text-muted">Aucune expérience renseignée</p>
-              }
+            </div>
+
+            <div
+              id="educationDetails"
+              class="collapse"
+              aria-labelledby="headingEducation"
+              data-bs-parent="#employeeDetailsAccordion"
+            >
+              <div class="card-body">
+                @if (employee?.educationSummaries?.length) {
+                  @for (education of employee?.educationSummaries; track education.id) {
+                    <div class="d-flex mb-4 pb-3 border-bottom">
+
+                      <!--* Icon -->
+                      <div class="timeline-icon timeline-icon--info me-3">
+                        <i class="ti ti-book text-info"></i>
+                      </div>
+
+                      <!--* Content -->
+                      <div class="flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-start mb-1">
+
+                          <!--* Institution + field + type -->
+                          <div>
+                            <h6 class="mb-1">{{ education.institution }}</h6>
+                            <span class="badge text-bg-light text-dark me-1">
+                              {{ education.fieldOfStudy }}
+                            </span>
+                            <span class="badge text-bg-light text-secondary">
+                              {{ education.type | educationType }}
+                            </span>
+                          </div>
+
+                          <!--* Duration -->
+                          <div class="text-end text-nowrap ms-2">
+                            <small class="text-muted">
+                              {{ education.startDate | date: "MMM yyyy" }}
+                              —
+                              {{ education.endDate ? (education.endDate | date: "MMM yyyy") : "En cours" }}
+                            </small>
+                          </div>
+
+                        </div>
+
+                        <!--* Title -->
+                        <p class="fw-semibold mb-1 text-primary">
+                          {{ education.title }}
+                        </p>
+
+                        <!--* Description -->
+                        @if (education.description) {
+                          <p class="text-muted small mb-0">
+                            {{ education.description }}
+                          </p>
+                        }
+                      </div>
+
+                    </div>
+                  }
+                } @else {
+                  <p class="text-muted mb-0">
+                    <i class="ti ti-info-circle me-1"></i>
+                    Aucune formation renseignée
+                  </p>
+                }
+              </div>
             </div>
           </div>
+
+          <!--* Professional experience -->
+          <div class="card shadow-sm mb-3">
+            <div class="card-header bg-white" id="headingExperience">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                  <div class="section-icon section-icon--warning me-3">
+                    <i class="ti ti-briefcase text-warning"></i>
+                  </div>
+                  <h5 class="mb-0">
+                    Expériences Professionnelles
+                    @if (employee?.experienceSummaries?.length) {
+                      <span class="badge bg-warning bg-opacity-10 text-warning ms-2 fs-12">
+                        {{ employee?.experienceSummaries?.length }}
+                      </span>
+                    }
+                  </h5>
+                </div>
+                <button
+                  class="btn btn-sm btn-light"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#experienceDetails"
+                  aria-expanded="false"
+                  aria-controls="experienceDetails"
+                >
+                  <i class="ti ti-chevron-down"></i>
+                </button>
+              </div>
+            </div>
+
+            <div
+              id="experienceDetails"
+              class="collapse"
+              aria-labelledby="headingExperience"
+              data-bs-parent="#employeeDetailsAccordion"
+            >
+              <div class="card-body">
+                @if (employee?.experienceSummaries?.length) {
+                  @for (professionalExperience of employee?.experienceSummaries; track professionalExperience.id) {
+                    <div class="d-flex mb-4 pb-3 border-bottom">
+
+                      <!--* Icon -->
+                      <div class="timeline-icon timeline-icon--warning me-3">
+                        <i class="ti ti-briefcase text-warning"></i>
+                      </div>
+
+                      <!--* Content -->
+                      <div class="flex-grow-1">
+
+                        <!--* Company name + current badge -->
+                        <div class="d-flex align-items-center gap-2 mb-1">
+                          <h6 class="mb-0">{{ professionalExperience.companyName }}</h6>
+                          @if (professionalExperience.isCurrent) {
+                            <span class="badge bg-success">En cours</span>
+                          }
+                        </div>
+
+                        <!--* Job title -->
+                        <span class="badge text-bg-light text-dark mb-2">
+                          <i class="ti ti-point-filled me-1"></i>
+                          {{ professionalExperience.jobTitle }}
+                        </span>
+
+                        <!--* Employment type + experience level -->
+                        <div class="mb-2">
+                          <span class="badge bg-light text-muted me-1">
+                            {{ professionalExperience.employmentType | employmentType }}
+                          </span>
+                          <span class="badge bg-light text-muted">
+                            {{ professionalExperience.experienceLevel | experienceLevel }}
+                          </span>
+                        </div>
+
+                        <!--* Duration -->
+                        <p class="text-secondary small mb-1">
+                          <i class="ti ti-calendar me-1"></i>
+                          {{ professionalExperience.startDate | date: "MMM yyyy" }}
+                          —
+                          {{ professionalExperience.isCurrent ? "Présent" : (professionalExperience.endDate | date: "MMM yyyy") }}
+                        </p>
+
+                        <!--* Location -->
+                        @if (professionalExperience.companyLocation) {
+                          <p class="text-secondary small mb-1">
+                            <i class="ti ti-map-pin me-1"></i>
+                            {{ professionalExperience.companyLocation }}
+                          </p>
+                        }
+
+                        <!--* Description -->
+                        @if (professionalExperience.description) {
+                          <p class="text-muted small mb-0">
+                            {{ professionalExperience.description }}
+                          </p>
+                        }
+
+                      </div>
+                    </div>
+                  }
+                } @else {
+                  <p class="text-muted mb-0">
+                    <i class="ti ti-info-circle me-1"></i>
+                    Aucune expérience renseignée
+                  </p>
+                }
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
-      <!-- Fin Accordion -->
     </div>
-  </div>
+  }
+
 </div>
 
-<app-employee-detail-modal></app-employee-detail-modal>
+<app-employee-detail-modal [employee]="employee" />

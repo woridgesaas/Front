@@ -137,8 +137,8 @@
               selectedSort === "7days"
                 ? "7 derniers jours"
                 : selectedSort === "asc"
-                ? "Ascendant"
-                : "Descendant"
+                  ? "Ascendant"
+                  : "Descendant"
             }}
           </a>
           <ul class="dropdown-menu dropdown-menu-end p-3">
@@ -181,18 +181,20 @@
             <div class="col-sm-12 col-md-6">
               <div class="dataTables_length">
                 <label>
-                  Lignes par page @if(tableData.length > 0) {
-                  <select
-                    [(ngModel)]="pageSize"
-                    (ngModelChange)="changePageSize(pageSize)"
-                    class="form-select form-select-sm"
-                  >
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                  </select>
-                  } Entrées
+                  Lignes par page
+                  @if (tableData.length > 0) {
+                    <select
+                      [(ngModel)]="pageSize"
+                      (ngModelChange)="changePageSize(pageSize)"
+                      class="form-select form-select-sm"
+                    >
+                      <option value="10">10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                      <option value="100">100</option>
+                    </select>
+                  }
+                  Entrées
                 </label>
               </div>
             </div>
@@ -231,78 +233,84 @@
               </thead>
               <tbody>
                 @for (employee of tableData; track employee) {
-                <tr>
-                  <td>
-                    <div class="d-flex align-items-center file-name-icon">
-                      <a
-                        [routerLink]="routes.employeeDetails"
-                        class="avatar avatar-md border avatar-rounded"
-                      >
-                        <img
-                          [src]="
-                            employee.picturePath
-                              ? employee.picturePath
-                              : 'assets/img/users/WhatsApp Image 2026-03-23 at 21.00.25 (1).jpg'
-                          "
-                          class="img-fluid"
-                          alt="img"
-                        />
-                      </a>
-                      <div class="ms-2">
-                        <h6 class="fw-medium">
-                          <a [routerLink]="[routes.employeeDetails, employee.id]">
-                            {{ employee.firstName }} {{ employee.lastName }}
-                          </a>
-                        </h6>
-                        <span class="fs-12 fw-normal">{{
-                          employee.postName
-                        }}</span>
+                  <tr>
+                    <td>
+                      <div class="d-flex align-items-center file-name-icon">
+                        <a
+                          [routerLink]="routes.employeeDetails"
+                          class="avatar avatar-md border avatar-rounded"
+                        >
+                          <img
+                            [src]="
+                              employee.picturePath
+                                ? employee.picturePath
+                                : 'assets/img/users/WhatsApp Image 2026-03-23 at 21.00.25 (1).jpg'
+                            "
+                            class="img-fluid"
+                            alt="img"
+                          />
+                        </a>
+                        <div class="ms-2">
+                          <h6 class="fw-medium">
+                            <a
+                              [routerLink]="[
+                                routes.employeeDetails,
+                                employee.id,
+                              ]"
+                            >
+                              {{ employee.firstName }} {{ employee.lastName }}
+                            </a>
+                          </h6>
+                          <span class="fs-12 fw-normal">{{
+                            employee.postName
+                          }}</span>
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                  <td>{{ employee.email }}</td>
-                  <td>{{ employee.phoneNumber }}</td>
-                  <td>{{ employee.postName }}</td>
-                  <td>{{ employee.createdAt | date:'dd/MM/yyyy'}}</td>
-                  <td>
-                    <span
-                      class="badge d-inline-flex align-items-center badge-xs"
-                      [ngClass]="
-                        employee.status === 'ACTIVE'
-                          ? 'badge-success'
-                          : 'badge-danger'
-                      "
-                    >
-                      <i class="ti ti-point-filled me-1"></i>
-                      {{ employee.status === "ACTIVE" ? "Actif" : "Inactif" }}
-                    </span>
-                  </td>
-                  <td>
-                    <div class="action-icon d-inline-flex">
-                      <a
-                        href="javascript:void(0);"
-                        class="me-2"
-                        (click)="openEditModal(employee)"
-                        title="Modifier l'employé"
+                    </td>
+                    <td>{{ employee.email }}</td>
+                    <td>{{ employee.phoneNumber }}</td>
+                    <td>{{ employee.postName }}</td>
+                    <td>{{ employee.createdAt | date: "dd/MM/yyyy" }}</td>
+                    <td>
+                      <span
+                        class="badge d-inline-flex align-items-center badge-xs"
+                        [ngClass]="
+                          employee.status === 'ACTIVE'
+                            ? 'badge-success'
+                            : 'badge-danger'
+                        "
                       >
-                        <i class="ti ti-edit"></i>
-                      </a>
-                      <a
-                        href="javascript:void(0);"
-                        (click)="prepareDelete(employee)"
-                        title="Supprimer l'employé"
-                      >
-                        <i class="ti ti-trash"></i>
-                      </a>
-                    </div>
-                  </td>
-                </tr>
-                } @if (tableData.length === 0) {
-                <tr>
-                  <td colspan="8">
-                    <h5 class="no-record">Aucun enregistrement trouvé</h5>
-                  </td>
-                </tr>
+                        <i class="ti ti-point-filled me-1"></i>
+                        {{ employee.status === "ACTIVE" ? "Actif" : "Inactif" }}
+                      </span>
+                    </td>
+                    <td>
+                      <div class="action-icon d-inline-flex">
+                        <a
+                          href="javascript:void(0);"
+                          class="me-2"
+                          (click)="openEditModal(employee)"
+                          title="Modifier l'employé"
+                        >
+                          <i class="ti ti-edit"></i>
+                        </a>
+                        <a
+                          href="javascript:void(0);"
+                          (click)="prepareDelete(employee)"
+                          title="Supprimer l'employé"
+                        >
+                          <i class="ti ti-trash"></i>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                }
+                @if (tableData.length === 0) {
+                  <tr>
+                    <td colspan="8">
+                      <h5 class="no-record">Aucun enregistrement trouvé</h5>
+                    </td>
+                  </tr>
                 }
               </tbody>
             </table>
@@ -315,14 +323,11 @@
   </div>
 </div>
 
-<!-- Modal d ajout -->
+<!-- Modal d'ajout -->
 <app-add-employee></app-add-employee>
 
 <!-- Modal de modification -->
-<app-edit-employee-modal
-  [employeeData]="selectedEmployee"
-  (onSave)="onEmployeeSaved($event)"
-></app-edit-employee-modal>
+<app-edit-employee-modal [employeeData]="selectedEmployee" [showSecuritySection]="false"></app-edit-employee-modal>
 
 <!-- Modal de confirmation de suppression -->
 <app-confirm-delete

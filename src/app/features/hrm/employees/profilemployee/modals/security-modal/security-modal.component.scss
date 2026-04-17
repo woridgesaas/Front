@@ -1,0 +1,23 @@
+.strength-meter {
+  display: flex;
+  gap: 6px;
+}
+
+.strength-meter span {
+  flex: 1;
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 3px;
+}
+
+.strength-meter.poor-active span.active {
+  background: #dc3545;
+}
+
+.strength-meter.avg-active span.active {
+  background: #ffc107;
+}
+
+.strength-meter.heavy-active span.active {
+  background: #198754;
+}

@@ -19,7 +19,8 @@ import { KpisComponent } from '../../../../common/kpis/kpis.component';
 import { ConfirmDeleteComponent } from '../../../../common/delete-modal/delete-modal.component';
 import { AddEmployeeComponent } from '../modals/add-employee/add-employee.component';
 import { GetAllUserResponse } from '../../../models/user/get-all-user.model';
-import { UserApiService } from '../../../services/user/user-api.service';
+import { UserService } from '../../../services/user/user.service';
+import { EmployeeProfileResponse } from '../../../models/user/employee-profile.model';
 
 declare const bootstrap: any;
 
@@ -50,7 +51,7 @@ export class EmployeeListComponent implements OnDestroy {
   selectedPost: string = '';
   selectedStatus: string = '';
   selectedSort: string = '7days';
-  selectedEmployee: any = null;
+  selectedEmployee: EmployeeProfileResponse | null = null;
   selectedItem: any = null;
 
   kpis = [
@@ -88,15 +89,15 @@ export class EmployeeListComponent implements OnDestroy {
   }
 
   constructor(
-    private userApi: UserApiService,
+    private userApi: UserService,
     private router: Router,
-    private pagination: PaginationService
+    private pagination: PaginationService,
   ) {
     this.userApi.getAllUsers().subscribe((data: GetAllUserResponse[]) => {
       this.actualData = data;
       this.totalData = data.length;
       this.dataSource = new MatTableDataSource<GetAllUserResponse>(
-        this.actualData
+        this.actualData,
       );
       this.updateKPIs();
 
@@ -185,26 +186,60 @@ export class EmployeeListComponent implements OnDestroy {
     });
   }
 
-  openEditModal(employee: any): void {
-    this.selectedEmployee = employee;
-    const modalElement = document.getElementById('edit_employee_multistep');
-    if (modalElement) {
-      const modal = new bootstrap.Modal(modalElement);
-      modal.show();
-    }
+  openEditModal(employee: GetAllUserResponse): void {
+    if (!employee?.id) return;
+
+    this.userApi.getProfile(employee.id).subscribe({
+      next: (fullEmployee: EmployeeProfileResponse) => {
+        this.selectedEmployee = fullEmployee;
+
+        setTimeout(() => {
+          const modalElement = document.getElementById('edit_employee_detail');
+          if (!modalElement) return;
+
+          const modalInstance =
+            bootstrap.Modal.getInstance(modalElement) ||
+            new bootstrap.Modal(modalElement);
+
+          modalInstance.show();
+        });
+      },
+      error: (error) => {
+        console.error('Erreur lors du chargement du profil employé', error);
+      },
+    });
   }
 
   onEmployeeSaved(saveEvent: any): void {
-    if (saveEvent.data && this.selectedEmployee) {
-      Object.assign(this.selectedEmployee, saveEvent.data);
-      const index = this.tableData.findIndex(
-        (e) => e === this.selectedEmployee
-      );
-      if (index !== -1) {
-        this.tableData[index] = { ...this.selectedEmployee };
-      }
-      this.updateKPIs();
+    if (!saveEvent?.data || !this.selectedEmployee) return;
+
+    Object.assign(this.selectedEmployee, saveEvent.data);
+
+    const index = this.tableData.findIndex(
+      (e) => e.id === this.selectedEmployee?.id,
+    );
+
+    if (index !== -1) {
+      this.tableData[index] = {
+        ...this.tableData[index],
+        ...saveEvent.data,
+      };
     }
+
+    const actualIndex = this.actualData.findIndex(
+      (e) => e.id === this.selectedEmployee?.id,
+    );
+
+    if (actualIndex !== -1) {
+      this.actualData[actualIndex] = {
+        ...this.actualData[actualIndex],
+        ...saveEvent.data,
+      };
+    }
+
+    this.dataSource.data = [...this.actualData];
+
+    this.updateKPIs();
   }
 
   prepareDelete(employee: any): void {
@@ -243,67 +278,73 @@ export class EmployeeListComponent implements OnDestroy {
         this.isDeleteModalOpen = false;
       },
       error: (err: any) => {
-        console.error('❌ Erreur lors de la suppression:', err);
+        console.error('Erreur lors de la suppression');
       },
     });
   }
   applyFilters(): void {
-  let filtered = [...this.actualData];
+    let filtered = [...this.actualData];
 
-  if (this.selectedPost) {
-    filtered = filtered.filter(e => e.postName === this.selectedPost);
+    if (this.selectedPost) {
+      filtered = filtered.filter((e) => e.postName === this.selectedPost);
+    }
+
+    if (this.selectedStatus) {
+      filtered = filtered.filter((e) => e.status === this.selectedStatus);
+    }
+
+    if (this.selectedSort === '7days') {
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+      filtered = filtered.filter((e) => new Date(e.createdAt) >= sevenDaysAgo);
+    } else if (this.selectedSort === 'asc') {
+      filtered.sort(
+        (a, b) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+      );
+    } else if (this.selectedSort === 'desc') {
+      filtered.sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+      );
+    }
+
+    this.tableData = filtered;
+    this.totalData = filtered.length;
+
+    this.pagination.calculatePageSize.next({
+      totalData: this.totalData,
+      pageSize: this.pageSize,
+      tableData: this.tableData,
+      tableDataCopy: this.tableData,
+      serialNumberArray: this.tableData.map((_, i) => i + 1),
+    });
   }
 
-  if (this.selectedStatus) {
-    filtered = filtered.filter(e => e.status === this.selectedStatus);
+  selectPost(post: string): void {
+    this.selectedPost = this.selectedPost === post ? '' : post;
+    this.applyFilters();
   }
 
-  if (this.selectedSort === '7days') {
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-    filtered = filtered.filter(e => new Date(e.createdAt) >= sevenDaysAgo);
-  } else if (this.selectedSort === 'asc') {
-    filtered.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
-  } else if (this.selectedSort === 'desc') {
-    filtered.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  selectStatus(status: string): void {
+    this.selectedStatus = this.selectedStatus === status ? '' : status;
+    this.applyFilters();
   }
 
-  this.tableData = filtered;
-  this.totalData = filtered.length;
-
-  this.pagination.calculatePageSize.next({
-    totalData: this.totalData,
-    pageSize: this.pageSize,
-    tableData: this.tableData,
-    tableDataCopy: this.tableData,
-    serialNumberArray: this.tableData.map((_, i) => i + 1),
-  });
-}
-
-selectPost(post: string): void {
-  this.selectedPost = this.selectedPost === post ? '' : post;
-  this.applyFilters();
-}
-
-selectStatus(status: string): void {
-  this.selectedStatus = this.selectedStatus === status ? '' : status;
-  this.applyFilters();
-}
-
-selectSort(sort: string): void {
-  this.selectedSort = sort;
-  this.applyFilters();
-}
+  selectSort(sort: string): void {
+    this.selectedSort = sort;
+    this.applyFilters();
+  }
 
   private updateKPIs(): void {
     const total = this.actualData.length;
     const actifs = this.actualData.filter((e) => e.status === 'ACTIVE').length;
     const inactifs = this.actualData.filter(
-      (e) => e.status === 'INACTIVE'
+      (e) => e.status === 'INACTIVE',
     ).length;
 
     const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);//li dkhlo 3ed jdad hed cheher
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30); //li dkhlo 3ed jdad hed cheher
     const nouveaux = this.actualData.filter((e) => {
       return new Date(e.createdAt) >= thirtyDaysAgo;
     }).length;

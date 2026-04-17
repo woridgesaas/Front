@@ -15,7 +15,7 @@ import { Promotion } from '../../../../../../shared/models/models';
 import { ModalHeaderComponent } from '../../../../../common/modal-header/modal-header.component';
 import { ModalFooterComponent } from '../../../../../common/modal-footer/modal-footer.component';
 import { Post } from '../../../../models/post/post.model';
-import { UserApiService } from '../../../../services/user/user-api.service';
+import { UserService } from '../../../../services/user/user.service';
 
 @Component({
   selector: 'app-edit-promotion-modal',
@@ -37,7 +37,7 @@ posts: Post[] = [];
 isPostOpen = false;
   @Output() update = new EventEmitter<Promotion>();
   @Output() cancel = new EventEmitter<void>();
-constructor(private userApi: UserApiService) {}
+constructor(private userApi: UserService) {}
   form: Promotion = {};
   promotionDate: Date = new Date();
   loading = false;
@@ -90,7 +90,7 @@ loadPosts() {
 }
 selectPosition(post: Post) {
   this.form.designationTo = post.name;
-  this.form.newPostId = post.id; 
+  this.form.newPostId = post.id;
   this.isPostOpen = false;
 }
 submit(): void {

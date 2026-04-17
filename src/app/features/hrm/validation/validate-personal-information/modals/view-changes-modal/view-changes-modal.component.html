@@ -1,0 +1,67 @@
+<div class="modal fade show d-block" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+
+      <!--* Modal header -->
+      <app-modal-header title="Détails de la demande" icon="ti ti-file-diff" (close)="close.emit()"></app-modal-header>
+
+      <!--* Alert information -->
+      <div class="modal-body px-4 py-4">
+        <div class="alert alert-info mb-4" *ngIf="selectedRequest?.status === 'PENDING'">
+          <strong>Information :</strong> Vérifiez les modifications avant d'accepter ou refuser la demande.
+        </div>
+
+        <!--* Request date -->
+        <div class="mb-3 text-muted small">
+          <strong>Date de soumission :</strong> {{ selectedRequest?.requestedAt | date: 'dd/MM/yyyy' }}
+        </div>
+
+        <!--* Table of field changes -->
+        <div class="table-responsive">
+          <table class="table table-bordered align-middle">
+            <thead class="table-light">
+              <tr>
+                <th>Champ</th>
+                <th>Ancienne valeur</th>
+                <th>Nouvelle valeur</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let change of selectedRequest?.fieldChanges">
+                <td class="fw-medium">
+                  {{ change.fieldName | fieldLabel : selectedRequest?.sectionType }}
+                </td>
+                <td class="text-muted">
+                  <del>{{ change.oldValue || '—' }}</del>
+                </td>
+                <td class="text-success fw-semibold">
+                  {{ change.newValue || '—' }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!--* Reject/Approve buttons -->
+      <div class="modal-footer d-flex justify-content-end gap-3" *ngIf="selectedRequest?.status === 'PENDING'">
+        <button class="btn btn-danger px-4" [disabled]="isProcessing" (click)="refuse()">
+          <span *ngIf="isProcessing && pendingAction === 'REJECTED'" class="spinner-border spinner-border-sm me-1"></span>
+          Refuser
+        </button>
+
+        <button class="btn btn-success px-4" [disabled]="isProcessing" (click)="accept()">
+          <span *ngIf="isProcessing && pendingAction === 'APPROVED'" class="spinner-border spinner-border-sm me-1"></span>
+          Accepter
+        </button>
+      </div>
+
+      <!--* Close button -->
+      <div class="modal-footer" *ngIf="selectedRequest?.status !== 'PENDING'">
+        <button class="btn btn-secondary" (click)="close.emit()">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop fade show"></div>
