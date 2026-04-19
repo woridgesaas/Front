@@ -5,11 +5,12 @@ import { RouterOutlet } from '@angular/router';
 import { Subscription, timer } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { ChatbotComponent } from './features/common/chat/chatbot.component';
+import { ToastComponent } from './shared/components/toast/toast.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule,ChatbotComponent],
+  imports: [RouterOutlet, CommonModule,ChatbotComponent,ToastComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

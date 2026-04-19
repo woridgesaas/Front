@@ -1,5 +1,4 @@
-<!-- Add Employee Leaves -->
-<div class="modal fade" id="add_leave">
+<div class="modal fade" id="add_leave" #addLeaveModal>
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -13,40 +12,52 @@
           <i class="ti ti-x"></i>
         </button>
       </div>
+
       <form (ngSubmit)="submit()">
         <div class="modal-body pb-0">
           <div class="row">
+            <!-- Type de congé -->
             <div class="col-md-12">
               <div class="mb-3">
                 <label class="form-label">Type de congé</label>
-
                 <mat-select
                   placeholder="Sélectionner"
                   class="select custom-mat-select"
                   [(ngModel)]="selectedLeaveType"
+                  name="leaveType"
                   (selectionChange)="onLeaveTypeChange($event.value)"
                 >
-                  <mat-option value="annuel">Congé annuel</mat-option>
-                  <mat-option value="medical">Congé maladie</mat-option>
-                  <mat-option value="exceptionnel"
+                  <mat-option [value]="LeaveType.ANNUAL"
+                    >Congé annuel</mat-option
+                  >
+                  <mat-option [value]="LeaveType.MEDICAL"
+                    >Congé maladie</mat-option
+                  >
+                  <mat-option [value]="LeaveType.EXCEPTIONAL"
                     >Congé exceptionnel</mat-option
                   >
                 </mat-select>
               </div>
             </div>
 
+            <!-- Du -->
             <div class="col-md-6">
               <div class="mb-3 ngx-date3">
-                <label [htmlFor]="" class="form-label">Du</label>
+                <label class="form-label">Du</label>
                 <div class="input-icon-end position-relative">
                   <input
                     type="text"
                     class="form-control datetimepicker"
                     bsDatepicker
                     container=".ngx-date3"
-                    [bsConfig]="{ adaptivePosition: true }"
+                    [bsConfig]="{
+                      adaptivePosition: true,
+                      dateInputFormat: 'DD/MM/YYYY'
+                    }"
                     placeholder="dd/mm/yyyy"
-                    value="02-05-2024"
+                    [(ngModel)]="startDate"
+                    name="startDate"
+                    (bsValueChange)="onStartDateChange($event)"
                   />
                   <span class="input-icon-addon">
                     <i class="ti ti-calendar text-gray-7"></i>
@@ -54,18 +65,25 @@
                 </div>
               </div>
             </div>
+
+            <!-- Au -->
             <div class="col-md-6">
               <div class="mb-3 ngx-date4">
-                <label [htmlFor]="" class="form-label">Au</label>
+                <label class="form-label">Au</label>
                 <div class="input-icon-end position-relative">
                   <input
                     type="text"
                     class="form-control datetimepicker"
                     bsDatepicker
                     container=".ngx-date4"
-                    [bsConfig]="{ adaptivePosition: true }"
+                    [bsConfig]="{
+                      adaptivePosition: true,
+                      dateInputFormat: 'DD/MM/YYYY'
+                    }"
                     placeholder="dd/mm/yyyy"
-                    value="02-05-2024"
+                    [(ngModel)]="endDate"
+                    name="endDate"
+                    (bsValueChange)="onEndDateChange($event)"
                   />
                   <span class="input-icon-addon">
                     <i class="ti ti-calendar text-gray-7"></i>
@@ -74,23 +92,38 @@
               </div>
             </div>
 
+            <!-- Nbr de jours -->
             <div class="col-md-6">
               <div class="mb-3">
                 <label class="form-label">Nbr de jours</label>
-                <input type="text" class="form-control" disabled />
+                <input
+                  type="text"
+                  class="form-control"
+                  [value]="isSimulating ? '...' : numberOfDays ?? ''"
+                  disabled
+                />
               </div>
             </div>
+
+            <!-- Jours restants -->
             <div class="col-md-6">
               <div class="mb-3">
                 <label class="form-label">Jours restants</label>
-                <input type="text" class="form-control" value="8" disabled />
+                <input
+                  type="text"
+                  class="form-control"
+                  [value]="isSimulating ? '...' : remainingBalance ?? ''"
+                  disabled
+                />
               </div>
             </div>
 
             <!-- Justificatif -->
             <div class="col-md-12" *ngIf="showJustificatif">
               <div class="mb-3">
-                <label class="form-label">Justificatif</label>
+                <label class="form-label"
+                  >Justificatif <span class="text-danger">*</span></label
+                >
                 <input
                   type="file"
                   class="form-control"
@@ -100,6 +133,7 @@
             </div>
           </div>
         </div>
+
         <div class="modal-footer">
           <button
             type="button"
@@ -108,16 +142,9 @@
           >
             Annuler
           </button>
-          <button type="submit" 
-          class="btn btn-primary" 
-          data-bs-dismiss="modal">
-            Enregistrer
-          </button>
+          <button type="submit" class="btn btn-primary">Enregistrer</button>
         </div>
       </form>
     </div>
   </div>
 </div>
-
-<!-- /Add Employee Leaves -->
-
