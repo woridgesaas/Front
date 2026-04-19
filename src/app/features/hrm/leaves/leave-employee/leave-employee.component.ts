@@ -1,16 +1,11 @@
 import { Component } from '@angular/core';
 import { routes } from '../../../../shared/routes/routes';
 import {
-  apiResultFormat,
-  leaveEmployee,
-} from '../../../../shared/models/models';
-import {
   pageSelection,
   PaginationService,
   tablePageSize,
 } from '../../../../shared/custom-pagination/pagination.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { DataService } from '../../../../shared/data/data.service';
 import { Router } from '@angular/router';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { CommonModule } from '@angular/common';
@@ -25,6 +20,8 @@ import { LeavesTableComponent } from '../Components/leaves-table/leaves-table.co
 import { ConfirmDeleteComponent } from '../../../common/delete-modal/delete-modal.component';
 import { LeavesToolbarComponent } from '../Components/leaves-toolbar/leaves-toolbar.component';
 import { LeavesModalStateService } from '../services/leaves-modal-state.service';
+import { LeaveService } from '../services/leave.service';
+import { LeaveRequestListResponse } from '../models/leave-request-list-response.model';
 
 @Component({
   selector: 'app-leave-employee',
@@ -46,14 +43,16 @@ import { LeavesModalStateService } from '../services/leaves-modal-state.service'
   ],
 })
 export class LeaveEmployeeComponent {
-  selectedLeave: leaveEmployee | null = null;
+
+  selectedLeave: LeaveRequestListResponse | null = null;
   public routes = routes;
   initChecked = false;
+
   // pagination variables
   public pageSize = 10;
-  public tableData: leaveEmployee[] = [];
-  public tableDataCopy: leaveEmployee[] = [];
-  public actualData: leaveEmployee[] = [];
+  public tableData: LeaveRequestListResponse[] = [];
+  public tableDataCopy: LeaveRequestListResponse[] = [];
+  public actualData: LeaveRequestListResponse[] = [];
   public currentPage = 1;
   public skip = 0;
   public limit: number = this.pageSize;
@@ -61,20 +60,20 @@ export class LeaveEmployeeComponent {
   public totalData = 0;
   showFilter = false;
   public pageSelection: pageSelection[] = [];
-  dataSource!: MatTableDataSource<leaveEmployee>;
+  dataSource!: MatTableDataSource<LeaveRequestListResponse>;
   public searchDataValue = '';
   bsValue = new Date();
   bsRangeValue: Date[];
   maxDate = new Date();
 
   constructor(
-    private data: DataService,
     private router: Router,
     private pagination: PaginationService,
-    private modalState: LeavesModalStateService
+    private modalState: LeavesModalStateService,
+    private leaveService: LeaveService,       // ← remplace DataService
   ) {
-    this.data.getleaveEmployee().subscribe((apiRes: apiResultFormat) => {
-      this.actualData = apiRes.data;
+    this.leaveService.getAll().subscribe((data: LeaveRequestListResponse[]) => {
+      this.actualData = data;
       this.pagination.tablePageSize.subscribe((res: tablePageSize) => {
         if (this.router.url == this.routes.leaveemployee) {
           this.getTableData({ skip: res.skip, limit: res.limit });
@@ -85,29 +84,29 @@ export class LeaveEmployeeComponent {
     this.maxDate.setDate(this.maxDate.getDate() + 7);
     this.bsRangeValue = [this.bsValue, this.maxDate];
   }
+
   private getTableData(pageOption: pageSelection): void {
-    this.data.getleaveEmployee().subscribe((apiRes: apiResultFormat) => {
-      this.tableData = [];
-      this.tableDataCopy = [];
-      this.serialNumberArray = [];
-      this.totalData = apiRes.totalData;
-      apiRes.data.map((res: leaveEmployee, index: number) => {
-        const serialNumber = index + 1;
-        if (index >= pageOption.skip && serialNumber <= pageOption.limit) {
-          res.sNo = serialNumber;
-          this.tableData.push(res);
-          this.tableDataCopy.push(res);
-          this.serialNumberArray.push(serialNumber);
-        }
-      });
-      this.dataSource = new MatTableDataSource<leaveEmployee>(this.actualData);
-      this.pagination.calculatePageSize.next({
-        totalData: this.totalData,
-        pageSize: this.pageSize,
-        tableData: this.tableData,
-        tableDataCopy: this.tableDataCopy,
-        serialNumberArray: this.serialNumberArray,
-      });
+    this.tableData = [];
+    this.tableDataCopy = [];
+    this.serialNumberArray = [];
+    this.totalData = this.actualData.length;
+
+    this.actualData.forEach((res: LeaveRequestListResponse, index: number) => {
+      const serialNumber = index + 1;
+      if (index >= pageOption.skip && serialNumber <= pageOption.limit) {
+        this.tableData.push(res);
+        this.tableDataCopy.push(res);
+        this.serialNumberArray.push(serialNumber);
+      }
+    });
+
+    this.dataSource = new MatTableDataSource<LeaveRequestListResponse>(this.actualData);
+    this.pagination.calculatePageSize.next({
+      totalData: this.totalData,
+      pageSize: this.pageSize,
+      tableData: this.tableData,
+      tableDataCopy: this.tableDataCopy,
+      serialNumberArray: this.serialNumberArray,
     });
   }
 
@@ -119,15 +118,13 @@ export class LeaveEmployeeComponent {
     this.row = this.tableData.length > 0;
 
     if (this.searchDataValue !== '') {
-      // Handle filtered data
       this.pagination.calculatePageSize.next({
         totalData: this.tableData.length,
         pageSize: this.pageSize,
         tableData: this.tableData,
-        serialNumberArray: this.tableData.map((_, i) => i + 1), // Generates serials like [1, 2, 3...]
+        serialNumberArray: this.tableData.map((_, i) => i + 1),
       });
     } else {
-      // Handle reset to full data
       this.pagination.calculatePageSize.next({
         totalData: this.totalData,
         pageSize: this.pageSize,
@@ -139,18 +136,17 @@ export class LeaveEmployeeComponent {
 
   public sortData(sort: Sort) {
     const data = this.tableData.slice();
-
     if (!sort.active || sort.direction === '') {
       this.tableData = data;
     } else {
       this.tableData = data.sort((a, b) => {
         const aValue = (a as never)[sort.active];
-
         const bValue = (b as never)[sort.active];
         return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
       });
     }
   }
+
   public changePageSize(pageSize: number): void {
     this.pageSelection = [];
     this.limit = pageSize;
@@ -163,53 +159,49 @@ export class LeaveEmployeeComponent {
     });
   }
 
- onEditClick(leave: leaveEmployee): void {
-  this.selectedLeave = leave;
-}
-  onSearchChange(value: string): void {
-    this.searchDataValue = value;
-    this.searchData(value); // logique existante
-  }
-
-  onDeleteClick(leave: any): void {
+  onEditClick(leave: LeaveRequestListResponse): void {
     this.selectedLeave = leave;
   }
 
-  confirmDelete(leave: any): void {
-    // 🔥 ici tu appelles ton service backend
-    // ex:
-    // this.leavesService.deleteLeave(leave.Id).subscribe(() => {
-    //   this.loadData();
-    // });
+  onSearchChange(value: string): void {
+    this.searchDataValue = value;
+    this.searchData(value);
+  }
 
+  onDeleteClick(leave: LeaveRequestListResponse): void {
+    this.selectedLeave = leave;
+  }
+
+  confirmDelete(leave: LeaveRequestListResponse): void {
     console.log('DELETE CONFIRMED:', leave);
   }
 
   onPageSizeChange(size: number): void {
     this.pageSize = size;
-    this.changePageSize(size); // logique existante
+    this.changePageSize(size);
   }
 
-  openDeleteModal(leave: any): void {
+  openDeleteModal(leave: LeaveRequestListResponse): void {
     this.selectedLeave = leave;
   }
-  onDateFilter(range: Date[] | null) {
+
+  onDateFilter(range: Date[] | null): void {
     console.log('DATE:', range);
   }
 
-  onTypeFilter(type: string) {
+  onTypeFilter(type: string): void {
     console.log('TYPE:', type);
   }
 
-  onApproverFilter(name: string) {
+  onApproverFilter(name: string): void {
     console.log('APPROVER:', name);
   }
 
-  onStatusFilter(status: string) {
+  onStatusFilter(status: string): void {
     console.log('STATUS:', status);
   }
 
-  onSortFilter(sort: string) {
+  onSortFilter(sort: string): void {
     console.log('SORT:', sort);
   }
 }
