@@ -4,6 +4,7 @@ import { RouterModule, RouterOutlet } from '@angular/router';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { LeaveModalComponent } from './leave-modal/leave-modal.component';
 import { FooterComponent } from '../../common/footer/footer.component';
+//import { ToastComponent } from '../../../shared/components/toast/toast.component';
 
 @Component({
     selector: 'app-leaves',
