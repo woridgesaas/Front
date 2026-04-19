@@ -29,6 +29,11 @@ export class LeaveService {
 
     return this.http.get<LeaveRequestListResponse[]>(this.BASE_URL, { params });
   }
+  getRemainingBalance(): Observable<number> {
+  return this.http.get<number>(
+    'http://localhost:8000/api/attendance/balances'
+  );
+}
 
   simulate(
     leaveType: LeaveType,
