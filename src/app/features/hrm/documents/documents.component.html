@@ -84,7 +84,7 @@
               <a
                 href="javascript:void(0);"
                 class="dropdown-item rounded-1"
-                (click)="applyStatusFilter('pending')"
+                (click)="applyStatusFilter('PENDING')"
               >
                 En attente
               </a>
@@ -93,33 +93,22 @@
               <a
                 href="javascript:void(0);"
                 class="dropdown-item rounded-1"
-                (click)="applyStatusFilter('in_progress')"
+                (click)="applyStatusFilter('APPROVED')"
               >
-                En traitement
-              </a>
-            </li>
-            <li></li>
-            <li>
-              <a
-                href="javascript:void(0);"
-                class="dropdown-item rounded-1"
-                (click)="applyStatusFilter('completed')"
-              >
-                Terminé
+                Approuvé
               </a>
             </li>
             <li>
               <a
                 href="javascript:void(0);"
                 class="dropdown-item rounded-1"
-                (click)="applyStatusFilter('rejected')"
+                (click)="applyStatusFilter('REJECTED')"
               >
                 Rejeté
               </a>
             </li>
           </ul>
         </div>
-
         <!-- Filtre Catégorie -->
         <div class="dropdown">
           <a
@@ -195,10 +184,11 @@
           </div>
 
           <div class="table-responsive">
-           <app-documents-list 
+           <app-documents-list
             (delete)="showDeleteModal($event)"
             (cancel)="openCancelModal($event)"
             (viewDetails)="viewDetails($event)"
+            (download)="downloadDocument($event)"
             [data]="tableData">
           </app-documents-list>
           </div>

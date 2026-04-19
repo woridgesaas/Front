@@ -209,17 +209,17 @@ export interface ChartOptions {
   fill?: ApexFill;
 }
 export interface AuditLog {
-  id: string;            
-  timestamp: Date;      
-  tenantId: string;      
-  action: string;     
-  status: string;          
-  userMatricule: string; 
-  userRole: string;     
-  targetId: string;      
-  service: string;         
-  serviceName: string;   
-  logType: string;  
+  id: string;
+  timestamp: Date;
+  tenantId: string;
+  action: string;
+  status: string;
+  userMatricule: string;
+  userRole: string;
+  targetId: string;
+  service: string;
+  serviceName: string;
+  logType: string;
   isSelected?: boolean;
 }
 export interface AuditLogMetadata {
@@ -246,7 +246,7 @@ export interface DocumentDemande {
   notes?: string;
   isSelected?: boolean;
   sNo?: number;
-} 
+}
 export interface RhDocumentDemande {
   id: number;
   uuid?: string;          // ← ajouter cette ligne seulement
@@ -659,11 +659,11 @@ export interface designation {
 
 export interface Holiday {
   id: number;
-  labelFr: string;    
-  labelAr: string; 
+  labelFr: string;
+  labelAr: string;
   date: Date;
-  duration: number;   
-  isFixed: boolean;    
+  duration: number;
+  isFixed: boolean;
   status: HolidaysStatus
 }
 export interface HolidayRequest {
@@ -671,7 +671,7 @@ export interface HolidayRequest {
   labelAr: string;
   date: Date | string;
   duration: number;
-  isFixed: boolean; 
+  isFixed: boolean;
 }
 
 export interface attendanceadmin {
