@@ -1,10 +1,7 @@
 
 export interface Candidate {
-  // Identifiants
   id: number;
   candidateId: string;
-
-  // Informations personnelles
   name: string;
   email: string;
   phone: string;
@@ -13,30 +10,20 @@ export interface Candidate {
   // Scoring IA
   aiScore: number;
 
-  // Statut de candidature
+  // ✅ NOUVEAU — retournés par .NET après matching
+  isCompatible?: boolean;    // catégorie prédite == titre offre
+  category?: string;         // catégorie prédite par /predict
+  explanation?: string;      // explication du score
+
   status: CandidateStatus;
-
-  // Expérience professionnelle
   experienceYears: number;
-
-  // Compétences et outils
   skills: string[];
   tools?: string[];
-
-  // Formation
   diploma?: string;
   certifications?: string[];
-
-  // Langues
   languages?: Language[];
-
-  // Soft skills
   softSkills?: string[];
-
-  // Documents
   cvUrl: string;
-
-  // Sélection dans l'interface (REQUIS)
   isSelected?: boolean;
 }
 

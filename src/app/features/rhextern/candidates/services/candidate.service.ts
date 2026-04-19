@@ -1,123 +1,75 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
-import { 
-  Candidate, 
-  CandidateStatus, 
-  CandidateApiResponse 
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import {
+  Candidate,
+  CandidateDetailResponse,
+  CandidateStatus,
 } from '../models/candidate.model';
 
-/**
- * Service pour gérer toutes les opérations liées aux candidats
- */
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class CandidateService {
+  private readonly baseUrl = 'http://localhost:8000/api/candidates';
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
-  /**
-   * Récupère la liste de tous les candidats
-  
-   */
-  getCandidates(): Observable<CandidateApiResponse> {
-    // return this.http.get<CandidateApiResponse>('/api/candidates');
-    
-    return of({
-      data: this.getMockData(),
-      totalData: this.getMockData().length,
-      success: true
-    }).pipe(delay(300));
+  getCandidates(): Observable<Candidate[]> {
+    return this.http.get<Candidate[]>(this.baseUrl);
   }
 
-  /**
-   * Met à jour le statut d'un candidat
-   
-   */
-  updateStatus(candidateId: string, newStatus: CandidateStatus): Observable<any> {
-    // return this.http.patch(`/api/candidates/${candidateId}/status`, { status: newStatus });
-    
-    console.log(` Mise à jour statut: ${candidateId} → ${newStatus}`);
-    return of({ success: true }).pipe(delay(200));
+  getById(id: number): Observable<CandidateDetailResponse> {
+    return this.http.get<CandidateDetailResponse>(`${this.baseUrl}/${id}`);
   }
 
-  /**
-   * Supprime un candidat
-   
-   */
-  delete(candidateId: string): Observable<any> {
-    // return this.http.delete(`/api/candidates/${candidateId}`);
-    
-    console.log(` Suppression: ${candidateId}`);
-    return of({ success: true }).pipe(delay(200));
+  updateStatus(id: number, status: CandidateStatus): Observable<void> {
+    return this.http.patch<void>(`${this.baseUrl}/${id}/status`, { status });
   }
 
-  /**
-   * Envoie un email au candidat
-   
-   */
-  sendEmail(candidateId: string, type: 'hired' | 'rejected' | 'interview'): Observable<any> {
-    // return this.http.post(`/api/candidates/${candidateId}/email`, { type });
-    
-    console.log(` Email ${type} envoyé: ${candidateId}`);
-    return of({ success: true }).pipe(delay(150));
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 
-  // ============ DONNÉES MOCK  ============
-  
-  private getMockData(): Candidate[] {
-    return [
-      {
-        Cand_ID: 'C001',
-        Candidate: 'Mohammed Alami',
-        Email: 'mohammed.alami@email.com',
-        Phone: '+212 6 12 34 56 78',
-        Applied_Role: 'Développeur Full Stack',
-        Applied_Date: '2024-12-15',
-        Status: CandidateStatus.NEW,
-        Image: 'user-01.jpg'
+  // Récupère l'URL présignée MinIO depuis le backend
+  getCvUrl(id: number): Observable<string> {
+    return this.http
+      .get<{ url: string }>(`${this.baseUrl}/${id}/cv-url`)
+      .pipe(map((res) => res.url));
+  }
+
+  // Ouvre le CV dans un nouvel onglet
+  viewCV(id: number): void {
+    this.getCvUrl(id).subscribe({
+      next: (url) => window.open(url, '_blank'),
+      error: () => alert('Impossible de charger le CV.'),
+    });
+  }
+
+  // Télécharge le CV
+  downloadCV(id: number, applicationName: string): void {
+    this.getCvUrl(id).subscribe({
+      next: (url) => {
+        fetch(url)
+          .then((res) => res.blob())
+          .then((blob) => {
+            const blobUrl = window.URL.createObjectURL(blob);
+            const fileName = `CV_${applicationName.replace(/\s+/g, '_')}.pdf`;
+            const a = document.createElement('a');
+            a.href = blobUrl;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(blobUrl);
+          })
+          .catch(() => alert('Impossible de télécharger le CV.'));
       },
-      {
-        Cand_ID: 'C002',
-        Candidate: 'Fatima Zahra',
-        Email: 'fatima.zahra@email.com',
-        Phone: '+212 6 23 45 67 89',
-        Applied_Role: 'Comptable',
-        Applied_Date: '2024-12-18',
-        Status: CandidateStatus.SCHEDULED,
-        Image: 'user-02.jpg'
-      },
-      {
-        Cand_ID: 'C003',
-        Candidate: 'Youssef Benali',
-        Email: 'youssef.benali@email.com',
-        Phone: '+212 6 34 56 78 90',
-        Applied_Role: 'Technicien IT',
-        Applied_Date: '2024-12-20',
-        Status: CandidateStatus.INTERVIEWED,
-        Image: 'user-03.jpg'
-      },
-      {
-        Cand_ID: 'C004',
-        Candidate: 'Amina El Idrissi',
-        Email: 'amina.idrissi@email.com',
-        Phone: '+212 6 45 67 89 01',
-        Applied_Role: 'Designer UI/UX',
-        Applied_Date: '2024-12-22',
-        Status: CandidateStatus.OFFERED,
-        Image: 'user-04.jpg'
-      },
-      {
-        Cand_ID: 'C005',
-        Candidate: 'Karim Benjelloun',
-        Email: 'karim.benjelloun@email.com',
-        Phone: '+212 6 56 78 90 12',
-        Applied_Role: 'Chef de Projet',
-        Applied_Date: '2024-12-10',
-        Status: CandidateStatus.HIRED,
-        Image: 'user-05.jpg'
-      }
-    ];
+      error: () => alert("Impossible de récupérer l'URL du CV."),
+    });
   }
+
+  // sendEmail() — réservé pour plus tard (ms-notification à créer)
+  // sendEmail(candidateId: number, type: 'hired' | 'rejected'): Observable<any> {
+  //   return this.http.post(`${this.baseUrl}/${candidateId}/email`, { type });
+  // }
 }

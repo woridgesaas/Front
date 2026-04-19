@@ -1,4 +1,3 @@
-
 import { Component, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
@@ -14,14 +13,16 @@ import { BreadcrumbsComponent } from '../../../../common/breadcrumbs/breadcrumbs
 @Component({
   selector: 'app-filtering-page',
   standalone: true,
-  imports: [CommonModule,
-     FilterFormComponent,
-     FilterResultsComponent,
-     RouterOutlet,
-     FooterComponent,
-     BreadcrumbsComponent],
+  imports: [
+    CommonModule,
+    FilterFormComponent,
+    FilterResultsComponent,
+    RouterOutlet,
+    FooterComponent,
+    BreadcrumbsComponent,
+  ],
   templateUrl: './filtering-page.component.html',
-  styleUrls: ['./filtering-page.component.scss']
+  styleUrls: ['./filtering-page.component.scss'],
 })
 export class FilteringPageComponent implements OnDestroy {
   // État
@@ -43,7 +44,7 @@ export class FilteringPageComponent implements OnDestroy {
    */
   handleFilter(form: FilterForm): void {
     console.log(' Filtrage IA avec critères:', form);
-    
+
     this.isLoading = true;
     this.showResults = false;
 
@@ -52,7 +53,11 @@ export class FilteringPageComponent implements OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (results) => {
-          console.log(' Résultats du filtrage:', results.length, 'candidats trouvés');
+          console.log(
+            ' Résultats du filtrage:',
+            results.length,
+            'candidats trouvés'
+          );
           this.candidates = results;
           this.isLoading = false;
           this.showResults = true;
@@ -62,7 +67,7 @@ export class FilteringPageComponent implements OnDestroy {
           this.isLoading = false;
           this.showResults = true;
           this.candidates = [];
-        }
+        },
       });
   }
 
@@ -112,59 +117,57 @@ export class FilteringPageComponent implements OnDestroy {
    * Accepte un candidat
    */
   private acceptCandidate(candidate: Candidate): void {
-    if (candidate.status === 'Accepté') {
-      console.log(' Candidat déjà accepté');
-      return;
-    }
+    if (candidate.status === 'Accepté') return;
 
     this.filtrageService
-      .updateStatus(candidate.id, 'Accepté')
+      .acceptCandidate(candidate.id, 1) // offerId=1, à rendre dynamique plus tard
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
-          candidate.status = 'Accepté';
-          console.log(' Candidat accepté:', candidate.name);
+          const index = this.candidates.findIndex((c) => c.id === candidate.id);
+          if (index !== -1) {
+            this.candidates[index] = {
+              ...this.candidates[index],
+              status: 'Accepté',
+            };
+            this.candidates = [...this.candidates];
+          }
         },
-        error: (error) => {
-          console.error(' Erreur lors de l\'acceptation:', error);
-        }
+        error: (err) => console.error('Erreur acceptation:', err),
       });
   }
 
-  /**
-   * Refuse un candidat
-   */
   private rejectCandidate(candidate: Candidate): void {
-    if (candidate.status === 'Refusé') {
-      console.log(' Candidat déjà refusé');
-      return;
-    }
+    if (candidate.status === 'Refusé') return;
 
     this.filtrageService
-      .updateStatus(candidate.id, 'Refusé')
+      .rejectCandidate(candidate.id)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
-          candidate.status = 'Refusé';
-          console.log(' Candidat refusé:', candidate.name);
+          const index = this.candidates.findIndex((c) => c.id === candidate.id);
+          if (index !== -1) {
+            this.candidates[index] = {
+              ...this.candidates[index],
+              status: 'Refusé',
+            };
+            this.candidates = [...this.candidates];
+          }
         },
-        error: (error) => {
-          console.error(' Erreur lors du refus:', error);
-        }
+        error: (err) => console.error('Erreur refus:', err),
       });
   }
-
   /**
    * Télécharge le CV d'un candidat
    */
   private downloadCV(candidate: Candidate): void {
     console.log(' Téléchargement du CV de:', candidate.name);
-    
+
     if (!candidate.cvUrl) {
       console.error(' Aucun CV disponible pour ce candidat');
       return;
     }
 
-    this.filtrageService.downloadCV(candidate.cvUrl);
+    this.filtrageService.downloadCV(candidate);
   }
 }
