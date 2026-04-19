@@ -34,4 +34,11 @@ export const API_ERROR_MESSAGES: Record<string, string> = {
     'Une demande de mise à jour est déjà en attente',
   PROFILE_UPDATE_REQUEST_NOT_FOUND: 'Demande introuvable',
   PROFILE_UPDATE_REQUEST_NOT_PENDING: 'Cette demande a déjà été traitée',
+
+   //* Leaves
+  JUSTIFICATION_REQUIRED: 'Un justificatif est obligatoire pour ce type de congé',
+  INSUFFICIENT_BALANCE: 'Votre solde de congés est insuffisant',
+  INVALID_DATES: 'Les dates saisies sont invalides ou chevauchent un congé existant',
+  LEAVES_NOT_FOUND: 'Demande de congé introuvable',
+  ACCESS_DENIED: 'Accès non autorisé',
 };
