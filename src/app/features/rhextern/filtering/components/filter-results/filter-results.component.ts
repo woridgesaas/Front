@@ -1,8 +1,8 @@
-
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Candidate, CandidateStatus } from '../../models/candidate.model';
+import { FiltrageService } from '../../services/filtering.service';
 
 @Component({
   selector: 'app-filter-results',
@@ -12,83 +12,101 @@ import { Candidate, CandidateStatus } from '../../models/candidate.model';
   styleUrls: ['./filter-results.component.scss']
 })
 export class FilterResultsComponent {
-  @Input() candidates: Candidate[] = [];
+  @Input() set candidates(value: Candidate[]) {
+    // Filtrer : ne montrer que les CVs avec score > 0 (non rejetés par /predict)
+    this._candidates = value.filter(c => c.aiScore > 0);
+  }
+  get candidates(): Candidate[] { return this._candidates; }
+  private _candidates: Candidate[] = [];
+
   @Input() isLoading = false;
   @Output() onAction = new EventEmitter<{ type: string; candidate: Candidate }>();
 
-  // Pagination
   pageSize = 10;
   currentPage = 1;
-
-  // Sélection
   selectAll = false;
 
   // Modal compétences
   showSkillsModal = false;
   selectedSkills: string[] = [];
 
-  /**
-   * Change la taille de la page
-   */
+  // Modal détail candidat
+  showDetailModal = false;
+  selectedCandidate: Candidate | null = null;
+constructor(private filtrageService: FiltrageService) {}
+
   changePageSize(size: number): void {
     this.pageSize = size;
     this.currentPage = 1;
-    console.log(' Taille de page changée:', size);
   }
 
-  /**
-   * Sélectionne/désélectionne tous les candidats
-   */
-  toggleSelectAll(): void {
-    this.candidates.forEach(candidate => {
-      candidate.isSelected = this.selectAll;
-    });
-    console.log(' Sélection globale:', this.selectAll ? 'activée' : 'désactivée');
-  }
-
-  /**
-   * Ouvre le modal des compétences
-   */
   openSkillsModal(skills: string[]): void {
     this.selectedSkills = skills;
     this.showSkillsModal = true;
-    console.log(' Affichage de toutes les compétences:', skills.length);
   }
 
-  /**
-   * Ferme le modal des compétences
-   */
   closeSkillsModal(): void {
     this.showSkillsModal = false;
     this.selectedSkills = [];
   }
 
-  /**
-   * Gère les actions sur un candidat
-   */
+  openDetailModal(candidate: Candidate): void {
+    this.selectedCandidate = candidate;
+    this.showDetailModal = true;
+  }
+
+  closeDetailModal(): void {
+    this.showDetailModal = false;
+    this.selectedCandidate = null;
+  }
+
   handleAction(type: string, candidate: Candidate): void {
+    if (type === 'view') {
+      this.openDetailModal(candidate);
+      return;
+    }
     this.onAction.emit({ type, candidate });
   }
 
-  /**
-   * Retourne la classe CSS du statut
-   */
-  getStatusClass(status: CandidateStatus): string {
-    const classes: Record<CandidateStatus, string> = {
-      'En attente': 'bg-warning',
-      'Accepté': 'bg-success',
-      'Refusé': 'bg-danger'
-    };
-    return classes[status] || 'bg-secondary';
-  }
+getStatusClass(status: string): string {
+  if (status === 'Accepté')                          return 'bg-success';
+  if (status === 'En attente')                       return 'bg-warning text-dark';
+  if (status === 'En attente de vérification humaine') return 'bg-info text-dark';
+  if (status === 'Refusé par IA' || status === 'Refusé') return 'bg-danger';
+  return 'bg-secondary';
+}
+// Statut affiché : RH override en priorité, sinon auto selon score
+getDisplayStatus(candidate: Candidate): string {
+  // Accepté par RH → priorité absolue
+  if (candidate.status === 'Accepté') return 'Accepté';
 
-  /**
-   * Retourne la classe CSS du score IA
-   */
-  getScoreColor(score: number): string {
-    if (score >= 90) return 'text-success';
-    if (score >= 75) return 'text-primary';
-    if (score >= 60) return 'text-warning';
-    return 'text-danger';
-  }
+  // Pour tout le reste, le score IA prime sur la décision backend
+  return this.getAutoStatus(candidate);
+}
+ // Couleur du CERCLE SVG selon score
+getCircleColor(score: number): string {
+  if (score >= 50) return '#28a745'; // vert
+  if (score >= 30) return '#ffc107'; // jaune
+  return '#dc3545';                  // rouge
+}
+
+// Couleur du texte score
+getScoreColor(score: number): string {
+  if (score >= 50) return 'text-success';
+  if (score >= 30) return 'text-warning';
+  return 'text-danger';
+}
+
+// Statut automatique selon score
+getAutoStatus(candidate: Candidate): string {
+  if (candidate.aiScore >= 50) return 'En attente';
+  if (candidate.aiScore >= 30) return 'En attente de vérification humaine';
+  return 'Refusé par IA';
+}
+// Ajoute dans FilterResultsComponent.ts
+
+downloadCv(candidate: Candidate): void {
+  this.filtrageService.downloadCV(candidate);
+}
+
 }

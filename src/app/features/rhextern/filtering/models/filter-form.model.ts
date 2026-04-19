@@ -2,40 +2,41 @@
 import { Language } from './candidate.model';
 
 export interface FilterForm {
+  // ✅ NOUVEAU — Titre d'offre (obligatoire, utilisé par /predict)
+  jobTitle: string;
+
   // Compétences techniques
   skills: string[];
-  
-  // Outils et technologies
   tools: string[];
-  
-  // Expérience professionnelle
+
+  // Expérience
   experience: string;
-  experienceMin?: number; // Années minimales
-  experienceMax?: number; // Années maximales
-  
+  experienceMin?: number;
+  experienceMax?: number;
+
   // Formation
   diploma: string;
-  
-  // Langues requises
+
+  // Langues
   languages: Language[];
-  
+
   // Localisation
   location: string;
-  remoteAccepted?: boolean; // Accepte le télétravail
-  
+  remoteAccepted?: boolean;
+
   // Certifications
   certifications: string;
-  
+
   // Soft skills
   softSkills: string[];
-  
+
   // Critères additionnels
-  minAiScore?: number; // Score IA minimum
+  minAiScore?: number;
   availability?: AvailabilityType;
   salaryRange?: SalaryRange;
-  
+
   // Métadonnées
-  searchName?: string; // Nom de la recherche sauvegardée
+  searchName?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -96,6 +97,7 @@ export interface FilterHistory {
  */
 export function createEmptyFilterForm(): FilterForm {
   return {
+    jobTitle: '',       // ✅ NOUVEAU
     skills: [],
     tools: [],
     experience: '',
@@ -114,9 +116,13 @@ export function createEmptyFilterForm(): FilterForm {
  */
 export function validateFilterForm(form: FilterForm): ValidationResult {
   const errors: string[] = [];
-  
-  // Au moins un critère doit être rempli
-  const hasAnyCriteria = 
+
+  // ✅ jobTitle obligatoire
+  if (!form.jobTitle || form.jobTitle.trim() === '') {
+    errors.push('Le titre du poste est obligatoire');
+  }
+
+  const hasAnyCriteria =
     form.skills.length > 0 ||
     form.tools.length > 0 ||
     form.experience !== '' ||
@@ -125,20 +131,16 @@ export function validateFilterForm(form: FilterForm): ValidationResult {
     form.location !== '' ||
     form.certifications !== '' ||
     form.softSkills.length > 0;
-  
+
   if (!hasAnyCriteria) {
     errors.push('Veuillez sélectionner au moins un critère de filtrage');
   }
-  
-  // Validation du score minimum
+
   if (form.minAiScore !== undefined && (form.minAiScore < 0 || form.minAiScore > 100)) {
     errors.push('Le score minimum doit être entre 0 et 100');
   }
-  
-  return {
-    isValid: errors.length === 0,
-    errors
-  };
+
+  return { isValid: errors.length === 0, errors };
 }
 
 /**
@@ -165,10 +167,10 @@ export function saveFilterForm(form: FilterForm, name: string): void {
     searchName: name,
     createdAt: new Date()
   };
-  
+
   const savedFilters = getSavedFilters();
   savedFilters.push(savedForm);
-  
+
   localStorage.setItem('savedFilters', JSON.stringify(savedFilters));
 }
 
@@ -210,48 +212,48 @@ export function getDefaultWeights(): FilterWeights {
  */
 export function calculateAiScore(candidate: any, form: FilterForm, weights: FilterWeights = getDefaultWeights()): number {
   let totalScore = 0;
-  
+
   // Score des compétences
   if (form.skills.length > 0) {
     const skillMatch = form.skills.filter(s => candidate.skills?.includes(s)).length / form.skills.length;
     totalScore += skillMatch * weights.skills * 100;
   }
-  
+
   // Score des outils
   if (form.tools.length > 0) {
     const toolMatch = form.tools.filter(t => candidate.tools?.includes(t)).length / form.tools.length;
     totalScore += toolMatch * weights.tools * 100;
   }
-  
+
   // Score de l'expérience
   if (form.experience) {
     const expMatch = candidate.experienceYears >= parseInt(form.experience) ? 1 : 0.5;
     totalScore += expMatch * weights.experience * 100;
   }
-  
+
   // Score du diplôme
   if (form.diploma && candidate.diploma === form.diploma) {
     totalScore += weights.diploma * 100;
   }
-  
+
   // Score des langues
   if (form.languages.length > 0) {
-    const langMatch = form.languages.filter(l => 
+    const langMatch = form.languages.filter(l =>
       candidate.languages?.some((cl: Language) => cl.name === l.name)
     ).length / form.languages.length;
     totalScore += langMatch * weights.languages * 100;
   }
-  
+
   // Score de la localisation
   if (form.location && candidate.location === form.location) {
     totalScore += weights.location * 100;
   }
-  
+
   // Score des soft skills
   if (form.softSkills.length > 0) {
     const softMatch = form.softSkills.filter(s => candidate.softSkills?.includes(s)).length / form.softSkills.length;
     totalScore += softMatch * weights.softSkills * 100;
   }
-  
+
   return Math.round(Math.min(totalScore, 100));
 }

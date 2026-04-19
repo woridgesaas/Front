@@ -1,177 +1,378 @@
 <!-- Loader -->
 @if(isLoading) {
-  <div class="card">
-    <div class="card-body text-center py-5">
-      <div class="spinner-border text-primary mb-3" role="status">
-        <span class="visually-hidden">Chargement...</span>
-      </div>
-      <h5>Intelligence Artificielle en cours de traitement...</h5>
-      <p class="text-muted">Analyse des candidatures selon vos critères</p>
+<div class="card">
+  <div class="card-body text-center py-5">
+    <div class="spinner-border text-primary mb-3" role="status">
+      <span class="visually-hidden">Chargement...</span>
+    </div>
+    <h5>Intelligence Artificielle en cours de traitement...</h5>
+    <p class="text-muted">Analyse des candidatures selon vos critères</p>
+  </div>
+</div>
+} @if(!isLoading) {
+<div class="card">
+  <div
+    class="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3"
+  >
+    <h5 class="mb-0">
+      <i class="ti ti-users me-2"></i>Résultats du Filtrage IA
+      <span class="badge bg-primary ms-2"
+        >{{ candidates.length }} candidat(s)</span
+      >
+    </h5>
+    <div class="d-flex align-items-center">
+      <label class="me-2 mb-0">Rows Per Page:</label>
+      @if(candidates.length > 0) {
+      <select
+        [(ngModel)]="pageSize"
+        (ngModelChange)="changePageSize(pageSize)"
+        class="form-select form-select-sm"
+        style="width: auto"
+      >
+        <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+      </select>
+      }
     </div>
   </div>
-}
 
-<!-- Résultats -->
-@if(!isLoading) {
-  <div class="card">
-    <div class="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3">
-      <h5 class="mb-0">
-        <i class="ti ti-users me-2"></i>Résultats du Filtrage IA
-        <span class="badge bg-primary ms-2">{{ candidates.length }} candidat(s)</span>
-      </h5>
-      <div class="d-flex align-items-center">
-        <label class="me-2 mb-0">Rows Per Page:</label>
-        @if(candidates.length > 0) {
-          <select [(ngModel)]="pageSize" (ngModelChange)="changePageSize(pageSize)" class="form-select form-select-sm" style="width: auto;">
-            <option value="10">10</option>
-            <option value="25">25</option>
-            <option value="50">50</option>
-          </select>
-        }
-      </div>
-    </div>
-
-    <div class="card-body p-0">
-      <div class="table-responsive">
-        <table class="table datanew table-center datatable dataTable mb-0">
-          <thead class="thead-light">
-            <tr>
-              <th>
-                <div class="form-check form-check-md">
-                  <input class="form-check-input" type="checkbox" id="select-all" [(ngModel)]="selectAll" (change)="toggleSelectAll()">
-                </div>
-              </th>
-              <th>Nom + Photo</th>
-              <th>Score IA</th>
-              <th>Expérience</th>
-              <th>Compétences</th>
-              <th>Localisation</th>
-              <th>État</th>
-              <th class="text-center">CV</th>
-              <th class="text-center">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (candidate of candidates; track candidate.candidateId) {
-              <tr>
-                <td>
-                  <div class="form-check form-check-md">
-                    <input class="form-check-input" type="checkbox" [(ngModel)]="candidate.isSelected">
-                  </div>
-                </td>
-                <td>
-                  <div class="d-flex align-items-center file-name-icon">
-                    <a href="javascript:void(0);" class="avatar avatar-md bg-light rounded">
-                      <span class="avatar-title rounded-circle bg-gradient">{{ candidate.name.charAt(0) }}</span>
-                    </a>
-                    <div class="ms-2">
-                      <h6 class="fw-medium mb-0"><a href="javascript:void(0);">{{ candidate.name }}</a></h6>
-                      <span class="d-block text-muted small">{{ candidate.candidateId }}</span>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div class="d-flex align-items-center">
-                    <div class="progress-circle me-2">
-                      <svg width="40" height="40">
-                        <circle cx="20" cy="20" r="18" fill="none" stroke="#e9ecef" stroke-width="4"></circle>
-                        <circle 
-                          cx="20" cy="20" r="18" fill="none" 
-                          [attr.stroke]="candidate.aiScore >= 90 ? '#28a745' : candidate.aiScore >= 75 ? '#0d6efd' : candidate.aiScore >= 60 ? '#ffc107' : '#dc3545'" 
-                          stroke-width="4"
-                          [attr.stroke-dasharray]="113"
-                          [attr.stroke-dashoffset]="113 - (113 * candidate.aiScore / 100)"
-                          transform="rotate(-90 20 20)"></circle>
-                      </svg>
-                    </div>
-                    <span class="fw-bold {{ getScoreColor(candidate.aiScore) }}">{{ candidate.aiScore }}%</span>
-                  </div>
-                </td>
-                <td><span class="badge bg-soft-info text-info">{{ candidate.experienceYears }} ans</span></td>
-                <td>
-                  @for (skill of candidate.skills.slice(0, 2); track skill) {
-                    <span class="badge bg-soft-primary text-primary me-1 mb-1">{{ skill }}</span>
-                  }
-                  @if(candidate.skills.length > 2) {
-                    <span 
-                      class="badge bg-soft-secondary text-secondary" 
-                      style="cursor: pointer;"
-                      (click)="openSkillsModal(candidate.skills)">
-                      +{{ candidate.skills.length - 2 }}
-                    </span>
-                  }
-                </td>
-                <td><i class="ti ti-map-pin text-muted me-1"></i>{{ candidate.location }}</td>
-                <td>
-                  <span class="badge {{ getStatusClass(candidate.status) }}">
-                    {{ candidate.status }}
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table datanew table-center datatable dataTable mb-0">
+        <thead class="thead-light">
+          <tr>
+            <th>Nom + Photo</th>
+            <th>Score IA</th>
+            <th>Expérience</th>
+            <th>Compétences</th>
+            <th>Localisation</th>
+            <th>État</th>
+            <th class="text-center">CV</th>
+            <th class="text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (candidate of candidates; track candidate.id) {
+          <tr>
+            <!-- ✅ Nom sans ID -->
+            <td>
+              <div class="d-flex align-items-center file-name-icon">
+                <a
+                  href="javascript:void(0);"
+                  class="avatar avatar-md bg-light rounded"
+                >
+                  <span class="avatar-title rounded-circle bg-gradient">
+                    {{ candidate.name.charAt(0) }}
                   </span>
-                </td>
-                <td class="text-center">
-                  <button type="button" class="btn btn-sm btn-outline-primary" (click)="handleAction('download', candidate)" title="Télécharger CV">
-                    <i class="ti ti-download"></i>
-                  </button>
-                </td>
-                <td>
-                  <div class="action-icon d-inline-flex justify-content-center align-items-center">
-                    <a href="javascript:void(0);" class="me-2" (click)="handleAction('view', candidate)" title="Voir détails">
-                      <i class="ti ti-eye"></i>
-                    </a>
-                    <button type="button" class="btn btn-sm btn-success me-2" [disabled]="candidate.status === 'Accepté'" (click)="handleAction('accept', candidate)" title="Accepter">
-                      <i class="ti ti-check"></i>
-                    </button>
-                    <button type="button" class="btn btn-sm btn-danger" [disabled]="candidate.status === 'Refusé'" (click)="handleAction('reject', candidate)" title="Refuser">
-                      <i class="ti ti-x"></i>
-                    </button>
+                </a>
+                <div class="ms-2">
+                  <h6 class="fw-medium mb-0">
+                    <a href="javascript:void(0);">{{ candidate.name }}</a>
+                  </h6>
+                  <!-- ✅ ID supprimé -->
+                </div>
+              </div>
+            </td>
+
+            <!-- ✅ Score sans badge Compatible -->
+            <td>
+              <div class="d-flex align-items-center flex-column gap-1">
+                <div class="d-flex align-items-center">
+                  <div class="progress-circle me-2">
+                    <svg width="40" height="40">
+                      <circle
+                        cx="20"
+                        cy="20"
+                        r="18"
+                        fill="none"
+                        stroke="#e9ecef"
+                        stroke-width="4"
+                      ></circle>
+                      <circle
+                        cx="20"
+                        cy="20"
+                        r="18"
+                        fill="none"
+                        [attr.stroke]="getCircleColor(candidate.aiScore)"
+                        stroke-width="4"
+                        [attr.stroke-dasharray]="113"
+                        [attr.stroke-dashoffset]="
+                          113 - (113 * candidate.aiScore) / 100
+                        "
+                        transform="rotate(-90 20 20)"
+                      ></circle>
+                    </svg>
                   </div>
-                </td>
-              </tr>
-            }
-            @if (candidates.length === 0) {
-              <tr>
-                <td colspan="9">
-                  <div class="text-center py-5">
-                    <i class="ti ti-search-off fs-1 text-muted d-block mb-3"></i>
-                    <h5 class="no-record">Aucun candidat ne correspond aux critères</h5>
-                    <p class="text-muted">Essayez de modifier vos critères de filtrage</p>
-                  </div>
-                </td>
-              </tr>
-            }
-          </tbody>
-        </table>
-      </div>
-      <div class="row mt-3 px-3 pb-3">
-        <div class="col-sm-12">
-          <div class="dataTables_info">
-            Affichage de {{ candidates.length > 0 ? 1 : 0 }} à {{ candidates.length }} sur {{ candidates.length }} entrées
-          </div>
+                  <span class="fw-bold {{ getScoreColor(candidate.aiScore) }}">
+                    {{ candidate.aiScore }}%
+                  </span>
+                </div>
+                <!-- ✅ Badge Compatible supprimé — seulement catégorie -->
+                @if(candidate.category) {
+                <span class="badge bg-soft-info text-info small">
+                  {{ candidate.category }}
+                </span>
+                }
+              </div>
+            </td>
+
+            <td>
+              <span class="badge bg-soft-info text-info">
+                {{ candidate.experienceYears }} ans
+              </span>
+            </td>
+
+            <td>
+              @for (skill of candidate.skills.slice(0, 2); track skill) {
+              <span class="badge bg-soft-primary text-primary me-1 mb-1">{{
+                skill
+              }}</span>
+              } @if(candidate.skills.length > 2) {
+              <span
+                class="badge bg-soft-secondary text-secondary"
+                style="cursor: pointer"
+                (click)="openSkillsModal(candidate.skills)"
+              >
+                +{{ candidate.skills.length - 2 }}
+              </span>
+              }
+            </td>
+
+            <td>
+              <i class="ti ti-map-pin text-muted me-1"></i
+              >{{ candidate.location }}
+            </td>
+
+            <!-- ✅ Colonne État — RH override en priorité -->
+            <td>
+              <span
+                [class]="'badge ' + getStatusClass(getDisplayStatus(candidate))"
+              >
+                {{ getDisplayStatus(candidate) }}
+              </span>
+            </td>
+
+            <!-- ✅ Download CV fonctionnel -->
+            <td>
+              <button
+                class="btn btn-sm btn-outline-primary"
+                (click)="downloadCv(candidate)"
+                title="Télécharger CV"
+              >
+                <i class="ti ti-download"></i>
+              </button>
+            </td>
+
+            <td>
+              <div
+                class="action-icon d-inline-flex justify-content-center align-items-center"
+              >
+                <!-- ✅ Œil ouvre le modal détail -->
+                <a
+                  href="javascript:void(0);"
+                  class="me-2"
+                  (click)="openDetailModal(candidate)"
+                  title="Voir détails"
+                >
+                  <i class="ti ti-eye"></i>
+                </a>
+                <button
+                  type="button"
+                  class="btn btn-sm btn-success me-2"
+                  [disabled]="getDisplayStatus(candidate) === 'Accepté'"
+                  (click)="handleAction('accept', candidate)"
+                  title="Accepter"
+                >
+                  <i class="ti ti-check"></i>
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-sm btn-danger"
+                  [disabled]="getDisplayStatus(candidate) === 'Refusé'"
+                  (click)="handleAction('reject', candidate)"
+                  title="Refuser"
+                >
+                  <i class="ti ti-x"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          } @if (candidates.length === 0) {
+          <tr>
+            <td colspan="8">
+              <div class="text-center py-5">
+                <i class="ti ti-search-off fs-1 text-muted d-block mb-3"></i>
+                <h5>Aucun candidat ne correspond aux critères</h5>
+                <p class="text-muted">
+                  Essayez de modifier vos critères de filtrage
+                </p>
+              </div>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <div class="row mt-3 px-3 pb-3">
+      <div class="col-sm-12">
+        <div class="dataTables_info">
+          Affichage de {{ candidates.length > 0 ? 1 : 0 }} à
+          {{ candidates.length }} sur {{ candidates.length }} entrées
         </div>
       </div>
     </div>
   </div>
+</div>
 }
 
-<!-- Modal Voir toutes les compétences -->
+<!-- Modal Compétences -->
 @if(showSkillsModal) {
-  <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title"><i class="ti ti-code me-2"></i>Toutes les compétences</h5>
-          <button type="button" class="btn-close" (click)="closeSkillsModal()"></button>
+<div
+  class="modal fade show d-block"
+  tabindex="-1"
+  style="background: rgba(0, 0, 0, 0.5)"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="ti ti-code me-2"></i>Toutes les compétences
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          (click)="closeSkillsModal()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex flex-wrap gap-2">
+          @for (skill of selectedSkills; track skill) {
+          <span class="badge bg-primary">{{ skill }}</span>
+          }
         </div>
-        <div class="modal-body">
-          <div class="d-flex flex-wrap gap-2">
-            @for (skill of selectedSkills; track skill) {
-              <span class="badge bg-primary">{{ skill }}</span>
-            }
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" (click)="closeSkillsModal()">Fermer</button>
-        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="closeSkillsModal()"
+        >
+          Fermer
+        </button>
       </div>
     </div>
   </div>
+</div>
+}
+
+<!-- ✅ Modal Détail Candidat -->
+@if(showDetailModal && selectedCandidate) {
+<div
+  class="modal fade show d-block"
+  tabindex="-1"
+  style="background: rgba(0, 0, 0, 0.5)"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="ti ti-user me-2"></i>{{ selectedCandidate.name }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          (click)="closeDetailModal()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <p>
+              <i class="ti ti-mail me-2 text-muted"></i
+              ><strong>Email :</strong> {{ selectedCandidate.email || "—" }}
+            </p>
+            <p>
+              <i class="ti ti-phone me-2 text-muted"></i
+              ><strong>Téléphone :</strong> {{ selectedCandidate.phone || "—" }}
+            </p>
+            <p>
+              <i class="ti ti-map-pin me-2 text-muted"></i
+              ><strong>Localisation :</strong>
+              {{ selectedCandidate.location || "—" }}
+            </p>
+            <p>
+              <i class="ti ti-briefcase me-2 text-muted"></i
+              ><strong>Expérience :</strong>
+              {{ selectedCandidate.experienceYears }} ans
+            </p>
+          </div>
+          <div class="col-md-6">
+            <p>
+              <i class="ti ti-robot me-2 text-muted"></i
+              ><strong>Score IA :</strong>
+              <span
+                class="fw-bold {{ getScoreColor(selectedCandidate.aiScore) }}"
+              >
+                {{ selectedCandidate.aiScore }}%
+              </span>
+            </p>
+            <p>
+              <i class="ti ti-tag me-2 text-muted"></i
+              ><strong>Catégorie :</strong>
+              {{ selectedCandidate.category || "—" }}
+            </p>
+            <p>
+              <i class="ti ti-flag me-2 text-muted"></i><strong>État :</strong>
+              <span
+                [class]="
+                  'badge ' +
+                  getStatusClass(getDisplayStatus(selectedCandidate!))
+                "
+              >
+                {{ getDisplayStatus(selectedCandidate!) }}
+              </span>
+            </p>
+          </div>
+          <div class="col-12">
+            <strong
+              ><i class="ti ti-code me-2 text-muted"></i>Compétences :</strong
+            >
+            <div class="d-flex flex-wrap gap-1 mt-1">
+              @for(skill of selectedCandidate.skills; track skill) {
+              <span class="badge bg-soft-primary text-primary">{{
+                skill
+              }}</span>
+              }
+            </div>
+          </div>
+          @if(selectedCandidate.explanation) {
+          <div class="col-12">
+            <strong
+              ><i class="ti ti-info-circle me-2 text-muted"></i>Explication IA
+              :</strong
+            >
+            <p class="text-muted mt-1">{{ selectedCandidate.explanation }}</p>
+          </div>
+          }
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          class="btn btn-primary"
+          (click)="downloadCv(selectedCandidate!)"
+        >
+          <i class="ti ti-download me-1"></i>Télécharger CV
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="closeDetailModal()"
+        >
+          Fermer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 }
