@@ -23,7 +23,7 @@
         <td>
           <div class="d-flex align-items-center">
             <p class="fs-14 fw-medium mb-0">
-              {{ leaveTypeLabels[leave.leaveType] ?? leave.leaveType }}
+              {{ leaveTypeLabels[leave.leaveType] }}
             </p>
             <button type="button" class="btn btn-link p-0 ms-2 border-0">
               <i class="ti ti-info-circle text-info"></i>
@@ -65,7 +65,7 @@
               style="width: 14px; height: 14px"
             ></span>
             <span [ngClass]="statusColor[leave.status?.toUpperCase()]">
-              {{ statusLabels[leave.status?.toUpperCase()] ?? leave.status }}
+              {{ statusLabels[leave.status?.toUpperCase()] }}
             </span>
           </span>
         </td>
@@ -99,8 +99,7 @@
             >
               <i class="ti ti-trash"></i>
             </button>
-            } @if (!canEdit(leave.status) && !canDelete(leave.status))
-            {
+            } @if (!canEdit(leave.status) && !canDelete(leave.status)) {
             <span class="text-muted">—</span>
             }
           </div>

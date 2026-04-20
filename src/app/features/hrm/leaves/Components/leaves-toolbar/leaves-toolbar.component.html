@@ -10,14 +10,15 @@
         <i class="ti ti-calendar text-gray-9"></i>
       </span>
       <input
-        type="text"
-        class="form-control date-range bookingrange"
-        bsDaterangepicker
-        [(ngModel)]="dateRange"
-        [bsConfig]="{ adaptivePosition: true }"
-        placeholder="dd/mm/yyyy - dd/mm/yyyy"
-        (ngModelChange)="onDateChange()"
-      />
+  type="text"
+  class="form-control date-range bookingrange"
+  bsDaterangepicker
+  [(ngModel)]="dateRange"
+  [ngModelOptions]="{standalone: true}"
+  [bsConfig]="{ adaptivePosition: true }"
+  placeholder="dd/mm/yyyy - dd/mm/yyyy"
+  (ngModelChange)="onDateChange()"
+/>
     </div>
 
     <!-- Type de congé -->
