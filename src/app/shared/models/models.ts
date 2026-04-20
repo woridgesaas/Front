@@ -954,3 +954,19 @@ export interface ApiData {
   status: string;
   createdDate: string;
 }
+//  Aligné sur AttendanceListResponse du backend Java
+export interface AttendanceListItem {
+  workingDayId: string;
+  employeeId: string;
+  employeeName: string;
+  departmentId: string;
+  departmentName: string;
+  date: string;                    // "2026-04-20"
+  checkInTime: string | null;      // "09:00:00"
+  checkOutTime: string | null;
+  productionHours: number;         // 8.5
+  status: 'PRESENT' | 'ABSENT' | 'LATE' | 'EARLY_LEAVE' | 'HALF_DAY' | 'UNDER_TIME' | 'OVERTIME' | 'WEEKEND' | 'HOLIDAY';
+  overtimeId: string | null;
+  overtimeStatus: 'PENDING' | 'APPROVED' | 'REJECTED' | null;
+  hasRfidCard: boolean;
+}

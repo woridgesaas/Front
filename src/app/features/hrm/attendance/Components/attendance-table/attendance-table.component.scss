@@ -1,0 +1,36 @@
+/* ================= ABSENT ROW STYLE ================= */
+.row-absent {
+    background-color: #FEF2F2; // rouge très léger
+    transition: all 0.2s ease;
+  
+    td {
+      color: #7F1D1D;
+      border: none !important;
+    }
+  
+    /* Barre rouge à gauche */
+    td:first-child {
+      position: relative;
+    }
+  
+    td:first-child::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 12%;
+      bottom: 12%;
+      width: 4px;
+      background-color: #DC2626;
+      border-radius: 4px;
+    }
+  
+    /* Hover */
+    &:hover {
+      background-color: #FEE2E2;
+    }
+  
+    /* Avatar circle fix */
+    .avatar {
+      border-color: #FCA5A5 !important;
+    }
+  }

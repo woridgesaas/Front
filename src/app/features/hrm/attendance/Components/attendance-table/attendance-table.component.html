@@ -15,12 +15,15 @@
         <th>Carte RFID</th>
       </tr>
     </thead>
+
     <tbody>
       <tr
         *ngFor="let row of tableData; trackBy: trackByEmployee"
-        [ngClass]="{ 'bg-danger text-white': getUiStatus(row) === 'ABSENT' }"
+        [ngClass]="{
+          'row-absent': getUiStatus(row) === 'ABSENT'
+        }"
       >
-        <!-- 1) Employé -->
+        <!-- Employé -->
         <td>
           <div class="d-flex align-items-center file-name-icon">
             <a class="avatar avatar-md border avatar-rounded">
@@ -37,13 +40,13 @@
           </div>
         </td>
 
-        <!-- 2) Entrée -->
+        <!-- Entrée -->
         <td>{{ row.CheckIn }}</td>
 
-        <!-- 3) Sortie -->
-        <td>{{ row.CheckOut }}</td>
+        <!-- Sortie -->
+        <td>{{ row.CheckOut || '-' }}</td>
 
-        <!-- 4) Statut -->
+        <!-- Statut -->
         <td>
           <span
             class="badge d-inline-flex align-items-center badge-xs"
@@ -54,7 +57,7 @@
           </span>
         </td>
 
-        <!-- 5) Heures production -->
+        <!-- Heures -->
         <td>
           <span
             class="badge d-inline-flex align-items-center"
@@ -65,9 +68,9 @@
           </span>
         </td>
 
-        <!-- 6) Décision manager -->
+        <!-- Décision -->
         <td>
-          <ng-container *ngIf="showManagerDecision(row); else noDecision">
+          <ng-container *ngIf="showManagerDecision(row)">
             <button
               *ngIf="row.overtimeDecision === 'PENDING'"
               class="btn btn-success btn-sm me-1"
@@ -75,6 +78,7 @@
             >
               Accepter
             </button>
+
             <button
               *ngIf="row.overtimeDecision === 'PENDING'"
               class="btn btn-danger btn-sm"
@@ -82,12 +86,14 @@
             >
               Refuser
             </button>
+
             <span
               *ngIf="row.overtimeDecision === 'APPROVED'"
               class="badge badge-success"
             >
               Approuvé
             </span>
+
             <span
               *ngIf="row.overtimeDecision === 'REJECTED'"
               class="badge badge-danger"
@@ -95,10 +101,9 @@
               Refusé
             </span>
           </ng-container>
-          <ng-template #noDecision></ng-template>
         </td>
 
-        <!-- 7) Carte RFID -->
+        <!-- RFID -->
         <td>
           <button
             class="btn btn-sm btn-outline-primary"
@@ -108,18 +113,14 @@
             Carte RFID
           </button>
         </td>
-
       </tr>
 
-      <!-- Message vide -->
-      @if (!tableData.length) {
-        <tr>
-          <td colspan="7" class="text-center py-3">
-            Aucun enregistrement trouvé
-          </td>
-        </tr>
-      }
-
+      <!-- Empty -->
+      <tr *ngIf="!tableData.length">
+        <td colspan="7" class="text-center py-3">
+          Aucun enregistrement trouvé
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>
