@@ -6,6 +6,7 @@ import { BreadcrumbsComponent } from '../../../common/breadcrumbs/breadcrumbs.co
 import { FooterComponent } from '../../../common/footer/footer.component';
 import { KpisComponent } from '../../../common/kpis/kpis.component';
 import { LeaveApiService } from '../../../../shared/services/leave-api.service';
+import { LeaveCalendarComponent } from './pages/leave-calendar/leave-calendar.component';
 
 type LeaveStatus = 'En attente' | 'Acceptée' | 'Refusée';
 
@@ -32,6 +33,7 @@ interface LeaveRequest {
     BsDatepickerModule,
     FooterComponent,
     KpisComponent,
+    LeaveCalendarComponent
   ],
 })
 export class ValidateLeaveComponent implements OnInit {

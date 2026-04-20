@@ -1,0 +1,48 @@
+<div class="calendar-card">
+
+    <!-- Header : titre + filtre département -->
+    <div class="calendar-header">
+      <h5 class="calendar-title">
+        <i class="fa-regular fa-calendar"></i>
+        Calendrier des congés
+      </h5>
+  
+      <div *ngIf="isHR" class="department-filter">
+        <label class="filter-label">Département</label>
+        <select
+          class="filter-select"
+          [(ngModel)]="selectedDepartmentId"
+          (ngModelChange)="onDepartmentChange()"
+        >
+          <option value="">Tous les départements</option>
+          <option *ngFor="let dept of departments" [value]="dept">
+            {{ shortDepartmentId(dept) }}
+          </option>
+        </select>
+      </div>
+    </div>
+  
+    <!-- Légende -->
+    <div class="legend">
+      <div class="legend-item">
+        <span class="legend-dot" style="background: #C084FC"></span>
+        <span>Annuel</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-dot" style="background: #BBF7D0"></span>
+        <span>Maladie</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-dot" style="background: #FED7AA"></span>
+        <span>Exceptionnel</span>
+      </div>
+    </div>
+  
+    <!-- Loading -->
+    <div *ngIf="isLoading" class="loading-bar">
+      <div class="loading-progress"></div>
+    </div>
+  
+    <!-- FullCalendar -->
+    <full-calendar [options]="calendarOptions"></full-calendar>
+  </div>
