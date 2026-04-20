@@ -1,133 +1,117 @@
-<div
-  class="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3"
->
+<div class="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3">
   <div class="d-flex">
     <h5 class="mb-0 fw-semibold">Liste des congés</h5>
   </div>
   <div class="d-flex align-items-center flex-wrap column-gap-3 row-gap-3">
+
     <!-- Date range -->
     <div class="input-icon position-relative">
       <span class="input-icon-addon">
         <i class="ti ti-calendar text-gray-9"></i>
       </span>
       <input
-        type="text"
-        class="form-control date-range bookingrange"
-        bsDaterangepicker
-        [(ngModel)]="dateRange"
-        [bsConfig]="{ adaptivePosition: true }"
-        placeholder="dd/mm/yyyy - dd/mm/yyyy"
-        (ngModelChange)="onDateChange()"
-      />
+  type="text"
+  class="form-control date-range bookingrange"
+  bsDaterangepicker
+  [(ngModel)]="dateRange"
+  [ngModelOptions]="{standalone: true}"
+  [bsConfig]="{ adaptivePosition: true }"
+  placeholder="dd/mm/yyyy - dd/mm/yyyy"
+  (ngModelChange)="onDateChange()"
+/>
     </div>
 
-    <!-- Type -->
+    <!-- Type de congé -->
     <div class="dropdown">
-      <a class="dropdown-toggle btn btn-sm btn-white" data-bs-toggle="dropdown">
-        Type de congé
-      </a>
+      <button type="button" class="dropdown-toggle btn btn-sm btn-white" data-bs-toggle="dropdown">
+        {{ selectedTypeLabel }}
+      </button>
       <ul class="dropdown-menu dropdown-menu-end p-3">
+        <li>
+          <button type="button" class="dropdown-item text-muted" (click)="resetType()">
+            Tous les types
+          </button>
+        </li>
+        <li><hr class="dropdown-divider"></li>
         <li *ngFor="let type of leaveTypes">
-          <a class="dropdown-item" (click)="selectType(type)">
-            {{ type }}
-          </a>
+          <button type="button" class="dropdown-item" (click)="selectType(type.label, type.value)">
+            {{ type.label }}
+          </button>
         </li>
       </ul>
     </div>
 
-    <!-- Approved by -->
+    <!-- Approuvé par -->
     <div class="dropdown">
-      <a class="dropdown-toggle btn btn-sm btn-white" data-bs-toggle="dropdown">
-        Approuvé par
-      </a>
+      <button type="button" class="dropdown-toggle btn btn-sm btn-white" data-bs-toggle="dropdown">
+        {{ selectedApproverLabel }}
+      </button>
       <ul class="dropdown-menu dropdown-menu-end p-3">
+        <li>
+          <button type="button" class="dropdown-item text-muted" (click)="resetApprover()">
+            Tous
+          </button>
+        </li>
+        <li><hr class="dropdown-divider"></li>
         <li *ngFor="let approver of approvers">
-          <a class="dropdown-item" (click)="selectApprover(approver)">
+          <button type="button" class="dropdown-item" (click)="selectApprover(approver)">
             {{ approver }}
-          </a>
+          </button>
         </li>
       </ul>
     </div>
 
-    <!-- Status -->
+    <!-- Statut -->
     <div class="dropdown">
-      <a
-        href="javascript:void(0);"
+      <button
+        type="button"
         class="dropdown-toggle btn btn-sm btn-white d-inline-flex align-items-center"
         data-bs-toggle="dropdown"
       >
-        Sélectionner statut
-      </a>
+        {{ selectedStatusLabel }}
+      </button>
       <ul class="dropdown-menu dropdown-menu-end p-3">
         <li>
-          <a
-            href="javascript:void(0);"
-            class="dropdown-item rounded-1 d-flex justify-content-start align-items-center"
-            ><span
-              class="rounded-circle bg-transparent-success d-flex justify-content-center align-items-center me-2"
-              ><i class="ti ti-point-filled text-success"></i></span
-            >Approuvé</a
-          >
+          <button type="button" class="dropdown-item text-muted" (click)="resetStatus()">
+            Tous les statuts
+          </button>
         </li>
-        <li>
-          <a
-            href="javascript:void(0);"
-            class="dropdown-item rounded-1 d-flex justify-content-start align-items-center"
-            ><span
-              class="rounded-circle bg-transparent-danger d-flex justify-content-center align-items-center me-2"
-              ><i class="ti ti-point-filled text-danger"></i></span
-            >Refusé</a
+        <li><hr class="dropdown-divider"></li>
+        <li *ngFor="let s of statuses">
+          <button
+            type="button"
+            class="dropdown-item rounded-1 d-flex align-items-center"
+            (click)="selectStatus(s.label, s.value)"
           >
-        </li>
-        <li>
-          <a
-            href="javascript:void(0);"
-            class="dropdown-item rounded-1 d-flex justify-content-start align-items-center"
-            ><span
-              class="rounded-circle bg-transparent-purple d-flex justify-content-center align-items-center me-2"
-              ><i class="ti ti-point-filled text-purple"></i></span
-            >Nouveau</a
-          >
+            <span
+              class="rounded-circle d-flex justify-content-center align-items-center me-2"
+              [ngClass]="s.bg"
+            >
+              <i class="ti ti-point-filled" [ngClass]="s.color"></i>
+            </span>
+            {{ s.label }}
+          </button>
         </li>
       </ul>
     </div>
 
-    <!-- Sort -->
+    <!-- Trier par -->
     <div class="dropdown">
-      <a
-        href="javascript:void(0);"
+      <button
+        type="button"
         class="dropdown-toggle btn btn-sm btn-white d-inline-flex align-items-center"
         data-bs-toggle="dropdown"
       >
-        Trier par : Derniers 7 jours
-      </a>
+        {{ selectedSortLabel }}
+      </button>
       <ul class="dropdown-menu dropdown-menu-end p-3">
-        <li>
-          <a href="javascript:void(0);" class="dropdown-item rounded-1"
-            >Récemment ajouté</a
-          >
-        </li>
-        <li>
-          <a href="javascript:void(0);" class="dropdown-item rounded-1"
-            >Croissant</a
-          >
-        </li>
-        <li>
-          <a href="javascript:void(0);" class="dropdown-item rounded-1"
-            >Décroissant</a
-          >
-        </li>
-        <li>
-          <a href="javascript:void(0);" class="dropdown-item rounded-1"
-            >Mois dernier</a
-          >
-        </li>
-        <li>
-          <a href="javascript:void(0);" class="dropdown-item rounded-1"
-            >Derniers 7 jours</a
-          >
+        <li *ngFor="let s of sorts">
+          <button type="button" class="dropdown-item rounded-1" (click)="selectSort(s.label, s.value)">
+            {{ s.label }}
+          </button>
         </li>
       </ul>
     </div>
+
   </div>
 </div>

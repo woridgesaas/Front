@@ -18,18 +18,22 @@
   </div>
   <!-- /Breadcrumb -->
   <!-- Leaves Info -->
-  <app-leaves-kpis></app-leaves-kpis>
+  <app-leaves-kpis
+  [annualCount]="annualCount"
+  [totalCount]="totalCount"
+  [remainingBalance]="remainingBalance">
+</app-leaves-kpis>
   <!-- /Leaves Info -->
   <!-- Leaves list -->
   <div class="card">
     <app-leaves-toolbar
-      (dateChange)="onDateFilter($event)"
-      (typeChange)="onTypeFilter($event)"
-      (approverChange)="onApproverFilter($event)"
-      (statusChange)="onStatusFilter($event)"
-      (sortChange)="onSortFilter($event)"
-    >
-    </app-leaves-toolbar>
+  [approvers]="approvers"
+  (dateChange)="onDateFilter($event)"
+  (typeChange)="onTypeFilter($event)"
+  (approverChange)="onApproverFilter($event)"
+  (statusChange)="onStatusFilter($event)"
+  (sortChange)="onSortFilter($event)">
+</app-leaves-toolbar>
     <div class="card-body p-0">
       <div class="custom-datatable-filter">
         <div class="dataTables_wrapper dt-bootstrap5 no-footer">

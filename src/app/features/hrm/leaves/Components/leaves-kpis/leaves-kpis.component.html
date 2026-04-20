@@ -1,14 +1,26 @@
 <div class="row mb-4 g-3">
-  <div
-    class="col-xl-3 col-md-6"
-    *ngFor="let kpi of kpis; trackBy: trackByTitle"
-  >
+  <div class="col-xl-3 col-md-6">
     <app-kpi-card
-      [title]="kpi.title"
-      [value]="kpi.value"
-      [icon]="kpi.icon"
-      [color]="kpi.color">
+      title="Congés annuels"
+      [value]="annualCount"
+      icon="ti ti-calendar-event"
+      color="primary">
+    </app-kpi-card>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <app-kpi-card
+      title="Total des congés"
+      [value]="totalCount"
+      icon="ti ti-briefcase"
+      color="warning">
+    </app-kpi-card>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <app-kpi-card
+      title="Congés restants"
+      [value]="remainingBalance"
+      icon="ti ti-hourglass"
+      color="success">
     </app-kpi-card>
   </div>
 </div>
-
