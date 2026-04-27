@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Candidate, CandidateStatus } from '../../models/candidate.model';
+import { Candidate } from '../../models/candidate.model';
 import { FiltrageService } from '../../services/filtering.service';
 
 @Component({
@@ -9,12 +9,11 @@ import { FiltrageService } from '../../services/filtering.service';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './filter-results.component.html',
-  styleUrls: ['./filter-results.component.scss']
+  styleUrls: ['./filter-results.component.scss'],
 })
 export class FilterResultsComponent {
   @Input() set candidates(value: Candidate[]) {
-    // Filtrer : ne montrer que les CVs avec score > 0 (non rejetés par /predict)
-    this._candidates = value.filter(c => c.aiScore > 0);
+    this._candidates = value;
   }
   get candidates(): Candidate[] { return this._candidates; }
   private _candidates: Candidate[] = [];
@@ -24,24 +23,28 @@ export class FilterResultsComponent {
 
   pageSize = 10;
   currentPage = 1;
-  selectAll = false;
 
-  // Modal compétences
+  // Modal — liste de skills
   showSkillsModal = false;
   selectedSkills: string[] = [];
+  skillsModalTitle = '';
 
-  // Modal détail candidat
+  // Modal — détail candidat
   showDetailModal = false;
   selectedCandidate: Candidate | null = null;
-constructor(private filtrageService: FiltrageService) {}
+
+  constructor(private filtrageService: FiltrageService) {}
 
   changePageSize(size: number): void {
     this.pageSize = size;
     this.currentPage = 1;
   }
 
-  openSkillsModal(skills: string[]): void {
+  // ── Modals ────────────────────────────────────────────────────────────
+
+  openSkillsModal(skills: string[], title: string = 'Compétences'): void {
     this.selectedSkills = skills;
+    this.skillsModalTitle = title;
     this.showSkillsModal = true;
   }
 
@@ -60,53 +63,143 @@ constructor(private filtrageService: FiltrageService) {}
     this.selectedCandidate = null;
   }
 
-  handleAction(type: string, candidate: Candidate): void {
-    if (type === 'view') {
-      this.openDetailModal(candidate);
-      return;
+  // ── Actions ───────────────────────────────────────────────────────────
+
+ // ── Remplacer la méthode handleAction ────────────────────────────────────
+
+handleAction(type: string, candidate: Candidate): void {
+  if (type === 'view') { this.openDetailModal(candidate); return; }
+  if (type === 'accept') { this.acceptCandidate(candidate); return; }
+  if (type === 'reject') { this.rejectCandidate(candidate); return; }
+}
+
+// ── Accepter : appel API + retrait immédiat de la liste ──────────────────
+
+private acceptCandidate(candidate: Candidate): void {
+  if (candidate.cvStatus === 'accepted') return;
+
+  // Mise à jour optimiste immédiate — on retire de la liste
+  this._candidates = this._candidates.filter(c => c.id !== candidate.id);
+
+  // Appel API en arrière-plan
+  this.filtrageService.acceptCandidate(candidate.id, 0).subscribe({
+    error: (err) => {
+      console.error('Erreur acceptation:', err);
+      // En cas d'erreur : remettre le candidat avec statut inchangé
+      this._candidates = [...this._candidates, candidate];
     }
-    this.onAction.emit({ type, candidate });
+  });
+}
+
+// ── Refuser : appel API + mise à jour statut local ───────────────────────
+
+private rejectCandidate(candidate: Candidate): void {
+  if (candidate.cvStatus === 'rejected') return;
+
+  // Mise à jour optimiste immédiate — désactive les deux boutons
+  const idx = this._candidates.findIndex(c => c.id === candidate.id);
+  if (idx !== -1) {
+    this._candidates[idx] = { ...this._candidates[idx], cvStatus: 'rejected' };
+    this._candidates = [...this._candidates];
   }
 
-getStatusClass(status: string): string {
-  if (status === 'Accepté')                          return 'bg-success';
-  if (status === 'En attente')                       return 'bg-warning text-dark';
-  if (status === 'En attente de vérification humaine') return 'bg-info text-dark';
-  if (status === 'Refusé par IA' || status === 'Refusé') return 'bg-danger';
-  return 'bg-secondary';
-}
-// Statut affiché : RH override en priorité, sinon auto selon score
-getDisplayStatus(candidate: Candidate): string {
-  // Accepté par RH → priorité absolue
-  if (candidate.status === 'Accepté') return 'Accepté';
-
-  // Pour tout le reste, le score IA prime sur la décision backend
-  return this.getAutoStatus(candidate);
-}
- // Couleur du CERCLE SVG selon score
-getCircleColor(score: number): string {
-  if (score >= 50) return '#28a745'; // vert
-  if (score >= 30) return '#ffc107'; // jaune
-  return '#dc3545';                  // rouge
+  // Appel API en arrière-plan
+  this.filtrageService.rejectCandidate(candidate.id).subscribe({
+    error: (err) => {
+      console.error('Erreur refus:', err);
+      // En cas d'erreur : rétablir statut pending
+      if (idx !== -1) {
+        this._candidates[idx] = { ...this._candidates[idx], cvStatus: 'pending' };
+        this._candidates = [...this._candidates];
+      }
+    }
+  });
 }
 
-// Couleur du texte score
-getScoreColor(score: number): string {
-  if (score >= 50) return 'text-success';
-  if (score >= 30) return 'text-warning';
-  return 'text-danger';
-}
+  // ── CV ────────────────────────────────────────────────────────────────
 
-// Statut automatique selon score
-getAutoStatus(candidate: Candidate): string {
-  if (candidate.aiScore >= 50) return 'En attente';
-  if (candidate.aiScore >= 30) return 'En attente de vérification humaine';
-  return 'Refusé par IA';
-}
-// Ajoute dans FilterResultsComponent.ts
+  viewCv(candidate: Candidate): void {
+    // Ouvre le CV dans un nouvel onglet sans forcer le téléchargement
+    const fileName =
+      candidate.cvDownloadUrl?.split('/').pop()?.split('?')[0] ?? 'cv.pdf';
+    this.filtrageService.getCvPresignedUrl(fileName).subscribe({
+      next: (url) => window.open(url, '_blank'),
+      error: () => alert('Impossible d\'ouvrir le CV.'),
+    });
+  }
 
-downloadCv(candidate: Candidate): void {
-  this.filtrageService.downloadCV(candidate);
-}
+  downloadCv(candidate: Candidate): void {
+    this.filtrageService.downloadCV(candidate);
+  }
 
+  // ── Score IA — cercle SVG ─────────────────────────────────────────────
+  // Couleurs seuils : vert ≥75 / orange ≥55 / rouge <55
+
+  getCircleColor(score: number): string {
+    if (score >= 75) return '#28a745'; // vert
+    if (score >= 55) return '#ffc107'; // orange/jaune
+    return '#dc3545';                  // rouge
+  }
+
+  getScoreTextClass(score: number): string {
+    if (score >= 75) return 'text-success';
+    if (score >= 55) return 'text-warning';
+    return 'text-danger';
+  }
+
+  // ── Recommendation badge ──────────────────────────────────────────────
+
+  getRecommendationClass(rec: string): string {
+    switch (rec) {
+      case 'Strongly recommended': return 'bg-success text-white';
+      case 'Recommended':          return 'bg-soft-success text-success';
+      case 'Weakly recommended':   return 'bg-warning text-dark';
+      case 'Not recommended':      return 'bg-danger text-white';
+      default:                     return 'bg-secondary text-white';
+    }
+  }
+
+  getRecommendationLabel(rec: string): string {
+    switch (rec) {
+      case 'Strongly recommended': return 'Fortement recommandé';
+      case 'Recommended':          return 'Recommandé';
+      case 'Weakly recommended':   return 'Faiblement recommandé';
+      case 'Not recommended':      return 'Non recommandé';
+      default:                     return rec || '—';
+    }
+  }
+
+  // ── Seniority badge ───────────────────────────────────────────────────
+
+  getSeniorityClass(level: string): string {
+    switch (level) {
+      case 'Expert': return 'bg-soft-primary text-primary';
+      case 'Senior': return 'bg-soft-info text-info';
+      case 'Mid':    return 'bg-soft-success text-success';
+      case 'Junior': return 'bg-soft-warning text-warning';
+      case 'Student':return 'bg-soft-secondary text-secondary';
+      default:       return 'bg-soft-secondary text-secondary';
+    }
+  }
+
+  // ── CvStatus badge ────────────────────────────────────────────────────
+  // ✅ pending → JAUNE (bg-warning text-dark) comme l'ancien système
+
+  getCvStatusClass(status: string): string {
+    switch (status) {
+      case 'accepted': return 'bg-success text-white';
+      case 'rejected': return 'bg-danger text-white';
+      case 'pending':
+      default:         return 'bg-warning text-dark'; // ← jaune
+    }
+  }
+
+  getCvStatusLabel(status: string): string {
+    switch (status) {
+      case 'accepted': return 'Accepté';
+      case 'rejected': return 'Refusé';
+      case 'pending':
+      default:         return 'En attente';
+    }
+  }
 }

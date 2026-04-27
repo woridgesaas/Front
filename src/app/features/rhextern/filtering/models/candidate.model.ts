@@ -1,46 +1,38 @@
-
-export interface Candidate {
+// ── Modèle principal — reflète exactement la réponse .NET ────────────────
+export interface FilteringResultResponse {
   id: number;
-  candidateId: string;
-  name: string;
-  email: string;
-  phone: string;
+  candidateName: string;
+  candidateEmail: string;
+  candidatePhone: string;
   location: string;
-
-  // Scoring IA
-  aiScore: number;
-
-  // ✅ NOUVEAU — retournés par .NET après matching
-  isCompatible?: boolean;    // catégorie prédite == titre offre
-  category?: string;         // catégorie prédite par /predict
-  explanation?: string;      // explication du score
-
-  status: CandidateStatus;
+  scoreIa: number;
   experienceYears: number;
-  skills: string[];
-  tools?: string[];
-  diploma?: string;
-  certifications?: string[];
-  languages?: Language[];
-  softSkills?: string[];
-  cvUrl: string;
-  isSelected?: boolean;
+  technicalSkills: string[];   // tech + outils séparés
+  softSkills: string[];        // soft séparé
+  missingSkills: string[];     // skills manquantes
+  recommendation: string;      // Strongly recommended | Recommended | Weakly recommended | Not recommended
+  mainDomain: string;
+  seniorityLevel: string;      // Student | Junior | Mid | Senior | Expert
+  cvStatus: string;            // pending | accepted | rejected
+  cvDownloadUrl: string;
+  analysisDate: string;
 }
 
-/**
- * Statuts possibles d'un candidat (3 statuts de base)
- */
-export type CandidateStatus = 'En attente' | 'Accepté' | 'Refusé';
+// Alias — utilisé dans tous les composants
+export type Candidate = FilteringResultResponse;
 
-/**
- * Langue parlée
- */
+// Valeurs possibles de cvStatus (backend EN)
+export type CandidateStatus = 'pending' | 'accepted' | 'rejected';
+
+// ── Modèle Langue ────────────────────────────────────────────────────────
 export interface Language {
   name: string;
   level: LanguageLevel;
 }
 
-/**
- * Niveaux de langue
- */
-export type LanguageLevel = 'Débutant' | 'Intermédiaire' | 'Avancé' | 'Courant' | 'Bilingue';
+export type LanguageLevel =
+  | 'Débutant'
+  | 'Intermédiaire'
+  | 'Avancé'
+  | 'Courant'
+  | 'Bilingue';

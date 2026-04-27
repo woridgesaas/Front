@@ -42,12 +42,13 @@
       <table class="table datanew table-center datatable dataTable mb-0">
         <thead class="thead-light">
           <tr>
-            <th>Nom + Photo</th>
+            <th>Candidat</th>
             <th>Score IA</th>
+            <th>Recommandation</th>
+            <th>Niveau / Domaine</th>
             <th>Expérience</th>
-            <th>Compétences</th>
-            <th>Localisation</th>
-            <th>État</th>
+            <th>Compétences Tech</th>
+            <th>Statut</th>
             <th class="text-center">CV</th>
             <th class="text-center">Actions</th>
           </tr>
@@ -55,7 +56,7 @@
         <tbody>
           @for (candidate of candidates; track candidate.id) {
           <tr>
-            <!-- ✅ Nom sans ID -->
+            <!-- Candidat : avatar + nom + email -->
             <td>
               <div class="d-flex align-items-center file-name-icon">
                 <a
@@ -63,19 +64,26 @@
                   class="avatar avatar-md bg-light rounded"
                 >
                   <span class="avatar-title rounded-circle bg-gradient">
-                    {{ candidate.name.charAt(0) }}
+                    {{ candidate.candidateName.charAt(0) }}
                   </span>
                 </a>
                 <div class="ms-2">
                   <h6 class="fw-medium mb-0">
-                    <a href="javascript:void(0);">{{ candidate.name }}</a>
+                    <a
+                      href="javascript:void(0);"
+                      (click)="openDetailModal(candidate)"
+                    >
+                      {{ candidate.candidateName }}
+                    </a>
                   </h6>
-                  <!-- ✅ ID supprimé -->
+                  <small class="text-muted">{{
+                    candidate.candidateEmail
+                  }}</small>
                 </div>
               </div>
             </td>
 
-            <!-- ✅ Score sans badge Compatible -->
+            <!-- ✅ Score IA — cercle SVG (style original conservé) -->
             <td>
               <div class="d-flex align-items-center flex-column gap-1">
                 <div class="d-flex align-items-center">
@@ -94,84 +102,121 @@
                         cy="20"
                         r="18"
                         fill="none"
-                        [attr.stroke]="getCircleColor(candidate.aiScore)"
+                        [attr.stroke]="getCircleColor(candidate.scoreIa)"
                         stroke-width="4"
                         [attr.stroke-dasharray]="113"
                         [attr.stroke-dashoffset]="
-                          113 - (113 * candidate.aiScore) / 100
+                          113 - (113 * candidate.scoreIa) / 100
                         "
                         transform="rotate(-90 20 20)"
                       ></circle>
                     </svg>
                   </div>
-                  <span class="fw-bold {{ getScoreColor(candidate.aiScore) }}">
-                    {{ candidate.aiScore }}%
+                  <span
+                    class="fw-bold {{ getScoreTextClass(candidate.scoreIa) }}"
+                  >
+                    {{ candidate.scoreIa }}%
                   </span>
                 </div>
-                <!-- ✅ Badge Compatible supprimé — seulement catégorie -->
-                @if(candidate.category) {
-                <span class="badge bg-soft-info text-info small">
-                  {{ candidate.category }}
+              </div>
+            </td>
+
+            <!-- Recommandation -->
+            <td>
+              <span
+                class="badge {{
+                  getRecommendationClass(candidate.recommendation)
+                }}"
+              >
+                {{ getRecommendationLabel(candidate.recommendation) }}
+              </span>
+            </td>
+
+            <!-- Séniorité + Domaine -->
+            <td>
+              <div class="d-flex flex-column gap-1">
+                <span
+                  class="badge {{
+                    getSeniorityClass(candidate.seniorityLevel)
+                  }}"
+                >
+                  {{ candidate.seniorityLevel || "—" }}
                 </span>
+                @if(candidate.mainDomain) {
+                <small class="text-muted">{{ candidate.mainDomain }}</small>
                 }
               </div>
             </td>
 
+            <!-- Expérience -->
             <td>
               <span class="badge bg-soft-info text-info">
                 {{ candidate.experienceYears }} ans
               </span>
             </td>
 
+            <!-- Compétences Techniques -->
             <td>
-              @for (skill of candidate.skills.slice(0, 2); track skill) {
+              @for (skill of candidate.technicalSkills.slice(0, 2); track skill)
+              {
               <span class="badge bg-soft-primary text-primary me-1 mb-1">{{
                 skill
               }}</span>
-              } @if(candidate.skills.length > 2) {
+              } @if(candidate.technicalSkills.length > 2) {
               <span
                 class="badge bg-soft-secondary text-secondary"
                 style="cursor: pointer"
-                (click)="openSkillsModal(candidate.skills)"
+                (click)="
+                  openSkillsModal(
+                    candidate.technicalSkills,
+                    'Compétences Techniques'
+                  )
+                "
               >
-                +{{ candidate.skills.length - 2 }}
+                +{{ candidate.technicalSkills.length - 2 }}
               </span>
+              } @if(candidate.missingSkills.length > 0) {
+              <i
+                class="ti ti-alert-triangle text-warning ms-1"
+                style="cursor: pointer"
+                title="{{ candidate.missingSkills.join(', ') }}"
+                (click)="
+                  openSkillsModal(
+                    candidate.missingSkills,
+                    'Compétences Manquantes'
+                  )
+                "
+              >
+              </i>
               }
             </td>
 
+            <!-- ✅ Statut — pending = jaune -->
             <td>
-              <i class="ti ti-map-pin text-muted me-1"></i
-              >{{ candidate.location }}
-            </td>
-
-            <!-- ✅ Colonne État — RH override en priorité -->
-            <td>
-              <span
-                [class]="'badge ' + getStatusClass(getDisplayStatus(candidate))"
-              >
-                {{ getDisplayStatus(candidate) }}
+              <span class="badge {{ getCvStatusClass(candidate.cvStatus) }}">
+                {{ getCvStatusLabel(candidate.cvStatus) }}
               </span>
             </td>
 
-            <!-- ✅ Download CV fonctionnel -->
-            <td>
+            <!-- ✅ CV — 2 boutons : Voir + Télécharger (comme screen 3) -->
+            <td class="text-center">
               <button
                 class="btn btn-sm btn-outline-primary"
-                (click)="downloadCv(candidate)"
-                title="Télécharger CV"
+                (click)="viewCv(candidate)"
+                title="Voir CV"
               >
-                <i class="ti ti-download"></i>
+                <i class="ti ti-file-description"></i>
               </button>
             </td>
 
-            <td>
+            <!-- Actions : détail / accepter / refuser -->
+            <td class="text-center">
               <div
-                class="action-icon d-inline-flex justify-content-center align-items-center"
+                class="action-icon d-inline-flex justify-content-center align-items-center gap-1"
               >
-                <!-- ✅ Œil ouvre le modal détail -->
                 <a
                   href="javascript:void(0);"
-                  class="me-2"
+                  class="me-1"
                   (click)="openDetailModal(candidate)"
                   title="Voir détails"
                 >
@@ -179,8 +224,8 @@
                 </a>
                 <button
                   type="button"
-                  class="btn btn-sm btn-success me-2"
-                  [disabled]="getDisplayStatus(candidate) === 'Accepté'"
+                  class="btn btn-sm btn-success"
+                  [disabled]="candidate.cvStatus === 'accepted'"
                   (click)="handleAction('accept', candidate)"
                   title="Accepter"
                 >
@@ -189,7 +234,7 @@
                 <button
                   type="button"
                   class="btn btn-sm btn-danger"
-                  [disabled]="getDisplayStatus(candidate) === 'Refusé'"
+                  [disabled]="candidate.cvStatus === 'rejected'"
                   (click)="handleAction('reject', candidate)"
                   title="Refuser"
                 >
@@ -198,9 +243,9 @@
               </div>
             </td>
           </tr>
-          } @if (candidates.length === 0) {
+          } @if(candidates.length === 0) {
           <tr>
-            <td colspan="8">
+            <td colspan="9">
               <div class="text-center py-5">
                 <i class="ti ti-search-off fs-1 text-muted d-block mb-3"></i>
                 <h5>Aucun candidat ne correspond aux critères</h5>
@@ -214,6 +259,7 @@
         </tbody>
       </table>
     </div>
+
     <div class="row mt-3 px-3 pb-3">
       <div class="col-sm-12">
         <div class="dataTables_info">
@@ -226,7 +272,7 @@
 </div>
 }
 
-<!-- Modal Compétences -->
+<!-- ── Modal liste de skills ──────────────────────────────────────────────── -->
 @if(showSkillsModal) {
 <div
   class="modal fade show d-block"
@@ -237,7 +283,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">
-          <i class="ti ti-code me-2"></i>Toutes les compétences
+          <i class="ti ti-code me-2"></i>{{ skillsModalTitle }}
         </h5>
         <button
           type="button"
@@ -248,7 +294,16 @@
       <div class="modal-body">
         <div class="d-flex flex-wrap gap-2">
           @for (skill of selectedSkills; track skill) {
-          <span class="badge bg-primary">{{ skill }}</span>
+          <span
+            class="badge"
+            [class]="
+              skillsModalTitle.includes('Manquant')
+                ? 'bg-danger text-white'
+                : 'bg-primary text-white'
+            "
+          >
+            {{ skill }}
+          </span>
           }
         </div>
       </div>
@@ -266,7 +321,7 @@
 </div>
 }
 
-<!-- ✅ Modal Détail Candidat -->
+<!-- ── Modal détail candidat — ✅ SANS boutons Accepter/Refuser ───────────── -->
 @if(showDetailModal && selectedCandidate) {
 <div
   class="modal fade show d-block"
@@ -277,7 +332,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">
-          <i class="ti ti-user me-2"></i>{{ selectedCandidate.name }}
+          <i class="ti ti-user me-2"></i>{{ selectedCandidate.candidateName }}
         </h5>
         <button
           type="button"
@@ -287,82 +342,138 @@
       </div>
       <div class="modal-body">
         <div class="row g-3">
+          <!-- Infos contact -->
           <div class="col-md-6">
             <p>
-              <i class="ti ti-mail me-2 text-muted"></i
-              ><strong>Email :</strong> {{ selectedCandidate.email || "—" }}
+              <i class="ti ti-mail me-2 text-muted"></i>
+              <strong>Email :</strong>
+              {{ selectedCandidate.candidateEmail || "—" }}
             </p>
             <p>
-              <i class="ti ti-phone me-2 text-muted"></i
-              ><strong>Téléphone :</strong> {{ selectedCandidate.phone || "—" }}
+              <i class="ti ti-phone me-2 text-muted"></i>
+              <strong>Téléphone :</strong>
+              {{ selectedCandidate.candidatePhone || "—" }}
             </p>
             <p>
-              <i class="ti ti-map-pin me-2 text-muted"></i
-              ><strong>Localisation :</strong>
+              <i class="ti ti-map-pin me-2 text-muted"></i>
+              <strong>Localisation :</strong>
               {{ selectedCandidate.location || "—" }}
             </p>
             <p>
-              <i class="ti ti-briefcase me-2 text-muted"></i
-              ><strong>Expérience :</strong>
+              <i class="ti ti-briefcase me-2 text-muted"></i>
+              <strong>Expérience :</strong>
               {{ selectedCandidate.experienceYears }} ans
             </p>
+            <p>
+              <i class="ti ti-building me-2 text-muted"></i>
+              <strong>Domaine :</strong>
+              {{ selectedCandidate.mainDomain || "—" }}
+            </p>
           </div>
+
+          <!-- Score + statuts -->
           <div class="col-md-6">
-            <p>
-              <i class="ti ti-robot me-2 text-muted"></i
-              ><strong>Score IA :</strong>
+            <p class="mb-3">
+              <i class="ti ti-robot me-2 text-muted"></i>
+              <strong>Score IA :</strong>
               <span
-                class="fw-bold {{ getScoreColor(selectedCandidate.aiScore) }}"
+                class="fw-bold ms-1 {{
+                  getScoreTextClass(selectedCandidate.scoreIa)
+                }}"
               >
-                {{ selectedCandidate.aiScore }}%
+                {{ selectedCandidate.scoreIa }}%
+              </span>
+            </p>
+
+            <p>
+              <i class="ti ti-star me-2 text-muted"></i>
+              <strong>Recommandation :</strong>
+              <span
+                class="badge ms-1 {{
+                  getRecommendationClass(selectedCandidate.recommendation)
+                }}"
+              >
+                {{ getRecommendationLabel(selectedCandidate.recommendation) }}
               </span>
             </p>
             <p>
-              <i class="ti ti-tag me-2 text-muted"></i
-              ><strong>Catégorie :</strong>
-              {{ selectedCandidate.category || "—" }}
+              <i class="ti ti-award me-2 text-muted"></i>
+              <strong>Séniorité :</strong>
+              <span
+                class="badge ms-1 {{
+                  getSeniorityClass(selectedCandidate.seniorityLevel)
+                }}"
+              >
+                {{ selectedCandidate.seniorityLevel || "—" }}
+              </span>
             </p>
             <p>
-              <i class="ti ti-flag me-2 text-muted"></i><strong>État :</strong>
+              <i class="ti ti-flag me-2 text-muted"></i>
+              <strong>Statut :</strong>
               <span
-                [class]="
-                  'badge ' +
-                  getStatusClass(getDisplayStatus(selectedCandidate!))
-                "
+                class="badge ms-1 {{
+                  getCvStatusClass(selectedCandidate.cvStatus)
+                }}"
               >
-                {{ getDisplayStatus(selectedCandidate!) }}
+                {{ getCvStatusLabel(selectedCandidate.cvStatus) }}
               </span>
             </p>
           </div>
+
+          <!-- Compétences Techniques -->
           <div class="col-12">
             <strong
-              ><i class="ti ti-code me-2 text-muted"></i>Compétences :</strong
+              ><i class="ti ti-code me-2 text-muted"></i>Compétences Techniques
+              :</strong
             >
             <div class="d-flex flex-wrap gap-1 mt-1">
-              @for(skill of selectedCandidate.skills; track skill) {
+              @for(skill of selectedCandidate.technicalSkills; track skill) {
               <span class="badge bg-soft-primary text-primary">{{
                 skill
               }}</span>
+              } @if(!selectedCandidate.technicalSkills.length) {
+              <span class="text-muted small">Aucune</span>
               }
             </div>
           </div>
-          @if(selectedCandidate.explanation) {
+
+          <!-- Soft Skills -->
           <div class="col-12">
             <strong
-              ><i class="ti ti-info-circle me-2 text-muted"></i>Explication IA
-              :</strong
+              ><i class="ti ti-bulb me-2 text-muted"></i>Soft Skills :</strong
             >
-            <p class="text-muted mt-1">{{ selectedCandidate.explanation }}</p>
+            <div class="d-flex flex-wrap gap-1 mt-1">
+              @for(skill of selectedCandidate.softSkills; track skill) {
+              <span class="badge bg-soft-success text-success">{{
+                skill
+              }}</span>
+              } @if(!selectedCandidate.softSkills.length) {
+              <span class="text-muted small">Aucun</span>
+              }
+            </div>
+          </div>
+
+          <!-- Compétences Manquantes -->
+          @if(selectedCandidate.missingSkills.length > 0) {
+          <div class="col-12">
+            <strong>
+              <i class="ti ti-alert-triangle me-2 text-warning"></i>Compétences
+              Manquantes :
+            </strong>
+            <div class="d-flex flex-wrap gap-1 mt-1">
+              @for(skill of selectedCandidate.missingSkills; track skill) {
+              <span class="badge bg-danger text-white">{{ skill }}</span>
+              }
+            </div>
           </div>
           }
         </div>
       </div>
+
+      <!-- ✅ Footer — uniquement Voir CV + Fermer, PAS de Accepter/Refuser -->
       <div class="modal-footer">
-        <button
-          class="btn btn-primary"
-          (click)="downloadCv(selectedCandidate!)"
-        >
-          <i class="ti ti-download me-1"></i>Télécharger CV
+        <button class="btn btn-primary" (click)="viewCv(selectedCandidate!)">
+          <i class="ti ti-file-description me-1"></i>Voir CV
         </button>
         <button
           type="button"

@@ -1,131 +1,140 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { delay, map, Observable, of, switchMap } from 'rxjs';
-import { Candidate, CandidateStatus } from '../models/candidate.model';
+import { Observable, switchMap, map } from 'rxjs';
+import { Candidate } from '../models/candidate.model';
 import { FilterForm } from '../models/filter-form.model';
-
 
 @Injectable({ providedIn: 'root' })
 export class FiltrageService {
+
+  // ⚠️ Port 5248 — backend .NET direct (ou via Kong selon config)
   private readonly baseUrl = 'http://localhost:8000/api/filtering';
 
-  // ✅ APRÈS
-constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
-  // ── Mapper réponse .NET → Candidate Angular ──────────────────────────
+  // ── Mapper réponse .NET → Candidate (FilteringResultResponse) ─────────
 
   private mapToCandidate(raw: any): Candidate {
     return {
-      id: raw.id ?? 0,
-      candidateId: `#${raw.id ?? 0}`,
-      name: raw.candidateName || raw.name || 'Inconnu',
-      email: raw.candidateEmail || raw.email || '',
-      phone: raw.candidatePhone || raw.phone || '',
-      location: raw.location || raw.candidateLocation || '',
-      aiScore: Math.round(raw.scoreIa ?? raw.globalScore ?? 0),
-      isCompatible: (raw.scoreIa ?? raw.globalScore ?? 0) > 0,
-      category: raw.detectedCategory || '',
-      explanation: raw.explanation || '',
-      status: (raw.decision as CandidateStatus) ?? 'En attente',
-      experienceYears: raw.experienceYears ?? 0,
-      skills: raw.skills ?? [],
-      cvUrl: raw.cvDownloadUrl || '',
-      isSelected: false,
+      id:               raw.id ?? 0,
+      candidateName:    raw.candidateName   || 'Inconnu',
+      candidateEmail:   raw.candidateEmail  || '',
+      candidatePhone:   raw.candidatePhone  || '',
+      location:         raw.location        || '',
+      scoreIa:          Math.round(raw.scoreIa ?? 0),
+      experienceYears:  raw.experienceYears ?? 0,
+      technicalSkills:  raw.technicalSkills ?? [],  // ← nouveau champ
+      softSkills:       raw.softSkills      ?? [],  // ← nouveau champ séparé
+      missingSkills:    raw.missingSkills   ?? [],  // ← nouveau champ
+      recommendation:   raw.recommendation  || 'Not recommended',
+      mainDomain:       raw.mainDomain      || '',
+      seniorityLevel:   raw.seniorityLevel  || '',
+      cvStatus:         raw.cvStatus        || 'pending',
+      cvDownloadUrl:    raw.cvDownloadUrl   || '',
+      analysisDate:     raw.analysisDate    || '',
     };
   }
 
-  // ── Conversion FilterForm → OfferForm .NET ───────────────────────────
-  // Le form est déjà traduit en anglais par FilterFormComponent
+  // ── Conversion FilterForm → OfferForm .NET ────────────────────────────
+  // ⚠️ PAS d'offerCategory — supprimé
+  // ⚠️ PAS de minMatchScore — supprimé
 
-private toOfferForm(form: FilterForm, profileId: number): any {
-  const firstLang = form.languages[0];
-  return {
-    offerTitle: form.jobTitle,
-    offerCategory: form.jobTitle,
-    techSkills: form.skills,
-    tools: form.tools,
-    softSkills: form.softSkills,
-    certifications: form.certifications
-      ? form.certifications.split(',').map((c: string) => c.trim()).filter(Boolean)
-      : [],
-    degree: form.diploma ?? '',
-    minExperience: form.experienceMin ?? 0,
-    language: firstLang?.name ?? '',
-    languageLevel: firstLang?.level ?? '',
-    location: form.location ?? '',
-    minMatchScore: form.minAiScore ?? 60.0,
-    cvMinioPath: '',
-    filteringProfileId: profileId,
-  };
-}
+  private toOfferForm(form: FilterForm, profileId: number): any {
+    const firstLang = form.languages?.[0];
+    return {
+      offerTitle:         form.jobTitle,
+      description:        '',
+      techSkills:         form.techSkills  ?? [],
+      tools:              form.tools       ?? [],
+      softSkills:         form.softSkills  ?? [],
+      certifications:     form.certifications
+                            ? form.certifications.split(',').map((c: string) => c.trim()).filter(Boolean)
+                            : [],
+      degree:             form.diploma     ?? '',
+      minExperience:      form.experienceMin ?? 0,
+      language:           firstLang?.name  ?? '',
+      languageLevel:      firstLang?.level ?? '',
+      location:           form.location    ?? '',
+      filteringProfileId: profileId,
+    };
+  }
 
-  // ── API ──────────────────────────────────────────────────────────────
+  // ── 1. Créer profil de filtrage ───────────────────────────────────────
 
- // 3. Modifier filterCandidates() — chaîner les deux appels
-filterCandidates(form: FilterForm): Observable<Candidate[]> {
-  return this.createFilteringProfile(form).pipe(
-    switchMap(({ id }) => {
-      const payload = this.toOfferForm(form, id);
-      console.log('📤 Payload envoyé au .NET:', payload);
-      return this.http
-        .post<any[]>(`${this.baseUrl}/analyze-all`, payload)
-        .pipe(map((results) => results.map((r) => this.mapToCandidate(r))));
-    })
-  );
-}
+  createFilteringProfile(form: FilterForm): Observable<{ id: number }> {
+    const criteriaNames = [
+      ...(form.techSkills?.length  ? ['techSkills']     : []),
+      ...(form.tools?.length       ? ['tools']          : []),
+      ...(form.softSkills?.length  ? ['softSkills']     : []),
+      ...(form.experienceMin       ? ['experience']     : []),
+      ...(form.diploma             ? ['diploma']        : []),
+      ...(form.languages?.length   ? ['language']       : []),
+      ...(form.certifications      ? ['certifications'] : []),
+    ];
 
-// Mise à jour locale du statut (style tag uniquement — pas d'appel HTTP)
-updateStatus(id: number, status: string): void {
-  // utilisé uniquement pour la mise à jour visuelle locale
-}
-   acceptCandidate(id: number, offerId: number): Observable<any> {
-    return this.http.patch(
-      `${this.baseUrl}/accept/${id}?offerId=${offerId}`,
-      {}
+    const payload = {
+      profileName:   form.jobTitle,
+      offerId:       0,
+      criteriaNames,
+    };
+
+    return this.http.post<{ id: number }>(`${this.baseUrl}/profiles`, payload);
+  }
+
+  // ── 2. Lancer le pipeline sur tous les CVs MinIO ──────────────────────
+
+  filterCandidates(form: FilterForm): Observable<Candidate[]> {
+    return this.createFilteringProfile(form).pipe(
+      switchMap(({ id }) => {
+        const payload = this.toOfferForm(form, id);
+        console.log('📤 Payload envoyé au .NET:', payload);
+        return this.http
+          .post<any[]>(`${this.baseUrl}/analyze-all`, payload)
+          .pipe(map((results) => results.map((r) => this.mapToCandidate(r))));
+      })
     );
   }
+
+  // ── 3. Récupérer tous les résultats en DB ─────────────────────────────
+
+  getResults(): Observable<Candidate[]> {
+    return this.http
+      .get<any[]>(`${this.baseUrl}/results`)
+      .pipe(map((results) => results.map((r) => this.mapToCandidate(r))));
+  }
+
+  // ── 4. Accept / Reject ────────────────────────────────────────────────
+
+  acceptCandidate(id: number, offerId: number): Observable<any> {
+    return this.http.patch(`${this.baseUrl}/accept/${id}?offerId=${offerId}`, {});
+  }
+
   rejectCandidate(id: number): Observable<any> {
-  return this.http.patch(`${this.baseUrl}/reject/${id}`, {});
-}
+    return this.http.patch(`${this.baseUrl}/reject/${id}`, {});
+  }
+
+  // ── 5. URL présignée MinIO → téléchargement CV ────────────────────────
+
   getCvPresignedUrl(fileName: string): Observable<string> {
     return this.http
-      .get<{ url: string }>(
-        `${this.baseUrl}/cv-url?fileName=${encodeURIComponent(fileName)}`
-      )
+      .get<{ url: string }>(`${this.baseUrl}/cv-url?fileName=${encodeURIComponent(fileName)}`)
       .pipe(map((r) => r.url));
   }
+
   downloadCV(candidate: Candidate): void {
-  const fileName = candidate.cvUrl.split('/').pop()?.split('?')[0] ?? 'cv.pdf';
+    // Extraction du nom de fichier depuis cvDownloadUrl
+    const fileName =
+      candidate.cvDownloadUrl?.split('/').pop()?.split('?')[0] ?? 'cv.pdf';
 
-  this.getCvPresignedUrl(fileName).subscribe({  // ✅ this. direct
-    next: (url) => {
-      const a = document.createElement('a');
-      a.href = url;
-      a.target = '_blank';
-      a.download = fileName;
-      a.click();
-    },
-    error: () => alert('Impossible de télécharger le CV.'),
-  });
-}
-// 1. Nouvelle méthode createFilteringProfile()
-createFilteringProfile(form: FilterForm): Observable<{ id: number }> {
-  const payload = {
-    profileName: form.jobTitle,
-    offerId: 0,
-    criteriaNames: [
-      ...form.skills.length > 0 ? ['techSkills'] : [],
-      ...form.tools.length > 0 ? ['tools'] : [],
-      ...form.softSkills.length > 0 ? ['softSkills'] : [],
-      ...form.experienceMin ? ['experience'] : [],
-      ...form.diploma ? ['diploma'] : [],
-      ...form.languages.length > 0 ? ['language'] : [],
-      ...form.certifications ? ['certifications'] : [],
-    ]
-  };
-  return this.http.post<{ id: number }>(
-    `${this.baseUrl}/profiles`, payload
-  );
-}
-
+    this.getCvPresignedUrl(fileName).subscribe({
+      next: (url) => {
+        const a = document.createElement('a');
+        a.href     = url;
+        a.target   = '_blank';
+        a.download = fileName;
+        a.click();
+      },
+      error: () => alert('Impossible de télécharger le CV.'),
+    });
+  }
 }
