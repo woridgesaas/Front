@@ -10,30 +10,22 @@
   <div class="card-body">
     <form>
       <div class="row g-3">
-        <!-- Titre d'offre — SELECT OBLIGATOIRE → utilisé par /predict -->
+
+        <!-- Titre du poste -->
         <div class="col-md-12">
-          <!-- Titre du poste — Autocomplete -->
           <label class="form-label fw-semibold">
             <i class="ti ti-briefcase me-1"></i>Titre du poste
             <span class="text-danger">*</span>
           </label>
           <div class="position-relative">
-            <!-- Tags sélectionnés -->
             <div class="d-flex flex-wrap gap-1 mb-1">
               @if(form.jobTitle) {
-              <span
-                class="badge bg-primary d-inline-flex align-items-center gap-1 px-2 py-1"
-              >
-                {{ form.jobTitle }}
-                <i
-                  class="ti ti-x"
-                  style="cursor: pointer"
-                  (click)="clearJobTitle()"
-                ></i>
-              </span>
+                <span class="badge bg-primary d-inline-flex align-items-center gap-1 px-2 py-1">
+                  {{ form.jobTitle }}
+                  <i class="ti ti-x" style="cursor:pointer" (click)="clearJobTitle()"></i>
+                </span>
               }
             </div>
-
             <input
               type="text"
               class="form-control"
@@ -45,51 +37,34 @@
               (blur)="onJobTitleBlur()"
               autocomplete="off"
             />
-
-            <!-- Dropdown suggestions -->
             @if(filteredJobTitles.length > 0) {
-            <ul
-              class="list-group position-absolute w-100 shadow-sm"
-              style="
-                z-index: 1000;
-                max-height: 220px;
-                overflow-y: auto;
-                top: 100%;
-              "
-            >
-              @for(title of filteredJobTitles; track title) {
-              <li
-                class="list-group-item list-group-item-action"
-                style="cursor: pointer"
-                (mousedown)="selectJobTitle(title)"
-              >
-                {{ title }}
-              </li>
-              }
-            </ul>
-            } @if(submitted && !form.jobTitle) {
-            <div class="text-danger small mt-1">
-              Le titre du poste est obligatoire
-            </div>
+              <ul class="list-group position-absolute w-100 shadow-sm"
+                  style="z-index:1000;max-height:220px;overflow-y:auto;top:100%">
+                @for(title of filteredJobTitles; track title) {
+                  <li class="list-group-item list-group-item-action"
+                      style="cursor:pointer"
+                      (mousedown)="selectJobTitle(title)">{{ title }}</li>
+                }
+              </ul>
+            }
+            @if(submitted && !form.jobTitle) {
+              <div class="text-danger small mt-1">Le titre du poste est obligatoire</div>
             }
           </div>
         </div>
-        <!-- Compétences - Tag Input avec Autocomplete -->
+
+        <!-- Compétences Techniques -->
         <div class="col-md-12">
-          <label class="form-label"
-            ><i class="ti ti-code me-1"></i>Compétences Techniques</label
-          >
+          <label class="form-label">
+            <i class="ti ti-code me-1"></i>Compétences Techniques
+          </label>
           <div class="tags-input-wrapper">
             <div class="tags-container mb-2">
-              @for (comp of form.skills; track comp) {
-              <span class="badge bg-primary me-1 mb-1">
-                {{ comp }}
-                <i
-                  class="ti ti-x ms-1"
-                  (click)="removeSkill(comp)"
-                  style="cursor: pointer"
-                ></i>
-              </span>
+              @for (comp of form.techSkills; track comp) {
+                <span class="badge bg-primary me-1 mb-1">
+                  {{ comp }}
+                  <i class="ti ti-x ms-1" (click)="removeSkill(comp)" style="cursor:pointer"></i>
+                </span>
               }
             </div>
             <div class="position-relative">
@@ -103,41 +78,30 @@
                 placeholder="Tapez ou recherchez une compétence (Angular, React, Python...)"
               />
               @if(filteredSkills.length > 0) {
-              <ul
-                class="autocomplete-list list-group position-absolute w-100"
-                style="z-index: 1000; max-height: 200px; overflow-y: auto"
-              >
-                @for (skill of filteredSkills; track skill) {
-                <li
-                  class="list-group-item list-group-item-action"
-                  (click)="selectSkill(skill)"
-                  style="cursor: pointer"
-                >
-                  {{ skill }}
-                </li>
-                }
-              </ul>
+                <ul class="autocomplete-list list-group position-absolute w-100"
+                    style="z-index:1000;max-height:200px;overflow-y:auto">
+                  @for (skill of filteredSkills; track skill) {
+                    <li class="list-group-item list-group-item-action"
+                        (click)="selectSkill(skill)" style="cursor:pointer">{{ skill }}</li>
+                  }
+                </ul>
               }
             </div>
           </div>
         </div>
 
-        <!-- Outils Techniques - Tag Input avec Autocomplete -->
+        <!-- Outils -->
         <div class="col-md-12">
-          <label class="form-label"
-            ><i class="ti ti-tools me-1"></i>Outils</label
-          >
+          <label class="form-label">
+            <i class="ti ti-tools me-1"></i>Outils
+          </label>
           <div class="tags-input-wrapper">
             <div class="tags-container mb-2">
               @for (tool of form.tools; track tool) {
-              <span class="badge bg-info me-1 mb-1">
-                {{ tool }}
-                <i
-                  class="ti ti-x ms-1"
-                  (click)="removeTool(tool)"
-                  style="cursor: pointer"
-                ></i>
-              </span>
+                <span class="badge bg-info me-1 mb-1">
+                  {{ tool }}
+                  <i class="ti ti-x ms-1" (click)="removeTool(tool)" style="cursor:pointer"></i>
+                </span>
               }
             </div>
             <div class="position-relative">
@@ -151,136 +115,101 @@
                 placeholder="Tapez ou recherchez un outil (Git, Docker, Jira...)"
               />
               @if(filteredTools.length > 0) {
-              <ul
-                class="autocomplete-list list-group position-absolute w-100"
-                style="z-index: 1000; max-height: 200px; overflow-y: auto"
-              >
-                @for (tool of filteredTools; track tool) {
-                <li
-                  class="list-group-item list-group-item-action"
-                  (click)="selectTool(tool)"
-                  style="cursor: pointer"
-                >
-                  {{ tool }}
-                </li>
-                }
-              </ul>
+                <ul class="autocomplete-list list-group position-absolute w-100"
+                    style="z-index:1000;max-height:200px;overflow-y:auto">
+                  @for (tool of filteredTools; track tool) {
+                    <li class="list-group-item list-group-item-action"
+                        (click)="selectTool(tool)" style="cursor:pointer">{{ tool }}</li>
+                  }
+                </ul>
               }
             </div>
           </div>
         </div>
 
-        <!-- Expérience - Select Simple -->
+        <!-- Expérience -->
         <div class="col-md-6">
-          <label class="form-label"
-            ><i class="ti ti-clock me-1"></i>Années d'expérience</label
-          >
-          <select
-            class="form-select"
-            [(ngModel)]="form.experience"
-            name="experience"
-          >
+          <label class="form-label">
+            <i class="ti ti-clock me-1"></i>Années d'expérience
+          </label>
+          <select class="form-select" [(ngModel)]="form.experience" name="experience">
             <option value="">Toute expérience</option>
             @for (exp of experienceOptions; track exp) {
-            <option [value]="exp">{{ exp }}</option>
+              <option [value]="exp">{{ exp }}</option>
             }
           </select>
         </div>
 
-        <!-- Diplôme - Select -->
+        <!-- Diplôme -->
         <div class="col-md-6">
-          <label class="form-label"
-            ><i class="ti ti-certificate me-1"></i>Diplôme</label
-          >
+          <label class="form-label">
+            <i class="ti ti-certificate me-1"></i>Diplôme
+          </label>
           <select class="form-select" [(ngModel)]="form.diploma" name="diploma">
             <option value="">Tous les diplômes</option>
             @for (dip of diplomaOptions; track dip) {
-            <option [value]="dip">{{ dip }}</option>
+              <option [value]="dip">{{ dip }}</option>
             }
           </select>
         </div>
 
-        <!-- Langues - Multi-select + Niveau -->
+        <!-- Langues -->
         <div class="col-md-12">
-          <label class="form-label"
-            ><i class="ti ti-language me-1"></i>Langues</label
-          >
-
-          <!-- Langues ajoutées -->
+          <label class="form-label">
+            <i class="ti ti-language me-1"></i>Langues
+          </label>
           <div class="mb-2">
             @for (langue of form.languages; track langue) {
-            <span class="badge bg-success me-2 mb-1">
-              {{ langue.name }} - {{ langue.level }}
-              <i
-                class="ti ti-x ms-1"
-                (click)="removeLanguage(langue)"
-                style="cursor: pointer"
-              ></i>
-            </span>
+              <span class="badge bg-success me-2 mb-1">
+                {{ langue.name }} - {{ langue.level }}
+                <i class="ti ti-x ms-1" (click)="removeLanguage(langue)" style="cursor:pointer"></i>
+              </span>
             }
           </div>
-
-          <!-- Ajout langue -->
           <div class="row g-2">
             <div class="col-md-5">
-              <select
-                class="form-select form-select-sm"
-                [(ngModel)]="tempLanguage"
-                name="tempLanguage"
-              >
+              <select class="form-select form-select-sm" [(ngModel)]="tempLanguage" name="tempLanguage">
                 <option value="">Choisir langue</option>
                 @for (lang of availableLanguages; track lang) {
-                <option [value]="lang">{{ lang }}</option>
+                  <option [value]="lang">{{ lang }}</option>
                 }
               </select>
             </div>
             <div class="col-md-5">
-              <select
-                class="form-select form-select-sm"
-                [(ngModel)]="tempLevel"
-                name="tempLevel"
-              >
+              <select class="form-select form-select-sm" [(ngModel)]="tempLevel" name="tempLevel">
                 <option value="">Niveau</option>
                 @for (level of languageLevels; track level) {
-                <option [value]="level">{{ level }}</option>
+                  <option [value]="level">{{ level }}</option>
                 }
               </select>
             </div>
             <div class="col-md-2">
-              <button
-                type="button"
-                class="btn btn-sm btn-outline-primary w-100"
-                (click)="addLanguage()"
-                [disabled]="!tempLanguage || !tempLevel"
-              >
+              <button type="button" class="btn btn-sm btn-outline-primary w-100"
+                      (click)="addLanguage()" [disabled]="!tempLanguage || !tempLevel">
                 <i class="ti ti-plus"></i>
               </button>
             </div>
           </div>
         </div>
 
-        <!-- Localisation - Select -->
+        <!-- Localisation -->
         <div class="col-md-6">
-          <label class="form-label"
-            ><i class="ti ti-map-pin me-1"></i>Localisation</label
-          >
-          <select
-            class="form-select"
-            [(ngModel)]="form.location"
-            name="location"
-          >
+          <label class="form-label">
+            <i class="ti ti-map-pin me-1"></i>Localisation
+          </label>
+          <select class="form-select" [(ngModel)]="form.location" name="location">
             <option value="">Toutes les villes</option>
             @for (loc of locationOptions; track loc) {
-            <option [value]="loc">{{ loc }}</option>
+              <option [value]="loc">{{ loc }}</option>
             }
           </select>
         </div>
 
-        <!-- Certifications - Input simple -->
+        <!-- Certifications -->
         <div class="col-md-6">
-          <label class="form-label"
-            ><i class="ti ti-award me-1"></i>Certifications</label
-          >
+          <label class="form-label">
+            <i class="ti ti-award me-1"></i>Certifications
+          </label>
           <input
             type="text"
             class="form-control"
@@ -290,43 +219,38 @@
           />
         </div>
 
-        <!-- Soft Skills - Checkbox -->
+        <!-- Soft Skills -->
         <div class="col-md-12">
-          <label class="form-label"
-            ><i class="ti ti-bulb me-1"></i>Soft Skills</label
-          >
+          <label class="form-label">
+            <i class="ti ti-bulb me-1"></i>Soft Skills
+          </label>
           <div class="row">
             @for (skill of softSkillsOptions; track skill) {
-            <div class="col-md-4 col-sm-6">
-              <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  [id]="'skill-' + skill"
-                  [checked]="isSoftSkillSelected(skill)"
-                  (change)="toggleSoftSkill(skill)"
-                />
-                <label class="form-check-label" [for]="'skill-' + skill">
-                  {{ skill }}
-                </label>
+              <div class="col-md-4 col-sm-6">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    [id]="'skill-' + skill"
+                    [checked]="isSoftSkillSelected(skill)"
+                    (change)="toggleSoftSkill(skill)"
+                  />
+                  <label class="form-check-label" [for]="'skill-' + skill">{{ skill }}</label>
+                </div>
               </div>
-            </div>
             }
           </div>
         </div>
+
       </div>
 
-      <!-- Boutons d'action -->
+      <!-- Boutons -->
       <div class="row mt-4">
         <div class="col-12">
           <button type="button" class="btn btn-primary me-2" (click)="submit()">
             <i class="ti ti-sparkles me-2"></i>Filtrer par IA
           </button>
-          <button
-            type="button"
-            class="btn btn-outline-secondary"
-            (click)="reset()"
-          >
+          <button type="button" class="btn btn-outline-secondary" (click)="reset()">
             <i class="ti ti-refresh me-2"></i>Réinitialiser
           </button>
         </div>
