@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SettingsSidebarItemComponent } from './components/settings-sidebar-item/settings-sidebar-item.component';
-import { SidebarSettingsItem } from '../../../shared/models/sidebar-settings-item.model';
-import { SETTINGS_MENU } from '../../../shared/config/sidebar-settings-menu.config';
+import { SidebarSettingsItem } from './models/sidebar-settings-item.model';
+import { SETTINGS_MENU } from '../config/sidebar-settings-menu.config';
 
 @Component({
   selector: 'app-app-settings',

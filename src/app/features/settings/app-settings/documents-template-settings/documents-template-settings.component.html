@@ -2,20 +2,33 @@
   <div class="card shadow-sm border-0 mb-4">
     <div class="card-body">
 
-      <!--* Settings header (Title + description + icon) -->
-      <app-settings-header title="Paramètrage des modèles de documents administratifs" description="Gestion centralisée et sécurisée des modèles de documents administratifs RH conformes à la réglementation marocaine." icon="fa-solid fa-file-pen"></app-settings-header>
+      <app-settings-header
+        title="Paramètrage des modèles de documents administratifs"
+        description="Gestion centralisée et sécurisée des modèles de documents administratifs RH conformes à la réglementation marocaine."
+        icon="fa-solid fa-file-pen">
+      </app-settings-header>
 
       <div class="mt-3">
+        <app-switch-button
+          label="Modèles de documents"
+          icon="fa fa-layer-group"
+          [active]="true"
+          (select)="open()">
+        </app-switch-button>
 
-        <!--* Parameter model button -->
-        <app-switch-button label="Modèles de documents" icon="fa fa-layer-group" [active]="true" (select)="open()"></app-switch-button>
+        <app-select-category-modal
+          [open]="selectModalOpen"
+          [categories]="categories"
+          (select)="onCategorySelected($event)"
+          (close)="selectModalOpen = false">
+        </app-select-category-modal>
 
-        <!--* Select category -->
-        <app-select-category-modal [open]="selectModalOpen" [categories]="categories" (select)="onCategorySelected($event)" (close)="selectModalOpen = false"/>
-
-        <!--* Manage category template -->
-        <app-manage-category-templates-modal [open]="manageModalOpen" [category]="selectedCategory" [templates]="filteredTemplates" (fileSelected)="onFileSelected($event)" (save)="saveTemplates()" (close)="manageModalOpen = false"/>
-
+        <app-manage-category-templates-modal
+          [open]="manageModalOpen"
+          [category]="selectedCategory"
+          (saved)="onSaved()"
+          (close)="manageModalOpen = false">
+        </app-manage-category-templates-modal>
       </div>
 
     </div>

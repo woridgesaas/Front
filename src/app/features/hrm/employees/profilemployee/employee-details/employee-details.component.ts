@@ -45,7 +45,6 @@ export class EmployeeDetailsComponent implements OnInit {
           this.isLoading = false;
         },
         error: (err) => {
-          console.error('Erreur lors du chargement du profil');
           this.isLoading = false;
         },
       });

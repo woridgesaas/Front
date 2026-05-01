@@ -5,7 +5,7 @@ import { BreadcrumbsComponent } from '../common/breadcrumbs/breadcrumbs.componen
 import { FooterComponent } from '../common/footer/footer.component';
 import { SettingsTabItemComponent } from './components/settings-tab-item/settings-tab-item.component';
 import { SettingsTab } from '../../shared/models/settings-tab.model';
-import { SETTINGS_TABS } from '../../shared/config/settings-tabs.config';
+import { SETTINGS_TABS } from './config/settings-tabs.config';
 
 @Component({
   selector: 'app-settings',

@@ -9,7 +9,13 @@
     <!--* Settings tabs -->
     <ul class="nav nav-tabs nav-tabs-solid bg-transparent border-bottom mb-3">
       <li class="nav-item" *ngFor="let tab of tabs; trackBy: trackByTab">
-        <app-settings-tab-item [label]="tab.label" [icon]="tab.icon" [link]="tab.link" [exact]="tab.exact" [activeWhenStartsWith]="tab.activeWhenStartsWith"></app-settings-tab-item>
+        <app-settings-tab-item 
+          [label]="tab.label" 
+          [icon]="tab.icon"
+          [link]="tab.link"
+          [exact]="tab.exact"
+          [activeWhenStartsWith]="tab.activeWhenStartsWith">
+        </app-settings-tab-item>
       </li>
     </ul>
 

@@ -1,0 +1,49 @@
+<div class="modal-backdrop fade show" *ngIf="open"></div>
+<div class="modal fade show d-block" *ngIf="open">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content rounded-4">
+
+      <app-modal-header
+        title="Justification d'absence"
+        icon="fa fa-file-circle-check"
+        (close)="close.emit()">
+      </app-modal-header>
+
+      <div class="modal-body">
+
+        <app-alert-information description="Configure le délai maximal accordé aux collaborateurs pour justifier une absence."></app-alert-information>
+
+        <label class="form-label fw-medium">Délai autorisé</label>
+        <div class="input-group">
+          <input
+            type="number"
+            class="form-control"
+            [class.is-invalid]="touched && isInvalid"
+            name="justificationDelay"
+            [(ngModel)]="justificationDelayRaw"
+            (ngModelChange)="onDelayChange($event)"
+            [min]="MIN_DELAY_HOURS"
+            step="1"
+            onkeypress="return event.charCode >= 48 && event.charCode <= 57" />
+          <span class="input-group-text">heures</span>
+        </div>
+
+        <!--* Error message -->
+        <app-form-error-message
+          [show]="touched && isInvalid"
+          [message]="getErrorMessage()">
+        </app-form-error-message>
+
+      </div>
+
+      <app-modal-footer
+        (cancel)="close.emit()"
+        (submit)="submit()"
+        [disabled]="isInvalid"
+        submitText="Configurer"
+        submitIcon="fa-solid fa-gear">
+      </app-modal-footer>
+
+    </div>
+  </div>
+</div>

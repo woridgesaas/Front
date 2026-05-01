@@ -2,31 +2,60 @@
   <div class="card shadow-sm border-0">
     <div class="card-body">
 
-      <!--* Settings header (Title + description + icon) -->
-      <app-settings-header title="Paramétrage de présence et absence" description="Définir les règles liées au temps de travail, aux absences et aux impacts administratifs." icon="fa fa-clock"></app-settings-header>
+      <app-settings-header
+        title="Paramétrage de présence et absence"
+        description="Définir les règles liées au temps de travail, aux absences et aux impacts administratifs."
+        icon="fa fa-clock">
+      </app-settings-header>
 
       <div class="presence-actions mt-3">
 
-        <!--* Work schedule button -->
-        <app-switch-button label="Horaires de travail" icon="fa fa-clock" [active]="activeTab === AttendanceSettingTab.SCHEDULE" (select)="openScheduleModal()"></app-switch-button>
+        <app-switch-button
+          label="Horaires de travail"
+          icon="fa fa-clock"
+          [active]="activeTab === AttendanceSettingTab.SCHEDULE"
+          (select)="openScheduleModal()">
+        </app-switch-button>
 
-        <!--* Absence justification button -->
-        <app-switch-button label="Justification d'absence" icon="fa fa-file-circle-check" [active]="activeTab === AttendanceSettingTab.JUSTIFICATION" (select)="openJustificationModal()"></app-switch-button>
+        <app-switch-button
+          label="Justification d'absence"
+          icon="fa fa-file-circle-check"
+          [active]="activeTab === AttendanceSettingTab.JUSTIFICATION"
+          (select)="openJustificationModal()">
+        </app-switch-button>
 
-        <!--* Warning threshold button -->
-        <app-switch-button label="Seuils d'alerte" icon="fa fa-triangle-exclamation" [active]="activeTab === AttendanceSettingTab.THRESHOLDS" (select)="openThresholdsModal()"></app-switch-button>
+        <app-switch-button
+          label="Seuils d'alerte"
+          icon="fa fa-triangle-exclamation"
+          [active]="activeTab === AttendanceSettingTab.THRESHOLDS"
+          (select)="openThresholdsModal()">
+        </app-switch-button>
 
       </div>
-
     </div>
   </div>
 </div>
 
 <!--* Work schedule modal -->
-<app-work-schedule-modal [open]="scheduleModalOpen" (close)="scheduleModalOpen = false" (save)="saveSchedule($event)"></app-work-schedule-modal>
+<app-work-schedule-modal
+  [open]="scheduleModalOpen"
+  [existingConfig]="currentSchedule"
+  (close)="scheduleModalOpen = false"
+  (save)="saveWorkSchedule($event)">
+</app-work-schedule-modal>
 
 <!--* Absence justification modal -->
-<app-absence-justification-modal [open]="justificationModalOpen" (close)="justificationModalOpen = false" (save)="saveJustification($event)"></app-absence-justification-modal>
+<app-absence-justification-modal
+  [open]="justificationModalOpen"
+  [existingConfig]="currentJustification"
+  (close)="justificationModalOpen = false"
+  (save)="saveAbsenceJustification($event)">
+</app-absence-justification-modal>
 
-<!--* Warning threshold modal -->
-<app-warning-thresholds-modal [open]="thresholdsModalOpen" (close)="thresholdsModalOpen = false" (save)="saveThresholds($event)"></app-warning-thresholds-modal>
+<!--* Warning thresholds modal -->
+<app-warning-thresholds-modal
+  [open]="thresholdsModalOpen"
+  [existingConfig]="currentThresholds"
+  (close)="thresholdsModalOpen = false"
+  (save)="saveAlertThresholds($event)">
+</app-warning-thresholds-modal>

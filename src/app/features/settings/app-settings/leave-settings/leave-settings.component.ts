@@ -1,10 +1,14 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { AnnualLeaveModalComponent } from './components/annual-leave-modal/annual-leave-modal.component';
-import { ExceptionalLeavesModalComponent } from './components/exceptional-leaves-modal/exceptional-leaves-modal.component';
-import { ExceptionalLeave } from '../../../../shared/models/leaves.model';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { AnnualLeaveModalComponent } from './modals/annual-leave-modal/annual-leave-modal.component';
+import { ExceptionalLeavesModalComponent } from './modals/exceptional-leaves-modal/exceptional-leaves-modal.component';
 import { SwitchButtonComponent } from '../../../common/switch-button/switch-button.component';
-import { LeaveType } from '../../../../shared/enum/leave-type.enum';
+import { LeaveType } from './enums/leave-type.enum';
 import { SettingsHeaderComponent } from '../components/settings-header/settings-header.component';
+import { LeaveSettingsService } from './services/leave-settings.service';
+import { GetAnnualBalanceResponse } from './models/leave-settings.models';
+import { ToastrService } from 'ngx-toastr';
+import { ApiErrorHandler } from '../../../../shared/utils/api-error-handler.utils';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-leave-settings',
@@ -18,7 +22,7 @@ import { SettingsHeaderComponent } from '../components/settings-header/settings-
   templateUrl: './leave-settings.component.html',
   styleUrls: ['./leave-settings.component.scss'],
 })
-export class LeaveSettingsComponent {
+export class LeaveSettingsComponent implements OnInit {
   @Output() save = new EventEmitter<void>();
   @Output() close = new EventEmitter<void>();
   LeaveType = LeaveType;
@@ -30,39 +34,51 @@ export class LeaveSettingsComponent {
   annualModalOpen = false;
   exceptionalModalOpen = false;
 
-  //* Open annual leave modal
+  //* Existing configs
+  existingAnnualConfig: GetAnnualBalanceResponse | null = null;
+
+  constructor(
+    private leaveSettingsService: LeaveSettingsService,
+    private toastr: ToastrService,
+  ) {}
+
+  ngOnInit(): void {
+    this.leaveSettingsService.getAnnualBalance().subscribe({
+      next: (config) => (this.existingAnnualConfig = config),
+      error: (err: HttpErrorResponse) =>
+        ApiErrorHandler.handle(err, this.toastr),
+    });
+  }
+
   openAnnualModal(): void {
     this.activeLeaveType = LeaveType.ANNUAL;
     this.annualModalOpen = true;
     this.exceptionalModalOpen = false;
   }
 
-  //* Open exceptional leave modal
   openExceptionalModal(): void {
     this.activeLeaveType = LeaveType.EXCEPTIONAL;
     this.exceptionalModalOpen = true;
     this.annualModalOpen = false;
   }
 
-  //* Save annual leave
-  saveAnnualLeave(days: number): void {
-    console.log('Annual leave saved:', days);
+  onAnnualSaved(): void {
+    this.leaveSettingsService.getAnnualBalance().subscribe({
+      next: (config) => {
+        this.existingAnnualConfig = config;
+        this.toastr.success('Solde annuel configuré avec succès');
+      },
+      error: (err: HttpErrorResponse) =>
+        ApiErrorHandler.handle(err, this.toastr),
+    });
 
-    // TODO: backend call
-
-    //* Notify parent (onboarding)
     this.save.emit();
     this.close.emit();
   }
 
-  //* Save exceptional leave
-  saveExceptionalLeaves(leaves: ExceptionalLeave[]): void {
-    console.log('Exceptional leaves saved:', leaves);
-
-    // TODO: backend call
-
-    //* Notify parent (onboarding)
-    this.save.emit();
-    this.close.emit();
-  }
+  onExceptionalSaved(): void {
+  this.toastr.success('Congés exceptionnels configurés avec succès');
+  this.save.emit();
+  this.close.emit();
+}
 }
