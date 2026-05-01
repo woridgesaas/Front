@@ -1,0 +1,213 @@
+<div class="modal-backdrop fade show" *ngIf="open"></div>
+
+<div class="modal fade show d-block" *ngIf="open">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content rounded-4">
+
+      <app-modal-header
+        title="Site vitrine"
+        icon="fa-solid fa-globe"
+        (close)="close.emit()">
+      </app-modal-header>
+
+      <div class="modal-body">
+
+        <app-alert-information  description="Personnalisez votre site vitrine pour attirer les candidats."></app-alert-information>
+
+        <div class="row g-4 mt-3">
+
+          <!--* Logo -->
+          <div class="col-md-4">
+            <label class="form-label">Logo</label>
+
+            <label class="upload-zone" [class.is-invalid]="touchedFields.logo && errors.logo">
+
+              <img *ngIf="logoPreviewUrl" [src]="logoPreviewUrl" class="logo-preview" />
+
+              <i *ngIf="!logoPreviewUrl" class="fa-solid fa-cloud-arrow-up"></i>
+
+              <span class="fw-medium"> {{ hasExistingLogo || logoPreviewUrl ? 'Changer le logo' : 'Importer un logo' }} </span>
+
+              <small class="text-muted"> PNG, JPG, WEBP ou SVG - max 2 Mo </small>
+
+              <input type="file" hidden required accept=".png,.jpg,.jpeg,.webp,.svg" (change)="onFileSelected($event)" />
+            </label>
+
+            <app-form-error-message
+              [show]="touchedFields.logo && errors.logo"
+              [message]="errors.logo ?? ''">
+            </app-form-error-message>
+          </div>
+
+          <!--* Description -->
+          <div class="col-md-8">
+            <label class="form-label">Description</label>
+
+            <textarea class="form-control"
+                      rows="5"
+                      required
+                      [(ngModel)]="form.description"
+                      (ngModelChange)="onFieldChange('description')"
+                      [class.is-invalid]="touchedFields.description && errors.description">
+            </textarea>
+
+            <app-form-error-message
+              [show]="touchedFields.description && errors.description"
+              [message]="errors.description ?? ''">
+            </app-form-error-message>
+          </div>
+
+          <!--* Primary color -->
+          <div class="col-md-6">
+            <label class="form-label">Couleur principale</label>
+
+            <div class="color-input">
+              <input type="color"
+                     class="color-picker"
+                     required
+                     [(ngModel)]="form.primaryColor"
+                     (ngModelChange)="onFieldChange('primaryColor')" />
+
+              <input type="text"
+                     class="form-control"
+                     required
+                     [(ngModel)]="form.primaryColor"
+                     (ngModelChange)="onFieldChange('primaryColor')"
+                     [class.is-invalid]="touchedFields.primaryColor && errors.primaryColor" />
+            </div>
+
+            <app-form-error-message
+              [show]="touchedFields.primaryColor && errors.primaryColor"
+              [message]="errors.primaryColor ?? ''">
+            </app-form-error-message>
+          </div>
+
+          <!--* Secondary color -->
+          <div class="col-md-6">
+            <label class="form-label">Couleur secondaire</label>
+
+            <div class="color-input">
+              <input type="color"
+                     class="color-picker"
+                     required
+                     [(ngModel)]="form.secondaryColor"
+                     (ngModelChange)="onFieldChange('secondaryColor')" />
+
+              <input type="text"
+                     class="form-control"
+                     required
+                     [(ngModel)]="form.secondaryColor"
+                     (ngModelChange)="onFieldChange('secondaryColor')"
+                     [class.is-invalid]="touchedFields.secondaryColor && errors.secondaryColor" />
+            </div>
+
+            <app-form-error-message
+              [show]="touchedFields.secondaryColor && errors.secondaryColor"
+              [message]="errors.secondaryColor ?? ''">
+            </app-form-error-message>
+          </div>
+
+          <!--* Founded year -->
+          <div class="col-md-6">
+            <label class="form-label">Année de création</label>
+
+            <input type="text"
+                   class="form-control"
+                   required
+                   maxlength="4"
+                   placeholder="Ex: 2024"
+                   [(ngModel)]="form.foundedYear"
+                   (ngModelChange)="onFieldChange('foundedYear')"
+                   [class.is-invalid]="touchedFields.foundedYear && errors.foundedYear" />
+
+            <app-form-error-message
+              [show]="touchedFields.foundedYear && errors.foundedYear"
+              [message]="errors.foundedYear ?? ''">
+            </app-form-error-message>
+          </div>
+
+          <!--* Email -->
+          <div class="col-md-6">
+            <label class="form-label">Email</label>
+
+            <input type="email"
+                   class="form-control"
+                   required
+                   placeholder="example@email.com"
+                   [(ngModel)]="form.email"
+                   (ngModelChange)="onFieldChange('email')"
+                   [class.is-invalid]="touchedFields.email && errors.email" />
+
+            <app-form-error-message
+              [show]="touchedFields.email && errors.email"
+              [message]="errors.email ?? ''">
+            </app-form-error-message>
+          </div>
+
+          <!--* Phone number -->
+          <div class="col-md-6">
+            <label class="form-label">Téléphone</label>
+
+            <input type="tel"
+                   class="form-control"
+                   required
+                   placeholder="+212..."
+                   [(ngModel)]="form.phone"
+                   (ngModelChange)="onFieldChange('phone')"
+                   [class.is-invalid]="touchedFields.phone && errors.phone" />
+
+            <app-form-error-message
+              [show]="touchedFields.phone && errors.phone"
+              [message]="errors.phone ?? ''">
+            </app-form-error-message>
+          </div>
+
+          <!--* Address -->
+          <div class="col-md-6">
+            <label class="form-label">Adresse</label>
+
+            <input type="text"
+                   class="form-control"
+                   required
+                   [(ngModel)]="form.address"
+                   (ngModelChange)="onFieldChange('address')"
+                   [class.is-invalid]="touchedFields.address && errors.address" />
+
+            <app-form-error-message
+              [show]="touchedFields.address && errors.address"
+              [message]="errors.address ?? ''">
+            </app-form-error-message>
+          </div>
+
+          <!--* LinkedIn -->
+          <div class="col-12">
+            <label class="form-label">LinkedIn</label>
+
+            <input type="url"
+                   class="form-control"
+                   required
+                   placeholder="https://linkedin.com/..."
+                   [(ngModel)]="form.linkedinUrl"
+                   (ngModelChange)="onFieldChange('linkedinUrl')"
+                   [class.is-invalid]="touchedFields.linkedinUrl && errors.linkedinUrl" />
+
+            <app-form-error-message
+              [show]="touchedFields.linkedinUrl && errors.linkedinUrl"
+              [message]="errors.linkedinUrl ?? ''">
+            </app-form-error-message>
+          </div>
+
+        </div>
+      </div>
+
+      <app-modal-footer
+        (cancel)="close.emit()"
+        (submit)="submit()"
+        submitText="Configurer"
+        submitIcon="fa-solid fa-gear"
+        [disabled]="!isFormValid">
+      </app-modal-footer>
+
+    </div>
+  </div>
+</div>

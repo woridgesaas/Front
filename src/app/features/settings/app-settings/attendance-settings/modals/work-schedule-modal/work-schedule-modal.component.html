@@ -1,0 +1,109 @@
+<div class="modal-backdrop fade show" *ngIf="open"></div>
+<div class="modal fade show d-block" *ngIf="open">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content rounded-4">
+
+      <app-modal-header
+        title="Horaires de travail"
+        icon="fa-solid fa-clock"
+        (close)="close.emit()">
+      </app-modal-header>
+
+      <div class="modal-body">
+
+        <app-alert-information
+          description="Choisissez la méthode de calcul du temps de travail.">
+        </app-alert-information>
+
+        <!--* Mode switch -->
+        <div class="d-flex gap-2 mb-4">
+          <app-switch-button
+            label="Horaires fixes"
+            icon="fas fa-business-time"
+            [active]="scheduleType === WorkScheduleType.FIXED_HOURS"
+            (select)="switchScheduleType(WorkScheduleType.FIXED_HOURS)">
+          </app-switch-button>
+
+          <app-switch-button
+            label="Heures à effectuer"
+            icon="fas fa-hourglass-half"
+            [active]="scheduleType === WorkScheduleType.FLEXIBLE_HOURS"
+            (select)="switchScheduleType(WorkScheduleType.FLEXIBLE_HOURS)">
+          </app-switch-button>
+        </div>
+
+        <!--* Fixed schedule -->
+        <div *ngIf="scheduleType === WorkScheduleType.FIXED_HOURS" class="row g-3">
+
+          <div class="col-md-6">
+            <label class="form-label fw-medium">Heure d'entrée</label>
+            <input
+              type="time"
+              class="form-control"
+              [class.is-invalid]="fixedHoursErrors.length > 0 && !startTime"
+              [(ngModel)]="startTime"
+              required />
+
+            <!--* Error message -->
+            <app-form-error-message
+              [show]="!startTime"
+              message="L'heure d'entrée est obligatoire">
+            </app-form-error-message>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label fw-medium">Heure de sortie</label>
+            <input
+              type="time"
+              class="form-control"
+              [class.is-invalid]="fixedHoursErrors.length > 0 && (!endTime || startTime >= endTime)"
+              [(ngModel)]="endTime"
+              required />
+
+            <!--* Error message -->
+            <app-form-error-message
+              [show]="fixedHoursErrors.length > 0"
+              [message]="fixedHoursErrors[fixedHoursErrors.length - 1]">
+            </app-form-error-message>
+          </div>
+
+        </div>
+
+        <!--* Flexible schedule -->
+        <div *ngIf="scheduleType === WorkScheduleType.FLEXIBLE_HOURS" class="col-md-6">
+          <label class="form-label fw-medium">Heures journalières</label>
+          <div class="input-group">
+            <input
+              type="number"
+              class="form-control"
+              [class.is-invalid]="flexibleHoursErrors.length > 0"
+              [(ngModel)]="dailyHoursRaw"
+              (ngModelChange)="onDailyHoursChange($event)"
+              [min]="MIN_DAILY_HOURS"
+              [max]="MAX_DAILY_HOURS"
+              step="1"
+              onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+              required />
+            <span class="input-group-text">heures</span>
+          </div>
+
+          <!--* Error message -->
+          <app-form-error-message
+            [show]="flexibleHoursErrors.length > 0"
+            [message]="flexibleHoursErrors[0]">
+          </app-form-error-message>
+        </div>
+
+      </div>
+
+      <app-modal-footer
+        (cancel)="close.emit()"
+        (submit)="submit()"
+        submitText="Configurer"
+        submitIcon="fa-solid fa-gear"
+        [disabled]="isInvalid">
+      </app-modal-footer>
+
+    </div>
+  </div>
+</div>

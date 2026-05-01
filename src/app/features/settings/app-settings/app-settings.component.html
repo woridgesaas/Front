@@ -5,7 +5,12 @@
         <div class="d-flex flex-column list-group settings-list">
 
           <!--* Sidebar settings item -->
-          <app-settings-sidebar-item *ngFor="let item of settingsMenu; trackBy: trackByRoute" [icon]="item.icon" [label]="item.label" [route]="item.route"></app-settings-sidebar-item>
+          <app-settings-sidebar-item 
+            *ngFor="let item of settingsMenu; trackBy: trackByRoute"
+            [icon]="item.icon"
+            [label]="item.label"
+            [route]="item.route">
+          </app-settings-sidebar-item>
 
         </div>
       </div>

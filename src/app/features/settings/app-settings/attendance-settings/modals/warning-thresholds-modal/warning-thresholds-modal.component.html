@@ -1,0 +1,71 @@
+<div class="modal-backdrop fade show" *ngIf="open"></div>
+<div class="modal fade show d-block" *ngIf="open">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content rounded-4">
+
+      <app-modal-header
+        title="Seuils d'alerte"
+        icon="fa fa-triangle-exclamation"
+        (close)="close.emit()">
+      </app-modal-header>
+
+      <div class="modal-body">
+
+        <app-alert-information description="Configure le seuil de notification en cas d'absence ou de dépassement des règles."></app-alert-information>
+
+        <div class="row g-3">
+
+          <!--* Notification threshold -->
+          <div class="col-12">
+            <label class="form-label fw-medium">Seuil de notification</label>
+            <input
+              type="number"
+              class="form-control mb-2"
+              [class.is-invalid]="touched && (warningThreshold == null || warningThreshold <= 0 || warningThreshold >= criticalThreshold)"
+              name="warningThreshold"
+              [(ngModel)]="warningThreshold"
+              (ngModelChange)="touched = true"
+              min="1"
+              step="1"
+              onkeypress="return event.charCode >= 48 && event.charCode <= 57" />
+            <small class="text-muted">Notification du manager et RH</small>
+          </div>
+
+          <!--* Critical threshold -->
+          <div class="col-12">
+            <label class="form-label fw-medium">Seuil critique</label>
+            <input
+              type="number"
+              class="form-control mb-2"
+              [class.is-invalid]="touched && (criticalThreshold == null || criticalThreshold <= 0 || warningThreshold >= criticalThreshold)"
+              name="criticalThreshold"
+              [(ngModel)]="criticalThreshold"
+              (ngModelChange)="touched = true"
+              min="1"
+              step="1"
+              onkeypress="return event.charCode >= 48 && event.charCode <= 57"/>
+            <small class="text-muted">Notification direction générale</small>
+          </div>
+
+          <!--* Error message -->
+          <div class="col-12">
+            <app-form-error-message
+              [show]="touched && isInvalid"
+              [message]="getErrorMessage()">
+            </app-form-error-message>
+          </div>
+
+        </div>
+      </div>
+
+      <app-modal-footer
+        (cancel)="close.emit()"
+        (submit)="submit()"
+        [disabled]="isInvalid"
+        submitText="Configurer"
+        submitIcon="fa-solid fa-gear">
+      </app-modal-footer>
+
+    </div>
+  </div>
+</div>

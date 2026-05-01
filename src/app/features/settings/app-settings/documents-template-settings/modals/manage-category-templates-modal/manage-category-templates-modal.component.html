@@ -1,0 +1,113 @@
+<div class="modal-backdrop fade show" *ngIf="open"></div>
+<div class="modal fade show d-block" *ngIf="open">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content rounded-4">
+
+      <app-modal-header
+        [title]="'Paramétrage - ' + categoryLabel"
+        icon="fa fa-layer-group"
+        (close)="close.emit()">
+      </app-modal-header>
+
+      <div class="modal-body">
+        <div
+          class="card shadow-sm border-0 mb-3"
+          *ngFor="let document of templates; trackBy: trackByCode">
+          <div class="card-body d-flex align-items-center justify-content-between gap-3">
+
+            <!--* Info -->
+            <div class="d-flex align-items-start flex-grow-1">
+              <div class="me-3">
+                <i class="fa fa-file-text fa-lg text-muted"></i>
+              </div>
+              <div>
+                <h6 class="mb-1 fw-semibold">{{ document.name }}</h6>
+                <p class="text-muted small mb-2 document-description">{{ document.description }}</p>
+
+                <!--* Already uploaded: show preview + delete -->
+                <div *ngIf="document.uploadedId; else notUploadedBlock"
+                  class="d-flex align-items-center gap-2 flex-wrap">
+
+                  <span class="text-success small">
+                    <i class="fa fa-check me-1"></i> Modèle uploadé
+                  </span>
+
+                  <!--* Preview button -->
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-secondary rounded-pill px-2 py-0"
+                    (click)="onPreview(document)"
+                    [disabled]="previewLoadingId === document.uploadedId || document.isDeleting"
+                    title="Prévisualiser">
+                    <i class="fa fa-eye me-1"></i>
+                    {{ previewLoadingId === document.uploadedId ? '...' : 'Prévisualiser' }}
+                  </button>
+
+                  <!--* Delete button -->
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-danger rounded-pill px-2 py-0"
+                    (click)="onDelete(document)"
+                    [disabled]="document.isDeleting || previewLoadingId === document.uploadedId"
+                    title="Supprimer">
+                    <i class="fa fa-trash me-1"></i>
+                    {{ document.isDeleting ? '...' : 'Supprimer' }}
+                  </button>
+
+                </div>
+
+                <!--* Not uploaded yet -->
+                <ng-template #notUploadedBlock>
+
+                  <!--* File selected, pending upload -->
+                  <div *ngIf="document.file; else noFileBlock" class="text-info small">
+                    <i class="fa fa-clock me-1"></i> {{ document.file.name }} — en attente d'envoi
+                  </div>
+
+                  <!--* No file at all -->
+                  <ng-template #noFileBlock>
+                    <div class="text-warning small">
+                      <i class="ti ti-alert-circle me-1"></i> Aucun modèle uploadé
+                    </div>
+                  </ng-template>
+
+                  <!--* Validation error -->
+                  <app-form-error-message
+                    [show]="!!fileErrors[document.code]"
+                    [message]="fileErrors[document.code]">
+                  </app-form-error-message>
+
+                </ng-template>
+
+              </div>
+            </div>
+
+            <!--* Upload button — only shown when NOT yet uploaded -->
+            <div class="document-action flex-shrink-0" *ngIf="!document.uploadedId">
+              <label
+                class="btn btn-outline-primary rounded-pill mb-0"
+                [class.btn-outline-danger]="!!fileErrors[document.code]">
+                <i class="ti ti-upload me-1"></i> Ajouter un modèle
+                <input
+                  type="file"
+                  hidden
+                  accept=".pdf"
+                  (change)="onFileSelected($event, document)" />
+              </label>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <app-modal-footer
+        (cancel)="close.emit()"
+        (submit)="submit()"
+        [disabled]="isInvalid || loading"
+        submitText="Configurer"
+        submitIcon="fa-solid fa-gear">
+      </app-modal-footer>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,49 @@
+<div class="modal-backdrop fade show" *ngIf="open"></div>
+<div class="modal fade show d-block" *ngIf="open">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content rounded-4">
+
+      <app-modal-header
+        title="Congé annuel"
+        icon="fa-solid fa-umbrella-beach"
+        (close)="close.emit()">
+      </app-modal-header>
+
+      <div class="modal-body">
+
+        <app-alert-information description="Configure le nombre de jours de congé annuel pour chaque collaborateur."></app-alert-information>
+
+        <label class="form-label fw-medium">Solde de congé annuel</label>
+        <div class="input-group">
+          <input
+            type="number"
+            class="form-control"
+            [class.is-invalid]="touched && isInvalid"
+            [(ngModel)]="annualLeaveDays"
+            name="annualLeave"
+            (ngModelChange)="touched = true"
+            min="1"
+            step="1"
+            onkeypress="return event.charCode >= 48 && event.charCode <= 57" />
+          <span class="input-group-text">jours</span>
+        </div>
+
+        <!--* Error Message -->
+        <app-form-error-message
+          [show]="touched && isInvalid"
+          [message]="getErrorMessage()">
+        </app-form-error-message>
+
+      </div>
+
+      <app-modal-footer
+        (cancel)="close.emit()"
+        (submit)="submit()"
+        [disabled]="isInvalid || loading"
+        submitText="Configurer"
+        submitIcon="fa-solid fa-gear">
+      </app-modal-footer>
+
+    </div>
+  </div>
+</div>

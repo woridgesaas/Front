@@ -1,0 +1,72 @@
+<div class="modal-backdrop fade show" *ngIf="open"></div>
+
+<div class="modal fade show d-block" *ngIf="open">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content rounded-4">
+
+      <app-modal-header
+        title="Congés exceptionnels"
+        icon="fa-solid fa-calendar-plus"
+        (close)="close.emit()">
+      </app-modal-header>
+
+      <div class="modal-body">
+
+        <app-alert-information description="Les durées minimales ne peuvent pas être réduites."></app-alert-information>
+
+        <div class="card shadow-sm border-0 mb-3" *ngFor="let leave of exceptionalLeaves; trackBy: trackById">
+          <div class="card-body row gy-3 gx-md-3 gy-md-0 align-items-center">
+
+            <!--* Name -->
+            <div class="col-12 col-md-5">
+              <label class="form-label fw-medium">Nom du congé</label>
+              <input
+                class="form-control"
+                [value]="leave.name | exceptionalLeaveName"
+                name="name_{{ leave.id }}"
+                readonly />
+            </div>
+
+            <!--* Minimum legal balance -->
+            <div class="col-12 col-md-3">
+              <label class="form-label fw-medium d-block">Solde minimum légal</label>
+              <span class="badge bg-light text-dark px-3 py-2"> {{ leave.legalBalance }} jours </span>
+            </div>
+
+            <!--* Granted days input -->
+            <div class="col-12 col-md-4">
+              <label class="form-label fw-medium">Jours accordés</label>
+              <input
+                type="number"
+                class="form-control"
+                [class.is-invalid]="touched && isInvalidLeave(leave)"
+                [(ngModel)]="leave.grantedDays"
+                [min]="leave.legalBalance"
+                name="granted_{{ leave.id }}"
+                (ngModelChange)="touched = true"
+                step="1"
+                onkeypress="return event.charCode >= 48 && event.charCode <= 57" />
+
+              <!--* Error message -->
+              <app-form-error-message
+                [show]="touched && isInvalidLeave(leave)"
+                [message]="getLeaveErrorMessage(leave)">
+              </app-form-error-message>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <app-modal-footer
+        (cancel)="close.emit()"
+        (submit)="submit()"
+        [disabled]="isInvalid || loading"
+        submitText="Configurer"
+        submitIcon="fa-solid fa-gear">
+      </app-modal-footer>
+
+    </div>
+  </div>
+</div>

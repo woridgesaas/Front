@@ -3,18 +3,29 @@
     <div class="card-body">
       <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 leave-settings-header">
 
-        <!--* Settings header (Title + description + icon) -->
-        <app-settings-header title="Paramétrage de congés" description="Gérer les politiques de congés annuels et exceptionnels conformément au droit du travail marocain." icon="fa fa-person-walking"></app-settings-header>
+        <app-settings-header
+          title="Paramétrage de congés"
+          description="Gérer les politiques de congés annuels et exceptionnels conformément au droit du travail marocain."
+          icon="fa fa-person-walking">
+        </app-settings-header>
 
-        <!--* Annual or exceptional leave button -->
         <div class="d-flex gap-2 flex-shrink-0">
 
           <!--* Annual leave button -->
-          <app-switch-button label="Congé annuel" icon="fa-solid fa-umbrella-beach" [active]="activeLeaveType === LeaveType.ANNUAL" (select)="openAnnualModal()"></app-switch-button>
+          <app-switch-button
+            label="Congé annuel"
+            icon="fa-solid fa-umbrella-beach"
+            [active]="activeLeaveType === LeaveType.ANNUAL"
+            (select)="openAnnualModal()">
+          </app-switch-button>
 
           <!--* Exceptional leave button -->
-          <app-switch-button label="Congés exceptionnels" icon="fa-solid fa-calendar-plus" [active]="activeLeaveType === LeaveType.EXCEPTIONAL" (select)="openExceptionalModal()"></app-switch-button>
-
+          <app-switch-button
+            label="Congés exceptionnels"
+            icon="fa-solid fa-calendar-plus"
+            [active]="activeLeaveType === LeaveType.EXCEPTIONAL"
+            (select)="openExceptionalModal()">
+          </app-switch-button>
         </div>
 
       </div>
@@ -22,8 +33,15 @@
   </div>
 </div>
 
-<!--* Annual Leave Modal -->
-<app-annual-leave-modal [open]="annualModalOpen" (close)="annualModalOpen = false" (save)="saveAnnualLeave($event)"></app-annual-leave-modal>
+<app-annual-leave-modal
+  [open]="annualModalOpen"
+  [existingConfig]="existingAnnualConfig"
+  (close)="annualModalOpen = false"
+  (save)="onAnnualSaved()">
+</app-annual-leave-modal>
 
-<!--* Exceptional Leaves Modal -->
-<app-exceptional-leaves-modal [open]="exceptionalModalOpen" (close)="exceptionalModalOpen = false" (save)="saveExceptionalLeaves($event)"></app-exceptional-leaves-modal>
+<app-exceptional-leaves-modal
+  [open]="exceptionalModalOpen"
+  (close)="exceptionalModalOpen = false"
+  (save)="onExceptionalSaved()">
+</app-exceptional-leaves-modal>
