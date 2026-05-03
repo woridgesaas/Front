@@ -9,8 +9,11 @@ import { Resignation, UserSearch } from '../models/models';
 })
 export class ResignationApiService {
 
-  private apiUrl = 'http://localhost:8000/api/resignations';
-  private userUrl = 'http://localhost:8000/api/user';
+  // private apiUrl = 'http://localhost:8000/api/resignations';
+  // private userUrl = 'http://localhost:8000/api/user';
+
+  private apiUrl = `${(import.meta.env as any)['NG_APP_GATEWAY_URL']}/api/internal-users/resignations`;
+  private userUrl = `${(import.meta.env as any)['NG_APP_GATEWAY_URL']}/api/internal-users`;
 
   constructor(private http: HttpClient) {}
 

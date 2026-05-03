@@ -31,11 +31,12 @@
           </app-filter>
 
           <!-- Ajouter le modal en bas du template -->
-<app-enroll-card-modal
-*ngIf="showEnrollModal && selectedEmployee"
-[employee]="selectedEmployee"
-(close)="closeEnrollModal()">
-</app-enroll-card-modal>
+          <app-enroll-card-modal
+          *ngIf="showEnrollModal && selectedEmployee"
+          [employee]="selectedEmployee"
+          (close)="closeEnrollModal()"
+          (enrollSuccess)="onEnrollSuccess($event)">
+        </app-enroll-card-modal>
 
           <app-attendance-table
             [tableData]="tableData"
