@@ -1,9 +1,7 @@
 <!-- Overlay -->
 <div class="modal-overlay" (click)="closeModal()"></div>
-
 <!-- Modal -->
 <div class="modal-box">
-
   <!-- Header -->
   <div class="modal-header-custom">
     <h5>
@@ -14,10 +12,8 @@
       <i class="ti ti-x"></i>
     </button>
   </div>
-
   <!-- Body -->
   <div class="modal-body-custom">
-
     <!-- Infos employé -->
     <div class="employee-info">
       <img
@@ -106,10 +102,39 @@
         <i class="ti ti-alert-circle me-1"></i>
         Une erreur est survenue
       </p>
-      <button class="btn btn-secondary mt-2" (click)="closeModal()">
-        <i class="ti ti-x me-1"></i>
-        Fermer
-      </button>
+      <div class="modal-actions mt-2">
+        <button class="btn btn-secondary" (click)="closeModal()">
+          <i class="ti ti-x me-1"></i>
+          Fermer
+        </button>
+        <button class="btn btn-primary" (click)="retry()">
+          <i class="ti ti-refresh me-1"></i>
+          Réessayer
+        </button>
+      </div>
+    </div>
+
+    <!-- Étape 6 : Timeout — carte non scannée ou carte invalide -->
+    <div *ngIf="step === 'TIMEOUT'" class="text-center py-3">
+      <i class="ti ti-clock-off text-warning" style="font-size: 3rem"></i>
+      <p class="text-warning fw-semibold mt-2">
+        <i class="ti ti-clock-off me-1"></i>
+        Temps écoulé — aucune carte valide détectée
+      </p>
+      <p class="text-muted small">
+        La carte est peut-être déjà associée à un autre employé,
+        ou le lecteur n'a pas détecté de carte.
+      </p>
+      <div class="modal-actions mt-2">
+        <button class="btn btn-secondary" (click)="closeModal()">
+          <i class="ti ti-x me-1"></i>
+          Fermer
+        </button>
+        <button class="btn btn-primary" (click)="retry()">
+          <i class="ti ti-refresh me-1"></i>
+          Réessayer
+        </button>
+      </div>
     </div>
 
   </div>

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RfidService } from '../../services/rfid.service';
 import { AttendanceAdmin } from '../../models/attendance.model';
 
-type EnrollStep = 'CONFIRM' | 'ACTIVATING' | 'WAITING' | 'SUCCESS' | 'ERROR' | 'ALREADY_ENROLLED';
+type EnrollStep = 'CONFIRM' | 'ACTIVATING' | 'WAITING' | 'SUCCESS' | 'ERROR' | 'ALREADY_ENROLLED' | 'TIMEOUT';
 
 @Component({
   selector: 'app-enroll-card-modal',
@@ -16,6 +16,7 @@ export class EnrollCardModalComponent implements OnDestroy {
 
   @Input() employee!: AttendanceAdmin;
   @Output() close = new EventEmitter<void>();
+  @Output() enrollSuccess = new EventEmitter<string>();
 
   step: EnrollStep = 'CONFIRM';
 
@@ -25,15 +26,8 @@ export class EnrollCardModalComponent implements OnDestroy {
   constructor(private rfidService: RfidService) {}
 
   activate(): void {
-    if (!this.employee.employeeId) {
-      this.step = 'ERROR';
-      return;
-    }
-
-    // Montrer activation en cours pendant l'appel HTTP
     this.step = 'ACTIVATING';
 
-    // 1. Vérifier si carte déjà associée AVANT d'activer
     this.rfidService.checkEnrollmentDone(this.employee.employeeId)
       .subscribe({
         next: (alreadyHasCard) => {
@@ -41,13 +35,17 @@ export class EnrollCardModalComponent implements OnDestroy {
             this.step = 'ALREADY_ENROLLED';
             return;
           }
-
-          // 2. Pas de carte → activer enrollment
-          this.rfidService.activateEnrollment(this.employee.employeeId!)
+          this.rfidService.activateEnrollment(this.employee.employeeId)
             .subscribe({
               next: () => {
                 this.step = 'WAITING';
-                this.timeoutRef = setTimeout(() => this.cancel(), 30000);
+                // Timeout 30s → étape TIMEOUT
+                this.timeoutRef = setTimeout(() => {
+                  this.step = 'TIMEOUT';
+                  this.stopPolling();
+                  // Revenir au mode attendance
+                  this.rfidService.activateAttendance().subscribe();
+                }, 10000);
                 this.startPolling();
               },
               error: () => this.step = 'ERROR'
@@ -59,15 +57,22 @@ export class EnrollCardModalComponent implements OnDestroy {
 
   private startPolling(): void {
     this.pollingRef = setInterval(() => {
-      this.rfidService.checkEnrollmentDone(this.employee.employeeId!)
+      this.rfidService.checkEnrollmentDone(this.employee.employeeId)
         .subscribe({
           next: (done) => {
             if (done) {
               this.step = 'SUCCESS';
               this.stopPolling();
               clearTimeout(this.timeoutRef);
+              this.enrollSuccess.emit(this.employee.employeeId);
               setTimeout(() => this.closeModal(), 2000);
             }
+          },
+          error: () => {
+            this.step = 'ERROR';
+            this.stopPolling();
+            clearTimeout(this.timeoutRef);
+            this.rfidService.activateAttendance().subscribe();
           }
         });
     }, 2000);
@@ -75,6 +80,10 @@ export class EnrollCardModalComponent implements OnDestroy {
 
   private stopPolling(): void {
     clearInterval(this.pollingRef);
+  }
+
+  retry(): void {
+    this.step = 'CONFIRM';
   }
 
   cancel(): void {
