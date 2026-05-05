@@ -1,0 +1,76 @@
+<div class="modal-backdrop fade show" *ngIf="open"></div>
+<div class="modal fade" [class.show]="open" [class.d-block]="open" *ngIf="open" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content">
+
+      <!--* Modal header -->
+      <app-modal-header title="Ajouter un poste" icon="ti ti-briefcase" (close)="onCancel()"></app-modal-header>
+
+      <div class="modal-body pb-0">
+
+        <!--* Name -->
+        <div class="mb-3">
+          <label class="form-label">Nom du poste</label>
+          <input
+            type="text"
+            class="form-control"
+            [class.is-invalid]="nameInvalid"
+            [(ngModel)]="model.name"
+            name="name"
+            placeholder="Ex : Développeur Full Stack"
+            maxlength="50"
+            (ngModelChange)="onNameChange()"
+          />
+
+          <!--* Error message -->
+          <app-form-error-message [show]="nameInvalid" message="Le nom du poste est obligatoire et ne doit contenir que des lettres et des espaces"></app-form-error-message>
+        </div>
+
+        <!--* Base salary -->
+        <div class="mb-3">
+          <label class="form-label">Salaire de base</label>
+          <input
+            type="number"
+            class="form-control"
+            [class.is-invalid]="salaryInvalid"
+            [(ngModel)]="model.baseSalary"
+            name="baseSalary"
+            placeholder="Ex : 8000"
+            min="1"
+            step="1"
+            (ngModelChange)="onSalaryChange()"
+          />
+
+          <!--* Error message -->
+          <app-form-error-message [show]="salaryInvalid" message="Le salaire de base doit être supérieur à 0"></app-form-error-message>
+        </div>
+
+        <!--* Status -->
+        <div class="mb-3">
+          <label class="form-label">Statut</label>
+          <select class="form-select" [class.is-invalid]="statusInvalid" [(ngModel)]="model.status" name="status" (ngModelChange)="onStatusChange()">
+            <option value="" disabled selected hidden>Choisir un statut</option>
+            <option *ngFor="let opt of statusOptions" [value]="opt.value">
+              {{ opt.label }}
+            </option>
+          </select>
+
+          <!--* Error message -->
+          <app-form-error-message [show]="statusInvalid" message="Le statut est obligatoire"></app-form-error-message>
+        </div>
+
+      </div>
+
+      <!--* Modal footer -->
+      <app-modal-footer
+        submitText="Ajouter"
+        submitIcon="ti ti-check"
+        [loading]="loading"
+        [disabled]="!formValid"
+        (cancel)="onCancel()"
+        (submit)="submit()"
+      ></app-modal-footer>
+
+    </div>
+  </div>
+</div>

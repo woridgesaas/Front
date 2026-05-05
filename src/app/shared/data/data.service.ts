@@ -469,6 +469,16 @@ export class DataService {
           subMenus: [],
         },
         {
+          menuValue: 'Postes',
+          route: routes.posts,
+          base: 'posts',
+          hasSubRoute: false,
+          showSubRoute: false,
+          icon: 'briefcase',
+          materialicons: 'confirmation_number',
+          subMenus: [],
+        },
+        {
           menuValue: 'Présence/Absence',
           route: routes.attendanceadmin,
           base: 'attendance-admin',
@@ -858,6 +868,12 @@ export class DataService {
               menuValue: 'Départements',
               route: routes.departments,
               base: 'departments',
+              customSubmenuTwo: false,
+            },
+            {
+              menuValue: 'Postes',
+              route: routes.posts,
+              base: 'posts',
               customSubmenuTwo: false,
             },
             {
