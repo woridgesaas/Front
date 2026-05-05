@@ -1,0 +1,45 @@
+<div class="table-responsive">
+  <table matSort (matSortChange)="sort.emit($event)" class="mat-sort table datanew table-center datatable dataTable mb-0">
+    <thead class="thead-light">
+      <tr>
+        <th mat-sort-header="name">Poste</th>
+        <th mat-sort-header="baseSalary">Salaire de base</th>
+        <th>Statut</th>
+        <th class="text-center">Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let p of posts">
+        <td class="fw-medium">{{ p.name }}</td>
+
+        <td>{{ p.baseSalary | number : '1.2-2' }} MAD</td>
+
+        <td>
+          <span class="badge" [ngClass]="p.status === 'ACTIVE' ? 'badge-success' : 'badge-danger'">
+            {{ p.status | postStatusLabel }}
+          </span>
+        </td>
+
+        <td class="text-center">
+          <div class="action-icon d-inline-flex align-items-center justify-content-center gap-2">
+
+            <!--* Edit button -->
+            <a title="Modifier" style="cursor: pointer" (click)="edit.emit(p)">
+              <i class="ti ti-edit"></i>
+            </a>
+
+            <!--* Toggle Status button -->
+            <a style="cursor: pointer" [title]="p.status === 'ACTIVE' ? 'Désactiver' : 'Activer'" (click)="toggleStatus.emit(p)">
+              <i [class]="p.status === 'ACTIVE' ? 'ti ti-toggle-right text-success' : 'ti ti-toggle-left text-danger'"></i>
+            </a>
+          </div>
+        </td>
+      </tr>
+
+      <tr *ngIf="posts.length === 0">
+        <td colspan="4" class="text-center py-3">Aucun poste trouvé</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

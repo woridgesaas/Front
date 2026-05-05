@@ -40,6 +40,7 @@ export const routes = {
   employeeList: '/employees/employee-list',
   employeeDetails: '/employees/employee-details',
   departments: '/employees/departments',
+  posts: '/employees/posts',
   contract: '/employees/generate/contract',
   documentsEmployee: 'employees/documents',
 

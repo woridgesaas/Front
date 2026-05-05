@@ -1,0 +1,60 @@
+<div class="content">
+  <div class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
+
+    <!--* Breadcrumbs -->
+    <app-breadcrumbs></app-breadcrumbs>
+
+    <button class="btn btn-primary" (click)="openAddModal = true">
+      <i class="ti ti-circle-plus me-1"></i>
+      Ajouter un poste
+    </button>
+  </div>
+
+  <!--* KPIs -->
+  <div class="row mb-4 g-3">
+    <div class="col-lg-4 col-md-6" *ngFor="let kpi of kpis">
+      <app-kpi-card [title]="kpi.title" [value]="kpi.value" [icon]="kpi.icon" [color]="kpi.color"></app-kpi-card>
+    </div>
+  </div>
+
+  <div class="card mb-0">
+    <div class="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3">
+      <h5 class="mb-0">Liste des postes</h5>
+
+      <!--* Post filters -->
+      <app-post-filters
+        [(status)]="selectedStatus"
+        [(search)]="searchValue"
+        (statusChange)="status = $event"
+        (searchChange)="search = $event"
+      ></app-post-filters>
+    </div>
+
+    <div class="card-body p-0">
+
+      <!--* Post table -->
+      <app-post-table
+        [posts]="filteredPosts"
+        (edit)="openEdit($event)"
+        (toggleStatus)="toggleStatus($event)"
+        (sort)="sortData($event)"
+      ></app-post-table>
+
+      <!--* Add modal -->
+      <app-add-post-modal
+        [open]="openAddModal"
+        (cancel)="openAddModal = false"
+        (add)="addPost($event)"
+      ></app-add-post-modal>
+
+      <!--* Edit modal -->
+      <app-edit-post-modal
+        *ngIf="selectedPost"
+        [open]="isEditModalOpen"
+        [post]="selectedPost"
+        (cancel)="isEditModalOpen = false"
+        (update)="saveEdit($event)"
+      ></app-edit-post-modal>
+    </div>
+  </div>
+</div>

@@ -20,6 +20,7 @@ export class ApiErrorHandler {
       'PROFESSIONAL_EXPERIENCE_ID_MISMATCH',
       'EDUCATION_DOES_NOT_BELONG_TO_USER',
       'PROFESSIONAL_EXPERIENCE_DOES_NOT_BELONG_TO_USER',
+      'POST_ID_MISMATCH',
     ];
 
     if (sensitiveCodes.includes(code)) {

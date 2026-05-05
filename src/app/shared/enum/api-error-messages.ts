@@ -103,4 +103,9 @@ export const API_ERROR_MESSAGES: Record<string, string> = {
     'Le logo est obligatoire pour configurer le site vitrine',
   RECRUITMENT_SITE_NOT_CONFIGURED:
     "Le site vitrine n'a pas encore été configuré",
+
+  //* Post
+  POST_NAME_DUPLICATED: 'Un poste avec ce nom existe déjà',
+  POST_NOT_FOUND: 'Poste introuvable',
+  POST_ALREADY_EXISTS: 'Ce poste existe déjà',
 };

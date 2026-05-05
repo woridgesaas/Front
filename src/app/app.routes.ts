@@ -301,6 +301,14 @@ export const routes: Routes = [
             data: { breadcrumb: 'Départements', title: 'Départements' },
           },
           {
+            path: 'posts',
+            loadComponent: () =>
+              import('./features/hrm/post/post.component').then(
+                (m) => m.PostComponent,
+              ),
+            data: { breadcrumb: 'Postes', title: 'Postes' },
+          },
+          {
             path: 'generate/contract',
             loadComponent: () =>
               import('./features/hrm/contract/contract.component').then(

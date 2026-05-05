@@ -1,0 +1,12 @@
+<div class="d-flex align-items-center gap-2 flex-wrap">
+
+  <!--* Status -->
+  <select class="form-select" style="width: 160px" [ngModel]="status" (ngModelChange)="statusChange.emit($event)">
+    <option value="all">Tous</option>
+    <option value="ACTIVE">Actif</option>
+    <option value="INACTIVE">Inactif</option>
+  </select>
+
+  <!--* Search -->
+  <input type="text" class="form-control" style="width: 220px" placeholder="Rechercher un poste" [ngModel]="search" (ngModelChange)="searchChange.emit($event)"/>
+</div>
