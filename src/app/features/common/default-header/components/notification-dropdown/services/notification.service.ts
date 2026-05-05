@@ -6,8 +6,8 @@ import { NotificationItem } from '../models/notification.model';
 
 @Injectable({ providedIn: 'root' })
 export class NotificationService {
-
-  private api = `${process.env['NG_APP_NOTIF_URL']}/api/notifications`;
+  //  Passe par Kong + singulier comme dans kong.yml
+  private api = `${process.env['NG_APP_GATEWAY_URL']}/api/notification`;
 
   constructor(private http: HttpClient) {}
 
@@ -15,13 +15,13 @@ export class NotificationService {
     return this.http.get<NotificationItem[]>(this.api);
   }
 
-  // appelle le backend → isRead = true en DB
   markAsRead(notifId: number): Observable<void> {
-    return this.http.patch<void>(`${this.api}/${notifId}/read`, {});
+    // PATCH /{id} — correspond à ton controller
+    return this.http.patch<void>(`${this.api}/${notifId}`, {});
   }
 
-  // marque tout comme lu en DB
   markAllAsRead(): Observable<void> {
-    return this.http.patch<void>(`${this.api}/read-all`, {});
+    //  PATCH / — correspond à ton controller
+    return this.http.patch<void>(this.api, {});
   }
 }
