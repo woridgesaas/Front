@@ -15,17 +15,17 @@ import {
   RouterModule,
 } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { CommonService } from '../shared/common/common.service';
-import { SettingService } from '../shared/settings/settings.service';
-import { DataService } from '../shared/data/data.service';
-import { SideBarService } from '../shared/side-bar/side-bar.service';
+import { RouteStateService } from '../shared/services/route-state.service';
+import { AppSettingsService } from '../shared/services/app-settings.service';
+import { SidebarStateService } from '../layout/services/sidebar-state.service';
 import { LayoutMode } from '../shared/models/layout.model';
-import { HorizontalSidebarComponent } from './common/horizontal-sidebar/horizontal-sidebar.component';
-import { DefaultSidebarComponent } from './common/default-sidebar/default-sidebar.component';
-import { DefaultHeaderComponent } from './common/default-header/default-header.component';
-import { CustomCalendarComponent } from './common/custom-calendar/custom-calendar.component';
-import { MiniCalendarComponent } from './common/mini-calendar/mini-calendar.component';
 import { routes } from '../shared/routes/routes';
+import { HorizontalSidebarComponent } from '../layout/horizontal-sidebar/horizontal-sidebar.component';
+import { DefaultSidebarComponent } from '../layout/default-sidebar/default-sidebar.component';
+import { DefaultHeaderComponent } from '../layout/default-header/default-header.component';
+import { MiniCalendarComponent } from './common/mini-calendar/mini-calendar.component';
+import { DefaultSidebarFilterService } from '../layout/default-sidebar/services/default-sidebar-filter.service';
+
 @Component({
   selector: 'app-features',
   standalone: true,
@@ -38,7 +38,7 @@ import { routes } from '../shared/routes/routes';
     HorizontalSidebarComponent,
     DefaultSidebarComponent,
     DefaultHeaderComponent,
-    MiniCalendarComponent
+    MiniCalendarComponent,
   ],
 })
 export class FeaturesComponent implements OnInit, OnDestroy {
@@ -55,10 +55,20 @@ export class FeaturesComponent implements OnInit, OnDestroy {
   showPreloader = false;
   showPreloaderState = '';
 
-  private subs = new Subscription();
-    hiddenPages :string[]=[routes.calendar,routes.dailyreport,routes.employeereport,routes.payslipreport,routes.leavereport,routes.attendancereport];
-  shouldBeVisible:boolean = true;
-  private readonly withoutWrapperPagesArray = [
+  shouldBeVisible = true;
+
+  withoutWrapperPages = false;
+
+  private readonly hiddenPages: string[] = [
+    routes.calendar,
+    routes.dailyreport,
+    routes.employeereport,
+    routes.payslipreport,
+    routes.leavereport,
+    routes.attendancereport,
+  ];
+
+  private readonly withoutWrapperPagesArray: string[] = [
     'login',
     'forgot-password',
     'reset-password',
@@ -72,30 +82,28 @@ export class FeaturesComponent implements OnInit, OnDestroy {
     'error-500',
   ];
 
-  withoutWrapperPages = false;
-  private updateVisibility():void{
-    this.shouldBeVisible = !this.hiddenPages.some((url: string)=>
-      this.router.url.includes(url)
-    )
-  }
+  private subs = new Subscription();
+
   constructor(
-    private common: CommonService,
-    public settings: SettingService,
-    private data: DataService,
-    public sideBar: SideBarService,
+    private routeState: RouteStateService,
+    public settings: AppSettingsService,
+    private sidebarState: SidebarStateService,
+    private defaultSidebarFilter: DefaultSidebarFilterService,
     private router: Router,
     @Inject(DOCUMENT) private document: Document,
-    private renderer: Renderer2
+    private renderer: Renderer2,
   ) {
-    this.router.events.subscribe((event)=>{
-      if(event instanceof NavigationEnd)
-        this.updateVisibility();
-    });
+    this.subs.add(
+      this.router.events.subscribe((event) => {
+        if (event instanceof NavigationEnd) {
+          this.updateVisibility();
+        }
+      }),
+    );
   }
 
   ngOnInit(): void {
     this.settings.initLayout();
-
     this.listenLayout();
     this.listenHover();
     this.listenSidebar();
@@ -103,7 +111,13 @@ export class FeaturesComponent implements OnInit, OnDestroy {
     this.listenLoader();
   }
 
-  //* Layout mode
+  private updateVisibility(): void {
+    this.shouldBeVisible = !this.hiddenPages.some((url) =>
+      this.router.url.includes(url),
+    );
+  }
+
+  // Layout mode
   private listenLayout(): void {
     this.subs.add(
       this.settings.layoutMode.subscribe((mode) => {
@@ -115,11 +129,11 @@ export class FeaturesComponent implements OnInit, OnDestroy {
           this.renderer.removeClass(this.document.body, 'mini-sidebar');
           this.renderer.removeClass(this.document.body, 'expand-menu');
         }
-      })
+      }),
     );
   }
 
-  //* Hover (only sidebar)
+  // Hover (only in aside mode)
   private listenHover(): void {
     this.subs.add(
       this.settings.hoverState.subscribe((state) => {
@@ -131,27 +145,27 @@ export class FeaturesComponent implements OnInit, OnDestroy {
         state === 'over'
           ? this.renderer.addClass(this.document.body, 'expand-menu')
           : this.renderer.removeClass(this.document.body, 'expand-menu');
-      })
+      }),
     );
   }
 
-  //* Sidebar
+  // Sidebar state
   private listenSidebar(): void {
     this.subs.add(
-      this.sideBar.toggleSideBar.subscribe((res) => {
+      this.sidebarState.toggleSideBar.subscribe((res: string) => {
         this.miniSidebar = res === 'true';
-        this.sideBar.expandSideBar.next(this.miniSidebar);
-      })
+        this.sidebarState.expandSideBar.next(this.miniSidebar);
+      }),
     );
 
     this.subs.add(
-      this.sideBar.toggleMobileSideBar.subscribe((res) => {
+      this.sidebarState.toggleMobileSideBar.subscribe((res: string) => {
         this.mobileSidebar = res === 'true';
-      })
+      }),
     );
 
     this.subs.add(
-      this.sideBar.expandSideBar.subscribe((expand) => {
+      this.sidebarState.expandSideBar.subscribe((expand: boolean) => {
         this.expandMenu = expand;
 
         if (!expand && this.miniSidebar) {
@@ -161,37 +175,41 @@ export class FeaturesComponent implements OnInit, OnDestroy {
         if (expand && this.miniSidebar) {
           this.restoreActiveMenu();
         }
-      })
+      }),
     );
   }
 
   private closeAllMenus(): void {
-    this.data.sideBar.forEach((main) =>
-      main.menu.forEach((m) => (m.showSubRoute = false))
-    );
+    this.defaultSidebarFilter
+      .getFilteredSidebar()
+      .forEach((section) =>
+        section.menu.forEach((m) => (m.showSubRoute = false)),
+      );
   }
 
   private restoreActiveMenu(): void {
     const menuValue = sessionStorage.getItem('menuValue');
-
-    this.data.sideBar.forEach((main) =>
-      main.menu.forEach((m) => (m.showSubRoute = m.menuValue === menuValue))
-    );
+    this.defaultSidebarFilter
+      .getFilteredSidebar()
+      .forEach((section) =>
+        section.menu.forEach(
+          (m) => (m.showSubRoute = m.menuValue === menuValue),
+        ),
+      );
   }
 
-  //* Router
+  // Router
   private listenRouter(): void {
     this.subs.add(
       this.router.events.subscribe((event) => {
         if (event instanceof NavigationStart) {
           this.extractRoute(event.url);
         }
-
         if (event instanceof NavigationEnd) {
           this.mobileSidebar = false;
           localStorage.removeItem('isMobileSidebar');
         }
-      })
+      }),
     );
   }
 
@@ -201,16 +219,16 @@ export class FeaturesComponent implements OnInit, OnDestroy {
     this.page = split[2] || '';
     this.last = split[3] || '';
 
-    this.common.base.next(this.base);
-    this.common.page.next(this.page);
-    this.common.last.next(this.last);
+    this.routeState.base.next(this.base);
+    this.routeState.page.next(this.page);
+    this.routeState.last.next(this.last);
 
     this.withoutWrapperPages = this.withoutWrapperPagesArray.includes(
-      this.base
+      this.base,
     );
   }
 
-  //* Loader
+  // Loader
   private listenLoader(): void {
     this.subs.add(
       this.settings.isLoader.subscribe((state) => {
@@ -222,7 +240,7 @@ export class FeaturesComponent implements OnInit, OnDestroy {
         } else {
           this.showPreloader = false;
         }
-      })
+      }),
     );
   }
 

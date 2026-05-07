@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavigationStart, Router, Event as RouterEvent, RouterModule } from '@angular/router';
-import { CommonService } from '../shared/common/common.service';
+import { RouteStateService } from '../shared/services/route-state.service';
 import { url } from '../shared/models/sidebar.model';
 import { CommonModule } from '@angular/common';
 
@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
     imports: [RouterModule,CommonModule]
 })
 export class AuthComponent {
-  
+
   public themeMode = '';
   base = '';
   page = '';
@@ -19,7 +19,7 @@ export class AuthComponent {
 
   constructor(
     private Router: Router,
-    private common: CommonService,
+    private common: RouteStateService,
   ) {
     this.Router.events.subscribe((data: RouterEvent) => {
       if (data instanceof NavigationStart) {
@@ -37,5 +37,5 @@ export class AuthComponent {
     this.common.base.next(splitVal[1]);
     this.common.page.next(splitVal[2]);
     this.common.last.next(splitVal[3]);
-  } 
+  }
 }

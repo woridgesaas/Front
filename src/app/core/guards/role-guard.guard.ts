@@ -1,19 +1,22 @@
+import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { TokenService } from '../../auth/services/token.service';
-import { inject } from '@angular/core';
 
 export const roleGuard: CanActivateFn = (route) => {
   const tokenService = inject(TokenService);
   const router = inject(Router);
 
-  const role = tokenService.getRole();
-
-  const allowedRoles: string[] = route.data?.['roles'] ?? [];
-
-  if (role && allowedRoles.includes(role)) {
-    return true;
+  if (!tokenService.isAuthenticated()) {
+    tokenService.clearToken();
+    return router.createUrlTree(['/login']);
   }
 
-  router.navigate(['/error-404']);
-  return false;
+  const userRole = tokenService.getRole();
+  const allowedRoles: string[] = route.data['roles'] ?? [];
+
+  if (!userRole || !allowedRoles.includes(userRole)) {
+    return router.createUrlTree(['/error-404']);
+  }
+
+  return true;
 };

@@ -1,0 +1,24 @@
+<div class="header-left">
+  <a [routerLink]="dashboardRoute" class="logo">
+    <img src="assets/favicon_io/logo.svg" alt="Woridge Logo" />
+  </a>
+
+  <a [routerLink]="dashboardRoute" class="dark-logo">
+    <img src="assets/favicon_io/big-logo-nobg.png" alt="Woridge Logo" />
+  </a>
+</div>
+
+<a
+  id="mobile_btn"
+  class="mobile_btn"
+  href="javascript:void(0);"
+  tabindex="0"
+  (click)="toggleMobileSideBar()"
+  (keydown.enter)="toggleMobileSideBar()"
+>
+  <span class="bar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </span>
+</a>
