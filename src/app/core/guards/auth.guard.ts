@@ -13,7 +13,7 @@ export class AuthGuard implements CanActivate {
     @Inject(PLATFORM_ID) private platformId: Object,
   ) {}
 
-  canActivate(): boolean | UrlTree {
+  canActivate() :  boolean | UrlTree {
     if (!isPlatformBrowser(this.platformId)) {
       return this.router.createUrlTree(['/login']);
     }
