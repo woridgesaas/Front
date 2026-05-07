@@ -111,8 +111,7 @@
           },
           "defaultConfiguration": "production"
         },
-        "serve": {
-          
+        "serve": {  
           "builder": "@ngx-env/builder:dev-server",
           "configurations": {
             "production": {

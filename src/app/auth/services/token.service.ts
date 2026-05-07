@@ -33,7 +33,9 @@ export class TokenService {
 
   isAuthenticated(): boolean {
     const token = this.getToken();
+    //return true; //yarbi n39l nrj3 nmodifiha
     return !!token && !!this.getPayload() && !this.isTokenExpired();
+    
   }
 
   clearToken(): void {

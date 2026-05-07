@@ -29,11 +29,10 @@ import { TokenService } from '../../auth/services/token.service';
 })
 export class DefaultSidebarComponent implements OnInit, OnDestroy {
   readonly routes = routes;
-
+  isDarkMode = localStorage.getItem('themeColor') === '2';
   base = '';
   page = '';
   last = '';
-
   sideBarData: SidebarSection[] = [];
   isMobile = window.innerWidth <= 991;
 
@@ -59,6 +58,7 @@ export class DefaultSidebarComponent implements OnInit, OnDestroy {
     this.listenRouteState();
     this.listenRouter();
     this.restoreActiveMenu();
+    
   }
 
   @HostListener('window:resize')
