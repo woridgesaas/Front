@@ -29,7 +29,6 @@ import { TokenService } from '../../auth/services/token.service';
 })
 export class DefaultSidebarComponent implements OnInit, OnDestroy {
   readonly routes = routes;
-  isDarkMode = localStorage.getItem('themeColor') === '2';
   base = '';
   page = '';
   last = '';
