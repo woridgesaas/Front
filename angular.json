@@ -17,6 +17,7 @@
         "build": {
           "builder": "@ngx-env/builder:application",
           "options": {
+          
             "outputPath": "dist/woridge-v1.1.10",
             "polyfills": [
                             "zone.js"
@@ -111,6 +112,7 @@
           "defaultConfiguration": "production"
         },
         "serve": {
+          
           "builder": "@ngx-env/builder:dev-server",
           "configurations": {
             "production": {
