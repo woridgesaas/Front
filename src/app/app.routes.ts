@@ -4,15 +4,17 @@ import { NoAuthGuard } from './core/guards/no-auth.guard';
 import { emailVerificationGuard } from './core/guards/email-verification.guard';
 import { resetPasswordGuard } from './core/guards/reset-password.guard';
 import { roleGuard } from './core/guards/role-guard.guard';
+import { defaultRedirectGuard } from './core/guards/default-redirect.guard';
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard/admin',
     pathMatch: 'full',
+    canActivate: [AuthGuard, defaultRedirectGuard],
+    children: [],
   },
 
-  //* Auth routes
+  //* Auth
   {
     path: '',
     loadComponent: () =>
@@ -70,15 +72,14 @@ export const routes: Routes = [
     ],
   },
 
-  //* Features routes
-
+  //* Features
   {
     path: '',
     canActivate: [AuthGuard],
     loadComponent: () =>
       import('./features/features.component').then((m) => m.FeaturesComponent),
     children: [
-      //* Dashboard routes
+      //* Dashboard
       {
         path: 'dashboard',
         loadComponent: () =>
@@ -88,21 +89,22 @@ export const routes: Routes = [
         data: { breadcrumb: 'Dashboard', title: 'Dashboard' },
         children: [
           { path: '', pathMatch: 'full', redirectTo: 'admin' },
-
           {
             path: 'admin',
+            canActivate: [roleGuard],
             loadComponent: () =>
               import('./features/dashboard/admin/pages/admin-dashboard/admin-dashboard.component').then(
                 (m) => m.AdminDashboardComponent,
               ),
             data: {
               breadcrumb: 'Dashboard administrateur',
-              title: 'dashboard administrateur',
-              role: 'ADMIN', // utile pour guard
+              title: 'Dashboard administrateur',
+              roles: ['CEO', 'HR', 'MANAGER'],
             },
           },
           {
             path: 'employee',
+            canActivate: [roleGuard],
             loadComponent: () =>
               import('./features/dashboard/employee/pages/employee-dashboard/employee-dashboard.component').then(
                 (m) => m.EmployeeDashboardComponent,
@@ -110,13 +112,13 @@ export const routes: Routes = [
             data: {
               breadcrumb: 'Dashboard employé',
               title: 'Dashboard employé',
-              role: 'EMPLOYEE',
+              roles: ['EMPLOYEE'],
             },
           },
         ],
       },
 
-      //* Intranet routes
+      //* Internal communication
       {
         path: 'intranet',
         loadComponent: () =>
@@ -189,164 +191,6 @@ export const routes: Routes = [
           },
         ],
       },
-
-      //* Settings routes
-      {
-        path: 'settings',
-        loadComponent: () =>
-          import('./features/settings/settings.component').then(
-            (m) => m.SettingsComponent,
-          ),
-        data: { breadcrumb: 'Paramètres', title: 'Paramètres' },
-        children: [
-          {
-            path: 'app-settings',
-            loadComponent: () =>
-              import('./features/settings/app-settings/app-settings.component').then(
-                (m) => m.AppSettingsComponent,
-              ),
-            data: {
-              breadcrumb: "Paramètres d'application",
-              title: "Paramètres d'application",
-            },
-            children: [
-              {
-                path: 'leave-settings',
-                loadComponent: () =>
-                  import('./features/settings/app-settings/leave-settings/leave-settings.component').then(
-                    (m) => m.LeaveSettingsComponent,
-                  ),
-                data: {
-                  breadcrumb: 'Paramétrage des congés',
-                  title: 'Paramétrage des congés',
-                },
-              },
-              {
-                path: 'attendance-settings',
-                loadComponent: () =>
-                  import('./features/settings/app-settings/attendance-settings/attendance-settings.component').then(
-                    (m) => m.AttendanceSettingsComponent,
-                  ),
-                data: {
-                  breadcrumb: 'Paramétrage de présence et absence',
-                  title: 'Paramétrage de présence et absence',
-                },
-              },
-              {
-                path: 'documents-template-settings',
-                loadComponent: () =>
-                  import('./features/settings/app-settings/documents-template-settings/documents-template-settings.component').then(
-                    (m) => m.DocumentsTemplateSettingsComponent,
-                  ),
-                data: {
-                  breadcrumb:
-                    'Paramètrage des modèles de documents administratifs',
-                  title: 'Paramètrage des modèles de documents administratifs',
-                },
-              },
-              {
-                path: 'recruitment-settings',
-                loadComponent: () =>
-                  import('./features/settings/app-settings/recruitment-settings/recruitment-settings.component').then(
-                    (m) => m.RecruitmentSettingsComponent,
-                  ),
-                data: {
-                  breadcrumb: 'Paramétrage de recrutement',
-                  title: 'Paramétrage de recrutement',
-                },
-              },
-            ],
-          },
-        ],
-      },
-
-      //* Employees routes
-      {
-        path: 'employees',
-        loadComponent: () =>
-          import('./features/hrm/employees/employees.component').then(
-            (m) => m.EmployeesComponent,
-          ),
-        data: { breadcrumb: 'Employés', title: 'Employés' },
-        children: [
-          {
-            path: 'employee-list',
-            loadComponent: () =>
-              import('./features/hrm/employees/employees-list/employee-list/employee-list.component').then(
-                (m) => m.EmployeeListComponent,
-              ),
-            canActivate: [roleGuard],
-            data: {
-              breadcrumb: 'Liste des employés',
-              title: 'Liste des employés',
-              roles: ['HR', 'CEO'],
-            },
-          },
-          {
-            path: 'employee-details/:id',
-            loadComponent: () =>
-              import('./features/hrm/employees/profilemployee/employee-details/employee-details.component').then(
-                (m) => m.EmployeeDetailsComponent,
-              ),
-            data: {
-              title: "Détails d'employé",
-            },
-          },
-          {
-            path: 'departments',
-            loadComponent: () =>
-              import('./features/hrm/departments/departments.component').then(
-                (m) => m.DepartmentsComponent,
-              ),
-            data: { breadcrumb: 'Départements', title: 'Départements' },
-          },
-          {
-            path: 'posts',
-            loadComponent: () =>
-              import('./features/hrm/post/post.component').then(
-                (m) => m.PostComponent,
-              ),
-            data: { breadcrumb: 'Postes', title: 'Postes' },
-          },
-          {
-            path: 'generate/contract',
-            loadComponent: () =>
-              import('./features/hrm/contract/contract.component').then(
-                (m) => m.ContractComponent,
-              ),
-            data: {
-              breadcrumb: 'Générer un contrat',
-              title: 'Générer un contrat',
-            },
-          },
-
-          {
-            path: 'documents',
-            loadComponent: () =>
-              import('./features/hrm/documents/documents.component').then(
-                (m) => m.DocumentsComponent,
-              ),
-            data: {
-              breadcrumb: 'Documents administratifs',
-              title: 'Documents administratifs',
-            },
-          },
-          //* Holidays routes
-          {
-            path: 'holidays',
-            loadComponent: () =>
-              import('./features/hrm/holidays/holidays.component').then(
-                (m) => m.HolidaysComponent,
-              ),
-            data: {
-              breadcrumb: 'Jours fériés',
-              title: 'Jours fériés',
-            },
-          },
-        ],
-      },
-
-      //* Tickets routes
       {
         path: 'tickets',
         loadComponent: () =>
@@ -357,6 +201,7 @@ export const routes: Routes = [
         children: [
           {
             path: 'ticket-list',
+            canActivate: [roleGuard],
             loadComponent: () =>
               import('./features/application/tickets/ticket/ticket.component').then(
                 (m) => m.TicketComponent,
@@ -364,15 +209,17 @@ export const routes: Routes = [
             data: {
               breadcrumb: 'Liste des tickets',
               title: 'Liste des tickets',
+              roles: ['CEO', 'HR'],
             },
           },
           {
             path: 'ticket-details',
+            canActivate: [roleGuard],
             loadComponent: () =>
               import('./features/application/tickets/ticket-details/ticket-details.component').then(
                 (m) => m.TicketDetailsComponent,
               ),
-            data: { title: 'Détails du ticket' },
+            data: { title: 'Détails du ticket', roles: ['CEO', 'HR'] },
           },
           {
             path: 'mes-tickets',
@@ -385,7 +232,98 @@ export const routes: Routes = [
         ],
       },
 
-      //* Attendance routes
+      //* Employees
+      {
+        path: 'employees',
+        loadComponent: () =>
+          import('./features/hrm/employees/employees.component').then(
+            (m) => m.EmployeesComponent,
+          ),
+        data: { breadcrumb: 'Employés', title: 'Employés' },
+        children: [
+          {
+            path: 'employee-list',
+            canActivate: [roleGuard],
+            loadComponent: () =>
+              import('./features/hrm/employees/employees-list/employee-list/employee-list.component').then(
+                (m) => m.EmployeeListComponent,
+              ),
+            data: {
+              breadcrumb: 'Liste des employés',
+              title: 'Liste des employés',
+              roles: ['CEO', 'HR', 'MANAGER'],
+            },
+          },
+          {
+            path: 'employee-details/:id',
+            loadComponent: () =>
+              import('./features/hrm/employees/profilemployee/employee-details/employee-details.component').then(
+                (m) => m.EmployeeDetailsComponent,
+              ),
+            data: { title: "Détails d'employé" },
+          },
+          {
+            path: 'departments',
+            canActivate: [roleGuard],
+            loadComponent: () =>
+              import('./features/hrm/departments/departments.component').then(
+                (m) => m.DepartmentsComponent,
+              ),
+            data: {
+              breadcrumb: 'Départements',
+              title: 'Départements',
+              roles: ['CEO', 'HR'],
+            },
+          },
+          {
+            path: 'posts',
+            canActivate: [roleGuard],
+            loadComponent: () =>
+              import('./features/hrm/post/post.component').then(
+                (m) => m.PostComponent,
+              ),
+            data: {
+              breadcrumb: 'Postes',
+              title: 'Postes',
+              roles: ['CEO', 'HR'],
+            },
+          },
+          {
+            path: 'generate/contract',
+            canActivate: [roleGuard],
+            loadComponent: () =>
+              import('./features/hrm/contract/contract.component').then(
+                (m) => m.ContractComponent,
+              ),
+            data: {
+              breadcrumb: 'Générer un contrat',
+              title: 'Générer un contrat',
+              roles: ['CEO', 'HR'],
+            },
+          },
+          {
+            path: 'documents',
+            loadComponent: () =>
+              import('./features/hrm/documents/documents.component').then(
+                (m) => m.DocumentsComponent,
+              ),
+            data: {
+              breadcrumb: 'Documents administratifs',
+              title: 'Documents administratifs',
+            },
+          },
+          {
+            path: 'holidays',
+            loadComponent: () =>
+              import('./features/hrm/holidays/holidays.component').then(
+                (m) => m.HolidaysComponent,
+              ),
+            data: { breadcrumb: 'Jours fériés', title: 'Jours fériés' },
+          },
+        ],
+      },
+
+      //* Internal HR
       {
         path: 'attendance',
         loadComponent: () =>
@@ -396,13 +334,15 @@ export const routes: Routes = [
         children: [
           {
             path: 'attendance-admin',
+            canActivate: [roleGuard],
             loadComponent: () =>
               import('./features/hrm/attendance/attendance-admin/attendance-admin.component').then(
                 (m) => m.AttendanceAdminComponent,
               ),
             data: {
-              breadcrumb: 'Liste de présence/absence',
-              title: 'Liste de présence/absence',
+              breadcrumb: 'Liste présence/absence',
+              title: 'Liste présence/absence',
+              roles: ['CEO', 'HR', 'MANAGER'],
             },
           },
           {
@@ -412,14 +352,12 @@ export const routes: Routes = [
                 (m) => m.AttendanceEmployeeComponent,
               ),
             data: {
-              breadcrumb: 'Mes présence/absence',
-              title: 'Mes présence/absence',
+              breadcrumb: 'Mes présences/absences',
+              title: 'Mes présences/absences',
             },
           },
         ],
       },
-
-      //* Leave routes
       {
         path: 'leaves',
         loadComponent: () =>
@@ -431,38 +369,39 @@ export const routes: Routes = [
           {
             path: 'leave-employee',
             loadComponent: () =>
-              import('./features/hrm//leaves/leave-employee/leave-employee.component').then(
+              import('./features/hrm/leaves/leave-employee/leave-employee.component').then(
                 (m) => m.LeaveEmployeeComponent,
               ),
-            data: {
-              breadcrumb: 'Mes congés',
-              title: 'Mes congés',
-            },
+            data: { breadcrumb: 'Mes congés', title: 'Mes congés' },
           },
         ],
       },
-
-      //* Promotion route
       {
         path: 'promotion',
+        canActivate: [roleGuard],
         loadComponent: () =>
           import('./features/hrm/promotion/promotion.component').then(
             (m) => m.PromotionsComponent,
           ),
-        data: { breadcrumb: 'Promotion', title: 'Promotion' },
+        data: {
+          breadcrumb: 'Promotion',
+          title: 'Promotion',
+          roles: ['CEO', 'HR'],
+        },
       },
-
-      //* Resignation route
       {
         path: 'resignation',
+        canActivate: [roleGuard],
         loadComponent: () =>
           import('./features/hrm/resignation/resignation.component').then(
             (m) => m.ResignationComponent,
           ),
-        data: { breadcrumb: 'Démission', title: 'Démission' },
+        data: {
+          breadcrumb: 'Démission',
+          title: 'Démission',
+          roles: ['CEO', 'HR'],
+        },
       },
-
-      //* Payroll routes
       {
         path: 'payroll',
         loadComponent: () =>
@@ -484,6 +423,7 @@ export const routes: Routes = [
           },
           {
             path: 'gestion-fiches',
+            canActivate: [roleGuard],
             loadComponent: () =>
               import('./features/hrm/payroll/components/rh-payroll/rh-payroll.component').then(
                 (m) => m.RhPayrollComponent,
@@ -491,15 +431,19 @@ export const routes: Routes = [
             data: {
               breadcrumb: 'Gestion des fiches de paie',
               title: 'Gestion des fiches de paie',
+              roles: ['CEO', 'HR'],
             },
           },
         ],
       },
-
-      //* Validation routes
       {
         path: 'validation',
-        data: { breadcrumb: 'Validation', title: 'Validation' },
+        canActivate: [roleGuard],
+        data: {
+          breadcrumb: 'Validation',
+          title: 'Validation',
+          roles: ['CEO', 'HR'],
+        },
         children: [
           {
             path: 'justify-validation',
@@ -508,8 +452,8 @@ export const routes: Routes = [
                 (m) => m.ValidateJustificationComponent,
               ),
             data: {
-              breadcrumb: 'Validation des justificatifs',
-              title: 'Validation des justificatifs',
+              breadcrumb: 'Justificatifs',
+              title: 'Justificatifs',
             },
           },
           {
@@ -519,8 +463,8 @@ export const routes: Routes = [
                 (m) => m.ValidateLeaveComponent,
               ),
             data: {
-              breadcrumb: 'Validation des congés',
-              title: 'Validation des congés',
+              breadcrumb: 'Congés',
+              title: 'Congés',
             },
           },
           {
@@ -529,11 +473,9 @@ export const routes: Routes = [
               import('./features/hrm/validation/validate-personal-information/validate-personal-information.component').then(
                 (m) => m.ValidatePersonalInformationComponent,
               ),
-            canActivate: [roleGuard],
             data: {
-              breadcrumb: 'Validation des informations personnelles',
-              title: 'Validation des informations personnelles',
-              roles: ['HR', 'CEO'],
+              breadcrumb: 'Informations personnelles',
+              title: 'Informations personnelles',
             },
           },
           {
@@ -543,17 +485,17 @@ export const routes: Routes = [
                 (m) => m.ValidateAdministrativDocumentsComponent,
               ),
             data: {
-              breadcrumb: 'Documents Administratifs',
-              title: 'Documents Administratifs',
+              breadcrumb: 'Documents administratifs',
+              title: 'Documents administratifs',
             },
           },
         ],
       },
 
-      //* Candidates routes
-
+      //* External RH
       {
         path: 'candidates',
+        canActivate: [roleGuard],
         loadComponent: () =>
           import('./features/rhextern/candidates/components/candidates-list/candidates-list.component').then(
             (m) => m.CandidatesListComponent,
@@ -561,53 +503,58 @@ export const routes: Routes = [
         data: {
           breadcrumb: 'Candidats',
           title: 'Liste des candidats',
+          roles: ['CEO', 'HR'],
         },
       },
-
-      //* Jobs routes
       {
         path: 'jobs-list',
+        canActivate: [roleGuard],
         loadComponent: () =>
           import('./features/rhextern/jobs/components/jobs-list/jobs-list.component').then(
             (m) => m.JobsListComponent,
           ),
-        data: { breadcrumb: "Offres d'emploi", title: "Offres d'emploi" },
+        data: {
+          breadcrumb: "Offres d'emploi",
+          title: "Offres d'emploi",
+          roles: ['CEO', 'HR'],
+        },
       },
-
-      //* Filter route
-
       {
         path: 'filtrage',
+        canActivate: [roleGuard],
         loadComponent: () =>
           import('./features/rhextern/filtering/pages/filtering-page/filtering-page.component').then(
             (m) => m.FilteringPageComponent,
           ),
-        children: [],
-        data: { breadcrumb: 'Filtrage', title: 'Filtrage' },
+        data: {
+          breadcrumb: 'Filtrage',
+          title: 'Filtrage',
+          roles: ['CEO', 'HR'],
+        },
       },
-
-      //* Interview route
       {
         path: 'entretiens',
+        canActivate: [roleGuard],
         loadComponent: () =>
           import('./features/rhextern/interviews/pages/interviews-planning/interviews-planning.component').then(
             (m) => m.InterviewsPlanningComponent,
           ),
-        children: [],
         data: {
           breadcrumb: 'Planification des entretiens',
           title: 'Planification des Entretiens',
+          roles: ['CEO', 'HR'],
         },
       },
 
-      //* Reports routes
+      //* Administration
       {
         path: 'reports',
+        canActivate: [roleGuard],
         loadComponent: () =>
           import('./features/administration/reports/reports.component').then(
             (m) => m.ReportsComponent,
           ),
-        data: { breadcrumb: 'Rapports', title: 'Rapports' },
+        data: { breadcrumb: 'Rapports', title: 'Rapports', roles: ['CEO'] },
         children: [
           {
             path: 'attendance-report',
@@ -616,8 +563,8 @@ export const routes: Routes = [
                 (m) => m.AttendanceReportComponent,
               ),
             data: {
-              breadcrumb: 'Rapport des présences/absences',
-              title: 'Rapport des présences/absences',
+              breadcrumb: 'Rapport présences/absences',
+              title: 'Rapport présences/absences',
             },
           },
           {
@@ -668,6 +615,7 @@ export const routes: Routes = [
       },
       {
         path: 'audits',
+        canActivate: [roleGuard],
         loadComponent: () =>
           import('./features/administration/audits/audits.component').then(
             (m) => m.AuditsComponent,
@@ -675,22 +623,97 @@ export const routes: Routes = [
         data: {
           breadcrumb: 'Journal des événements',
           title: 'Journal des événements',
+          roles: ['CEO'],
         },
+      },
+
+      //* Settings
+      {
+        path: 'settings',
+        canActivate: [roleGuard],
+        loadComponent: () =>
+          import('./features/settings/settings.component').then(
+            (m) => m.SettingsComponent,
+          ),
+        data: {
+          breadcrumb: 'Paramètres',
+          title: 'Paramètres',
+          roles: ['CEO', 'HR'],
+        },
+        children: [
+          {
+            path: 'app-settings',
+            loadComponent: () =>
+              import('./features/settings/app-settings/app-settings.component').then(
+                (m) => m.AppSettingsComponent,
+              ),
+            data: {
+              breadcrumb: "Paramètres d'application",
+              title: "Paramètres d'application",
+            },
+            children: [
+              {
+                path: 'leave-settings',
+                loadComponent: () =>
+                  import('./features/settings/app-settings/leave-settings/leave-settings.component').then(
+                    (m) => m.LeaveSettingsComponent,
+                  ),
+                data: {
+                  breadcrumb: 'Paramétrage des congés',
+                  title: 'Paramétrage des congés',
+                },
+              },
+              {
+                path: 'attendance-settings',
+                loadComponent: () =>
+                  import('./features/settings/app-settings/attendance-settings/attendance-settings.component').then(
+                    (m) => m.AttendanceSettingsComponent,
+                  ),
+                data: {
+                  breadcrumb: 'Paramétrage présence et absence',
+                  title: 'Paramétrage présence et absence',
+                },
+              },
+              {
+                path: 'documents-template-settings',
+                loadComponent: () =>
+                  import('./features/settings/app-settings/documents-template-settings/documents-template-settings.component').then(
+                    (m) => m.DocumentsTemplateSettingsComponent,
+                  ),
+                data: {
+                  breadcrumb: 'Paramétrage modèles documents',
+                  title: 'Paramétrage modèles documents',
+                },
+              },
+              {
+                path: 'recruitment-settings',
+                loadComponent: () =>
+                  import('./features/settings/app-settings/recruitment-settings/recruitment-settings.component').then(
+                    (m) => m.RecruitmentSettingsComponent,
+                  ),
+                data: {
+                  breadcrumb: 'Paramétrage recrutement',
+                  title: 'Paramétrage recrutement',
+                },
+              },
+            ],
+          },
+        ],
+      },
+
+      //* Onboarding
+      {
+        path: 'onboarding',
+        loadComponent: () =>
+          import('./onboarding/onboarding.component').then(
+            (m) => m.OnboardingComponent,
+          ),
+        data: { title: 'Onboarding' },
       },
     ],
   },
 
-  //* Onboarding routes
-  {
-    path: 'onboarding',
-    loadComponent: () =>
-      import('./onboarding/onboarding.component').then(
-        (m) => m.OnboardingComponent,
-      ),
-    data: { title: 'Onboarding' },
-  },
-
-  //* Pages routes
+  //* Pages
   {
     path: 'under-maintenance',
     loadComponent: () =>
@@ -724,10 +747,6 @@ export const routes: Routes = [
     data: { title: 'Erreur serveur' },
   },
 
-  //* Fallback route
-  {
-    path: '**',
-    redirectTo: '/error-404',
-    pathMatch: 'full',
-  },
+  //* Fallback
+  { path: '**', redirectTo: '/error-404', pathMatch: 'full' },
 ] as const;

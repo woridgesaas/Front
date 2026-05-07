@@ -1,4 +1,4 @@
-import { HolidaysStatus } from "../enum/holidays-status";
+import { HolidaysStatus } from '../enum/holidays-status';
 export interface NotificationItem {
   id: number;
 
@@ -10,10 +10,10 @@ export interface NotificationItem {
   priority: 'LOW' | 'MEDIUM' | 'HIGH';
   type: string;
 
-  channel?: string;   // optionnel
-  status?: string;    // optionnel
+  channel?: string; // optionnel
+  status?: string; // optionnel
 
-  createdAt: string;  // ISO string backend
+  createdAt: string; // ISO string backend
 }
 export interface Sondage {
   id: number;
@@ -185,12 +185,11 @@ export interface Justification {
   Image: string;
   Email: string;
   Phone: string;
-  Designation: string;      // Département
-  RequestDate?: string;     // Date de demande
-  Document?: string;        // justificatif
+  Designation: string; // Département
+  RequestDate?: string; // Date de demande
+  Document?: string; // justificatif
   Status: 'En attente' | 'Accepter' | 'Refuser';
 }
-
 
 export interface ChartOptions {
   series: ApexAxisChartSeries | ApexNonAxisChartSeries;
@@ -249,12 +248,18 @@ export interface DocumentDemande {
 }
 export interface RhDocumentDemande {
   id: number;
-  uuid?: string;          // ← ajouter cette ligne seulement
+  uuid?: string; // ← ajouter cette ligne seulement
   documentName: string;
   description: string;
   category: string;
   requestDate: Date;
-  status: 'pending' | 'in_progress' | 'ready' | 'accepted' | 'rejected' | 'cancelled';
+  status:
+    | 'pending'
+    | 'in_progress'
+    | 'ready'
+    | 'accepted'
+    | 'rejected'
+    | 'cancelled';
   processedDate?: Date;
   employeeId: number;
   employeeName: string;
@@ -284,7 +289,6 @@ export interface DocumentRequestApi {
   documentGroup: string;
   processingDate?: string;
   employeeCin?: string;
-
 }
 export interface adminSidebar {
   tittle: string;
@@ -467,146 +471,10 @@ export interface Star {
   half?: boolean;
 }
 
-export interface SideBarMenu {
-  showMyTab?: boolean;
-  menuValue: string;
-  route?: string | null;
-  hasSubRoute?: boolean;
-  showSubRoute: boolean;
-  icon: string;
-  base?: string;
-  base2?: string;
-  base3?: string;
-  base4?: string;
-  base5?: string;
-  base7?: string;
-  base8?: string;
-  base9?: string;
-  base10?: string;
-  last1?: string;
-  last?: string;
-  page?: string;
-  last2?: string;
-  materialicons?: string;
-  subMenus: SubMenu[];
-  dot?: boolean;
-  hasSubRouteTwo?: boolean;
-  page1?: string;
-  action?: string;
-}
 export interface breadCrumbItems {
   label: string;
   active?: boolean;
 }
-export interface SubMenu {
-  menuValue: string;
-  route?: string;
-  base?: string;
-  page?: string;
-  page1?: string;
-  page2?: string;
-  base2?: string;
-  base3?: string;
-  base4?: string;
-  base5?: string;
-  base6?: string;
-  base7?: string;
-  base8?: string;
-  dot?: boolean;
-  currentActive?: boolean;
-  hasSubRoute?: boolean;
-  showSubRoute?: boolean;
-  customSubmenuTwo?: boolean;
-  subMenusTwo?: SubMenu[];
-}
-export interface SubMenusTwo {
-  menuValue: string;
-  route?: string;
-  base?: string;
-  page?: string;
-  base2?: string;
-  base3?: string;
-  base4?: string;
-  base5?: string;
-  base6?: string;
-  base7?: string;
-  base8?: string;
-  currentActive?: boolean;
-  materialicons?: string;
-  hasSubRoute?: boolean;
-  showSubRoute?: boolean;
-}
-
-export interface SideBar {
-  showMyTab?: boolean;
-  tittle: string;
-  icon?: string;
-  showAsTab: boolean;
-  base?: string;
-  base2?: string;
-  separateRoute: boolean;
-  materialicons?: string;
-  menu: SideBarMenu[];
-  hasSubRoute?: boolean;
-}
-
-export interface SubMenuTwo {
-  menuValue: string;
-  route: string;
-  base?: string;
-  base1?: string;
-  base2?: string;
-  base3?: string;
-  hasSubRoute?: boolean;
-  showSubRoute?: boolean;
-}
-
-export interface SubMenu2 {
-  menuValue: string;
-  route?: string | null;
-  base?: string;
-  base1?: string;
-  base2?: string;
-  base3?: string;
-  hasSubRoute?: boolean;
-  showSubRoute?: boolean;
-  customSubmenuTwo?: boolean;
-  subMenusTwo?: SubMenuTwo[];
-  action?: string; // ✅ Cette ligne existe déjà dans votre code
-}
-
-export interface Menu {
-  menuValue: string;
-  hasSubRouteTwo?: boolean;
-  showSubRoute?: boolean;
-  hasSubRoute?: boolean;
-  icon?: string;
-  base?: string;
-  base1?: string;
-  base2?: string;
-  base3?: string;
-  base4?: string;
-  base5?: string;
-  base6?: string;
-  base7?: string;
-  base8?: string;
-  base9?: string;
-  base10?: string;
-  subMenus?: SubMenu2[];
-  customSubmenuTwo?: boolean;
-  subMenusTwo?: SubMenuTwo[];
-  action?: string; // ✅ AJOUTEZ CETTE LIGNE
-  route?: string | null; // ✅ AJOUTEZ AUSSI CELLE-CI si elle n'existe pas
-}
-
-export interface MainMenu {
-  title: string;
-  showAsTab: boolean;
-  separateRoute: boolean;
-  base?: string;
-  menu: Menu[];
-}
-
 export interface activities {
   sNo?: number;
   isSelected: boolean;
@@ -642,7 +510,7 @@ export interface employees {
 }
 
 export interface Department {
-id: string;
+  id: string;
   name: string;
   noOfEmployees: number; // calculé côté front
   status: 'ACTIVE' | 'INACTIVE';
@@ -664,7 +532,7 @@ export interface Holiday {
   date: Date;
   duration: number;
   isFixed: boolean;
-  status: HolidaysStatus
+  status: HolidaysStatus;
 }
 export interface HolidayRequest {
   labelFr: string;
@@ -754,7 +622,6 @@ export interface UpdatePromotionRequest {
   promotionDate: string;
 }
 
-
 export interface pageSizeCal {
   totalData: number;
   pageSize: number;
@@ -763,7 +630,7 @@ export interface pageSizeCal {
 }
 
 export interface resignation {
-resignation: any;
+  resignation: any;
   sNo?: number;
   isSelected: boolean;
   Image: string;
@@ -961,11 +828,20 @@ export interface AttendanceListItem {
   employeeName: string;
   departmentId: string;
   departmentName: string;
-  date: string;                    // "2026-04-20"
-  checkInTime: string | null;      // "09:00:00"
+  date: string; // "2026-04-20"
+  checkInTime: string | null; // "09:00:00"
   checkOutTime: string | null;
-  productionHours: number;         // 8.5
-  status: 'PRESENT' | 'ABSENT' | 'LATE' | 'EARLY_LEAVE' | 'HALF_DAY' | 'UNDER_TIME' | 'OVERTIME' | 'WEEKEND' | 'HOLIDAY';
+  productionHours: number; // 8.5
+  status:
+    | 'PRESENT'
+    | 'ABSENT'
+    | 'LATE'
+    | 'EARLY_LEAVE'
+    | 'HALF_DAY'
+    | 'UNDER_TIME'
+    | 'OVERTIME'
+    | 'WEEKEND'
+    | 'HOLIDAY';
   overtimeId: string | null;
   overtimeStatus: 'PENDING' | 'APPROVED' | 'REJECTED' | null;
   hasRfidCard: boolean;

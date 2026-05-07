@@ -1,0 +1,10 @@
+<div class="dropdown crm-dropdown">
+  <a
+    href="javascript:void(0);"
+    class="btn btn-icon btn-sm rounded-circle mode-toggle"
+    (click)="toggleTheme()"
+    (keydown.enter)="toggleTheme()"
+  >
+    <i class="ti" [ngClass]="isDarkMode ? 'ti-sun' : 'ti-moon'"></i>
+  </a>
+</div>

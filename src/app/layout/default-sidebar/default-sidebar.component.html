@@ -1,0 +1,192 @@
+<div
+  class="sidebar"
+  id="sidebar"
+  (mouseover)="miniSideBarMouseHover('over')"
+  (mouseout)="miniSideBarMouseHover('out')"
+>
+  <!--* Logo -->
+  <div class="sidebar-logo">
+    <a [routerLink]="dashboardRoute" class="logo logo-normal">
+      <img src="assets/favicon_io/big-logo-nobg.png" alt="Logo" />
+    </a>
+
+    <a [routerLink]="dashboardRoute" class="logo-small">
+      <img src="assets/favicon_io/logo.svg" alt="Logo" />
+    </a>
+
+    <a [routerLink]="dashboardRoute" class="dark-logo">
+      <img src="assets/favicon_io/big-logo-nobg.png" alt="Logo" />
+    </a>
+  </div>
+
+  <ng-scrollbar>
+    <div class="sidebar-inner slimscroll">
+      <div id="sidebar-menu" class="sidebar-menu">
+        <ul>
+          @for (section of sideBarData; track section) {
+            @if (shouldShowSection(section)) {
+              <!-- Section title -->
+              <li class="menu-title">
+                <span>{{ section.tittle }}</span>
+              </li>
+
+              <li>
+                <ul>
+                  @for (menu of section.menu; track menu) {
+                    @if (shouldShowMenu(menu)) {
+                      <!-- ============== NO SUB ROUTE (lien direct ou action) ============== -->
+                      @if (
+                        menu.hasSubRoute === false &&
+                        menu.hasSubRouteTwo !== true
+                      ) {
+                        <li
+                          [class.active]="
+                            base === menu.base || page === menu.base
+                          "
+                        >
+                          @if (menu.action === "layoutChange") {
+                            <a
+                              href="javascript:void(0)"
+                              (click)="expandSubMenus(menu)"
+                            >
+                              <i [class]="'ti ti-' + menu.icon"></i>
+                              <span>{{ menu.menuValue }}</span>
+                            </a>
+                          } @else {
+                            <a [routerLink]="menu.route">
+                              <i [class]="'ti ti-' + menu.icon"></i>
+                              <span>{{ menu.menuValue }}</span>
+                            </a>
+                          }
+                        </li>
+                      }
+
+                      <!-- ============== SUB ROUTE LEVEL 1 ============== -->
+                      @if (menu.hasSubRoute === true) {
+                        <li
+                          class="submenu"
+                          [ngClass]="{ subdrop: menu.showSubRoute === true }"
+                        >
+                          <a
+                            href="javascript:void(0)"
+                            (click)="expandSubMenus(menu)"
+                            (keydown.enter)="expandSubMenus(menu)"
+                            tabindex="0"
+                            [class.active]="
+                              base === menu.base || page === menu.base
+                            "
+                          >
+                            <i [class]="'ti ti-' + menu.icon"></i>
+                            <span>{{ menu.menuValue }}</span>
+                            <span class="menu-arrow"></span>
+                          </a>
+
+                          <ul
+                            [ngClass]="
+                              menu.showSubRoute
+                                ? 'show-sub-menu'
+                                : 'hide-sub-menu'
+                            "
+                          >
+                            @for (subMenus of menu.subMenus; track subMenus) {
+                              <li>
+                                <a
+                                  [routerLink]="subMenus.route"
+                                  [class.active]="
+                                    page === subMenus.base ||
+                                    last === subMenus.base
+                                  "
+                                >
+                                  {{ subMenus.menuValue }}
+                                </a>
+                              </li>
+                            }
+                          </ul>
+                        </li>
+                      }
+
+                      <!-- ============== SUB ROUTE LEVEL 2 ============== -->
+                      @if (menu.hasSubRouteTwo === true) {
+                        <li
+                          class="submenu"
+                          [ngClass]="{ subdrop: menu.showSubRoute === true }"
+                        >
+                          <a
+                            href="javascript:void(0);"
+                            (click)="expandSubMenus(menu)"
+                            (keydown.enter)="expandSubMenus(menu)"
+                            tabindex="0"
+                            [class.active]="
+                              base === menu.base || page === menu.base
+                            "
+                          >
+                            <i [class]="'ti ti-' + menu.icon"></i>
+                            <span>{{ menu.menuValue }}</span>
+                            <span class="menu-arrow"></span>
+                          </a>
+
+                          <ul
+                            [ngClass]="
+                              menu.showSubRoute
+                                ? 'show-sub-menu'
+                                : 'hide-sub-menu'
+                            "
+                          >
+                            @for (subMenus of menu.subMenus; track subMenus) {
+                              @if (subMenus.customSubmenuTwo !== true) {
+                                <li>
+                                  <a
+                                    [routerLink]="subMenus.route"
+                                    [class.active]="page === subMenus.base"
+                                  >
+                                    {{ subMenus.menuValue }}
+                                  </a>
+                                </li>
+                              }
+
+                              @if (subMenus.customSubmenuTwo === true) {
+                                <li class="submenu submenu-two">
+                                  <a
+                                    href="javascript:void(0);"
+                                    [class.active]="page === subMenus.base"
+                                  >
+                                    {{ subMenus.menuValue }}
+                                    <span
+                                      class="menu-arrow inside-submenu"
+                                    ></span>
+                                  </a>
+
+                                  <ul class="show-sub-menu">
+                                    @for (
+                                      subMenuTwo of subMenus.subMenusTwo;
+                                      track subMenuTwo
+                                    ) {
+                                      <li>
+                                        <a
+                                          [routerLink]="subMenuTwo.route"
+                                          [class.active]="
+                                            last === subMenuTwo.base
+                                          "
+                                        >
+                                          {{ subMenuTwo.menuValue }}
+                                        </a>
+                                      </li>
+                                    }
+                                  </ul>
+                                </li>
+                              }
+                            }
+                          </ul>
+                        </li>
+                      }
+                    }
+                  }
+                </ul>
+              </li>
+            }
+          }
+        </ul>
+      </div>
+    </div>
+  </ng-scrollbar>
+</div>

@@ -1,0 +1,31 @@
+<div class="header">
+  <div class="main-header">
+
+    <!--* Logo -->
+    <app-header-left></app-header-left>
+
+    <div class="header-user">
+      <div class="nav user-menu">
+        <div class="me-auto d-flex align-items-center" id="header-search">
+          <a id="toggle_btn" (click)="toggleSideBar()" href="javascript:void(0);" class="btn btn-menubar me-1"></a>
+
+          <!--* Search bar -->
+          <app-header-search></app-header-search>
+
+          <!--* Theme toggle -->
+          <app-theme-toggle></app-theme-toggle>
+        </div>
+
+        <div class="d-flex align-items-center custom-margin-header">
+          <app-apps-dropdown></app-apps-dropdown>
+          <app-chat-button></app-chat-button>
+          <app-notification-dropdown></app-notification-dropdown>
+          <app-profile-dropdown></app-profile-dropdown>
+        </div>
+      </div>
+    </div>
+
+    <!--* Mobile menu -->
+    <app-mobile-user-menu></app-mobile-user-menu>
+  </div>
+</div>

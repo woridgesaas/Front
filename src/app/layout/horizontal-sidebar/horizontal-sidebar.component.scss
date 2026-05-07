@@ -1,0 +1,19 @@
+.sidebar-horizontal {
+  .nav-menu {
+    > li.horizontal-direct-item {
+      > a {
+        cursor: pointer;
+      }
+
+      > a.active,
+      &.active > a {
+        background: #f1f1f1;
+        color: #111827;
+      }
+
+      .menu-arrow {
+        display: none !important;
+      }
+    }
+  }
+}

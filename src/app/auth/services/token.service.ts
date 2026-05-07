@@ -13,7 +13,6 @@ export class TokenService {
     try {
       return JSON.parse(atob(token.split('.')[1])) as TokenPayload;
     } catch {
-      console.error('Invalid token');
       return null;
     }
   }
@@ -30,5 +29,14 @@ export class TokenService {
     const exp = this.getPayload()?.exp;
     if (!exp) return true;
     return Date.now() >= exp * 1000;
+  }
+
+  isAuthenticated(): boolean {
+    const token = this.getToken();
+    return !!token && !!this.getPayload() && !this.isTokenExpired();
+  }
+
+  clearToken(): void {
+    localStorage.removeItem('token');
   }
 }
