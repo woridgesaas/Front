@@ -16,7 +16,6 @@
   flex-direction: column;
   height: 100%;
   transition: transform 0.3s ease;
-  z-index: 10;
 }
 
 @media (max-width: 768px) {
@@ -303,10 +302,6 @@
   margin-top: 1rem !important;
 }
 
-.avatar-xl {
-  width: 80px;
-  height: 80px;
-}
 
 .btn-link {
   text-decoration: none;
