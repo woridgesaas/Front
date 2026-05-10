@@ -5,6 +5,7 @@ import { emailVerificationGuard } from './core/guards/email-verification.guard';
 import { resetPasswordGuard } from './core/guards/reset-password.guard';
 import { roleGuard } from './core/guards/role-guard.guard';
 import { defaultRedirectGuard } from './core/guards/default-redirect.guard';
+import { onboardingGuard } from './core/guards/onboarding.guard';
 
 export const routes: Routes = [
   {
@@ -700,17 +701,18 @@ export const routes: Routes = [
           },
         ],
       },
-
-      //* Onboarding
-      {
-        path: 'onboarding',
-        loadComponent: () =>
-          import('./onboarding/onboarding.component').then(
-            (m) => m.OnboardingComponent,
-          ),
-        data: { title: 'Onboarding' },
-      },
     ],
+  },
+
+  //* Onboarding
+  {
+    path: 'onboarding',
+    canActivate: [onboardingGuard],
+    loadComponent: () =>
+      import('./onboarding/onboarding.component').then(
+        (m) => m.OnboardingComponent,
+      ),
+    data: { title: 'Onboarding' },
   },
 
   //* Pages

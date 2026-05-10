@@ -1,14 +1,14 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { OnboardingService } from '../services/onboarding.service';
-import { AppSettingItem } from '../models/app-setting-item.model';
-import { APP_SETTINGS_ITEMS } from '../config/app-settings.config';
-import { AppSettingKey } from '../enum/app-setting-key.enum';
-import { OnboardingCardComponent } from '../components/onboarding-card/onboarding-card.component';
-import { LeaveSettingsComponent } from '../../features/settings/app-settings/leave-settings/leave-settings.component';
-import { AttendanceSettingsComponent } from '../../features/settings/app-settings/attendance-settings/attendance-settings.component';
-import { DocumentsTemplateSettingsComponent } from '../../features/settings/app-settings/documents-template-settings/documents-template-settings.component';
-import { RecruitmentSettingsComponent } from '../../features/settings/app-settings/recruitment-settings/recruitment-settings.component';
+import { OnboardingCardComponent } from '../onboarding-card/onboarding-card.component';
+import { LeaveSettingsComponent } from '../../../features/settings/app-settings/leave-settings/leave-settings.component';
+import { AttendanceSettingsComponent } from '../../../features/settings/app-settings/attendance-settings/attendance-settings.component';
+import { DocumentsTemplateSettingsComponent } from '../../../features/settings/app-settings/documents-template-settings/documents-template-settings.component';
+import { RecruitmentSettingsComponent } from '../../../features/settings/app-settings/recruitment-settings/recruitment-settings.component';
+import { AppSettingItem } from '../../models/app-setting-item.model';
+import { APP_SETTINGS_ITEMS } from '../../config/app-settings.config';
+import { AppSettingKey } from '../../enum/app-setting-key.enum';
+import { OnboardingService } from '../../services/onboarding.service';
 
 @Component({
   selector: 'app-app-settings-setup',

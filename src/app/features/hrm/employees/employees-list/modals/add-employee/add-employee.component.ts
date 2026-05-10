@@ -13,8 +13,10 @@ import { Department } from '../../../../../../shared/models/models';
 import { Post } from '../../../../models/post/post.model';
 import { Role } from '../../../../models/role.enum';
 import { UserService } from '../../../../services/user/user.service';
-import { ToastService } from '../../../../../../shared/services/toast.service';
+import { ToastrService } from 'ngx-toastr';
 import { FormValidationService } from '../../../../../../core/services/form-validation.service';
+import { OnboardingService } from '../../../../../../onboarding/services/onboarding.service';
+import { ModalHeaderComponent } from '../../../../../common/modal-header/modal-header.component';
 
 @Component({
   selector: 'app-add-employee',
@@ -25,6 +27,7 @@ import { FormValidationService } from '../../../../../../core/services/form-vali
     ReactiveFormsModule,
     MatSelectModule,
     BsDatepickerModule,
+    ModalHeaderComponent,
   ],
   templateUrl: './add-employee.component.html',
   styleUrl: './add-employee.component.scss',
@@ -42,8 +45,9 @@ export class AddEmployeeComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private userApi: UserService,
-    private toastService: ToastService,
-    public validationService: FormValidationService
+    private toastService: ToastrService,
+    public validationService: FormValidationService,
+    private onboarding: OnboardingService,
   ) {}
 
   ngOnInit(): void {
@@ -64,7 +68,7 @@ export class AddEmployeeComponent implements OnInit {
         [
           Validators.required,
           Validators.pattern(
-            '^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$'
+            '^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$',
           ),
           Validators.maxLength(50),
         ],
@@ -113,6 +117,14 @@ export class AddEmployeeComponent implements OnInit {
     });
   }
 
+  //* Cancel
+  onCancel(): void {
+    const modalEl = document.getElementById('add_employee');
+    if (!modalEl) return;
+    const modal = (window as any).bootstrap.Modal.getInstance(modalEl);
+    if (modal) modal.hide();
+  }
+
   // ================= SUBMIT =================
 
   onSubmit() {
@@ -127,7 +139,7 @@ export class AddEmployeeComponent implements OnInit {
     this.userApi.createUser(this.form.value).subscribe({
       next: () => {
         this.toastService.success('Employé créé avec succès.');
-
+        this.onboarding.employeeCreated$.next();
         this.form.reset();
         this.selectedFileName = null;
         this.isSubmitting = false;
@@ -143,7 +155,7 @@ export class AddEmployeeComponent implements OnInit {
 
         if (status === 401) {
           this.toastService.error(
-            'Session expirée. Veuillez vous reconnecter.'
+            'Session expirée. Veuillez vous reconnecter.',
           );
           return;
         }
