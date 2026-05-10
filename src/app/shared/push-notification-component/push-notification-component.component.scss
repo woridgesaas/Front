@@ -1,0 +1,165 @@
+$primary: #A631D8;
+$night-blue: #111926;
+$dark-gray: #2E2E48;
+$shadow-sm: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+$transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+
+.notification-container {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 1050;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 380px;
+  max-width: calc(100vw - 48px);
+}
+
+.notification-card {
+  background: white;
+  border-radius: 20px;
+  box-shadow: $shadow-sm;
+  overflow: hidden;
+  position: relative;
+  animation: slideIn 0.4s ease-out;
+  transition: $transition;
+
+  &:hover {
+    transform: translateX(-4px);
+    box-shadow: 0 20px 30px -12px rgba(0, 0, 0, 0.15);
+  }
+
+  &.urgent {
+    background: linear-gradient(135deg, #fff9f9 0%, white 100%);
+    .progress-bar {
+      background: #dc3545;
+    }
+  }
+
+  .progress-bar {
+    height: 3px;
+    background: $primary;
+    transition: width 0.05s linear;
+  }
+
+  .notification-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px;
+  }
+
+  .icon-wrapper {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    background: rgba($primary, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: $transition;
+
+    .material-icons {
+      font-size: 24px;
+    }
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+
+  .text-wrapper {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  .title {
+    font-weight: 600;
+    font-size: 14px;
+    color: $night-blue;
+    line-height: 1.4;
+  }
+
+  .time {
+    font-size: 11px;
+    color: $dark-gray;
+    white-space: nowrap;
+  }
+
+  .description {
+    font-size: 13px;
+    color: #5a5a5a;
+    line-height: 1.45;
+    margin: 0;
+  }
+
+  .close-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    margin: -4px -4px 0 0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #aaa;
+    transition: $transition;
+
+    .material-icons {
+      font-size: 18px;
+    }
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.05);
+      color: $primary;
+    }
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+// Fermeture douce (optionnelle)
+.notification-card.removing {
+  animation: slideOut 0.3s ease-in forwards;
+}
+
+@keyframes slideOut {
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+
+@media (max-width: 480px) {
+  .notification-container {
+    top: 16px;
+    right: 16px;
+    left: 16px;
+    width: auto;
+  }
+
+  .notification-card .notification-content {
+    padding: 14px;
+  }
+}

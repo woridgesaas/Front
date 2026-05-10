@@ -15,6 +15,18 @@ export interface NotificationItem {
 
   createdAt: string; // ISO string backend
 }
+export interface Notification{
+    id: number;
+    title: string;
+    description: string;
+    channel: string;
+    type: string;
+    priority: string;
+    status: string;
+    creationDate: string;
+    isRead: boolean;
+    readDate: string | null;
+}
 export interface Sondage {
   id: number;
   titre: string;
