@@ -11,6 +11,7 @@ import { ChatButtonComponent } from './components/chat-button/chat-button.compon
 import { NotificationDropdownComponent } from './components/notification-dropdown/notification-dropdown.component';
 import { ProfileDropdownComponent } from './components/profile-dropdown/profile-dropdown.component';
 import { MobileUserMenuComponent } from './components/mobile-user-menu/mobile-user-menu.component';
+import { PushNotificationComponentComponent } from '../../shared/push-notification-component/push-notification-component.component';
 
 @Component({
   selector: 'app-default-header',
@@ -28,6 +29,7 @@ import { MobileUserMenuComponent } from './components/mobile-user-menu/mobile-us
     NotificationDropdownComponent,
     ProfileDropdownComponent,
     MobileUserMenuComponent,
+    PushNotificationComponentComponent
   ],
 })
 export class DefaultHeaderComponent implements OnDestroy {

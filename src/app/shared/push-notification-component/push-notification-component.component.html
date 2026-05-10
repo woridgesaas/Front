@@ -1,0 +1,31 @@
+<div class="notification-container">
+  <div 
+    *ngFor="let notif of notifications" 
+    class="notification-card"
+    [class.urgent]="notif.priority === 'HIGHT'"
+  >
+    <!-- Barre de progression -->
+    <div class="progress-bar" [style.width.%]="notif.progress"></div>
+
+    <div class="notification-content">
+      <!-- Icône dynamique -->
+      <div class="icon-wrapper" [style.color]="getIconColor(notif)">
+        <span class="material-icons">{{ getIcon(notif) }}</span>
+      </div>
+
+      <!-- Texte -->
+      <div class="text-wrapper">
+        <div class="title-row">
+          <span class="title">{{ getDisplayTitle(notif) }}</span>
+          <span class="time">{{ formatTime(notif.creationDate) }}</span>
+        </div>
+        <p class="description">{{ notif.description }}</p>
+      </div>
+
+      <!-- Bouton fermer -->
+      <button class="close-btn" (click)="close(notif)">
+        <span class="material-icons">close</span>
+      </button>
+    </div>
+  </div>
+</div>

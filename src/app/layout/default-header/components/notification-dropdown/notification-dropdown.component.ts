@@ -22,6 +22,7 @@ export class NotificationDropdownComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadNotifications();
+    this.notifService.startConnection();
   }
 
   loadNotifications(): void {
