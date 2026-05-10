@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 import { OnboardingProgress } from '../models/onboarding-progress.model';
 
 @Injectable({ providedIn: 'root' })
 export class OnboardingService {
   private state: OnboardingProgress = {
     ceoCreated: false,
-    hrCreated: false,
     appConfigured: false,
   };
+
+  employeeCreated$ = new Subject<void>();
 
   get progress(): OnboardingProgress {
     return this.state;
@@ -15,10 +17,6 @@ export class OnboardingService {
 
   markCeoCreated() {
     this.state.ceoCreated = true;
-  }
-
-  markHrCreated() {
-    this.state.hrCreated = true;
   }
 
   markAppConfigured() {

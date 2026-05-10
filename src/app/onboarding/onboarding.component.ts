@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { OnboardingService } from './services/onboarding.service';
-import { AppSettingsSetupComponent } from './app-settings-setup/app-settings-setup.component';
-import { UserRole } from './enum/user-role.enum';
-import { UserSetupComponent } from './user-setup/user-setup.component';
+import { AppSettingsSetupComponent } from './components/app-settings-setup/app-settings-setup.component';
+import { UserSetupComponent } from './components/user-setup/user-setup.component';
 import { routes } from '../shared/routes/routes';
+import { Role } from '../features/hrm/models/role.enum';
 
 @Component({
   selector: 'app-onboarding',
@@ -15,30 +15,29 @@ import { routes } from '../shared/routes/routes';
 })
 export class OnboardingComponent {
   currentStep = 1;
-  readonly UserRole = UserRole;
+  readonly Role = Role;
 
-  constructor(public onboarding: OnboardingService, private router: Router) {}
+  constructor(
+    public onboarding: OnboardingService,
+    private router: Router,
+  ) {}
+
+  nextStep(): void {
+    if (this.currentStep === 2) {
+      this.redirectToLogin();
+      return;
+    }
+    this.currentStep++;
+  }
 
   onCeoCompleted(): void {
     this.onboarding.markCeoCreated();
     this.nextStep();
   }
 
-  onHrCompleted(): void {
-    this.onboarding.markHrCreated();
-    this.nextStep();
-  }
-
-  nextStep(): void {
-    //* Last step (redirect to dashboard)
-    if (this.currentStep === 3) {
-      this.redirectToDashboard();
-      return;
-    }
-
-    this.currentStep++;
-  }
-  private redirectToDashboard(): void {
-    this.router.navigate([routes.index]);
+  private redirectToLogin(): void {
+    localStorage.setItem('onboarding_done', 'true');
+    localStorage.removeItem('token');
+    this.router.navigate([routes.login]);
   }
 }

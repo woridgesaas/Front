@@ -2,14 +2,9 @@
 <div class="modal fade" id="add_employee">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Ajouter Nouveau Employé</h4>
-        <button
-          type="button"
-          class="btn-close custom-btn-close"
-          data-bs-dismiss="modal"
-        ></button>
-      </div>
+
+      <!--* Modal header -->
+      <app-modal-header title="Ajouter un nouvel employé" icon="ti ti-user-plus" (close)="onCancel()"></app-modal-header>
 
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="modal-body pb-0">
