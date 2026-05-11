@@ -4,11 +4,11 @@
     class="notification-card"
     [class.urgent]="notif.priority === 'HIGHT'"
   >
-    <!-- Barre de progression -->
+    
     <div class="progress-bar" [style.width.%]="notif.progress"></div>
 
     <div class="notification-content">
-      <!-- Icône dynamique -->
+      
       <div class="icon-wrapper" [style.color]="getIconColor(notif)">
         <span class="material-icons">{{ getIcon(notif) }}</span>
       </div>
@@ -22,7 +22,7 @@
         <p class="description">{{ notif.description }}</p>
       </div>
 
-      <!-- Bouton fermer -->
+    
       <button class="close-btn" (click)="close(notif)">
         <span class="material-icons">close</span>
       </button>
