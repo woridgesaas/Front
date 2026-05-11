@@ -33,7 +33,7 @@ $transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   &.urgent {
     background: linear-gradient(135deg, #fff9f9 0%, white 100%);
     .progress-bar {
-      background: #dc3545;
+      background: linear-gradient(135deg, #3b82f6,#02a8b5); 
     }
   }
 
